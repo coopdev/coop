@@ -22,5 +22,14 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+
+// Routing
+$FrontController = Zend_Controller_Front::getInstance();
+$Router = $FrontController->getRouter();
+//$Router->addRoute("logout", 
+//                  new Zend_Controller_Router_Route("auth/cas/:logout",
+//                                                   array('controller'=>'auth',
+//                                                         'action'=>'logout')));
+
 $application->bootstrap()
             ->run();

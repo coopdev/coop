@@ -10,8 +10,17 @@
       <controllersDirectory>
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
+          <actionMethod actionName="test"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
+        <controllerFile controllerName="Auth">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="logout"/>
+        </controllerFile>
+        <controllerFile controllerName="Pages">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="home"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -24,6 +33,21 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="error"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Auth">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Auth">
+            <viewScriptFile forActionName="logout"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="test"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="home"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
