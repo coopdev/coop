@@ -1,12 +1,16 @@
-<h4>Welcome <?php echo $this->uhinfo['name']; ?></h4>
+<?php $this->pageTitle = "Home"; ?>
+<h4>Welcome <?php //echo $this->uhinfo['name']; ?></h4>
 <br />
 
 <?php 
 //echo var_dump($_SESSION['uhinfo']);
 //var_dump($this->uhinfo);
-//echo $this->url(array('controller'=>'auth',
-//                                    'action'=>'cas',
-//                                    'logout'=>'yes'
-//                                    )) ;?>
 
-<a href='http://localhost/acl/public/auth/cas?logout=yes'>Logout</a>
+?>
+
+<a href='http://localhost/acl/public/auth/cas?logout=yes'>Logout</a><br />
+
+<?php
+   
+   //var_dump($this->uhinfo);
+?>

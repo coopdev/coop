@@ -17,8 +17,12 @@ class PagesController extends Zend_Controller_Action
     {
         // Instantiate session. Must be instantiated to access it. First instantiated in Bootstrap.ini
         // This is equivalent to $_SESSION['coop']. $coopSess->uhinfo is equivalent to $_SESSION['coop']['uhinfo']
+        
         $coopSess = new Zend_Session_Namespace('coop');
+        //die(var_dump($coopSess->uhinfo));
+        
         $this->view->uhinfo = $coopSess->uhinfo;
+        
 
         /**
          *  Bottom three lines used as a test: first gets current instance of authenticated user.
@@ -30,8 +34,22 @@ class PagesController extends Zend_Controller_Action
         //die(var_dump($identity));
     }
 
+    public function studentsAction()
+    {
+        // action body
+    }
+
+    public function teachersAction()
+    {
+        // action body
+    }
+
 
 }
+
+
+
+
 
 
 

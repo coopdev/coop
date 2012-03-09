@@ -20,10 +20,22 @@
         <controllerFile controllerName="Pages">
           <actionMethod actionName="index"/>
           <actionMethod actionName="home"/>
+          <actionMethod actionName="students"/>
+          <actionMethod actionName="teachers"/>
+        </controllerFile>
+        <controllerFile controllerName="Contract">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="show"/>
         </controllerFile>
       </controllersDirectory>
-      <formsDirectory enabled="false"/>
-      <layoutsDirectory enabled="false"/>
+      <formsDirectory>
+        <formFile formName="Contract"/>
+      </formsDirectory>
+      <layoutsDirectory enabled="false">
+        <layoutScriptsDirectory>
+          <layoutScriptFile layoutName="layout"/>
+        </layoutScriptsDirectory>
+      </layoutsDirectory>
       <modelsDirectory/>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -48,6 +60,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Pages">
             <viewScriptFile forActionName="home"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="students"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="teachers"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Contract">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Contract">
+            <viewScriptFile forActionName="show"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

@@ -1,0 +1,25 @@
+<?php 
+   $this->headTitle('Cooperative Education');
+   $this->headTitle()->setSeparator(' - ');
+   $this->headTitle($this->pageTitle);
+   
+   echo $this->doctype();
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <?php 
+      echo $this->headTitle();
+      //echo $this->headTitle($this->pageTitle);
+      echo $this->headLink()->appendStylesheet('/css/global.css'); 
+   ?>
+</head>
+<body>
+   <?php
+      echo "<h2>$this->pageTitle</h4>";
+      echo $this->layout()->content;
+   ?>
+</body>
+</html>
+
+  

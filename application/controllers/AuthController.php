@@ -33,14 +33,22 @@ class AuthController extends Zend_Controller_Action
             //die(var_dump($adapter->getQueryParams()));
             //die($adapter->getTicket());
         }
+        
+        
 
         if(!$auth->hasIdentity() && $adapter->hasTicket()) {
             $result = $auth->authenticate($adapter);
             //die(var_dump($result));
+            
             if(!$result->isValid()) {
-               //die($result->getMessages());
+                die($result->getMessages());
                 $this->view->messages = $result->getMessages();
                 return;
+            }
+            if($auth->hasIdentity()) {
+               $coopSess = new Zend_Session_Namespace('coop');
+               $coopSess->uhinfo = $result->getMessages();
+               $coopSess->uhinfo['role'] = 'student';
             }
         }
 
@@ -57,19 +65,15 @@ class AuthController extends Zend_Controller_Action
             Zend_Session::destroy(true);
 
             $this->_redirect($adapter->getLogoutUrl());
-            //$this->_redirect('http://localhost/zf-tutorial/public/auth/login');
         }
 
         // Send to CAS for authentication
         if(!$auth->hasIdentity()) {
             $this->_redirect($adapter->getLoginUrl());
         } else {
-            //$_SESSION['uhinfo'] = $result->getMessages();
-            $coopSess = new Zend_Session_Namespace('coop');
-            $coopSess->uhinfo = $result->getMessages();
-            //$uhinfo = $result->getMessages();
-            //die(var_dump($uhinfo->all));
-            //die($_SESSION['uhinfo']['user']);
+            //$coopSess = new Zend_Session_Namespace('coop');
+            //$coopSess->uhinfo = $result->getMessages();
+            //$coopSess->uhinfo['role'] = 'student';
             $this->_redirect($local_service."/pages/home");
         }        
     }
