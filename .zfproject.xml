@@ -16,6 +16,7 @@
         <controllerFile controllerName="Auth">
           <actionMethod actionName="index"/>
           <actionMethod actionName="logout"/>
+          <actionMethod actionName="logoutPage"/>
         </controllerFile>
         <controllerFile controllerName="Pages">
           <actionMethod actionName="index"/>
@@ -26,6 +27,12 @@
         <controllerFile controllerName="Contract">
           <actionMethod actionName="index"/>
           <actionMethod actionName="show"/>
+          <actionMethod actionName="renew"/>
+        </controllerFile>
+        <controllerFile controllerName="User">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="create"/>
+          <actionMethod actionName="update"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -36,7 +43,12 @@
           <layoutScriptFile layoutName="layout"/>
         </layoutScriptsDirectory>
       </layoutsDirectory>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <dbTableDirectory>
+          <dbTableFile dbTableName="Person"/>
+          <dbTableFile dbTableName="Role"/>
+        </dbTableDirectory>
+      </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
         <viewScriptsDirectory>
@@ -72,6 +84,21 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Contract">
             <viewScriptFile forActionName="show"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Auth">
+            <viewScriptFile forActionName="logoutPage"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="create"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="update"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Contract">
+            <viewScriptFile forActionName="renew"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

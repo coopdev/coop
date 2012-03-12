@@ -6,6 +6,8 @@ class Application_Form_Contract extends Zend_Form
     public function init()
     {
         $this->setName('contract');
+        //$this->setMethod('POST');
+        //$this->setAction('/acl/public/user/create');
         $fname = new Zend_Form_Element_Text('fname');
         $fname->setLabel('Firstname')
               ->setRequired(true)
@@ -19,7 +21,7 @@ class Application_Form_Contract extends Zend_Form
               ->addFilter('StripTags')
               ->addFilter('StringTrim');
         
-        $agree = new Zend_Form_Element_Radio('agree');
+        $agree = new Zend_Form_Element_Radio('agreement');
         //$agree->setLabel('Agree');
         
         $agree->setMultiOptions(array('agree' => 'Agree',

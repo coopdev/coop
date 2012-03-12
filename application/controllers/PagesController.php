@@ -20,6 +20,7 @@ class PagesController extends Zend_Controller_Action
         
         $coopSess = new Zend_Session_Namespace('coop');
         //die(var_dump($coopSess->uhinfo));
+        //$coopSess->__unset('uhinfo');
         
         $this->view->uhinfo = $coopSess->uhinfo;
         

@@ -1,5 +1,5 @@
 <?php $this->pageTitle = "Home"; ?>
-<h4>Welcome <?php //echo $this->uhinfo['name']; ?></h4>
+<h4>Welcome <?php echo $this->uhinfo['name']; ?></h4>
 <br />
 
 <?php 
@@ -8,7 +8,8 @@
 
 ?>
 
-<a href='http://localhost/acl/public/auth/cas?logout=yes'>Logout</a><br />
+<a href='<?php echo $this->url(array('controller'=>'auth','action'=>'logout'))?>'>
+   Logout</a><br />
 
 <?php
    

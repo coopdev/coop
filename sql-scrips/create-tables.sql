@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS coop_roles;
 CREATE TABLE coop_roles(
    id INT NOT NULL AUTO_INCREMENT,
-   role TEXT,
+   role VARCHAR(20) UNIQUE,
    PRIMARY KEY(id)
 );
 

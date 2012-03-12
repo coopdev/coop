@@ -2,12 +2,13 @@
    class My_Plugin_AccessCheck extends Zend_Controller_Plugin_Abstract
    {
       private $_acl = null;
-      private $_uhinfo = null;
+      private $_role = null;
+      public $test = null;
 
-      public function __construct(Zend_Acl $acl, array $uhinfo)
+      public function __construct(Zend_Acl $acl, $role)
       {
          $this->_acl = $acl;   
-         $this->_uhinfo = $uhinfo;
+         $this->_role = $role;
       }
 
       public function preDispatch(Zend_Controller_Request_Abstract $request)
@@ -15,16 +16,30 @@
          $resource = $request->getControllerName();   
          $action = $request->getActionName();   
 
-         $role = $this->_uhinfo['role'];
+         $role = $this->_role;
+         $coopSess = new Zend_Session_Namespace('coop');
 
+         $contStat = $coopSess->contractStatus;
+         $prevCont = $coopSess->prevController;
+         $prevAct = $coopSess->prevAction;
+         $redirector = new Zend_Controller_Action_Helper_Redirector();
+         
          if (!$this->_acl->isAllowed($role, $resource, $action)) {
             if ($role == 'none') {
-               $request->setControllerName('auth')
-                       ->setActionName('cas');
-            
+               //$request->setControllerName('auth')
+               //        ->setActionName('cas');
+               $redirector->direct('cas','auth');
+               
             } else {
-               $coopSess = new Zend_Session_Namespace('coop');
-               Zend_OpenId::redirect($coopSess->prevUri);
+               $redirector->direct($prevAct, $prevCont);
+            }
+            
+            //die("hello");
+         }
+         
+         if ($role == 'user' && $contStat == 'contractNo') {
+            if (!$this->_acl->isAllowed($contStat, $resource, $action)) {
+               $redirector->direct($prevAct, $prevCont);
             }
          }
          
@@ -32,9 +47,10 @@
       
       public function postDispatch(Zend_Controller_Request_Abstract $request) 
       {
-         $prevUri = $request->getRequestUri();
-         $coopSess = new Zend_Session_Namespace('coop');
-         $coopSess->prevUri = $prevUri;
+         //$prevUrl = $request->getRequestUrl();
+         //$coopSess = new Zend_Session_Namespace('coop');
+         //$coopSess->prevUrl = $prevUrl;
+         //die($coopSess->prevUrl);
       }
    }
 ?>
