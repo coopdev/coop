@@ -5,15 +5,18 @@ CREATE TABLE coop_roles(
    PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS coop_persons;
-CREATE TABLE coop_persons(
+DROP TABLE IF EXISTS coop_users;
+CREATE TABLE coop_users(
    id INT NOT NULL AUTO_INCREMENT, 
    fname TEXT,
    lname TEXT,
+   courses_id INT,
    roles_id INT,
    uuid CHAR(8) UNIQUE,
+   agreedto_contract BOOLEAN DEFAULT 0,
    PRIMARY KEY(id),
-   FOREIGN KEY(roles_id) REFERENCES roles(id)
+   FOREIGN KEY(roles_id) REFERENCES coop_roles(id),
+   FOREIGN KEY(courses_id) REFERENCES coop_courses(id)
 );
 
 DROP TABLE IF EXISTS coop_contracts;
@@ -23,14 +26,23 @@ CREATE TABLE coop_contracts(
    PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS coop_persons_contracts;
-CREATE TABLE coop_persons_contracts(
+DROP TABLE IF EXISTS coop_users_contracts;
+CREATE TABLE coop_users_contracts(
    id INT NOT NULL AUTO_INCREMENT,
-   persons_id INT,
+   users_id INT,
    contracts_id INT,
    date_submited DATETIME,
    date_mod DATETIME,
    PRIMARY KEY(id),
-   FOREIGN KEY(persons_id) REFERENCES coop_persons(id) ON DELETE CASCADE,
+   FOREIGN KEY(users_id) REFERENCES coop_users(id) ON DELETE CASCADE,
    FOREIGN KEY(contracts_id) REFERENCES coop_contracts(id) ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS coop_courses;
+CREATE TABLE coop_courses(
+   id INT NOT NULL AUTO_INCREMENT,
+   name VARCHAR(20) UNIQUE,
+   syllabus TEXT,
+   PRIMARY KEY(id)
+);
+

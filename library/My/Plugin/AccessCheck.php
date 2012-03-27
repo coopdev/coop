@@ -38,7 +38,7 @@
             //die("hello");
          }
          
-         if ($role == 'user' && $contStat == 'contractNo') {
+         if ($role == 'normal' && $contStat == 'contractNo') {
             if (!$this->_acl->isAllowed($contStat, $resource, $action)) {
                $redirector->direct($prevAct, $prevCont);
             }

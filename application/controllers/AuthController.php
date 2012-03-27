@@ -74,13 +74,14 @@ class AuthController extends Zend_Controller_Action
                $record = $qryResult->fetch();
                $contractId = $record['id'];
                
-               // If current semester isn't in contracts table, set all persons
+               // If current semester isn't in contracts table, set all users
                // "agreedto_contract" fields to 0 and insert the current semester
                // into the contracts table.
                if (!$contractId) {
                   //die('hi');
-                  $link->query("UPDATE coop_persons SET agreedto_contract = 0");
+                  $link->query("UPDATE coop_users SET agreedto_contract = 0");
                   $link->insert('coop_contracts', array('semester'=>$curSemester));
+
                }
                               
                $coopSess = new Zend_Session_Namespace('coop');
@@ -89,22 +90,22 @@ class AuthController extends Zend_Controller_Action
                // Assign an initial role of "Guest" to CAS authenticated users.
                // Then overwrite later if they are in the database.
                $coopSess->role = 'guest';
-               $persons = new Application_Model_DbTable_Person();
-               $person = $persons->getPerson($coopSess->uhinfo['uhuuid']);
+               $users = new Application_Model_DbTable_User();
+               $user = $users->getUser($coopSess->uhinfo['uhuuid']);
                $roles = new Application_Model_DbTable_Role();
                
                
                // If user is in database
-               if ($person) {
+               if ($user) {
                   $coopSess->inDb = true;
                   // Get users role
-                  $role = $roles->getRole($person['roles_id']);
+                  $role = $roles->getRole($user['roles_id']);
                   // Make sure user has a role
                   if ($role) {
                      $coopSess->role = $role['role'];
                   }
                   // If user submitted and agreed to initial contract
-                  if ($person['agreedto_contract']) {
+                  if ($user['agreedto_contract']) {
                      $coopSess->contractStatus = 'contractYes';
                   } else {
                      $coopSess->contractStatus = 'contractNo';
@@ -141,7 +142,7 @@ class AuthController extends Zend_Controller_Action
         
         if ($coopSess->inDb) {
            
-           if ($coopSess->role != 'user' || $coopSess->contractStatus == 'contractYes') {
+           if ($coopSess->role != 'normal' || $coopSess->contractStatus == 'contractYes') {
               
               $this->_redirect($local_service."/pages/home");
            }
@@ -151,11 +152,6 @@ class AuthController extends Zend_Controller_Action
         }
         $this->_redirect($local_service."/contract/new");
                 
-    }
-
-    public function loginAction()
-    {
-        // action body
     }
 
     public function logoutAction()

@@ -46,7 +46,7 @@ class ContractController extends Zend_Controller_Action
         //$link = $link->getLink();
         $sel = $link->select();
         
-        $qry = $sel->from('coop_persons',array('fname','lname'))
+        $qry = $sel->from('coop_users',array('fname','lname'))
                    ->where('uuid = '.$uuid);
         $stmt = $qry->query();
         $result = $stmt->fetch();
@@ -83,8 +83,8 @@ class ContractController extends Zend_Controller_Action
 //          $lname = $data['lname'];
 //          //die(var_dump($fname,$lname));
 //          //$agree = $data['agreement'];
-//          $person = new Application_Model_DbTable_Person();
-//          $person->addPerson($fname,$lname);
+//          $user = new Application_Model_DbTable_User();
+//          $user->addUser($fname,$lname);
 //          
 //          $this->_helper->redirector('home','pages');
 //       }
@@ -103,7 +103,7 @@ class ContractController extends Zend_Controller_Action
                 $this->_helper->redirector($coopSess->prevAction,null,null,$data);
              }
              
-             $person = new Application_Model_DbTable_Person();
+             $user = new Application_Model_DbTable_User();
              $link = My_DbLink::connect();
              //$link = $link->getLink();
              $fname = $data['fname'];
@@ -119,10 +119,10 @@ class ContractController extends Zend_Controller_Action
                //die('hi');
                // Must also add users uuid and find another way to assign a role
                // to an inserted user. Right now, any one filling out the new
-               // contract gets a role of 'user'.
-               $person->addPerson($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
+               // contract gets a role of 'normal'.
+               $user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
                $coopSess->contractStatus = 'contractYes';
-               $coopSess->role = 'user';
+               $coopSess->role = 'normal';
                $coopSess->inDb = true;
                
                
@@ -130,14 +130,14 @@ class ContractController extends Zend_Controller_Action
                 * IF SOMEONE IS RENEWING CONTRACT
                 */                       
              } else if ($coopSess->prevAction == 'renew' && $coopSess->inDb == true) {
-                $person->update(array('fname'=>$fname,
+                $user->update(array('fname'=>$fname,
                                       'lname'=>$lname,
                                       'agreedto_contract'=>1),
                                       'uuid = '.$coopSess->uhinfo['uhuuid']);
                 $coopSess->contractStatus = 'contractYes';
              }
-             // Get id of person just inserted
-             $result = $link->query('SELECT id FROM coop_persons WHERE uuid = '
+             // Get id of user just inserted
+             $result = $link->query('SELECT id FROM coop_users WHERE uuid = '
                         .$coopSess->uhinfo['uhuuid']);
              $result = $result->fetch();
              $id = $result['id'];

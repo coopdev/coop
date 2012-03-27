@@ -23,6 +23,7 @@ class PagesController extends Zend_Controller_Action
         //$coopSess->__unset('uhinfo');
         
         $this->view->uhinfo = $coopSess->uhinfo;
+        $this->view->role = $coopSess->role;
         
 
         /**

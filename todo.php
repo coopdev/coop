@@ -6,7 +6,7 @@
     * @todo Make new contract form appear with already filled out information
     *       at specific time intervals (e.g every new semester). When the time
     *       comes for the form to appear again, set the user's "agreedto_contract"
-    *       field in "coop_persons" table to 0;
+    *       field in "coop_users" table to 0;
     * 
     * @todo Set access to the contract new view so only people who need to fill 
     *       it out can visit it. Others (such as non normal users or users who 
@@ -20,7 +20,7 @@
     * @todo When user contract expires, must figure out how to get update contract
     *       form rather than the new contract form. Maybe check if user had already
     *       submitted a contract by checking if their primary key is in the join
-    *       table for persons and contracts. If it is, then they get redirected
+    *       table for users and contracts. If it is, then they get redirected
     *       to contract/update rather than contract/new.
     */
    

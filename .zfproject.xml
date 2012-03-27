@@ -34,6 +34,10 @@
           <actionMethod actionName="create"/>
           <actionMethod actionName="update"/>
         </controllerFile>
+        <controllerFile controllerName="Syllabus">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="listall"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -99,6 +103,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Contract">
             <viewScriptFile forActionName="renew"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Syllabus">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Syllabus">
+            <viewScriptFile forActionName="listall"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

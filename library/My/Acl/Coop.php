@@ -30,7 +30,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('teachers'), 'pages');
       $this->add(new Zend_Acl_Resource('home'), 'pages');
       
-      $this->add(new Zend_Acl_Resource('person'));
+      $this->add(new Zend_Acl_Resource('user'));
       
       $this->add(new Zend_Acl_Resource('contract'));
       $this->add(new Zend_Acl_Resource('new'), 'contract');
@@ -39,8 +39,10 @@ class My_Acl_Coop extends Zend_Acl
       $this->addRole(new Zend_Acl_Role('none'));
       $this->addRole(new Zend_Acl_Role('guest'), 'none');
       
-      $this->addRole(new Zend_Acl_Role('user'),'guest');
-      $this->addRole(new Zend_Acl_Role('manager'), 'user');
+      $this->addRole(new Zend_Acl_Role('normal'),'guest');
+      $this->addRole(new Zend_Acl_Role('manager'), 'normal');
+      $this->addRole(new Zend_Acl_Role('admin'), 'manager');
+      $this->addRole(new Zend_Acl_Role('super-admin'), 'admin');
       
       $this->addRole(new Zend_Acl_Role('contractNo'));
       
@@ -53,11 +55,11 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('guest','contract','create');
       $this->allow('guest','error');
       
-      $this->allow('user','index');
-      $this->allow('user', 'pages');
-      $this->allow('user', 'contract');
-      $this->allow('user', 'person');
-      $this->deny('user','pages','teachers');
+      $this->allow('normal','index');
+      $this->allow('normal', 'pages');
+      $this->allow('normal', 'contract');
+      $this->allow('normal', 'user');
+      $this->deny('normal','pages','teachers');
             
       $this->allow('manager', 'pages', 'teachers');
       
