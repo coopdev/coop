@@ -18,6 +18,7 @@
 
          $role = $this->_role;
          $coopSess = new Zend_Session_Namespace('coop');
+         //die($resource.' : '.$action);
 
          $contStat = $coopSess->contractStatus;
          $prevCont = $coopSess->prevController;

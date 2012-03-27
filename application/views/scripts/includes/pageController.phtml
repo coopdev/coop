@@ -1,0 +1,26 @@
+<?php
+   if ($this->pageCount > 1) {
+      //echo $this->pageCount;
+      echo "<table>";
+      echo    "<tr>";
+      if (isset($this->previous)) {
+         echo "<td><a href='test?i=".$this->previous."'>Previous</a></td>";
+      }
+      
+      foreach ($this->pagesInRange as $page) {
+         if ($page != $this->current) {
+            echo "<td>";
+            echo   "<a href='test?i=".$page."'>$page</a>";
+            echo "</td>";
+         } else {
+            echo "<td>".$this->current."</td>";
+         }
+         
+      }
+      if (isset($this->next)) {
+         echo "<td><a href='test?i=".$this->next."'>Next</a></td>";
+      }
+      echo    "</tr>";
+      echo "</table>";
+   }
+?>

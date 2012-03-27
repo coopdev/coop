@@ -20,11 +20,17 @@ class ContractController extends Zend_Controller_Action
         $form->setAction($coopSess->baseUrl.'/contract/create');
         $this->view->form = $form;
         if ($this->getRequest()->isGet()) {
-           //die('hello');
+           $data = $this->getRequest()->getParams();
            if ($this->getRequest()->getParam('invalid')) {
               
               $data = $this->getRequest()->getParams();
+              $form->isValid($data);
               
+              // Form automatically gets repopulated if invalid so don't  need
+              // below line to populate the fom. 
+              //$form->populate($data);
+           } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
+              $this->view->message = 'Must agree before continuing';
               $form->populate($data);
            }
         }
@@ -49,6 +55,22 @@ class ContractController extends Zend_Controller_Action
         $form->setAction($coopSess->baseUrl.'/contract/create');
         $form->populate($result);
         $this->view->form = $form;
+        
+        if ($this->getRequest()->isGet()) {
+           $data = $this->getRequest()->getParams();
+           if ($this->getRequest()->getParam('invalid')) {
+              
+              $data = $this->getRequest()->getParams();
+              $form->isValid($data);
+              
+             // Form automatically gets repopulated if invalid so don't need
+             // below line to populate the form. 
+             //$form->populate($data);
+           } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
+              $this->view->message = 'Must agree before continuing';
+              $form->populate($data);
+           }
+        }
               
     }
     
@@ -68,26 +90,39 @@ class ContractController extends Zend_Controller_Action
 //       }
        
        $form = new Application_Form_Contract();
+       $coopSess = new Zend_Session_Namespace('coop');
        if ($this->getRequest()->isPost()) {
           //die('helo');
           $data = $this->getRequest()->getPost();
+          //$data['fname'] = addslashes($data['fname']);
           //die(var_dump($data));
           if ($form->isValid($data)) {
-             $coopSess = new Zend_Session_Namespace('coop');
+             
+             // If user did not click agree
+             if ($data['agreement'] != 'agree') {
+                $this->_helper->redirector($coopSess->prevAction,null,null,$data);
+             }
+             
              $person = new Application_Model_DbTable_Person();
              $link = My_DbLink::connect();
              //$link = $link->getLink();
              $fname = $data['fname'];
              $lname = $data['lname'];
+             $sem = $data['semester'];
+             //die(var_dump($coopSess->inDb));
              
              /*
               * IF POST CAME FROM A NEW CONTRACT
               */
              if ($coopSess->prevAction == 'new' && $coopSess->inDb == false) {
                                          
-               //Must also add users uuid
-               $person->addPerson($fname, $lname);
+               //die('hi');
+               // Must also add users uuid and find another way to assign a role
+               // to an inserted user. Right now, any one filling out the new
+               // contract gets a role of 'user'.
+               $person->addPerson($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
                $coopSess->contractStatus = 'contractYes';
+               $coopSess->role = 'user';
                $coopSess->inDb = true;
                
                
@@ -109,8 +144,9 @@ class ContractController extends Zend_Controller_Action
              //die($id);
              $this->_helper->redirector('home','pages');
           } else {
+            
              $data['invalid'] = true;
-             $this->_helper->redirector('new',null,null,$data);
+             $this->_helper->redirector($coopSess->prevAction,null,null,$data);
           }
        }
        

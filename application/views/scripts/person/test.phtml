@@ -1,0 +1,24 @@
+<?php
+   $paginator = $this->paginator;
+   $form = $this->form;
+   
+   if ($this->paginator){
+      echo "<table>";
+      foreach ($this->paginator as $role) {
+         echo "<tr><td>".$role['role']."</td></tr>";
+      }
+      
+      echo "<tr><td>";
+      echo $this->paginationControl($this->paginator,'Sliding','includes/pageController.phtml');
+      echo "</td></tr>";
+      
+      echo "</table>";
+   }  
+   
+   if ($form) {
+      echo $form;
+   }
+   
+   
+
+?>

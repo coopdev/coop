@@ -1,5 +1,8 @@
 <?php
    /*
+    * @todo Got current date, now just need to insert that when contract is filled. Check
+    *       if semester already exists before inserting.
+    *
     * @todo Make new contract form appear with already filled out information
     *       at specific time intervals (e.g every new semester). When the time
     *       comes for the form to appear again, set the user's "agreedto_contract"

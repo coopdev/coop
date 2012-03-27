@@ -1,4 +1,5 @@
 <?php 
+   $coopSess = new Zend_Session_Namespace('coop');
    $this->headTitle('Cooperative Education');
    $this->headTitle()->setSeparator(' - ');
    $this->headTitle($this->pageTitle);
@@ -11,13 +12,20 @@
    <?php 
       echo $this->headTitle();
       //echo $this->headTitle($this->pageTitle);
-      echo $this->headLink()->appendStylesheet('/css/global.css'); 
+      echo $this->headLink()->appendStylesheet('/css/styles.css'); 
    ?>
 </head>
 <body>
    <?php
+      echo "<div id=main>";
       echo "<h2>$this->pageTitle</h4>";
+      if ($coopSess->role != 'none') {
+         echo "<div class='logout'>";
+         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+         echo "</div>";
+      }
       echo $this->layout()->content;
+      echo "</div>";
    ?>
 </body>
 </html>

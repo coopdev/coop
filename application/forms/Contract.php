@@ -8,6 +8,10 @@ class Application_Form_Contract extends Zend_Form
         $this->setName('contract');
         //$this->setMethod('POST');
         //$this->setAction('/acl/public/user/create');
+        $semester = new Zend_Form_Element_Hidden('semester');
+        $curSem = new My_Semester();
+        $curSem = $curSem->getCurrentSem();
+        $semester->setValue($curSem);
         $fname = new Zend_Form_Element_Text('fname');
         $fname->setLabel('Firstname')
               ->setRequired(true)
@@ -33,7 +37,7 @@ class Application_Form_Contract extends Zend_Form
         //$disagree->setLabel('Disagree');
         
         $submit = new Zend_Form_Element_Submit('submit');
-        $this->addElements(array($fname, $lname, $agree, $submit));
+        $this->addElements(array($fname, $lname, $agree, $semester, $submit));
 
 
     }

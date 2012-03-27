@@ -50,6 +50,7 @@ class My_Acl_Coop extends Zend_Acl
       //$this->deny('none', 'auth', 'logout');
       
       $this->allow('guest','contract','new');
+      $this->allow('guest','contract','create');
       $this->allow('guest','error');
       
       $this->allow('user','index');

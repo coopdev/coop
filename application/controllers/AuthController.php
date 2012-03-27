@@ -40,7 +40,11 @@ class AuthController extends Zend_Controller_Action
         if(isset($_GET['ticket'])) {
             $this->adapter->setTicket($_GET['ticket']);
             //$this->adapter->setService($service);
-            $this->adapter->setQueryParams(array($this->adapter->getTicket(), $this->adapter->getService()));
+            $this->adapter->setQueryParams(
+                              array($this->adapter->getTicket(), 
+                                    $this->adapter->getService())
+                            );
+            
             //die(var_dump($this->adapter->getQueryParams()));
             //die($this->adapter->getTicket());
         }
@@ -56,8 +60,32 @@ class AuthController extends Zend_Controller_Action
             }
             if($this->auth->hasIdentity()) {
                
+               /*
+                * Check if the current semester is in the contracts table
+                * to see if a new contract needs to be filled out.
+                */
+               $link = My_DbLink::connect();
+               $curSemester = new My_Semester();
+               
+               $curSemester = $curSemester->getCurrentSem();
+               //die($curSemester);
+               $qryResult = $link->query("SELECT id FROM coop_contracts WHERE
+                                       semester = '$curSemester'");
+               $record = $qryResult->fetch();
+               $contractId = $record['id'];
+               
+               // If current semester isn't in contracts table, set all persons
+               // "agreedto_contract" fields to 0 and insert the current semester
+               // into the contracts table.
+               if (!$contractId) {
+                  //die('hi');
+                  $link->query("UPDATE coop_persons SET agreedto_contract = 0");
+                  $link->insert('coop_contracts', array('semester'=>$curSemester));
+               }
+                              
                $coopSess = new Zend_Session_Namespace('coop');
                $coopSess->uhinfo = $result->getMessages();
+               
                // Assign an initial role of "Guest" to CAS authenticated users.
                // Then overwrite later if they are in the database.
                $coopSess->role = 'guest';

@@ -15,9 +15,14 @@ class Application_Model_DbTable_Person extends Zend_Db_Table_Abstract
        return $row->toArray();
     }
     
-    public function addPerson($fname, $lname)
+    public function addPerson($fname, $lname, $roles_id, $uuid)
     {
-       $data = array('fname'=>$fname,'lname'=>$lname,'agreedto_contract'=>1);
+       $data = array('fname'=>$fname,
+                     'lname'=>$lname,
+                     'roles_id'=>$roles_id,
+                     'uuid'=>$uuid, 
+                     'agreedto_contract'=>1);
+       
        $this->insert($data);
     }
     

@@ -1,0 +1,10 @@
+#main {
+   position: relative;
+   text-align: center;
+}
+
+div.logout {
+   font-size: 100px;
+   position: absolute;
+   right: 20px;
+}

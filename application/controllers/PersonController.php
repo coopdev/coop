@@ -51,16 +51,84 @@ class PersonController extends Zend_Controller_Action
     
     public function testAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
        $link = My_DbLink::connect();
-       $data = array('fname'=>'chris','lname'=>'paul');
-       //$link->query('INSERT INTO coop_persons (fname,lname) values(?,?)',array('chris','paul'));
-       $link->insert('coop_persons',$data);
-       //die('insert');
-       $quoted = $link->quote(10);
-       //die("$quoted");
-       $link->insert('coop_persons',array('fname'=>'chris','lname'=>'paul'));
-       $id = $link->lastInsertId();
-       die($id);
+       //$statement = $link->query('SELECT * from coop_roles');
+       $select = $link->select();
+       
+       //$statement = $select->from('coop_persons_contracts');
+       $statement = $select->from('coop_roles');
+       $rows = $link->fetchAll($statement);
+       //die(var_dump($rows));
+                           
+       
+//       $paginator = Zend_Paginator::factory($statement);
+//       $currentPage = 1;
+//       $i = $this->getRequest()->getQuery('i');
+//       
+//       if (!empty($i)) {
+//          $currentPage = $i;
+//       }
+//       
+//       $paginator->setItemCountPerPage(1);
+//       $paginator->setPageRange(2);
+//       $paginator->setCurrentPageNumber($currentPage);
+//       
+//       
+//       $this->view->paginator = $paginator;
+       
+       $coopSess = new Zend_Session_Namespace('coop');
+       $form = new Application_Form_Contract();
+       $form->setAction('testform');
+       $this->view->form = $form;
+       
+       
+       
+       /* Testing performance for class instantiation and db queries. */
+//       for ($i = 0; $i < 10; $i++) {
+//          $link = My_DbLink::connect();
+//          $persons = $link->fetchAll('SELECT * FROM coop_persons');
+//          //$a = 'hi';
+//       }
+    }
+    
+    public function testformAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $form = new Application_Form_Contract();
+       
+       if ($this->getRequest()->isPost()) {
+          if ($form->isValid($_POST)) {
+             
+          } else {
+             $this->view->form = $form;
+          }
+       }
+    }
+    
+    /*
+     * This action is used for testing
+     */
+    public function semesterAction()
+    {
+//      $curDate = date('Y-m-d');
+//      $dateParts = explode('-',$curDate);
+//      $curYear = $dateParts[0];
+//      $curMonth = $dateParts[1];
+//      $curSem = '';
+//      
+//      if ($curMonth < 7) {
+//         $curSem = 'Spring';
+//      } else {
+//         $curSem = 'Fall';
+//      }
+//      
+//      $curSem .= ' ' . $curYear;
+//      die($curSem);
+       
+        $semester = new My_Semester();
+        $curSem = $semester->getCurrentSem();
+        die($curSem);
     }
 
 
