@@ -23,5 +23,7 @@
     *       table for users and contracts. If it is, then they get redirected
     *       to contract/update rather than contract/new.
     */
+
+    hello
    
 ?>
