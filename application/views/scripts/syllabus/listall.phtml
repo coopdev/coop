@@ -1,4 +1,16 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Syllabus</b> and script/action name <b>listall</b></p>
-</div>
+<?php
+   $courses = $this->courses;
+   echo "<table>";
+   foreach ($courses as $c) { 
+      $id = $c['id'];
+      $name = $c['name'];
+      $url = $this->url(array('action' => 'view'));
+      
+      echo "<tr>";
+      echo    "<a href='$url?id=$id'>$name</a>";
+      echo "</tr><br />";
+      
+   }
+   echo "</table>";
+?>
+<table>

@@ -18,8 +18,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $FrontController = Zend_Controller_Front::getInstance();
       
       $FrontController->registerPlugin(new My_Plugin_PreviousUrl());
-      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, 
-                                                 $coopSess->role));
+//      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, 
+//                                                 $coopSess->role));
       
       $baseUrl = $FrontController->setBaseUrl("/acl/public")->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
