@@ -1,12 +1,15 @@
 <?php
-   $course = $this->course;
-   $id = $course['id'];
-   $name = $course['name'];
-   $syllabus = $course['syllabus'];
-   echo "<h1>$name</h1>";
-   echo "<div>";
-   echo    "$syllabus";
-   echo "</div>";
-   $editUrl = $this->url(array('action'=>'edit'));
-   echo "<a href='$editUrl?id=$id'>Edit</a>";
+   if ($this->course) {
+      $course = $this->course;
+      $id = $course['id'];
+      $name = $course['name'];
+      $syllabus = $course['syllabus'];
+      echo "<h1>$name</h1>";
+      echo "<div>";
+      echo    "$syllabus";
+      echo "</div>";
+      $editUrl = $this->url(array('action'=>'edit'));
+      echo "<a href='$editUrl?id=$id'>Edit</a>";
+   }
+   
 ?>
