@@ -4,14 +4,10 @@ class AuthController extends Zend_Controller_Action
 {
 
     private $auth = null;
-
     private $config_cas = null;
-
     private $adapter = null;
-
     private $coopSess = null;
-    
-    
+   
     public function init()
     {
        $this->auth = Zend_Auth::getInstance();
@@ -28,31 +24,35 @@ class AuthController extends Zend_Controller_Action
 
     public function casAction()
     {
-        // action body
-        //$auth = Zend_Auth::getInstance();
-
-        //$config_cas = new Zend_Config_Ini(APPLICATION_PATH.'/configs/cas.ini', 'cas');
-        //$adapter = new My_Auth_Adapter_Cas($config_cas->params);
+        
         //$adapter->setService($service); // ASK ABOUT $service. IT WORKS FOR THE SAMPLE APP BUT IS UNDEFINED FOR THIS APP.
         $local_service = $this->config_cas->params->local_service;
         $this->adapter->setLoginUrl();
         
+        // If user authenticated through CAS, and CAS returned a ticket.
         if(isset($_GET['ticket'])) {
             $this->adapter->setTicket($_GET['ticket']);
             //$this->adapter->setService($service);
+            
+            // Sets the query params to send to the CAS server for ticket
+            // validation. The service ($this->adapter->getService()) is the
+            // url the CAS server will redirect to.
             $this->adapter->setQueryParams(
                               array($this->adapter->getTicket(), 
                                     $this->adapter->getService())
                             );
-            
-            //die(var_dump($this->adapter->getQueryParams()));
-            //die($this->adapter->getTicket());
+                   
         }
         
+        // If the user has a ticket but it hasn't been validated yet 
+        // (i.e right after the user authenticates through the CAS server but
+        // before the ticket is actually validated).
         if(!$this->auth->hasIdentity() && $this->adapter->hasTicket()) {
+           
+           // Validates ticket
             $result = $this->auth->authenticate($this->adapter);
-            //die(var_dump($result));
             
+            // If successfully validated ticket
             if(!$result->isValid()) {
                 //die($result->getMessages());
                 $this->view->messages = $result->getMessages();
@@ -67,8 +67,11 @@ class AuthController extends Zend_Controller_Action
                $link = My_DbLink::connect();
                $curSemester = new My_Semester();
                
+               // Get currest semester.
                $curSemester = $curSemester->getCurrentSem();
-               //die($curSemester);
+               
+               // Checks if there is an agreement form for current semester in
+               // coop_contracts table.
                $qryResult = $link->query("SELECT id FROM coop_contracts WHERE
                                        semester = '$curSemester'");
                $record = $qryResult->fetch();
@@ -85,6 +88,8 @@ class AuthController extends Zend_Controller_Action
                }
                               
                $coopSess = new Zend_Session_Namespace('coop');
+               
+               // Get messages returned from CAS server.
                $coopSess->uhinfo = $result->getMessages();
                
                // Assign an initial role of "Guest" to CAS authenticated users.
@@ -140,8 +145,10 @@ class AuthController extends Zend_Controller_Action
         } 
         $coopSess = new Zend_Session_Namespace('coop');
         
+        // If user is in database.
         if ($coopSess->inDb) {
-           
+           // Non student users or users who have submitted the agreement form
+           // can go straighth to home page.
            if ($coopSess->role != 'normal' || $coopSess->contractStatus == 'contractYes') {
               
               $this->_redirect($local_service."/pages/home");
@@ -150,6 +157,7 @@ class AuthController extends Zend_Controller_Action
               $this->_redirect($local_service."/contract/renew");
            }
         }
+        // Users not in database get sent to agreement form.
         $this->_redirect($local_service."/contract/new");
                 
     }

@@ -12,14 +12,22 @@ class SyllabusController extends Zend_Controller_Action
     {
         
     }
-
+    
+    /*
+     * Lists all course syllabuses. Only teachers should be able to view this, and
+     * maybe admins.
+     */
     public function listallAction()
     {
        $link = My_DbLink::connect();
        $courses = $link->fetchAll('SELECT * FROM coop_courses');
        $this->view->courses = $courses;
     }
-
+    
+    /* Displays an individual course syllabus. The syllabus displayed is based
+     * on a value passed through the url for non-students. For students, the
+     * syllabus is retrieved from the database based on the students course.
+     */
     public function viewAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
