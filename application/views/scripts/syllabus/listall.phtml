@@ -4,13 +4,19 @@
    foreach ($courses as $c) { 
       $id = $c['id'];
       $name = $c['name'];
-      $url = $this->url(array('action' => 'view'));
+      $viewUrl = $this->url(array('action' => 'view'));
+      $editUrl = $this->url(array('action' => 'edit'));
+      
+//      echo "<tr>";
+//      echo    "<a href='$url?id=$id'>$name</a>";
+//      echo "</tr><br />";
       
       echo "<tr>";
-      echo    "<a href='$url?id=$id'>$name</a>";
-      echo "</tr><br />";
+      echo    "<td>$name</td>";
+      echo    "<td> <a href='$viewUrl?id=$id'>View</a> </td>";
+      echo    "<td> <a href='$editUrl?id=$id'>Edit</a> </td>";
+      echo "</tr>";
       
    }
    echo "</table>";
 ?>
-<table>
