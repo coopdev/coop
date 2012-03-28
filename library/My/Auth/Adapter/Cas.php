@@ -663,6 +663,10 @@ class My_Auth_Adapter_Cas implements Zend_Auth_Adapter_Interface
         //echo "<pre>";
         //var_dump($body);
         //echo "</pre>";
+        //die(var_dump($body));
+        if (trim($body) == 'no') {
+           return;   
+        }
 
         list($status, $uid, $uhuuid, $name, $affil, $campus, $eduorg) = explode("\n", $body);
         if ($status == 'yes') {
