@@ -8,5 +8,5 @@ INSERT INTO coop_contracts (semester)
    VALUES ('Spring 2012');
 
 INSERT INTO coop_courses (name, syllabus) 
-   values ('HUM 193V', 'Syllabus for HUM 193V'),
+   VALUES ('HUM 193V', 'Syllabus for HUM 193V'),
           ('SSCI 193V', 'Syllabus for SSCI 193V');
