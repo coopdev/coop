@@ -93,7 +93,9 @@ class UserController extends Zend_Controller_Action
     }
     
     public function testformAction()
-    {
+    {  
+       
+       die(var_dump($date->getFormat()));
        $coopSess = new Zend_Session_Namespace('coop');
        $form = new Application_Form_Contract();
        
@@ -126,9 +128,53 @@ class UserController extends Zend_Controller_Action
 //      $curSem .= ' ' . $curYear;
 //      die($curSem);
        
+        $link = My_DbLink::connect();
         $semester = new My_Semester();
         $curSem = $semester->getCurrentSem();
-        die($curSem);
+        
+        $semPieces = explode(' ',$curSem);
+        $curYear = (int)$semPieces[1];
+        //$curYear = 2018;
+        
+        $semesters = $link->fetchRow('SELECT semester FROM coop_semesters');
+        
+        
+                
+        $firstSem = $semesters['semester'];
+        //die(var_dump($firstSem));
+        $firstSem = explode(' ', $firstSem);
+        $firstYear = (int)$firstSem[1];
+        
+        if ($curYear != $firstYear) {
+           $link->query('DELETE FROM coop_semesters');
+           $query = 'INSERT INTO coop_semesters (semester) VALUES (?)';
+           for ($i = $curYear; $i < $curYear+5; $i++) {
+              $link->query($query, "Spring $i");
+              $link->query($query, "Fall $i");
+           }
+        }
+        
+        //test. This can be used to just retrieve a specific range 
+        // (e.g. from current semester to 5 years ahead) while keeping more than
+        // that range in the database (possibly for checking histories of students).
+        // One problem is that the query is returning the results in order (all Fall
+        // semesters are returned before Spring semesters), so it mighth take 
+        // extra processing to get in proper order to be displayed in select box.
+        $yr2 = $curYear+1;
+        $yr3 = $curYear+2;
+        $yr4 = $curYear+3;
+        $yr5 = $curYear+4;
+        
+        $sems = $link->fetchAll("SELECT semester FROM coop_semesters 
+                WHERE semester LIKE '%$curYear%'
+                OR semester like '%$yr2%'
+                OR semester like '%$yr3%'
+                OR semester like '%$yr4%'
+                OR semester like '%$yr5%'");
+        die(var_dump($sems));
+        //end test
+        //die(var_dump($firstYear));
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
 

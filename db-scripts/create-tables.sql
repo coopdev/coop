@@ -46,3 +46,9 @@ CREATE TABLE coop_courses(
    PRIMARY KEY(id)
 );
 
+DROP TABLE IF EXISTS coop_semesters;
+CREATE TABLE coop_semesters(
+   id INT NOT NULL AUTO_INCREMENT,
+   semester VARCHAR(20) UNIQUE,
+   PRIMARY KEY(id)
+);

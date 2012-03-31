@@ -3,7 +3,9 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
    protected function _initAutoload()
-   {
+   {  
+      // Allows me to use contents of files within the library/My/
+      // directory without having to include() the files.
       Zend_Loader_Autoloader::getInstance()->registerNamespace('My_');  
       
       /* Initialize user's role to 'none' */
@@ -21,6 +23,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 //      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, 
 //                                                 $coopSess->role));
       
+      // Set the base URL for the application in a session.
       $baseUrl = $FrontController->setBaseUrl("/acl/public")->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
                     

@@ -28,7 +28,7 @@ class ContractController extends Zend_Controller_Action
               
               // Form automatically gets repopulated if invalid so don't  need
               // below line to populate the fom. 
-              //$form->populate($data);
+              $form->populate($data);
            } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
               $this->view->message = 'Must agree before continuing';
               $form->populate($data);
@@ -97,7 +97,7 @@ class ContractController extends Zend_Controller_Action
           //$data['fname'] = addslashes($data['fname']);
           //die(var_dump($data));
           if ($form->isValid($data)) {
-             
+             die('hi');
              // If user did not click agree
              if ($data['agreement'] != 'agree') {
                 $this->_helper->redirector($coopSess->prevAction,null,null,$data);
