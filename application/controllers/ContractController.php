@@ -19,22 +19,8 @@ class ContractController extends Zend_Controller_Action
         $form = new Application_Form_Contract();
         $form->setAction($coopSess->baseUrl.'/contract/create');
         $this->view->form = $form;
-        if ($this->getRequest()->isGet()) {
-           $data = $this->getRequest()->getParams();
-           if ($this->getRequest()->getParam('invalid')) {
-              
-              $data = $this->getRequest()->getParams();
-              $form->isValid($data);
-              
-              // Form automatically gets repopulated if invalid so don't  need
-              // below line to populate the fom. 
-              $form->populate($data);
-           } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
-              $this->view->message = 'Must agree before continuing';
-              $form->populate($data);
-           }
-        }
-
+        
+        $this->handleInvalidForm($form);
     }
 
     public function renewAction()
@@ -56,70 +42,44 @@ class ContractController extends Zend_Controller_Action
         $form->populate($result);
         $this->view->form = $form;
         
-        if ($this->getRequest()->isGet()) {
-           $data = $this->getRequest()->getParams();
-           if ($this->getRequest()->getParam('invalid')) {
-              
-              $data = $this->getRequest()->getParams();
-              $form->isValid($data);
-              
-             // Form automatically gets repopulated if invalid so don't need
-             // below line to populate the form. 
-             //$form->populate($data);
-           } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
-              $this->view->message = 'Must agree before continuing';
-              $form->populate($data);
-           }
-        }
+        $this->handleInvalidForm($form);
+           
               
     }
     
     public function createAction()
     {
-//       if ($this->_request->isGet()) {
-//          $data = $this->getRequest()->getParams();
-//          
-//          $fname = $data['fname'];
-//          $lname = $data['lname'];
-//          //die(var_dump($fname,$lname));
-//          //$agree = $data['agreement'];
-//          $user = new Application_Model_DbTable_User();
-//          $user->addUser($fname,$lname);
-//          
-//          $this->_helper->redirector('home','pages');
-//       }
        
        $form = new Application_Form_Contract();
        $coopSess = new Zend_Session_Namespace('coop');
        if ($this->getRequest()->isPost()) {
-          //die('helo');
+          
           $data = $this->getRequest()->getPost();
-          //$data['fname'] = addslashes($data['fname']);
-          //die(var_dump($data));
+                              
           if ($form->isValid($data)) {
              die('hi');
              // If user did not click agree
              if ($data['agreement'] != 'agree') {
-                $this->_helper->redirector($coopSess->prevAction,null,null,$data);
+                // Setting $coopSess->formData indicates the form is invalid
+                // or the user clicked disagree.
+                $coopSess->formData = $data;
+                $this->_helper->redirector($coopSess->prevAction);
              }
              
              $user = new Application_Model_DbTable_User();
              $link = My_DbLink::connect();
-             //$link = $link->getLink();
+             
              $fname = $data['fname'];
              $lname = $data['lname'];
              $sem = $data['semester'];
-             //die(var_dump($coopSess->inDb));
-             
+                          
              /*
               * IF POST CAME FROM A NEW CONTRACT
               */
              if ($coopSess->prevAction == 'new' && $coopSess->inDb == false) {
-                                         
-               //die('hi');
-               // Must also add users uuid and find another way to assign a role
-               // to an inserted user. Right now, any one filling out the new
-               // contract gets a role of 'normal'.
+                             
+               // Use My_DbLink::connect to insert user instead of below method.
+               // Also must find a better way to assign the user's role.
                $user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
                $coopSess->contractStatus = 'contractYes';
                $coopSess->role = 'normal';
@@ -130,6 +90,8 @@ class ContractController extends Zend_Controller_Action
                 * IF SOMEONE IS RENEWING CONTRACT
                 */                       
              } else if ($coopSess->prevAction == 'renew' && $coopSess->inDb == true) {
+                
+                // Use My_DbLink::connect to update user instead of below method.
                 $user->update(array('fname'=>$fname,
                                       'lname'=>$lname,
                                       'agreedto_contract'=>1),
@@ -144,12 +106,40 @@ class ContractController extends Zend_Controller_Action
              //die($id);
              $this->_helper->redirector('home','pages');
           } else {
-            
+                        
              $data['invalid'] = true;
-             $this->_helper->redirector($coopSess->prevAction,null,null,$data);
+             $coopSess->formData = $data;
+             $this->_helper->redirector($coopSess->prevAction);
+             
           }
        }
        
+    }
+    
+    
+    private function handleInvalidForm($form)
+    {  
+       
+       $coopSess = new Zend_Session_Namespace('coop');
+       
+       // If form was invalid or user clicked disagree, $coopSess->formData
+       // will be set.
+       if (isset($coopSess->formData)) {
+           //die('hi');
+           $data = $coopSess->formData;
+           if (isset($data['invalid'])) {
+              
+              $form->isValid($data);
+              
+              // If the above line is true, it seems to populate the form
+              // and provide the errors automatically .
+                                          
+           } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
+              $this->view->message = 'Must agree before continuing';
+           }
+           //$form->populate($data);
+           unset($coopSess->formData);
+        }    
     }
 
 
