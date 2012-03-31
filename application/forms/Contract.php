@@ -14,13 +14,36 @@ class Application_Form_Contract extends Zend_Form
         $semester->setValue($curSem);
         
         $elems = new My_FormElement();
-        $fname = $elems->getNameTbox('fname','First name:');
-        $lname = $elems->getNameTbox('lname','Last name:');
-        $sdate = $elems->getStartDateTbox();
+        $fname = $elems->getCommonTbox('fname','First name:');
+        $lname = $elems->getCommonTbox('lname','Last name:');
         $uuid = $elems->getUuidTbox();
+        $employer = $elems->getCommonTbox('employer','Employer:');
+        $jobTitle = $elems->getCommonTbox('jobTitle','Job title:');
+        $department = $elems->getCommonTbox('department', 'Department:');
+        $sdate = $elems->getDateTbox('sdate','Start date');
+        $edate = $elems->getDateTbox('edate','End date');
+        $payRate = $elems->getPayRateTbox();
+        $addr = $elems->getCommonTbox('jobAddress', 'Address/City/ZIP:');
+        $grad = $elems->getCommonTbox('gradDate', 'Grad date:');
+        $major = $elems->getMajorSelect();
         $semInMaj = $elems->getSemesterInMajorRadio();
-        $this->addElements(array($fname, $lname, $uuid, $semInMaj, 
-                               $sdate, $agree, $semester, $submit));
+        $phone = $elems->getCommonTbox('phone', 'Telephone:');
+        $email = $elems->getEmailTbox('email','E-mail:');
+        $coordName = $elems->getCommonTbox('coordName', 'Co-op coordinator\'s name:');
+        $coordPhone = $elems->getCommonTbox('coordPhone', 'Co-op coordinator\'s telephone:');
+ 
+        $superTitle = $elems->getCommonTbox('supervTitle', 'Supervisor\'s title:');
+        $superName = $elems->getCommonTbox('supervName', 'Supervisor\'s name:');
+        $superEmail = $elems->getEmailTbox('supervEmail', 'Supervisor\'s e-mail:');
+        $agree = $elems->getAgreementRadio();
+        $submit = $elems->getSubmit();
+               
+        $this->addElements(array($fname, $lname, $uuid, $employer,  
+                                 $jobTitle, $department, $sdate, $edate, $payRate, 
+                                 $addr, $grad, $major, $semInMaj, $phone, $email,
+                                 $coordName, $coordPhone, $superTitle, $superName,
+                                 $superEmail, $agree, $semester, $submit,
+                                 ));
 
 
     }
