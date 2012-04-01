@@ -93,19 +93,19 @@ class UserController extends Zend_Controller_Action
     }
     
     public function testformAction()
-    {  
-       
-       die(var_dump($date->getFormat()));
+    {                
        $coopSess = new Zend_Session_Namespace('coop');
        $form = new Application_Form_Contract();
+       $testForm = new Application_Form_Test();
+       $this->view->form = $form;
        
-       if ($this->getRequest()->isPost()) {
-          if ($form->isValid($_POST)) {
-             
-          } else {
-             $this->view->form = $form;
-          }
-       }
+//       if ($this->getRequest()->isPost()) {
+//          if ($form->isValid($_POST)) {
+//             
+//          } else {
+//             $this->view->form = $testForm;
+//          }
+//       }
     }
     
     /*

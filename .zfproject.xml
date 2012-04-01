@@ -42,6 +42,8 @@
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
+        <formFile formName="Test"/>
+        <formFile formName="StudentCommon"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
