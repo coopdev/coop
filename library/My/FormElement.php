@@ -50,12 +50,16 @@ class My_FormElement
     */
    public function getEnrollDateSelect()
    {  
-      // get semesters from database to be displayed as options //
+      $sems = $this->getSemRange();
       
       $elem = new Zend_Form_Element_Select('enrollDate');
       
       $elem->setRequired(true)
            ->setLabel('When are you planning to enroll in co-op (Semester/Year)?');
+      
+      foreach ($sems as $sem) {
+         $elem->addMultiOptions(array($sem['id'] => $sem['semester']));
+      }
            
       return $elem;
    }
@@ -64,11 +68,11 @@ class My_FormElement
    public function getClassChoiceSelect()
    {  
       // get classes from database to be displayed as options //
-      
+                       
       $elem = new Zend_Form_Element_Select('classChoice');
       $elem->setRequired(true)
            ->setLabel('Which co-op class are you planning to enroll in?');
-           
+                      
       return $elem;
    }
    
@@ -194,6 +198,54 @@ class My_FormElement
       $elem = new Zend_Form_Element_Submit('submit');
       return $elem;
    }
+   
+   
+   /** HELPERS **/
+   
+   private function getSemRange()
+   {
+      $semester = new My_Semester();
+      
+      // Get current semester.
+      $curSem = $semester->getCurrentSem();
+      //$curSem = "Fall 2012";
+
+      $semPieces = explode(' ',$curSem);
+      
+      // Current year.
+      $curYear = (int)$semPieces[1];
+      $yr2 = $curYear+1;
+      $yr3 = $curYear+2;
+      $yr4 = $curYear+3;
+      $yr5 = $curYear+4;
+      
+      // Get semesters from database starting with the current semester, until
+      // five years ahead.
+      $qry = "SELECT id, semester FROM coop_semesters
+               WHERE semester ";
+      
+      // If semester is Fall, then start the choices displayed in the drop down 
+      // at Fall since Spring will already have passed for the year.
+      if ($semPieces[0] == 'Fall') {
+         $qry .= "= '$curSem' ";
+      } else {
+         $qry .= "LIKE '%$curYear%' ";
+      }
+      //die($qry);
+            
+      $qry .= "OR semester like '%$yr2%'
+               OR semester like '%$yr3%' 
+               OR semester like '%$yr4%' 
+               OR semester like '%$yr5%' 
+               ORDER BY SUBSTRING_INDEX(semester,' ', -1), 
+               SUBSTRING_INDEX(semester,' ', 1) DESC";
+     
+      $link = My_DbLink::connect();
+      $sems = $link->fetchAll($qry);
+      
+      return $sems;
+   }
+    
 }
 
 ?>

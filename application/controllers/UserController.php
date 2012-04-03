@@ -170,7 +170,9 @@ class UserController extends Zend_Controller_Action
                 OR semester like '%$yr2%'
                 OR semester like '%$yr3%'
                 OR semester like '%$yr4%'
-                OR semester like '%$yr5%'");
+                OR semester like '%$yr5%'
+                ORDER BY SUBSTRING_INDEX(semester,' ',-1),
+                SUBSTRING_INDEX(semester,' ', 1) DESC");
         die(var_dump($sems));
         //end test
         //die(var_dump($firstYear));
