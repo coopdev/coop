@@ -46,7 +46,7 @@ class Application_Form_StudentCommon extends Zend_Form
        $this->edate = $elems->getDateTbox('edate','End date');
        $this->payRate = $elems->getPayRateTbox();
        $this->address = $elems->getCommonTbox('jobAddress', 'Address/City/ZIP:');
-       $this->grad = $elems->getCommonTbox('gradDate', 'Grad date:');
+       $this->grad = $elems->getDateTbox('gradDate', 'Grad date:');
        $this->major = $elems->getMajorSelect();
        $this->semInMaj = $elems->getSemesterInMajorRadio();
        $this->phone = $elems->getCommonTbox('phone', 'Telephone:');

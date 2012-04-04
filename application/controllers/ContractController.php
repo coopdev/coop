@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Controller for the agreement forms students must fill out
+ */
 class ContractController extends Zend_Controller_Action
 {
 
@@ -18,6 +21,7 @@ class ContractController extends Zend_Controller_Action
         $coopSess = new Zend_Session_Namespace('coop');
         $form = new Application_Form_Contract();
         $form->setAction($coopSess->baseUrl.'/contract/create');
+        
         $this->view->form = $form;
         
         $this->handleInvalidForm($form);
@@ -29,7 +33,7 @@ class ContractController extends Zend_Controller_Action
         $uuid = $coopSess->uhinfo['uhuuid'];
         
         $link = My_DbLink::connect();
-        //$link = $link->getLink();
+        
         $sel = $link->select();
         
         $qry = $sel->from('coop_users',array('fname','lname'))
@@ -57,7 +61,7 @@ class ContractController extends Zend_Controller_Action
           $data = $this->getRequest()->getPost();
                               
           if ($form->isValid($data)) {
-             die('hi');
+             
              // If user did not click agree
              if ($data['agreement'] != 'agree') {
                 // Setting $coopSess->formData indicates the form is invalid
@@ -69,8 +73,10 @@ class ContractController extends Zend_Controller_Action
              $user = new Application_Model_DbTable_User();
              $link = My_DbLink::connect();
              
+             // Set values
              $fname = $data['fname'];
              $lname = $data['lname'];
+             $uuid = $coopSess->uhinfo['uhuuid'];
              $sem = $data['semester'];
                           
              /*
@@ -78,9 +84,12 @@ class ContractController extends Zend_Controller_Action
               */
              if ($coopSess->prevAction == 'new' && $coopSess->inDb == false) {
                              
-               // Use My_DbLink::connect to insert user instead of below method.
-               // Also must find a better way to assign the user's role.
-               $user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
+               // Find a better way to assign the user's role.
+               // When inserting a date, make sure to use the STR_TO_DATE mysql
+               // function to convert to the proper format.
+               $link->query("INSERT INTO coop_users (fname,lname,roles_id,uuid,
+                             agreedto_contract) VALUES ($fname,$lname,4,$uuid)");
+               //$user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
                $coopSess->contractStatus = 'contractYes';
                $coopSess->role = 'normal';
                $coopSess->inDb = true;
@@ -90,19 +99,20 @@ class ContractController extends Zend_Controller_Action
                 * IF SOMEONE IS RENEWING CONTRACT
                 */                       
              } else if ($coopSess->prevAction == 'renew' && $coopSess->inDb == true) {
-                
-                // Use My_DbLink::connect to update user instead of below method.
+                                
                 $user->update(array('fname'=>$fname,
-                                      'lname'=>$lname,
-                                      'agreedto_contract'=>1),
-                                      'uuid = '.$coopSess->uhinfo['uhuuid']);
+                                    'lname'=>$lname,
+                                    'agreedto_contract'=>1),
+                                    "uuid = $uuid");
                 $coopSess->contractStatus = 'contractYes';
              }
-             // Get id of user just inserted
-             $result = $link->query('SELECT id FROM coop_users WHERE uuid = '
-                        .$coopSess->uhinfo['uhuuid']);
-             $result = $result->fetch();
-             $id = $result['id'];
+             // Get id of user just inserted or updated
+             $id = $link->fetchOne("SELECT id FROM coop_users 
+                                    WHERE uuid = $uuid");
+             
+             // Insert contract name into coop_contracts and insert IDs into
+             // the join table.
+             
              //die($id);
              $this->_helper->redirector('home','pages');
           } else {
@@ -132,7 +142,7 @@ class ContractController extends Zend_Controller_Action
               $form->isValid($data);
               
               // If the above line is true, it seems to populate the form
-              // and provide the errors automatically .
+              // and provide the errors automatically.
                                           
            } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
               $this->view->message = 'Must agree before continuing';

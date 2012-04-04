@@ -8,7 +8,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       // directory without having to include() the files.
       Zend_Loader_Autoloader::getInstance()->registerNamespace('My_');  
       
-      /* Initialize user's role to 'none' */
+      // Initialize user's role to 'none' 
       Zend_Session::start();
       $coopSess = new Zend_Session_Namespace('coop');
       if (!isset($coopSess->role)) {
@@ -19,12 +19,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $auth = Zend_Auth::getInstance();
       $FrontController = Zend_Controller_Front::getInstance();
       
+      // Register plugin to get previous URLs
       $FrontController->registerPlugin(new My_Plugin_PreviousUrl());
+      
+      // Register ACL plugin
 //      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, 
 //                                                 $coopSess->role));
       
       // Set the base URL for the application in a session.
       $baseUrl = $FrontController->setBaseUrl("/coop/public")->getBaseUrl();
+      //$baseUrl = $FrontController->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
                     
    }

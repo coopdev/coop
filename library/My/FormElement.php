@@ -149,10 +149,10 @@ class My_FormElement
    public function getDateTbox($name,$label)
    {  
       $dateValidator = new Zend_Validate_Date();
-      $dateValidator->setFormat('MM/dd/yyyy');
+      $dateValidator->setFormat('MM-dd-yyyy');
       
       $elem = new Zend_Form_Element_Text($name);
-      $elem->setLabel("$label (mm/dd/yyyy):")
+      $elem->setLabel("$label (mm-dd-yyyy):")
            ->setRequired('true')
            ->addValidator($dateValidator)
            ->addFilter('StripTags')
