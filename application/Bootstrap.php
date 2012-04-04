@@ -24,7 +24,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 //                                                 $coopSess->role));
       
       // Set the base URL for the application in a session.
-      $baseUrl = $FrontController->setBaseUrl("/acl/public")->getBaseUrl();
+      $baseUrl = $FrontController->setBaseUrl("/coop/public")->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
                     
    }

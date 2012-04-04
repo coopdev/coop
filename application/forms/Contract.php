@@ -41,7 +41,7 @@ class Application_Form_Contract extends Application_Form_StudentCommon
 //    {
 //        $this->setName('contract');
 //        //$this->setMethod('POST');
-//        //$this->setAction('/acl/public/user/create');
+//        //$this->setAction('/coop/public/user/create');
 //        $semester = new Zend_Form_Element_Hidden('semester');
 //        $curSem = new My_Semester();
 //        $curSem = $curSem->getCurrentSem();
