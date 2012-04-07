@@ -1,10 +1,76 @@
 #main {
-   position: relative;
-   text-align: center;
+   
+   /* position: relative; */
+   /* height: 50px; */
+   /* text-align: center; 
+   border-width: 1px;
+   border-color: #0398CA;
+   border-style: solid;
+    */
+   /* width: 1000px; */
+   /*text-align:center;*/
 }
 
-div.logout {
-   font-size: 100px;
-   position: absolute;
-   right: 20px;
+#innerMain {
+   /*position:relative;*/
+   width:75%;
+   
+   background-color:#FFFFFF;
+   margin-top: 50px;
+   margin-bottom: 50px;
+   margin-left: auto;
+   margin-right: auto;
+   padding: 0px;
+   border: thin solid #000000;
+   /*overflow: hidden;*/
+   /* border-style: solid; */
+   
 }
+
+#header {
+   padding: 15px;
+   margin: 0px;
+   text-align: center;
+   border-style: solid;
+   border-width: 1px;
+}
+
+#mainNav {
+   width: 25%;
+   padding: 10px;
+   margin-top: 1px;
+   float: right;
+   border: thin solid #000000;
+}
+
+#content {
+   margin-right: 30%;
+   /*float:left;*/
+   
+   margin-top: 1px;
+   padding: 10px;
+   border: thin solid #000000;
+   
+   
+}
+
+#footer {
+   padding: 15px;
+   margin: 0px;
+   margin-top: 1px;
+   border-top: thin solid #000000;
+   clear:both;
+}
+
+#test {
+   font-style:italic;
+   
+}
+
+a.logout {
+   
+   position: absolute;
+   right: 0px;
+   top: 0px;
+}
+

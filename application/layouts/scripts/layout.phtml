@@ -11,21 +11,81 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <?php 
       echo $this->headTitle();
+      $coopSess = new Zend_Session_Namespace('coop');
       //echo $this->headTitle($this->pageTitle);
-      echo $this->headLink()->appendStylesheet('/css/styles.css'); 
+      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/styles.css'); 
+      echo $this->headLink();
    ?>
 </head>
 <body>
    <?php
       echo "<div id=main>";
-      echo "<h2>$this->pageTitle</h4>";
-      if ($coopSess->role != 'none') {
-         echo "<div class='logout'>";
-         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
-         echo "</div>";
-      }
-      echo $this->layout()->content;
+      
+      echo "<div id=innerMain>";
+      
+      //if ($coopSess->role != 'none') {
+         
+         //echo "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+         
+         
+      //}
+      // Start Header.
+      echo "<div id='header'>";
+      echo    "<h2> Header </h2>";
+      
       echo "</div>";
+      // End Header.
+      
+      // Start main nav
+      echo "<div id='mainNav'>";
+      echo    "<a href='".$this->url(array('controller'=>'syllabus','action'=>'listall'))."'> Course syllabuses </a> <br />";
+      echo    "<a href='".$this->url(array('controller'=>'contract','action'=>'new'))."'> Cooperative Education Agreement Form </a>";
+//      echo "hihihi";
+//      echo "hi<br/>";
+//      echo "hihihi hihih ihihihihihihihi hihihihihihihihih ihihihihihihihihihih ihihihihi";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+      echo "</div>";
+      // End main nav
+      
+      // Start content
+      echo "<div id=content>";
+      echo "<h2>$this->pageTitle</h2>";
+           
+      
+      echo $this->layout()->content;
+//      echo "<h2>HHHHHHHHHHHHHHHHHHHHHHHHHH</h2><br />";
+//      echo "<br /><h2>HHHHHHHHHHHHH</h2>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+//      echo "hi<br/>";
+      
+      
+      echo "</div>";
+      // End content
+      
+      echo "<div id='footer'>";
+      echo "<h1> Footer </h1>";
+      echo "<div>";
+      
+      echo "</div>";
+      // End inner main div
+      
+      echo "</div>";
+      // End main div
    ?>
 </body>
 </html>

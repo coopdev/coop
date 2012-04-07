@@ -43,6 +43,18 @@ CREATE TABLE coop_users(
    FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
 );
 
+DROP TABLE IF EXISTS coop_coordinators;
+CREATE TABLE coop_coordinators(
+   id INT NOT NULL AUTO_INCREMENT,
+   fname TEXT,
+   lname TEXT,
+   uuid CHAR(8) UNIQUE,
+   username TEXT,
+   roles_id INT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
+);
+   
 DROP TABLE IF EXISTS coop_contracts;
 CREATE TABLE coop_contracts(
    id INT NOT NULL AUTO_INCREMENT,
