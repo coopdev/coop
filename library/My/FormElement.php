@@ -67,11 +67,14 @@ class My_FormElement
       
    public function getClassChoiceSelect()
    {  
-      // get classes from database to be displayed as options //
-                       
+      $classes = $this->getClasses();
+                             
       $elem = new Zend_Form_Element_Select('classChoice');
       $elem->setRequired(true)
            ->setLabel('Which co-op class are you planning to enroll in?');
+      foreach ($classes as $c) {
+         $elem->addMultiOptions(array($c['id'] => $c['name']));
+      }
                       
       return $elem;
    }
@@ -244,6 +247,14 @@ class My_FormElement
       $sems = $link->fetchAll($qry);
       
       return $sems;
+   }
+   
+   private function getClasses()
+   {
+      $link = My_DbLink::connect();
+      
+      $classes = $link->fetchAll("SELECT id, name FROM coop_classes");
+      return $classes;
    }
     
 }

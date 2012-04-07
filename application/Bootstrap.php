@@ -9,7 +9,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       Zend_Loader_Autoloader::getInstance()->registerNamespace('My_');  
       
       // Initialize user's role to 'none' 
-      Zend_Session::start();
+      //Zend_Session::start();
       $coopSess = new Zend_Session_Namespace('coop');
       if (!isset($coopSess->role)) {
           $coopSess->role = 'none';

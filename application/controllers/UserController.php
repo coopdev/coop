@@ -12,35 +12,52 @@ class UserController extends Zend_Controller_Action
     {
         // action body
     }
+    
+    public function newAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       
+       $form = new Application_Form_StudentInfo();
+       $form->setAction($coopSess->baseUrl . '/user/create');
+       
+       $this->view->form = $form;
+       
+       $formHandler = new My_InvalidFormHandler();
+       
+       $formHandler->handle($form);
+       $formHandler->chkAgreement($form, $this->view);
+
+    }
 
     public function createAction()
     {
        /*
         * Requests covered on page 74 of zend book
         */
-       //$form = new Application_Form_Contract(); 
-       //if ($this->getRequest()->isPost()) {
-       //    $formData = $this->getRequest()->getPost();
-       //    if ($form->isValid($formData)) {
-       //       die('valid');
-       //    } else {
-       //       $form->populate($formData);
-       //    }
-       //}
-       //$data = $this->_request->getQuery('fname');
-       
-       if ($this->_request->isGet()) {
-          $data = $this->getRequest()->getParams();
+              
+       if ($this->_request->isPost()) {
+          $coopSess = new Zend_Session_Namespace('coop');
+          $form = new Application_Form_StudentInfo();
+          $data = $_POST;
           
-          $fname = $data['fname'];
-          $lname = $data['lname'];
-          //die(var_dump($fname,$lname));
-          //$agree = $data['agreement'];
-          $user = new Application_Model_DbTable_User();
-          $user->addUser($fname,$lname);
-          
+          if ($form->isValid($data)) {
+             if ($data['agreement'] == 'disagree') {
+                //die('hi');
+                $coopSess->invalidData = $data;
+                $this->_helper->redirector($coopSess->prevAction);
+             }
+             $fname = $data['fname'];
+             $lname = $data['lname'];
+             
+             // insert data to database //
+          } else {
+             $data['invalid'] = true;
+             $coopSess->invalidData = $data;
+             $this->_helper->redirector($coopSess->prevAction);
+          }
+               
           $this->_helper->redirector('home','pages');
-       }
+       } 
        
     }
 
@@ -49,6 +66,7 @@ class UserController extends Zend_Controller_Action
         // action body
     }
     
+        
     public function testAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');

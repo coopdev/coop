@@ -24,7 +24,10 @@ class ContractController extends Zend_Controller_Action
         
         $this->view->form = $form;
         
-        $this->handleInvalidForm($form);
+        $formHandler = new My_InvalidFormHandler();
+        $formHandler->handle($form);
+        $formHandler->chkAgreement($form, $this->view);
+        //$this->handleInvalidForm($form);
     }
 
     public function renewAction()
@@ -46,7 +49,10 @@ class ContractController extends Zend_Controller_Action
         $form->populate($result);
         $this->view->form = $form;
         
-        $this->handleInvalidForm($form);
+        $formHandler = new My_InvalidFormHandler();
+        $formHandler->handle($form);
+        $formHandler->chkAgreement($form, $this->view);
+        //$this->handleInvalidForm($form);
            
               
     }
@@ -64,9 +70,9 @@ class ContractController extends Zend_Controller_Action
              
              // If user did not click agree
              if ($data['agreement'] != 'agree') {
-                // Setting $coopSess->formData indicates the form is invalid
+                // Setting $coopSess->invalidData indicates the form is invalid
                 // or the user clicked disagree.
-                $coopSess->formData = $data;
+                $coopSess->invalidData = $data;
                 $this->_helper->redirector($coopSess->prevAction);
              }
              
@@ -118,7 +124,7 @@ class ContractController extends Zend_Controller_Action
           } else {
                         
              $data['invalid'] = true;
-             $coopSess->formData = $data;
+             $coopSess->invalidData = $data;
              $this->_helper->redirector($coopSess->prevAction);
              
           }
@@ -132,11 +138,11 @@ class ContractController extends Zend_Controller_Action
        
        $coopSess = new Zend_Session_Namespace('coop');
        
-       // If form was invalid or user clicked disagree, $coopSess->formData
+       // If form was invalid or user clicked disagree, $coopSess->invalidData
        // will be set.
-       if (isset($coopSess->formData)) {
+       if (isset($coopSess->invalidData)) {
            //die('hi');
-           $data = $coopSess->formData;
+           $data = $coopSess->invalidData;
            if (isset($data['invalid'])) {
               
               $form->isValid($data);
@@ -145,10 +151,11 @@ class ContractController extends Zend_Controller_Action
               // and provide the errors automatically.
                                           
            } else if (isset($data['agreement']) && $data['agreement'] == 'disagree') {
+              $form->populate($data);
               $this->view->message = 'Must agree before continuing';
            }
            //$form->populate($data);
-           unset($coopSess->formData);
+           unset($coopSess->invalidData);
         }    
     }
 

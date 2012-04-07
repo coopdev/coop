@@ -14,7 +14,7 @@ CREATE TABLE coop_users(
    address TEXT,
    semesters_id INT,
    wanted_job TEXT,
-   courses_id INT,
+   classes_id INT,
    grad_date DATE,
    majors_id INT,
    semester_in_major INT,
@@ -38,7 +38,7 @@ CREATE TABLE coop_users(
    agreedto_contract BOOLEAN DEFAULT 0,
    PRIMARY KEY(id),
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id),
-   FOREIGN KEY(courses_id) REFERENCES coop_courses(id),
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id),
    FOREIGN KEY(majors_id) REFERENCES coop_majors(id),
    FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
 );
@@ -74,8 +74,8 @@ CREATE TABLE coop_users_contracts(
    FOREIGN KEY(contracts_id) REFERENCES coop_contracts(id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS coop_courses;
-CREATE TABLE coop_courses(
+DROP TABLE IF EXISTS coop_classes;
+CREATE TABLE coop_classes(
    id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR(20) UNIQUE,
    syllabus TEXT,

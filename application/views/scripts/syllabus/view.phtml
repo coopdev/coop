@@ -1,9 +1,10 @@
 <?php
-   if ($this->course) {
-      $course = $this->course;
-      $id = $course['id'];
-      $name = $course['name'];
-      $syllabus = $course['syllabus'];
+   if ($this->class) {
+      $class = $this->class;
+      $id = $class['id'];
+      $name = $class['name'];
+      $syllabus = $class['syllabus'];
+      
       echo "<h1>$name</h1>";
       echo "<div>";
       echo    "$syllabus";

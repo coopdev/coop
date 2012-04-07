@@ -44,6 +44,7 @@
         <formFile formName="Contract"/>
         <formFile formName="Test"/>
         <formFile formName="StudentCommon"/>
+        <formFile formName="StudentInfo"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

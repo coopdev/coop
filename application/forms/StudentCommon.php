@@ -16,7 +16,8 @@ class Application_Form_StudentCommon extends Zend_Form
     protected $sdate = null;
     protected $edate = null;
     protected $payRate = null;
-    protected $address = null;
+    protected $homeAddr = null;
+    protected $jobAddr = null;
     protected $grad = null;
     protected $major = null;
     protected $semInMaj= null;
@@ -45,7 +46,8 @@ class Application_Form_StudentCommon extends Zend_Form
        $this->sdate = $elems->getDateTbox('sdate','Start date');
        $this->edate = $elems->getDateTbox('edate','End date');
        $this->payRate = $elems->getPayRateTbox();
-       $this->address = $elems->getCommonTbox('jobAddress', 'Address/City/ZIP:');
+       $this->homeAddr = $elems->getCommonTbox('homeAddr', 'Address/City/ZIP:');
+       $this->jobAddr = $elems->getCommonTbox('jobAddress', 'Address/City/ZIP:');
        $this->grad = $elems->getDateTbox('gradDate', 'Grad date:');
        $this->major = $elems->getMajorSelect();
        $this->semInMaj = $elems->getSemesterInMajorRadio();

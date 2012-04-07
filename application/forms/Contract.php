@@ -28,11 +28,11 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          // FORM. IT IS JUST BEING USED TO TEST THE SEMESTER RANGE.
          $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
                                  $this->jobTitle, $this->department, $this->sdate, 
-                                 $this->edate, $this->payRate, $this->address,
+                                 $this->edate, $this->payRate, $this->homeAddr,
                                  $this->grad, $this->major, $this->semInMaj, 
                                  $this->phone, $this->email, $coordName, $coordPhone, 
                                  $this->superName, $this->superTitle, $this->superEmail,
-                                 $this->superPhone, $enrollDate, $this->agree, $semester, $this->submit));
+                                 $this->superPhone, $this->agree, $semester, $this->submit));
       }
    
    
