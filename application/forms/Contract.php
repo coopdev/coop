@@ -20,19 +20,20 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          $curSem = $curSem->getCurrentSem();
          $semester->setValue($curSem);
          
-         $coordName = $elems->getCommonTbox('coordName', 'Co-op coordinator\'s name:');
-         $coordPhone = $elems->getCommonTbox('coordPhone', 'Co-op coordinator\'s telephone:');
-         $enrollDate = $elems->getEnrollDateSelect();
+         $coordName = $elems->getCommonTbox('coord_name', 'Co-op coordinator\'s name:');
+         $coordPhone = $elems->getCommonTbox('coord_phone', 'Co-op coordinator\'s telephone:');
+         
                   
-         // Add elements. TAKE OUT $enrollDate BECAUSE IT DOESN'T BELONG IN THIS
-         // FORM. IT IS JUST BEING USED TO TEST THE SEMESTER RANGE.
+         // Add elements. 
          $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
-                                 $this->jobTitle, $this->department, $this->sdate, 
-                                 $this->edate, $this->payRate, $this->homeAddr,
+                                 $this->curJob, $this->department, $this->sdate, 
+                                 $this->edate, $this->payRate, $this->address,
                                  $this->grad, $this->major, $this->semInMaj, 
                                  $this->phone, $this->email, $coordName, $coordPhone, 
-                                 $this->superName, $this->superTitle, $this->superEmail,
-                                 $this->superPhone, $this->agree, $semester, $this->submit));
+                                 $this->supervName, $this->supervTitle, $this->supervEmail,
+                                 $this->supervPhone, $this->agree, $semester, $this->submit));
+         
+         //$this->addElements(array($this->fname, $this->agree, $this->submit));
       }
    
    
@@ -67,17 +68,17 @@ class Application_Form_Contract extends Application_Form_StudentCommon
 //        $coordName = $elems->getCommonTbox('coordName', 'Co-op coordinator\'s name:');
 //        $coordPhone = $elems->getCommonTbox('coordPhone', 'Co-op coordinator\'s telephone:');
 // 
-//        $superTitle = $elems->getCommonTbox('supervTitle', 'Supervisor\'s title:');
-//        $superName = $elems->getCommonTbox('supervName', 'Supervisor\'s name:');
-//        $superEmail = $elems->getEmailTbox('supervEmail', 'Supervisor\'s e-mail:');
+//        $supervTitle = $elems->getCommonTbox('supervTitle', 'Supervisor\'s title:');
+//        $supervName = $elems->getCommonTbox('supervName', 'Supervisor\'s name:');
+//        $supervEmail = $elems->getEmailTbox('supervEmail', 'Supervisor\'s e-mail:');
 //        $agree = $elems->getAgreementRadio();
 //        $submit = $elems->getSubmit();
 //               
 //        $this->addElements(array($fname, $lname, $uuid, $employer,  
 //                                 $jobTitle, $department, $sdate, $edate, $payRate, 
 //                                 $addr, $grad, $major, $semInMaj, $phone, $email,
-//                                 $coordName, $coordPhone, $superTitle, $superName,
-//                                 $superEmail, $agree, $semester, $submit,
+//                                 $coordName, $coordPhone, $supervTitle, $supervName,
+//                                 $supervEmail, $agree, $semester, $submit,
 //                                 ));
 //
 //

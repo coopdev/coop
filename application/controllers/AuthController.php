@@ -103,6 +103,8 @@ class AuthController extends Zend_Controller_Action
                // If user is in database
                if ($user) {
                   $coopSess->inDb = true;
+                  $coopSess->userId = $user['id'];
+                  
                   // Get users role
                   $role = $roles->getRole($user['roles_id']);
                   // Make sure user has a role

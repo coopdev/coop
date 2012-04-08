@@ -81,7 +81,7 @@ class My_FormElement
    
    public function getCreditAmtTbox()
    {
-      $elem = new Zend_Form_Element_Text('creditAmt');
+      $elem = new Zend_Form_Element_Text('credits');
       $elem->setRequired(true)
            ->setLabel('How many credits will you enroll this semester')
            ->addValidator(new Zend_Validate_Int())
@@ -95,7 +95,7 @@ class My_FormElement
     */
    public function getGradDateTbox()
    {
-      $elem = new Zend_Form_Element_Text('gradDate');
+      $elem = new Zend_Form_Element_Text('grad_date');
       $elem->setRequired(true)
            ->setLabel('Graduation date:')
            ->addFilter('StripTags')
@@ -110,7 +110,7 @@ class My_FormElement
    {  
       // get majors from database //
       
-      $elem = new Zend_Form_Element_Select('Major');
+      $elem = new Zend_Form_Element_Select('major');
       $elem->setRequired(true)
            ->setLabel('Major:');
                  
@@ -119,7 +119,7 @@ class My_FormElement
    
    public function getSemesterInMajorRadio()
    {
-      $elem = new Zend_Form_Element_Radio('semInMajor');
+      $elem = new Zend_Form_Element_Radio('semester_in_major');
       $elem->setRequired(true)
            ->setLabel('Semester in major:')
            ->setMultiOptions(array('1st' => '1st',
@@ -167,7 +167,7 @@ class My_FormElement
    public function getPayRateTbox()
    {  
       
-      $elem = new Zend_Form_Element_Text('payRate');
+      $elem = new Zend_Form_Element_Text('rate_of_pay');
       $elem->setLabel('Rate of pay:')
            ->setRequired('true')
            ->addValidator(new Zend_Validate_Float())

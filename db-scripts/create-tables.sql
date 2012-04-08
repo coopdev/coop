@@ -12,12 +12,11 @@ CREATE TABLE coop_users(
    lname TEXT,
    uuid CHAR(8) UNIQUE,
    address TEXT,
-   semesters_id INT,
    wanted_job TEXT,
-   classes_id INT,
    grad_date DATE,
    majors_id INT,
    semester_in_major INT,
+   credits INT,
    phone TEXT,
    mobile TEXT,
    email TEXT,
@@ -37,10 +36,21 @@ CREATE TABLE coop_users(
    roles_id INT,
    agreedto_contract BOOLEAN DEFAULT 0,
    PRIMARY KEY(id),
-   FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id),
-   FOREIGN KEY(classes_id) REFERENCES coop_classes(id),
    FOREIGN KEY(majors_id) REFERENCES coop_majors(id),
    FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
+);
+
+DROP TABLE IF EXISTS coop_users_semesters;
+CREATE TABLE coop_users_semesters(
+   id INT NOT NULL AUTO_INCREMENT,
+   users_id INT,
+   semesters_id INT,
+   classes_id INT,
+   credits INT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(users_id) REFERENCES coop_users(id) ON DELETE CASCADE,
+   FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id),
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) 
 );
 
 DROP TABLE IF EXISTS coop_coordinators;
@@ -54,7 +64,7 @@ CREATE TABLE coop_coordinators(
    PRIMARY KEY(id),
    FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
 );
-   
+
 DROP TABLE IF EXISTS coop_contracts;
 CREATE TABLE coop_contracts(
    id INT NOT NULL AUTO_INCREMENT,

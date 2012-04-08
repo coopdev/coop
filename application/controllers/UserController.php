@@ -16,16 +16,16 @@ class UserController extends Zend_Controller_Action
     public function newAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
-       
+                     
        $form = new Application_Form_StudentInfo();
-       $form->setAction($coopSess->baseUrl . '/user/create');
+       //$form->setAction($coopSess->baseUrl . '/user/new');
        
        $this->view->form = $form;
        
-       $formHandler = new My_InvalidFormHandler();
-       
-       $formHandler->handle($form);
-       $formHandler->chkAgreement($form, $this->view);
+       if ($this->_request->isPost()) {
+          $data = $_POST;
+          $this->handlePost($form, $data);
+       }
 
     }
 
@@ -34,36 +34,42 @@ class UserController extends Zend_Controller_Action
        /*
         * Requests covered on page 74 of zend book
         */
-              
-       if ($this->_request->isPost()) {
-          $coopSess = new Zend_Session_Namespace('coop');
-          $form = new Application_Form_StudentInfo();
-          $data = $_POST;
-          
-          if ($form->isValid($data)) {
-             if ($data['agreement'] == 'disagree') {
-                //die('hi');
-                $coopSess->invalidData = $data;
-                $this->_helper->redirector($coopSess->prevAction);
-             }
-             $fname = $data['fname'];
-             $lname = $data['lname'];
-             
-             // insert data to database //
-          } else {
-             $data['invalid'] = true;
-             $coopSess->invalidData = $data;
-             $this->_helper->redirector($coopSess->prevAction);
-          }
-               
-          $this->_helper->redirector('home','pages');
-       } 
        
+       $coopSess = new Zend_Session_Namespace('coop');
+       
+       
+       if ( isset($coopSess->validData) ) {
+          
+          $data = $coopSess->validData;
+          unset($coopSess->validData);
+          
+          // create student //
+          
+          
+       }
+      
     }
 
     public function updateAction()
     {
         // action body
+    }
+    
+    /* HELPERS */
+    
+    private function handlePost($form, $data)
+    {
+       if ($form->isValid($data)) {
+          if ($data['agreement'] == 'agree') {
+             $coopSess->validData = $data;
+             $this->_helper->redirector('create');
+          } else {
+             $this->view->message = 'Must agree before continuing';
+             $form->populate($data);
+          }
+       } else {
+
+       }
     }
     
         
