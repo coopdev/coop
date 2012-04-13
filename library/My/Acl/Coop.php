@@ -39,9 +39,9 @@ class My_Acl_Coop extends Zend_Acl
       $this->addRole(new Zend_Acl_Role('none'));
       $this->addRole(new Zend_Acl_Role('guest'), 'none');
       
-      $this->addRole(new Zend_Acl_Role('normal'),'guest');
-      $this->addRole(new Zend_Acl_Role('manager'), 'normal');
-      $this->addRole(new Zend_Acl_Role('admin'), 'manager');
+      $this->addRole(new Zend_Acl_Role('user'),'guest');
+      $this->addRole(new Zend_Acl_Role('coordinator'), 'user');
+      $this->addRole(new Zend_Acl_Role('admin'), 'coordinator');
       $this->addRole(new Zend_Acl_Role('super-admin'), 'admin');
       
       $this->addRole(new Zend_Acl_Role('contractNo'));
@@ -55,13 +55,13 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('guest','contract','create');
       $this->allow('guest','error');
       
-      $this->allow('normal','index');
-      $this->allow('normal', 'pages');
-      $this->allow('normal', 'contract');
-      $this->allow('normal', 'user');
-      $this->deny('normal','pages','teachers');
+      $this->allow('user','index');
+      $this->allow('user', 'pages');
+      $this->allow('user', 'contract');
+      $this->allow('user', 'user');
+      $this->deny('user','pages','teachers');
             
-      $this->allow('manager', 'pages', 'teachers');
+      $this->allow('coordinator', 'pages', 'teachers');
       
       /* Users who haven't filled out a contract can
        * only access certain things.

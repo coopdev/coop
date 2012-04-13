@@ -25,15 +25,15 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          
                   
          // Add elements. 
-         $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
-                                 $this->curJob, $this->department, $this->sdate, 
-                                 $this->edate, $this->payRate, $this->address,
-                                 $this->grad, $this->major, $this->semInMaj, 
-                                 $this->phone, $this->email, $coordName, $coordPhone, 
-                                 $this->supervName, $this->supervTitle, $this->supervEmail,
-                                 $this->supervPhone, $this->agree, $semester, $this->submit));
+//         $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
+//                                 $this->curJob, $this->department, $this->sdate, 
+//                                 $this->edate, $this->payRate, $this->address,
+//                                 $this->grad, $this->major, $this->semInMaj, 
+//                                 $this->phone, $this->email, $coordName, $coordPhone, 
+//                                 $this->supervName, $this->supervTitle, $this->supervEmail,
+//                                 $this->supervPhone, $this->agree, $semester, $this->submit));
          
-         //$this->addElements(array($this->fname, $this->agree, $this->submit));
+         $this->addElements(array($this->fname, $this->agree, $this->submit));
       }
    
    

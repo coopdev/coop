@@ -26,7 +26,10 @@ class ContractController extends Zend_Controller_Action
         
         if ($this->_request->isPost()) {
            $data = $_POST;
-           $this->handlePost($form, $data);
+           $valid = $this->handlePost($form, $data);
+           if ($valid) {
+             $this->_helper->redirector('create');
+          }
         }
     }
 
@@ -44,8 +47,8 @@ class ContractController extends Zend_Controller_Action
         
         $qry = $sel->from('coop_users',array('fname','lname'))
                    ->where('uuid = '.$uuid);
-        $stmt = $qry->query();
-        $result = $stmt->fetchRow();
+        //$stmt = $qry->query();
+        $result = $link->fetchRow($qry);
         $form = new Application_Form_Contract();
                 
         $form->setAction($coopSess->baseUrl.'/contract/renew');
@@ -54,7 +57,10 @@ class ContractController extends Zend_Controller_Action
         
         if ($this->_request->isPost()) {
            $data = $_POST;
-           $this->handlePost($form, $data);
+           $valid = $this->handlePost($form, $data);
+           if ($valid) {
+             $this->_helper->redirector('create');
+          }
         }
            
               
@@ -91,7 +97,7 @@ class ContractController extends Zend_Controller_Action
                          agreedto_contract) VALUES ($fname,$lname,4,$uuid)");
           //$user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
           $coopSess->contractStatus = 'contractYes';
-          $coopSess->role = 'normal';
+          $coopSess->role = 'user';
           $coopSess->inDb = true;
 
 
@@ -123,16 +129,18 @@ class ContractController extends Zend_Controller_Action
     
     private function handlePost($form, $data)
     {
+       $coopSess = new Zend_Session_Namespace('coop');
        if ($form->isValid($data)) {
           if ($data['agreement'] == 'agree') {
              $coopSess->validData = $data;
-             $this->_helper->redirector('create');
+             return true;
           } else {
              $this->view->message = 'Must agree before continuing';
              $form->populate($data);
+             return false;
           }
        } else {
-
+          return false;
        }
     }
 

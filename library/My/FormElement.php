@@ -52,7 +52,7 @@ class My_FormElement
    {  
       $sems = $this->getSemRange();
       
-      $elem = new Zend_Form_Element_Select('enrollDate');
+      $elem = new Zend_Form_Element_Select('semesters_id');
       
       $elem->setRequired(true)
            ->setLabel('When are you planning to enroll in co-op (Semester/Year)?');
@@ -69,7 +69,7 @@ class My_FormElement
    {  
       $classes = $this->getClasses();
                              
-      $elem = new Zend_Form_Element_Select('classChoice');
+      $elem = new Zend_Form_Element_Select('classes_id');
       $elem->setRequired(true)
            ->setLabel('Which co-op class are you planning to enroll in?');
       foreach ($classes as $c) {
@@ -111,7 +111,7 @@ class My_FormElement
       // get majors from database //
       
       $elem = new Zend_Form_Element_Select('major');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('Major:');
                  
       return $elem;
@@ -152,10 +152,10 @@ class My_FormElement
    public function getDateTbox($name,$label)
    {  
       $dateValidator = new Zend_Validate_Date();
-      $dateValidator->setFormat('MM-dd-yyyy');
+      $dateValidator->setFormat('MM/dd/yyyy');
       
       $elem = new Zend_Form_Element_Text($name);
-      $elem->setLabel("$label (mm-dd-yyyy):")
+      $elem->setLabel("$label (mm/dd/yyyy):")
            ->setRequired('true')
            ->addValidator($dateValidator)
            ->addFilter('StripTags')

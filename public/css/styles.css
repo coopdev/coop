@@ -35,6 +35,14 @@
    border-width: 1px;
 }
 
+#headerMain {
+   clear: both;
+}
+
+#headerUpperRight {
+   float: right;
+}
+
 #mainNav {
    width: 25%;
    padding: 10px;
@@ -66,11 +74,3 @@
    font-style:italic;
    
 }
-
-a.logout {
-   
-   position: absolute;
-   right: 0px;
-   top: 0px;
-}
-

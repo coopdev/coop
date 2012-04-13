@@ -1,6 +1,8 @@
 <?php
 /**
  * Connection to database
+ * 
+ * USE My_Db Instead
  *
  * @author joseph
  */

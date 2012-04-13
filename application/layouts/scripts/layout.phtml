@@ -11,7 +11,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <?php 
       echo $this->headTitle();
-      $coopSess = new Zend_Session_Namespace('coop');
+      
       //echo $this->headTitle($this->pageTitle);
       $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/styles.css'); 
       echo $this->headLink();
@@ -23,24 +23,33 @@
       
       echo "<div id=innerMain>";
       
-      //if ($coopSess->role != 'none') {
-         
-         //echo "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
-         
-         
-      //}
       // Start Header.
       echo "<div id='header'>";
-      echo    "<h2> Header </h2>";
+      echo    "<div id=headerUpperRight>";
+      echo       $coopSess->fname." ".$coopSess->lname."<br />";
       
+      if ($coopSess->role != 'none') {
+         echo "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+      }
+
+      //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+      echo    "</div>";
+      echo    "<div id=headerMain>";
+      echo       "<h2> Header </h2>";
+      echo    "</div>";
       echo "</div>";
       // End Header.
       
       // Start main nav
       echo "<div id='mainNav'>";
-      echo    "<a href='".$this->url(array('controller'=>'syllabus','action'=>'listall'))."'> Class syllabuses </a> <br />";
-      echo    "<a href='".$this->url(array('controller'=>'contract','action'=>'new'))."'> Co-op Agreement Form </a> <br />";
-      echo    "<a href='".$this->url(array('controller'=>'user','action'=>'new'))."'> Student Information Sheet </a>";
+
+      //if ($coopSess->role == 'coordinator') {
+         echo    "<a href='".$this->url(array('controller'=>'syllabus','action'=>'listall'))."'> Class syllabuses </a> <br />";
+      //} else if ($coopSess->role == 'user') {
+         echo    "<a href=".$this->url(array('controller'=>'syllabus','action'=>'view')).">Syllabus</a> <br />";
+         echo    "<a href='".$this->url(array('controller'=>'contract','action'=>'new'))."'> Co-op Agreement Form </a> <br />";
+         echo    "<a href='".$this->url(array('controller'=>'user','action'=>'new'))."'> Student Information Sheet </a>";
+      //}
 
       echo "</div>";
       // End main nav

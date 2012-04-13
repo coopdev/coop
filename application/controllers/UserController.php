@@ -18,13 +18,15 @@ class UserController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
                      
        $form = new Application_Form_StudentInfo();
-       //$form->setAction($coopSess->baseUrl . '/user/new');
        
        $this->view->form = $form;
        
        if ($this->_request->isPost()) {
           $data = $_POST;
-          $this->handlePost($form, $data);
+          $valid = $this->handlePost($form, $data);
+          if ($valid) {
+             $this->_helper->redirector('create');
+          }
        }
 
     }
@@ -35,17 +37,50 @@ class UserController extends Zend_Controller_Action
         * Requests covered on page 74 of zend book
         */
        
+       
        $coopSess = new Zend_Session_Namespace('coop');
-       
-       
        if ( isset($coopSess->validData) ) {
           
           $data = $coopSess->validData;
           unset($coopSess->validData);
           
           // create student //
+          //$link = My_DbLink::connect();
+          $link = new My_Db();
           
-          
+          // get only the submited form data that matches table fields in coop_users
+          $userVals = $link->prepFormInserts($data, 'coop_users'); 
+
+          // get only the submited form data that matches table fields in coop_users_semesters
+          $userSemVals = $link->prepFormInserts($data, 'coop_users_semesters'); 
+
+          // username
+          $userVals['username'] = $coopSess->uhinfo['user'];
+
+          // get role for student
+          $result = $link->select()->from('coop_roles','id')->where("role = ?", "user");
+          $roleId = $link->fetchOne($result);
+          $userVals['roles_id'] = $roleId;
+
+          // put dates into proper format for database.
+//          $tokens = explode('/',$userVals['grad_date']);
+//          $userVals['grad_date'] = $tokens[2] . $tokens[0] . $tokens[1];
+//
+//          $tokens = explode('/',$userVals['start_date']);
+//          $userVals['start_date'] = $tokens[2] . $tokens[0] . $tokens[1];
+//
+//          $tokens = explode('/',$userVals['end_date']);
+//          $userVals['end_date'] = $tokens[2] . $tokens[0] . $tokens[1];
+
+          //die(var_dump($userVals));
+          $link->insert('coop_users', $userVals);
+
+          // get id of user just inserted
+          $userSemVals['users_id'] = $link->lastInsertId('coop_users');
+
+          $link->insert('coop_users_semesters', $userSemVals);
+
+          $this->_helper->redirector('cas', 'auth');
        }
       
     }
@@ -59,26 +94,47 @@ class UserController extends Zend_Controller_Action
     
     private function handlePost($form, $data)
     {
+       $coopSess = new Zend_Session_Namespace('coop');
        if ($form->isValid($data)) {
           if ($data['agreement'] == 'agree') {
              $coopSess->validData = $data;
-             $this->_helper->redirector('create');
+             return true;
           } else {
              $this->view->message = 'Must agree before continuing';
              $form->populate($data);
+             return false;
           }
        } else {
-
+          return false;
        }
     }
+
     
+    /* TESTS */
         
     public function testAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
        $link = My_DbLink::connect();
-       //$statement = $link->query('SELECT * from coop_roles');
-       $select = $link->select();
+       //$config = new Zend_Config_Ini(APPLICATION_PATH.
+       //                            '/configs/application.ini','production');
+             
+       $db = new My_Db();
+       //$db = $db->getLink();
+       $role = $db->getRowById('coop_roles', 9);
+       die(var_dump($role));
+       $col = $db->getCol('coop_roles', 'role', array('id'=>9));
+       die($col);
+       $role = $db->getRow('coop_roles', array('id'=>5));
+       die(var_dump($role));
+       $id = $db->getId('coop_roles', array('role'=>'user'));
+       die(var_dump($id));
+       $cols = $db->insertFormData('blah');
+       
+       $row = $db->fetchRow("SELECT * FROM coop_roles where role = 'user'");
+       die(var_dump($cols));
+
+       //$link->update('coop_classes', $updates, 'id = 1');
        
        //$statement = $select->from('coop_users_contracts');
        $statement = $select->from('coop_roles');
@@ -100,13 +156,7 @@ class UserController extends Zend_Controller_Action
 //       
 //       
 //       $this->view->paginator = $paginator;
-       
-       $coopSess = new Zend_Session_Namespace('coop');
-       $form = new Application_Form_Contract();
-       $form->setAction('testform');
-       $this->view->form = $form;
-       
-       
+             
        
        /* Testing performance for class instantiation and db queries. */
 //       for ($i = 0; $i < 10; $i++) {
@@ -202,11 +252,4 @@ class UserController extends Zend_Controller_Action
         //die(var_dump($firstYear));
         $this->_helper->viewRenderer->setNoRender(true);
     }
-
-
-}
-
-
-
-
-
+}  

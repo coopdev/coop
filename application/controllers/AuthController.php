@@ -52,7 +52,6 @@ class AuthController extends Zend_Controller_Action
            // Validates ticket
             $result = $this->auth->authenticate($this->adapter);
             
-            // If successfully validated ticket
             if(!$result->isValid()) {
                 //die($result->getMessages());
                 $this->view->messages = $result->getMessages();
@@ -86,7 +85,10 @@ class AuthController extends Zend_Controller_Action
                   $link->insert('coop_contracts', array('semester'=>$curSemester));
 
                }
-                              
+               
+               /*
+                * START SETTING SESSION VARIABLES
+                */
                $coopSess = new Zend_Session_Namespace('coop');
                
                // Get messages returned from CAS server.
@@ -95,16 +97,20 @@ class AuthController extends Zend_Controller_Action
                // Assign an initial role of "Guest" to CAS authenticated users.
                // Then overwrite later if they are in the database.
                $coopSess->role = 'guest';
-               $users = new Application_Model_DbTable_User();
-               $user = $users->getUser($coopSess->uhinfo['uhuuid']);
+               $db = new My_Db();
                $roles = new Application_Model_DbTable_Role();
+
+               // If user is in coop_users (student)
+               if ( $user = $db->getRow('coop_users', array('username'=>$coopSess->uhinfo['user'])) ) {
                
-               
-               // If user is in database
-               if ($user) {
                   $coopSess->inDb = true;
                   $coopSess->userId = $user['id'];
-                  
+                  $coopSess->classId = $db->getCol('coop_users_semesters', 
+                                               'classes_id', 
+                                               array('users_id'=>$user['id']));
+                  $coopSess->fname = $user['fname'];
+                  $coopSess->lname = $user['lname'];
+
                   // Get users role
                   $role = $roles->getRole($user['roles_id']);
                   // Make sure user has a role
@@ -113,45 +119,46 @@ class AuthController extends Zend_Controller_Action
                   }
                   // If user submitted and agreed to initial contract
                   if ($user['agreedto_contract']) {
+
                      $coopSess->contractStatus = 'contractYes';
+
                   } else {
+
                      $coopSess->contractStatus = 'contractNo';
+
                   }
                   
+                  // If user is in coop_coordinators (coordinator)
+               } else if ( $user = $db->getRow('coop_coordinators', array('username'=>$coopSess->uhinfo['user'])) ) {
+
+                  $coopSess->inDb = true;
+                  $coopSess->userId = $user['id'];
+                  $coopSess->role = 'coordinator';
+                  $coopSess->fname = $user['fname'];
+                  $coopSess->lname = $user['lname'];
+
                } else {
+
                   $coopSess->inDb = false;
+
                }
             }
             //die(var_dump($coopSess->uhinfo,$coopSess->contractStatus,$coopSess->role,$coopSess->inDb));
         }
-
-        // Logout if requested
-        //if(isset($_GET['logout'])) {
-
-        //    $this->auth->clearIdentity();
-
-        //    // Specify the landing URL to hit after logout
-        
-        //    $landingUrl = $this->adapter->getUrl().'/logout?service='.$local_service.'/auth/logout';
-
-        //    $this->adapter->setLogoutUrl($landingUrl);
-        //    Zend_Session::destroy(true);
-
-        //    $this->_redirect($this->adapter->getLogoutUrl());
-        //}
-
-        
+                
         if(!$this->auth->hasIdentity()) {
-            // Send to CAS for authentication
+            // Send to WebLogin server for authentication
             $this->_redirect($this->adapter->getLoginUrl());
         } 
+        
+        
         $coopSess = new Zend_Session_Namespace('coop');
         
         // If user is in database.
         if ($coopSess->inDb) {
-           // Non student users or users who have submitted the agreement form
+           // Non student users or students who have submitted the agreement form
            // can go straighth to home page.
-           if ($coopSess->role != 'normal' || $coopSess->contractStatus == 'contractYes') {
+           if ($coopSess->role != 'user' || $coopSess->contractStatus == 'contractYes') {
               
               $this->_redirect($local_service."/pages/home");
            }

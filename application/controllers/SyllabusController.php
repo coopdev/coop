@@ -31,29 +31,30 @@ class SyllabusController extends Zend_Controller_Action
     public function viewAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
-       $link = My_DbLink::connect();
+       $link = new My_Db();
        if ($this->_request->isGet()) {
                    
           // Cast the value of 'id' to an int. Returns zero if not an int.
-          $id = (int)$this->_request->getQuery('id');
+          $classId = (int)$this->_request->getQuery('id');
              
           // If user is not a student and id is empty, redirect to the listall 
           // page so a proper class can be chosen.
-          if ($coopSess->role != 'normal' && empty($id)) {
+          if ($coopSess->role != 'user' && empty($classId)) {
              $this->_helper->redirector('listall');
           }
                       
-          // If user is a student with a normal role, overwrite the $id variable with
+          // If user is a student with a "user" role, overwrite the $id variable with
           // the class id stored in their record so they can only view the 
           // syllabus for their class, and not get to other ones through the url.
-          if ($coopSess->role == 'normal') {
-             $uuid = $coopSess->uhinfo['uhuuid'];
-             $id = (int)$link->fetchOne("SELECT classes_id FROM coop_users 
-                                    WHERE uuid = '$uuid'");
+          if ($coopSess->role == 'user') {
+             $userId = $coopSess->userId;
+             $classId = (int)$link->getCol('coop_users_semesters', 'classes_id', array('users_id'=>$userId));
+             //$id = (int)$link->fetchOne("SELECT classes_id FROM coop_users 
+             //                       WHERE uuid = '$uuid'");
           }
           
           $class = $link->fetchRow("SELECT id, name, syllabus FROM coop_classes 
-                                     WHERE id = $id");
+                                     WHERE id = $classId");
       
           if ($class) {
              $this->view->class = $class;
@@ -62,13 +63,6 @@ class SyllabusController extends Zend_Controller_Action
           }
        } 
     }
-    
-    private function getSession()
-    {
-       return new Zend_Session_Namespace('coop');
-    }
-
-
 }
 
 
