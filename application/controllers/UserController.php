@@ -80,7 +80,7 @@ class UserController extends Zend_Controller_Action
 
           $link->insert('coop_users_semesters', $userSemVals);
 
-          $this->_helper->redirector('cas', 'auth');
+          $this->_helper->redirector('post-cas', 'auth');
        }
       
     }

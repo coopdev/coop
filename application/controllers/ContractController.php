@@ -39,14 +39,14 @@ class ContractController extends Zend_Controller_Action
          * FORM ELEMENT NAMES MUST MATCH THE TABLE FIELD NAMES.
          */
         $coopSess = new Zend_Session_Namespace('coop');
-        $uuid = $coopSess->uhinfo['uhuuid'];
+        $username = $coopSess->uhinfo['user'];
         
         $link = My_DbLink::connect();
         
         $sel = $link->select();
         
         $qry = $sel->from('coop_users',array('fname','lname'))
-                   ->where('uuid = '.$uuid);
+                   ->where('username = ?',$username);
         //$stmt = $qry->query();
         $result = $link->fetchRow($qry);
         $form = new Application_Form_Contract();
