@@ -12,7 +12,7 @@ class UserController extends Zend_Controller_Action
     {
         // action body
     }
-    
+
     public function newAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -85,12 +85,70 @@ class UserController extends Zend_Controller_Action
       
     }
 
+
+    public function listUnenrolledAction()
+    {
+        $coopSess = new Zend_Session_Namespace('coop');
+
+        $link = new My_Db();
+
+        $userId = $coopSess->userId;
+
+        //$select = $link->select()->from(array('u'=>'coop_users'), array('id','fname','lname','username'))
+        //                                      
+        //                         ->join(array('us'=>'coop_users_semesters'), 'u.id = us.users_id',
+        //                                      array('classes_id'))
+
+        //                         ->join(array('c'=>'coop_classes'), 'us.classes_id = c.id',
+        //                                      array('class'=>'name'))
+
+        //                         ->where('u.active = 0');
+
+        $select = $link->select()->from(array('u'=>'coop_users'), 
+                                        array('users_id'=>'id','fname','lname','username', 
+                                              'classes_id', 'semesters_id'))
+
+                                 ->join(array('c'=>'coop_classes'), 'u.classes_id = c.id',
+                                        array('class'=>'name'))
+
+                                 ->where('u.active = 0');
+
+        $users = $link->fetchAll($select);
+                                 
+        //die(var_dump($select->__toString()));
+        //die(var_dump($users));
+
+        $this->view->users = $users;
+                
+    } 
+
+    public function activateAction()
+    {
+       if ($this->_request->isGet()) {
+          $users_id = $this->_request->getQuery('users_id');
+
+
+          $link = new My_Db();
+
+          $data = $link->prepFormInserts($_GET, 'coop_users_semesters');
+
+          $link->update('coop_users', array('active'=>1), "id = $users_id");
+
+          $link->insert('coop_users_semesters', $data);
+
+          $this->_helper->redirector('list-unenrolled');
+
+       }
+       die($id);
+    }
+
     public function updateAction()
     {
         // action body
     }
-    
-    /* HELPERS */
+
+
+    /* Helpers */
     
     private function handlePost($form, $data)
     {
@@ -107,11 +165,12 @@ class UserController extends Zend_Controller_Action
        } else {
           return false;
        }
+       
     }
 
-    
-    /* TESTS */
-        
+
+    /* Tests */
+
     public function testAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -163,11 +222,11 @@ class UserController extends Zend_Controller_Action
 //          $link = My_DbLink::connect();
 //          $users = $link->fetchAll('SELECT * FROM coop_users');
 //          //$a = 'hi';
-//       }
+//       
     }
-    
+
     public function testformAction()
-    {                
+    {
        $coopSess = new Zend_Session_Namespace('coop');
        $form = new Application_Form_Contract();
        $testForm = new Application_Form_Test();
@@ -179,12 +238,9 @@ class UserController extends Zend_Controller_Action
 //          } else {
 //             $this->view->form = $testForm;
 //          }
-//       }
+//       
     }
-    
-    /*
-     * This action is used for testing
-     */
+
     public function semesterAction()
     {
 //      $curDate = date('Y-m-d');
@@ -252,4 +308,9 @@ class UserController extends Zend_Controller_Action
         //die(var_dump($firstYear));
         $this->_helper->viewRenderer->setNoRender(true);
     }
-}  
+
+   
+
+
+}
+

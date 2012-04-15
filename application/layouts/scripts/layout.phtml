@@ -26,7 +26,8 @@
       // Start Header.
       echo "<div id='header'>";
       echo    "<div id=headerUpperRight>";
-      echo       $coopSess->fname." ".$coopSess->lname."<br />";
+      //echo       $coopSess->fname." ".$coopSess->lname."<br />";
+      echo       $coopSess->uhinfo['name']."<br />";
       
       if ($coopSess->role != 'none') {
          echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Logout </a>";

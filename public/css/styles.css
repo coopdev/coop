@@ -70,6 +70,11 @@
    clear:both;
 }
 
+table.padded td {
+   padding-right: 60px;
+   padding-bottom: 25px;
+}
+
 #test {
    font-style:italic;
    

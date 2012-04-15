@@ -37,6 +37,8 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user'));
       $this->add(new Zend_Acl_Resource('user_new'), 'user');
       $this->add(new Zend_Acl_Resource('user_create'), 'user');
+      $this->add(new Zend_Acl_Resource('user_list-unenrolled'), 'user');
+      $this->add(new Zend_Acl_Resource('user_activate'), 'user');
       
       /* Contract Controller */
       $this->add(new Zend_Acl_Resource('contract'));
@@ -79,13 +81,15 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user','index');
       $this->allow('user', 'contract');
       $this->allow('user', 'syllabus','syllabus_view');
-
       // Think about if a user needs to get to "user" actions if they are already a user 
       // (i.e. in the database as a student).
-      $this->allow('user', 'user');
+      $this->allow('user', 'user', 'user_new');
+      $this->allow('user', 'user', 'user_create');
             
       $this->allow('coordinator', 'syllabus', 'syllabus_listall');
       $this->allow('coordinator', 'syllabus', 'syllabus_view');
+      $this->allow('coordinator', 'user', 'user_list-unenrolled');
+      $this->allow('coordinator', 'user', 'user_activate');
       
       /* 
        * Users who haven't filled out a contract can

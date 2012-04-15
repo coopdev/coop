@@ -41,6 +41,17 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $row;
    }
 
+   public function getRows($table, $where)
+   {
+      $keys = array_keys($where);
+      $col = $keys[0];
+     // die($col);
+      $val = $where[$col];
+      $query = $this->select()->from($table)->where("$col = ?", $val);
+      $rows = $this->fetchAll($query);
+      return $rows;
+   }
+
    public function getId($table, $where)
    {
       $keys = array_keys($where);

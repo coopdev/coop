@@ -33,6 +33,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="create"/>
           <actionMethod actionName="update"/>
+          <actionMethod actionName="listUnenrolled"/>
         </controllerFile>
         <controllerFile controllerName="Syllabus">
           <actionMethod actionName="index"/>
@@ -116,6 +117,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Syllabus">
             <viewScriptFile forActionName="view"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="listUnenrolled"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
