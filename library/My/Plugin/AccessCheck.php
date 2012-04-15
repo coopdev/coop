@@ -25,7 +25,7 @@
          $prevAct = $coopSess->prevAction;
          $redirector = new Zend_Controller_Action_Helper_Redirector();
          
-         if (!$this->_acl->isAllowed($role, $resource, $action)) {
+         if (!$this->_acl->isAllowed($role, $resource, $resource."_".$action)) {
             if ($role == 'none') {
                //$request->setControllerName('auth')
                //        ->setActionName('cas');
@@ -33,6 +33,8 @@
                
             } else {
                $redirector->direct($prevAct, $prevCont);
+               //$request->setControllerName('error');
+               //$request->setActionName('error');
             }
             
             //die("hello");

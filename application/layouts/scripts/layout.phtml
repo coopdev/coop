@@ -29,7 +29,9 @@
       echo       $coopSess->fname." ".$coopSess->lname."<br />";
       
       if ($coopSess->role != 'none') {
-         echo "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Logout </a>";
+      } else {
+         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'cas'))."'> Login </a>";
       }
 
       //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
