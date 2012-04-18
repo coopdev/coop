@@ -1,6 +1,7 @@
 <?php
    $classes = $this->classes;
-   echo "<table>";
+   echo "<table class=bottom-padded>";
+   echo    "<th>Class</th>";
    foreach ($classes as $c) { 
       $id = $c['id'];
       $name = $c['name'];
@@ -13,8 +14,7 @@
       
       echo "<tr>";
       echo    "<td>$name</td>";
-      echo    "<td> <a href='$viewUrl?id=$id'>View</a> </td>";
-      echo    "<td> <a href='$editUrl?id=$id'>Edit</a> </td>";
+      echo    "<td> <a href='$viewUrl?id=$id'>View</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href='$editUrl?id=$id'>Edit</a></td>";
       echo "</tr>";
       
    }

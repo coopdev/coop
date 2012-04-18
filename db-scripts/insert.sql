@@ -8,9 +8,9 @@ INSERT INTO coop_classes (name, syllabus)
 
 INSERT INTO coop_users (fname, lname, username, roles_id, semesters_id, 
                         classes_id, agreedto_contract, active)
-   VALUES ('Joseph', 'Workman', 'kuukekoa', 4, 1, 3, 0, 1),
-          ('Jane', 'Doe', 'janedoe', 4, 2, 2, 0, 1),
-          ('Becky', 'Ousley', 'ousley', 4, 1, 3, 0, 1),
+   VALUES ('Joseph', 'Workman', 'kuukekoa', 4, 1, 3, 0, 0),
+          ('Jane', 'Doe', 'janedoe', 4, 2, 2, 0, 0),
+          ('Becky', 'Ousley', 'ousley', 4, 1, 3, 0, 0),
           ('John', 'Doe', 'johndoe', 4, 2, 3, 0, 0),
           ('Timothy', 'Barclay', 'barclay', 4, 3, 2, 0, 0),
           ('Anne', 'Oliva', 'oliva', 4, 1, 1, 0, 0);

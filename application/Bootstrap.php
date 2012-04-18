@@ -37,8 +37,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       /*
        * Routes are covered on page 64 of Zend book.
        */
-      $FrontController = Zend_Controller_Front::getInstance();
-      $router = $FrontController->getRouter();
+      $front = Zend_Controller_Front::getInstance();
+      $router = $front->getRouter();
+      //$router->addRoute('root', 
+      //        new Zend_Controller_Router_Route('../../coop', 
+      //                array('controller'=>'pages','action'=>'home')));
+      $router->addRoute('login', 
+              new Zend_Controller_Router_Route('login', 
+                      array('controller'=>'auth','action'=>'cas')));
       
    }
 }

@@ -32,33 +32,38 @@
    margin: 0px;
    text-align: center;
    border-style: solid;
-   border-width: 1px;
-}
-
-#headerMain {
-   clear: both;
+   border-width: 1px; 
 }
 
 #headerUpperRight {
    float: right;
 }
 
-#mainNav {
-   width: 25%;
+#headerMain {
+   clear: both;
+}
+
+
+#leftNav ul {
+   width: 15%;
    padding: 10px;
    margin-top: 1px;
-   float: right;
-   border: thin solid #000000;
+   float: left;
+   list-style-type: none;
+   border-right-style: groove;
+   border-right-width: 2px;
+   /*border: thin solid #000000;*/
 }
 
 #content {
-   margin-right: 30%;
+   /*margin-right: 30%;*/
+   width: 79%;
+   float: left;
    /*float:left;*/
    
    margin-top: 1px;
    padding: 10px;
-   border: thin solid #000000;
-  
+   /*border: thin solid #000000;*/
 }
 
 #footer {
@@ -70,11 +75,33 @@
    clear:both;
 }
 
-table.padded td {
-   padding-right: 60px;
+table.bottom-padded td {
    padding-bottom: 25px;
 }
 
+/*
+table.all-syllabuses {
+   width: 100%;
+}
+
+   table.all-syllabuses td {
+      border-style: solid;
+      border-width: 2px;
+      padding-bottom: 15px; 
+   }
+
+   table.all-syllabuses td.link {
+      border-style: solid;
+      border-width: 2px;
+      padding-right: 5px;
+   }
+
+   table.all-syllabuses td.link-last {
+      padding-right: 5px;
+      border-style: solid;
+      border-width: 2px;
+   }
+*/
 #test {
    font-style:italic;
    

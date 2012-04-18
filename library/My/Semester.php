@@ -11,6 +11,7 @@ class My_Semester
    
    public function getCurrentSem()
    {
+      date_default_timezone_set('US/Hawaii');
       $curDate = date('Y-m-d');
       $dateParts = explode('-',$curDate);
       $curYear = $dateParts[0];

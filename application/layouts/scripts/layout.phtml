@@ -13,7 +13,10 @@
       echo $this->headTitle();
       
       //echo $this->headTitle($this->pageTitle);
-      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/styles.css'); 
+      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); 
+      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); 
+      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); 
+      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/main.css'); 
       echo $this->headLink();
    ?>
 </head>
@@ -44,32 +47,44 @@
       // End Header.
       
       // Start main nav
-      echo "<div id='mainNav'>";
-
+      echo "<div id=leftNav>";
+      echo "<ul>";
       //if ($coopSess->role == 'coordinator') {
-         echo    "<a href='".$this->url(array('controller'=>'syllabus','action'=>'listall'))."'> Class syllabuses </a> <br />";
+         echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
+                             'action'=>'listall'))."'> Class syllabuses </a></li> <br />";
+
+         echo    "<li><a href='".$this->url(array('controller'=>'user',
+                      'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
+
       //} else if ($coopSess->role == 'user') {
-         echo    "<a href=".$this->url(array('controller'=>'syllabus','action'=>'view')).">Syllabus</a> <br />";
-         echo    "<a href='".$this->url(array('controller'=>'contract','action'=>'new'))."'> Co-op Agreement Form </a> <br />";
-         echo    "<a href='".$this->url(array('controller'=>'user','action'=>'new'))."'> Student Information Sheet </a>";
+         echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
+                                           'action'=>'view')).">Syllabus</a></li> <br />";
+
+         echo    "<li><a href='".$this->url(array('controller'=>'contract',
+                             'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
+
+         echo    "<li><a href='".$this->url(array('controller'=>'user',
+                               'action'=>'new'))."'> Student Information Sheet </a></li>";
       //}
 
+      echo "</ul>";
       echo "</div>";
       // End main nav
       
       // Start content
       echo "<div id=content>";
       echo "<h2>$this->pageTitle</h2>";
-           
       
       echo $this->layout()->content;
       
       echo "</div>";
       // End content
       
+      // Start footer
       echo "<div id='footer'>";
       echo "<h1> Footer </h1>";
       echo "<div>";
+      // End footer
       
       echo "</div>";
       // End inner main div

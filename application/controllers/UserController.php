@@ -115,7 +115,6 @@ class UserController extends Zend_Controller_Action
 
         $users = $link->fetchAll($select);
                                  
-        //die(var_dump($select->__toString()));
         //die(var_dump($users));
 
         $this->view->users = $users;
