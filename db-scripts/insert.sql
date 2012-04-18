@@ -23,5 +23,8 @@ INSERT INTO coop_contracts (semester)
 
 INSERT INTO coop_users_semesters (users_id, semesters_id, classes_id, credits)
    VALUES (1, 1, 3, 12),
+          (4, 3, 1, 12),
+          (4, 2, 1, 12),
+          (4, 1, 2, 12),
           (2, 2, 2, 11),
           (3, 1, 3, 10);

@@ -37,7 +37,6 @@ class UserController extends Zend_Controller_Action
         * Requests covered on page 74 of zend book
         */
        
-       
        $coopSess = new Zend_Session_Namespace('coop');
        if ( isset($coopSess->validData) ) {
           
@@ -86,6 +85,14 @@ class UserController extends Zend_Controller_Action
     }
 
 
+
+    public function updateAction()
+    {
+        // action body
+    }
+
+
+
     public function listUnenrolledAction()
     {
         $coopSess = new Zend_Session_Namespace('coop');
@@ -119,35 +126,96 @@ class UserController extends Zend_Controller_Action
 
         $this->view->users = $users;
                 
-    } 
+    }
 
     public function activateAction()
     {
        if ($this->_request->isGet()) {
           $users_id = $this->_request->getQuery('users_id');
 
+          if (isset($users_id)) {
 
-          $link = new My_Db();
+             $link = new My_Db();
 
-          $data = $link->prepFormInserts($_GET, 'coop_users_semesters');
+             $data = $link->prepFormInserts($_GET, 'coop_users_semesters');
 
-          $link->update('coop_users', array('active'=>1), "id = $users_id");
+             $link->update('coop_users', array('active'=>1), "id = $users_id");
 
-          $link->insert('coop_users_semesters', $data);
+             $link->insert('coop_users_semesters', $data);
 
-          $this->_helper->redirector('list-unenrolled');
+             $this->_helper->redirector('list-unenrolled');
 
+          } else {
+             throw new Exception('Must choose a student to enroll.');
+          }
+
+       } else {
+          throw new Exception('Wrong way of submitting data.');
        }
-       die($id);
     }
 
-    public function updateAction()
+    public function historySearchAction()
     {
-        // action body
+       $form = new Application_Form_HistorySearch();
+
+       $this->view->form = $form;
+
+       if ($this->_request->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $coopSess = new Zend_Session_Namespace('coop');
+
+             // Set flag for historyShowAction indicating data is valid
+             $coopSess->validData = $data;
+
+             $this->_helper->redirector('history-show');
+          }
+       }
+       
+
     }
 
+    public function historyShowAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
 
-    /* Helpers */
+       if ( isset($coopSess->validData) )  {
+
+          $data = $coopSess->validData;
+          unset($coopSess->validData);
+
+          $username = $data['username'];
+
+          $db = new My_Db();
+
+          $query = $db->select()->from(array('u'=>'coop_users'), array('fname','lname'))
+                                ->join(array('us'=>'coop_users_semesters'), 'u.id = us.users_id')
+                                ->join(array('c'=>'coop_classes'), 'us.classes_id = c.id',
+                                             array('class'=>'name'))
+                                ->join(array('s'=>'coop_semesters'), 'us.semesters_id = s.id',
+                                             'semester')
+                                ->where("u.username = ?", $username)
+                                ->order(new Zend_Db_Expr("SUBSTRING_INDEX(semester, ' ', -1) DESC, 
+                                                 SUBSTRING_INDEX(semester, ' ', 1) ASC"));
+                  
+
+          $history = $db->fetchAll($query);
+
+          //die(var_dump($history));
+                                       
+          $this->view->history = $history;
+          
+
+       } else {
+          throw new Exception('Wrong way of submitting data.');
+       }
+       
+    }
+
+    
+
+    /* HELPERS */
     
     private function handlePost($form, $data)
     {
@@ -167,149 +235,7 @@ class UserController extends Zend_Controller_Action
        
     }
 
-
-    /* Tests */
-
-    public function testAction()
-    {
-       $coopSess = new Zend_Session_Namespace('coop');
-       $link = My_DbLink::connect();
-       //$config = new Zend_Config_Ini(APPLICATION_PATH.
-       //                            '/configs/application.ini','production');
-             
-       $db = new My_Db();
-       //$db = $db->getLink();
-       $role = $db->getRowById('coop_roles', 9);
-       die(var_dump($role));
-       $col = $db->getCol('coop_roles', 'role', array('id'=>9));
-       die($col);
-       $role = $db->getRow('coop_roles', array('id'=>5));
-       die(var_dump($role));
-       $id = $db->getId('coop_roles', array('role'=>'user'));
-       die(var_dump($id));
-       $cols = $db->insertFormData('blah');
-       
-       $row = $db->fetchRow("SELECT * FROM coop_roles where role = 'user'");
-       die(var_dump($cols));
-
-       //$link->update('coop_classes', $updates, 'id = 1');
-       
-       //$statement = $select->from('coop_users_contracts');
-       $statement = $select->from('coop_roles');
-       $rows = $link->fetchAll($statement);
-       //die(var_dump($rows));
-                           
-       
-//       $paginator = Zend_Paginator::factory($statement);
-//       $currentPage = 1;
-//       $i = $this->getRequest()->getQuery('i');
-//       
-//       if (!empty($i)) {
-//          $currentPage = $i;
-//       }
-//       
-//       $paginator->setItemCountPerPage(1);
-//       $paginator->setPageRange(2);
-//       $paginator->setCurrentPageNumber($currentPage);
-//       
-//       
-//       $this->view->paginator = $paginator;
-             
-       
-       /* Testing performance for class instantiation and db queries. */
-//       for ($i = 0; $i < 10; $i++) {
-//          $link = My_DbLink::connect();
-//          $users = $link->fetchAll('SELECT * FROM coop_users');
-//          //$a = 'hi';
-//       
-    }
-
-    public function testformAction()
-    {
-       $coopSess = new Zend_Session_Namespace('coop');
-       $form = new Application_Form_Contract();
-       $testForm = new Application_Form_Test();
-       $this->view->form = $form;
-       
-//       if ($this->getRequest()->isPost()) {
-//          if ($form->isValid($_POST)) {
-//             
-//          } else {
-//             $this->view->form = $testForm;
-//          }
-//       
-    }
-
-    public function semesterAction()
-    {
-//      $curDate = date('Y-m-d');
-//      $dateParts = explode('-',$curDate);
-//      $curYear = $dateParts[0];
-//      $curMonth = $dateParts[1];
-//      $curSem = '';
-//      
-//      if ($curMonth < 7) {
-//         $curSem = 'Spring';
-//      } else {
-//         $curSem = 'Fall';
-//      }
-//      
-//      $curSem .= ' ' . $curYear;
-//      die($curSem);
-       
-        $link = My_DbLink::connect();
-        $semester = new My_Semester();
-        $curSem = $semester->getCurrentSem();
-        
-        $semPieces = explode(' ',$curSem);
-        $curYear = (int)$semPieces[1];
-        //$curYear = 2018;
-        
-        $semesters = $link->fetchRow('SELECT semester FROM coop_semesters');
-        
-        
-                
-        $firstSem = $semesters['semester'];
-        //die(var_dump($firstSem));
-        $firstSem = explode(' ', $firstSem);
-        $firstYear = (int)$firstSem[1];
-        
-        if ($curYear != $firstYear) {
-           $link->query('DELETE FROM coop_semesters');
-           $query = 'INSERT INTO coop_semesters (semester) VALUES (?)';
-           for ($i = $curYear; $i < $curYear+5; $i++) {
-              $link->query($query, "Spring $i");
-              $link->query($query, "Fall $i");
-           }
-        }
-        
-        //test. This can be used to just retrieve a specific range 
-        // (e.g. from current semester to 5 years ahead) while keeping more than
-        // that range in the database (possibly for checking histories of students).
-        // One problem is that the query is returning the results in order (all Fall
-        // semesters are returned before Spring semesters), so it mighth take 
-        // extra processing to get in proper order to be displayed in select box.
-        $yr2 = $curYear+1;
-        $yr3 = $curYear+2;
-        $yr4 = $curYear+3;
-        $yr5 = $curYear+4;
-        
-        $sems = $link->fetchAll("SELECT semester FROM coop_semesters 
-                WHERE semester LIKE '%$curYear%'
-                OR semester like '%$yr2%'
-                OR semester like '%$yr3%'
-                OR semester like '%$yr4%'
-                OR semester like '%$yr5%'
-                ORDER BY SUBSTRING_INDEX(semester,' ',-1),
-                SUBSTRING_INDEX(semester,' ', 1) DESC");
-        die(var_dump($sems));
-        //end test
-        //die(var_dump($firstYear));
-        $this->_helper->viewRenderer->setNoRender(true);
-    }
-
-   
-
-
 }
+
+
 

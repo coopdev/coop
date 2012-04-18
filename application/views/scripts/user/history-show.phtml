@@ -1,0 +1,29 @@
+   
+<?php
+   $history = $this->history;
+
+   if (empty($history)) {
+
+      echo "<h2> No history found for that student </h2>";
+
+   } else {
+
+?>
+
+      <h2> History for <?php echo $history[0]['fname'].' '.$history[0]['lname'] ?> </h2>
+
+      <table>
+         <th> Class </th> <th> Semester taken </th>
+
+         <?php foreach($history as $h) { ?>
+
+         <tr>
+            <td> <?php echo $h['class'] ?> </td> <td> <?php echo $h['semester'] ?> </td>
+         </tr>
+         
+
+         <?php } ?>
+         
+      </table>
+
+<?php } ?>

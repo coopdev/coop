@@ -196,9 +196,9 @@ class My_FormElement
       return $elem;
    }
    
-   public function getSubmit()
+   public function getSubmit($text = 'submit')
    {
-      $elem = new Zend_Form_Element_Submit('submit');
+      $elem = new Zend_Form_Element_Submit($text);
       return $elem;
    }
    
