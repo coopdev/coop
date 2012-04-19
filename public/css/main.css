@@ -75,8 +75,10 @@
    clear:both;
 }
 
-table.bottom-padded td {
-   padding-bottom: 25px;
+table.padded td {
+   padding-bottom: 12px;
+   padding-top: 12px;
+   vertical-align: center;
 }
 
 /*

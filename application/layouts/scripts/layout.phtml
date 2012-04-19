@@ -54,10 +54,14 @@
                              'action'=>'listall'))."'> Class syllabuses </a></li> <br />";
 
          echo    "<li><a href='".$this->url(array('controller'=>'user',
-                      'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
+                             'action'=>'new'))."'> Add student </a></li> <br />";
+         
+
+         //echo    "<li><a href='".$this->url(array('controller'=>'user',
+         //             'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
 
          echo    "<li><a href='".$this->url(array('controller'=>'user',
-                      'action'=>'history-search'))."'> Student enrollment history </a></li> <br />";
+                      'action'=>'history-search'))."'> Student co-op history </a></li> <br />";
 
       //} else if ($coopSess->role == 'user') {
          echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
@@ -66,8 +70,8 @@
          echo    "<li><a href='".$this->url(array('controller'=>'contract',
                              'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
 
-         echo    "<li><a href='".$this->url(array('controller'=>'user',
-                               'action'=>'new'))."'> Student Information Sheet </a></li>";
+         echo    "<li><a href='".$this->url(array('controller'=>'form',
+                               'action'=>'student-info-show'))."'> Student Information Sheet </a></li>";
       //}
 
       echo "</ul>";

@@ -52,7 +52,7 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $rows;
    }
 
-   public function getId($table, $where)
+   public function getId($table, array $where)
    {
       $keys = array_keys($where);
       $col = $keys[0];

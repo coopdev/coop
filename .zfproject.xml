@@ -44,6 +44,11 @@
         <controllerFile controllerName="Test">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Form">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="studentInfo"/>
+          <actionMethod actionName="studentInfoSubmit"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -51,6 +56,7 @@
         <formFile formName="StudentCommon"/>
         <formFile formName="StudentInfo"/>
         <formFile formName="HistorySearch"/>
+        <formFile formName="NewUser"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -131,6 +137,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Test">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Form">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Form">
+            <viewScriptFile forActionName="studentInfo"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Form">
+            <viewScriptFile forActionName="studentInfoSubmit"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
