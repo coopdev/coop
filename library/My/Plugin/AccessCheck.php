@@ -40,12 +40,6 @@
             //die("hello");
          }
          
-         if ($role == 'user' && $contStat == 'contractNo') {
-            if (!$this->_acl->isAllowed($contStat, $resource, $action)) {
-               $redirector->direct($prevAct, $prevCont);
-            }
-         }
-         
       }
       
       public function postDispatch(Zend_Controller_Request_Abstract $request) 

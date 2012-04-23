@@ -26,15 +26,10 @@ class ContractController extends Zend_Controller_Action
         
         if ($this->_request->isPost()) {
            $data = $_POST;
-
-           if ($form->isValid($data)) {
-              $coopSess->validData = $data;
-              $this->_helper->redirector('create');
-           }
-           //$valid = $this->handlePost($form, $data);
-           //if ($valid) {
-           //  $this->_helper->redirector('create');
-          //}
+           $valid = $this->handlePost($form, $data);
+           if ($valid) {
+             $this->_helper->redirector('create');
+          }
         }
     }
 
@@ -81,19 +76,48 @@ class ContractController extends Zend_Controller_Action
           $data = $coopSess->validData;
           unset($coopSess->validData);
                        
-          $db = new My_Db();
+          $user = new Application_Model_DbTable_User();
+          $link = My_DbLink::connect();
 
-          $userVals = $db->prepFormInserts($data, 'coop_users');
+          // Set values
+          $fname = $data['fname'];
+          $lname = $data['lname'];
+          $uuid = $coopSess->uhinfo['uhuuid'];
+          $sem = $data['semester'];
 
-          $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
+          /*
+          * IF POST CAME FROM A NEW CONTRACT
+          */
+          if ($coopSess->prevAction == 'new' && $coopSess->inDb == false) {
 
-          $db->update('coop_users', $userVals, 'id = '.$coopSess->userId);
+          // Find a better way to assign the user's role.
+          // When inserting a date, make sure to use the STR_TO_DATE mysql
+          // function to convert to the proper format.
+          $link->query("INSERT INTO coop_users (fname,lname,roles_id,uuid,
+                         agreedto_contract) VALUES ($fname,$lname,4,$uuid)");
+          //$user->addUser($fname, $lname, 4, $coopSess->uhinfo['uhuuid']);
+          $coopSess->contractStatus = 'contractYes';
+          $coopSess->role = 'user';
+          $coopSess->inDb = true;
 
-          // Going to need different 'where' clauses for update query. One for when students submit form, 
-          // and one for supervisors.
-          // 
-          //$db->update('coop_users_semesters', $userSemVals, )
 
+          /*
+             * IF SOMEONE IS RENEWING CONTRACT
+             */                       
+          } else if ($coopSess->prevAction == 'renew' && $coopSess->inDb == true) {
+
+             $user->update(array('fname'=>$fname,
+                               'lname'=>$lname,
+                               'agreedto_contract'=>1),
+                               "uuid = $uuid");
+             $coopSess->contractStatus = 'contractYes';
+          }
+          // Get id of user just inserted or updated
+          $id = $link->fetchOne("SELECT id FROM coop_users 
+                                WHERE uuid = $uuid");
+
+          // Insert contract name into coop_contracts and insert IDs into
+          // the join table.
 
           //die($id);
           $this->_helper->redirector('home','pages');

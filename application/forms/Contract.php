@@ -22,6 +22,9 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          
          $coordName = $elems->getCommonTbox('coord_name', 'Co-op coordinator\'s name:');
          $coordPhone = $elems->getCommonTbox('coord_phone', 'Co-op coordinator\'s telephone:');
+
+         $studentAgree = $elems->getAgreementRadio("Student's agreement", 'student_coopagreement');
+         $supervAgree = $elems->getAgreementRadio("Supervisor's agreement", 'superv_coopagreement');
          
                   
          // Add elements. 
@@ -31,7 +34,7 @@ class Application_Form_Contract extends Application_Form_StudentCommon
                                  $this->grad, $this->major, $this->semInMaj, 
                                  $this->phone, $this->email, $coordName, $coordPhone, 
                                  $this->supervName, $this->supervTitle, $this->supervEmail,
-                                 $this->supervPhone, $this->agree, $semester, $this->submit));
+                                 $this->supervPhone, $studentAgree, $supervAgree, $semester, $this->submit));
          
          //$this->addElements(array($this->fname, $this->agree, $this->submit));
       }

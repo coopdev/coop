@@ -45,6 +45,7 @@
 
 
 #leftNav ul {
+   text-align: left;
    width: 15%;
    padding: 10px;
    margin-top: 1px;
@@ -57,6 +58,8 @@
 
 #content {
    /*margin-right: 30%;*/
+   min-height: 300px;
+   text-align: left;
    width: 79%;
    float: left;
    /*float:left;*/

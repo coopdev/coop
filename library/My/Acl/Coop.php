@@ -32,6 +32,13 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('pages_students'),'pages');
       $this->add(new Zend_Acl_Resource('pages_teachers'), 'pages');
       $this->add(new Zend_Acl_Resource('pages_home'), 'pages');
+      $this->add(new Zend_Acl_Resource('pages_disclaimer'), 'pages');
+      $this->add(new Zend_Acl_Resource('pages_access-denied'), 'pages');
+
+      /* Form Controller */
+      $this->add(new Zend_Acl_Resource('form'));
+      $this->add(new Zend_Acl_Resource('form_student-info-show'), 'form');
+      $this->add(new Zend_Acl_Resource('form_student-info-submit'), 'form');
       
       /* User Controller */
       $this->add(new Zend_Acl_Resource('user'));
@@ -39,6 +46,8 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user_create'), 'user');
       $this->add(new Zend_Acl_Resource('user_list-unenrolled'), 'user');
       $this->add(new Zend_Acl_Resource('user_activate'), 'user');
+      $this->add(new Zend_Acl_Resource('user_history-search'), 'user');
+      $this->add(new Zend_Acl_Resource('user_history-show'), 'user');
       
       /* Contract Controller */
       $this->add(new Zend_Acl_Resource('contract'));
@@ -56,52 +65,71 @@ class My_Acl_Coop extends Zend_Acl
       /* Roles */
 
       $this->addRole(new Zend_Acl_Role('none'));
-      $this->addRole(new Zend_Acl_Role('guest'), 'none');
+      //$this->addRole(new Zend_Acl_Role('guest'), 'none');
       
-      $this->addRole(new Zend_Acl_Role('user'),'guest');
+      $this->addRole(new Zend_Acl_Role('user'),'none');
       $this->addRole(new Zend_Acl_Role('coordinator'), 'user');
       $this->addRole(new Zend_Acl_Role('admin'), 'coordinator');
       $this->addRole(new Zend_Acl_Role('super-admin'), 'admin');
+      $this->addRole(new Zend_Acl_Role('supervisor'), 'none');
       
-      $this->addRole(new Zend_Acl_Role('contractNo'));
+      //$this->addRole(new Zend_Acl_Role('contractNo'));
+      $this->addRole(new Zend_Acl_Role('notActive'));
       
       
       /* PERMISSIONS */    
       
+
+      $this->allow('none', 'index');
       $this->allow('none', 'pages', 'pages_login');
-      $this->allow('none', 'auth', 'auth_cas');
+      $this->allow('none', 'pages', 'pages_access-denied');
+      //$this->allow('none', 'auth', 'auth_cas');
+      $this->allow('none', 'auth');
       //$this->deny('none', 'auth', 'logout');
+
+      $this->allow('supervisor', 'pages', 'pages_home');
+      $this->allow('supervisor', 'contract', 'contract_new');
+      $this->allow('supervisor', 'contract', 'contract_create');
       
-      $this->allow('guest','auth');
-      $this->allow('guest','pages');
-      $this->allow('guest','user','user_new');
-      $this->allow('guest','user','user_create');
-      $this->allow('guest','error');
+      //$this->allow('guest','auth');
+      //$this->allow('guest','pages');
+      //$this->allow('guest','user','user_new');
+      //$this->allow('guest','user','user_create');
+      //$this->allow('guest','error');
       
+      $this->allow('user','error');
+      $this->allow('user','auth');
+      $this->allow('user','pages');
       $this->allow('user','index');
       $this->allow('user', 'contract');
       $this->allow('user', 'syllabus','syllabus_view');
+      $this->allow('user', 'form','form_student-info-show');
+      $this->allow('user', 'form','form_student-info-submit');
       // Think about if a user needs to get to "user" actions if they are already a user 
       // (i.e. in the database as a student).
-      $this->allow('user', 'user', 'user_new');
-      $this->allow('user', 'user', 'user_create');
+      //$this->allow('user', 'user', 'user_new');
+      //$this->allow('user', 'user', 'user_create');
             
       $this->allow('coordinator', 'syllabus', 'syllabus_listall');
       $this->allow('coordinator', 'syllabus', 'syllabus_view');
+      $this->allow('coordinator','user','user_new');
+      $this->allow('coordinator','user','user_create');
       $this->allow('coordinator', 'user', 'user_list-unenrolled');
       $this->allow('coordinator', 'user', 'user_activate');
+      $this->allow('coordinator', 'user', 'user_history-search');
+      $this->allow('coordinator', 'user', 'user_history-show');
       
       /* 
        * Users who haven't filled out a contract can
        * only access certain things.
        */
-      $this->allow('contractNo','pages','pages_login');
-      $this->allow('contractNo','contract');
-      $this->allow('contractNo','auth','auth_logout');
-      $this->allow('contractNo','auth','auth_cas');
-      $this->allow('contractNo','error');
-      // delete bottom rule
-      $this->allow('contractNo');
+      $this->allow('notActive','pages','pages_login');
+      $this->allow('notActive','pages', 'pages_disclaimer');
+      $this->allow('notActive','auth','auth_logout');
+      $this->allow('notActive','auth','auth_cas');
+      $this->allow('notActive','error');
+      //// delete bottom rule
+      //$this->allow('notActive');
 
    }
 }

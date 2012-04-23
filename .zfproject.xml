@@ -17,12 +17,15 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="logout"/>
           <actionMethod actionName="logoutPage"/>
+          <actionMethod actionName="db"/>
         </controllerFile>
         <controllerFile controllerName="Pages">
           <actionMethod actionName="index"/>
           <actionMethod actionName="home"/>
           <actionMethod actionName="students"/>
           <actionMethod actionName="teachers"/>
+          <actionMethod actionName="disclaimer"/>
+          <actionMethod actionName="accessDenied"/>
         </controllerFile>
         <controllerFile controllerName="Contract">
           <actionMethod actionName="index"/>
@@ -57,6 +60,8 @@
         <formFile formName="StudentInfo"/>
         <formFile formName="HistorySearch"/>
         <formFile formName="NewUser"/>
+        <formFile formName="Disclaimer"/>
+        <formFile formName="Login"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -146,6 +151,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Form">
             <viewScriptFile forActionName="studentInfoSubmit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="disclaimer"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Auth">
+            <viewScriptFile forActionName="db"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pages">
+            <viewScriptFile forActionName="accessDenied"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

@@ -23,10 +23,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $FrontController->registerPlugin(new My_Plugin_PreviousUrl());
       
       // Register ACL plugin
-      //$FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, $coopSess->role));
+      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, $coopSess->role));
       
       // Set the base URL for the application in a session.
-      $baseUrl = $FrontController->setBaseUrl("/coop/public")->getBaseUrl();
+      $baseUrl = $FrontController->setBaseUrl("")->getBaseUrl();
       //$baseUrl = $FrontController->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
                     

@@ -169,13 +169,41 @@ class UserController extends Zend_Controller_Action
              // Set flag for historyShowAction indicating data is valid
              $coopSess->validData = $data;
 
-             $this->_helper->redirector('history-show');
+             $username = $data['username'];
+
+             // from historyShow
+             $db = new My_Db();
+
+             $query = $db->select()->from(array('u'=>'coop_users'), array('fname','lname'))
+                                   ->join(array('us'=>'coop_users_semesters'), 'u.id = us.users_id')
+                                   ->join(array('c'=>'coop_classes'), 'us.classes_id = c.id',
+                                                array('class'=>'name'))
+                                   ->join(array('s'=>'coop_semesters'), 'us.semesters_id = s.id',
+                                                'semester')
+                                   ->where("u.username = ?", $username)
+                                   ->order(new Zend_Db_Expr("SUBSTRING_INDEX(semester, ' ', -1) DESC, 
+                                                    SUBSTRING_INDEX(semester, ' ', 1) ASC"));
+
+             $history = $db->fetchAll($query);
+
+             //die(var_dump($history));
+             $this->view->post = true;
+                                          
+             $this->view->history = $history;
+
+             if (empty($history)) {
+                $this->view->message = "No history for that student";
+             }
+             // from historyShow
+
+             //$this->_helper->redirector('history-show');
           }
-       }
+       } 
     }
 
     public function historyShowAction()
     {
+
        $coopSess = new Zend_Session_Namespace('coop');
 
        if ( isset($coopSess->validData) )  {

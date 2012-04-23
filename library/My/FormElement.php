@@ -24,7 +24,7 @@ class My_FormElement
    public function getCommonTbox($name,$label)
    {
       $elem = new Zend_Form_Element_Text($name);
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -35,7 +35,7 @@ class My_FormElement
    public function getUuidTbox()
    {
       $elem = new Zend_Form_Element_Text('uuid');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('Student ID#:')
            ->addValidator(new Zend_Validate_StringLength(array('min'=>8,'max'=>8)))
            ->addValidator(new Zend_Validate_Int())      
@@ -54,7 +54,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Select('semesters_id');
       
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('When are you planning to enroll in co-op (Semester/Year)?');
       
       foreach ($sems as $sem) {
@@ -70,7 +70,7 @@ class My_FormElement
       $classes = $this->getClasses();
                              
       $elem = new Zend_Form_Element_Select('classes_id');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('Which co-op class are you planning to enroll in?');
       foreach ($classes as $c) {
          $elem->addMultiOptions(array($c['id'] => $c['name']));
@@ -82,7 +82,7 @@ class My_FormElement
    public function getCreditAmtTbox()
    {
       $elem = new Zend_Form_Element_Text('credits');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('How many credits will you enroll this semester')
            ->addValidator(new Zend_Validate_Int())
            ->addFilter('StripTags')
@@ -96,7 +96,7 @@ class My_FormElement
    public function getGradDateTbox()
    {
       $elem = new Zend_Form_Element_Text('grad_date');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('Graduation date:')
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -120,7 +120,7 @@ class My_FormElement
    public function getSemesterInMajorRadio()
    {
       $elem = new Zend_Form_Element_Radio('semester_in_major');
-      $elem->setRequired(true)
+      $elem->setRequired(false)
            ->setLabel('Semester in major:')
            ->setMultiOptions(array('1st' => '1st',
                                    '2nd' => '2nd',
@@ -139,7 +139,7 @@ class My_FormElement
       $elem->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim')
-           ->setRequired(true)
+           ->setRequired(false)
            ->addValidator(new Zend_Validate_EmailAddress());
       return $elem;
    }
@@ -156,7 +156,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text($name);
       $elem->setLabel("$label (mm/dd/yyyy):")
-           ->setRequired('true')
+           ->setRequired(false)
            ->addValidator($dateValidator)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -169,7 +169,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text('rate_of_pay');
       $elem->setLabel('Rate of pay:')
-           ->setRequired('true')
+           ->setRequired(false)
            ->addValidator(new Zend_Validate_Float())
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -184,14 +184,16 @@ class My_FormElement
     * * * * * * * * * * * * * * * * * * * * */
    
       
-   public function getAgreementRadio()
+   public function getAgreementRadio($label, $name = 'agreement')
    {
-      $elem = new Zend_Form_Element_Radio('agreement');
+      $elem = new Zend_Form_Element_Radio($name);
               
-      $elem->setMultiOptions(array('agree' => 'Agree',
-                                    'disagree' => 'Disagree'))
-             ->setSeparator('')
-             ->setRequired(true);
+      $elem->setMultiOptions(array(true => 'Agree'))
+           ->setName($name)
+           ->setLabel($label)
+           ->setSeparator('')
+           ->setRequired(true)
+           ->addErrorMessage('Must agree before continuing');
       
       return $elem;
    }

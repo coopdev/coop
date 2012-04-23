@@ -1,0 +1,8 @@
+Change cas.ini (there is one that works for the server on the server called 
+cas.ini.UserThisOne
+
+Change application.ini baseUrl to "/coop/public"
+
+Change Bootstrap.php setBaseUrl to be setBaseUrl("/coop/public")
+
+And remember to load new SQL scripts into database.

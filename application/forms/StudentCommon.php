@@ -59,7 +59,7 @@ class Application_Form_StudentCommon extends Zend_Form
        $this->supervTitle = $elems->getCommonTbox('superv_title', 'Supervisor\'s title:');
        $this->supervPhone = $elems->getCommonTbox('superv_phone', 'Supervisor\'s telephone:');
        $this->supervEmail = $elems->getEmailTbox('superv_email', 'Supervisor\'s e-mail:');
-       $this->agree = $elems->getAgreementRadio();
+       $this->agree = $elems->getAgreementRadio('');
        $this->submit = $elems->getSubmit();
                
     }

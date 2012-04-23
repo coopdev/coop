@@ -2,5 +2,33 @@
    echo "<h2> Search for a student to view their history </h2>";
 
    echo $this->form;
-   
 ?>
+
+<?php
+   $history = $this->history;
+
+   if (!empty($this->message)) {
+
+      echo $this->message;
+
+   } else if (!empty($history)) {
+
+?>
+
+      <br /><br /><h3> History for <?php echo $history[0]['fname'].' '.$history[0]['lname'] ?> </h3>
+
+      <table class="padded">
+         <th> Class </th> <th> Semester taken </th>
+
+         <?php foreach($history as $h) { ?>
+
+         <tr>
+            <td> <?php echo $h['class'] ?> </td> <td> <?php echo $h['semester'] ?> </td>
+         </tr>
+         
+
+         <?php } ?>
+         
+      </table>
+
+<?php } ?>

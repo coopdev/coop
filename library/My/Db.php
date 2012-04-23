@@ -30,7 +30,7 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $row;
    }
 
-   public function getRow($table, $where)
+   public function getRow($table, array $where)
    {
       $keys = array_keys($where);
       $col = $keys[0];
@@ -41,7 +41,7 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $row;
    }
 
-   public function getRows($table, $where)
+   public function getRows($table, array $where)
    {
       $keys = array_keys($where);
       $col = $keys[0];
@@ -63,7 +63,7 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $id;
    }
 
-   public function getCol($table, $col, $where)
+   public function getCol($table, $col, array $where)
    {
       $keys = array_keys($where);
       $whereCol = $keys[0];
