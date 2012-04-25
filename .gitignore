@@ -1,3 +1,10 @@
+=======
 /nbproject/private/
-
 .git/*
+INSTALL.txt
+LICENSE.txt
+README.txt
+demos/
+extras/documentation
+
+>>>>>>> 8122c54da63b24f73dbc0461c31b0bae96fefb0c
