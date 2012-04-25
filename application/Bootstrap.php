@@ -29,7 +29,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $baseUrl = $FrontController->setBaseUrl("")->getBaseUrl();
       //$baseUrl = $FrontController->getBaseUrl();
       $coopSess->baseUrl = $baseUrl;
-                    
+
+
+      // Change some of the default validation messages
+      $messages = array(
+
+                      Zend_Validate_Digits::NOT_DIGITS => 'Must contain only digits',
+                      Zend_Validate_Float::NOT_FLOAT => 'Must use decimal format'
+                  
+                  );
+      $translator = new Zend_Translate('array', $messages);
+       
+      Zend_Validate_Abstract::setDefaultTranslator($translator);
+      // end changing messages
    }
       
    protected function _initRoutes()

@@ -24,7 +24,7 @@ class My_FormElement
    public function getCommonTbox($name,$label)
    {
       $elem = new Zend_Form_Element_Text($name);
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -35,10 +35,15 @@ class My_FormElement
    public function getUuidTbox()
    {
       $elem = new Zend_Form_Element_Text('uuid');
-      $elem->setRequired(false)
+
+      $strLen = new Zend_Validate_StringLength(array('min'=>8,'max'=>8));
+      $strLen->setMessage('Must be exactly %min% digits', 'stringLengthTooShort')
+             ->setMessage('Must be exactly %min% digits', 'stringLengthTooLong');
+
+      $elem->setRequired(true)
            ->setLabel('Student ID#:')
-           ->addValidator(new Zend_Validate_StringLength(array('min'=>8,'max'=>8)))
-           ->addValidator(new Zend_Validate_Int())      
+           ->addValidator($strLen)
+           ->addValidator(new Zend_Validate_Digits())      
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
       return $elem;
@@ -54,7 +59,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Select('semesters_id');
       
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('When are you planning to enroll in co-op (Semester/Year)?');
       
       foreach ($sems as $sem) {
@@ -70,7 +75,7 @@ class My_FormElement
       $classes = $this->getClasses();
                              
       $elem = new Zend_Form_Element_Select('classes_id');
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('Which co-op class are you planning to enroll in?');
       foreach ($classes as $c) {
          $elem->addMultiOptions(array($c['id'] => $c['name']));
@@ -82,7 +87,7 @@ class My_FormElement
    public function getCreditAmtTbox()
    {
       $elem = new Zend_Form_Element_Text('credits');
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('How many credits will you enroll this semester')
            ->addValidator(new Zend_Validate_Int())
            ->addFilter('StripTags')
@@ -96,7 +101,7 @@ class My_FormElement
    public function getGradDateTbox()
    {
       $elem = new Zend_Form_Element_Text('grad_date');
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('Graduation date:')
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -111,7 +116,7 @@ class My_FormElement
       // get majors from database //
       
       $elem = new Zend_Form_Element_Select('major');
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('Major:');
                  
       return $elem;
@@ -120,7 +125,7 @@ class My_FormElement
    public function getSemesterInMajorRadio()
    {
       $elem = new Zend_Form_Element_Radio('semester_in_major');
-      $elem->setRequired(false)
+      $elem->setRequired(true)
            ->setLabel('Semester in major:')
            ->setMultiOptions(array('1st' => '1st',
                                    '2nd' => '2nd',
@@ -139,7 +144,7 @@ class My_FormElement
       $elem->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim')
-           ->setRequired(false)
+           ->setRequired(true)
            ->addValidator(new Zend_Validate_EmailAddress());
       return $elem;
    }
@@ -156,7 +161,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text($name);
       $elem->setLabel("$label (mm/dd/yyyy):")
-           ->setRequired(false)
+           ->setRequired(true)
            ->addValidator($dateValidator)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -169,7 +174,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text('rate_of_pay');
       $elem->setLabel('Rate of pay:')
-           ->setRequired(false)
+           ->setRequired(true)
            ->addValidator(new Zend_Validate_Float())
            ->addFilter('StripTags')
            ->addFilter('StringTrim');

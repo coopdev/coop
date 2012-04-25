@@ -4,6 +4,7 @@ INSERT INTO coop_roles (role)
 INSERT INTO coop_classes (name, syllabus) 
    VALUES ('HUM 193V', 'Syllabus for HUM 193V'),
           ('SSCI 193V', 'Syllabus for SSCI 193V'),
+          ('CENT 293V', 'Syllabus for CENT 293V'),
           ('AMT 93V', 'Syllabus for AMT 93V');
 
 INSERT INTO coop_users (fname, lname, username, password, roles_id,
