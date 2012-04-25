@@ -153,6 +153,60 @@ class TestController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender(true);
     }
 
+    public function decoratorAction()
+    {
+
+       $dec = new My_Decorator_Test();
+
+       $form = new Zend_Form();
+
+       $fname = new Zend_Form_Element_Text('fname');
+       $fname->setLabel('First Name:');
+       $lname = new Zend_Form_Element_Text('lname');
+
+       $form->addElements(array($fname, $lname));
+
+       $firstRow = array($fname->getName(), $lname->getName() );
+
+
+       $form->setElementDecorators(array(
+           'ViewHelper',
+           array('Label', array('HtmlTag'=>'td')),
+           array( array('inputDiv' => 'HtmlTag'), array('tag' => 'td') ),
+           array( array('row' => 'HtmlTag'), array('tag' => 'tr') ),
+
+           ), $firstRow
+       );
+
+       $temp1 = new Zend_Form_Element_Text('temp1');
+       $temp2 = new Zend_Form_Element_Text('temp2');
+
+       $form->addElements(array($temp1, $temp2));
+
+       $secRow = array($temp1->getName(), $temp2->getName());
+
+       $form->setElementDecorators(array(
+           'ViewHelper',
+           array( array('inputDiv' => 'HtmlTag'), array('tag' => 'td') ),
+           array( array('row' => 'HtmlTag'), array('tag' => 'tr') ),
+
+           ), $secRow
+       );
+
+       //$form->setE
+
+
+       $form->setDecorators(array('FormElements',
+                                  array('HtmlTag', array('tag' => 'table')),
+                                  'Form'
+                           ));
+
+       $this->view->form = $form;
+
+       //$dec->render($text);
+       //die(var_dump($name, $label));
+    }
+
 
 }
 
