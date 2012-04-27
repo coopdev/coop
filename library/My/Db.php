@@ -74,6 +74,22 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
       return $col;
 
    }
+
+   public function rowExists($table, array $where)
+   {
+      $keys = array_keys($where);
+      $whereCol = $keys[0];
+      $whereVal = $where[$whereCol];
+
+      $query = $this->select()->from($table)->where("$whereCol = ?", $whereVal);
+      $row = $this->fetchRow($query);
+
+      if (empty($row)) {
+         return false;
+      }
+
+      return true;
+   }
    
    /*
     * compares the data submitted from a form against the columns in a table

@@ -24,7 +24,7 @@ class My_Funcs
       if ($coopSess->role == 'user') {
          
          $coopSess->classId = $db->getCol('coop_users_semesters', 
-                                   'classes_id',array('users_id'=>$user['id']));
+                                   'classes_id',array('username'=>$user['id']));
 
          if ($user['agreedto_contract']) {
             $coopSess->contractStatus = 'contractYes';

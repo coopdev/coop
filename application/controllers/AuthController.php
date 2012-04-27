@@ -139,7 +139,9 @@ class AuthController extends Zend_Controller_Action
        // If user is in coop_users (student)
        if ( $user = $db->getRow('coop_users', array('username'=>$coopSess->uhinfo['user'])) ) {
 
-          $coopSess->role = 'user';
+          $coopSess->role = $db->getCol('coop_roles', 'role', array('id'=>$user['roles_id']));
+
+          die($coopSess->role);
 
           $funcs->setSessions($user, $coopSess);
        

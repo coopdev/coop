@@ -49,20 +49,25 @@ class UserController extends Zend_Controller_Action
           unset($coopSess->validData);
 
           $userVals = $db->prepFormInserts($data, 'coop_users');
+          $username = $userVals['username'];
           $roleId = $db->fetchOne("SELECT id FROM coop_roles WHERE role = 'user'");
           $userVals['roles_id'] = $roleId;
 
-          $usersId = $db->getId('coop_users', array('username'=>$data['username']));
+          $usersId = $db->getId('coop_users', array('username'=>$username));
+          //$studentsId = $db->getId('coop_students', array('users_id'=>$usersId));
 
 
+          // If user does not already exists
           if (empty($usersId)) {
              $db->insert('coop_users', $userVals);
-
-             $usersId = $db->lastInsertId('coop_users');
+             //$usersId = $db->lastInsertId('coop_users');
+             $db->insert('coop_students', array('username' => $username));
+             //$studentsId = $db->lastInsertId('coop_students');
           }
 
+
           $query = $db->select()->from('coop_users_semesters', 'id')
-                          ->where('users_id = ?', $usersId)
+                          ->where('student = ?', $username)
                           ->where('semesters_id = ?', $data['semesters_id'])
                           ->where('classes_id = ?', $data['classes_id']);
 
@@ -72,7 +77,8 @@ class UserController extends Zend_Controller_Action
              $this->view->message = "That student has already been added for this semester";
           } else {
              $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
-             $userSemVals['users_id'] = $usersId;
+             $userSemVals['student'] = $username;
+             //$userSemVals['students_id'] = $studentsId;
              try {
                 $db->insert('coop_users_semesters', $userSemVals);
                 $this->view->message = "Student has been added";

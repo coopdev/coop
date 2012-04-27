@@ -20,8 +20,9 @@ class TestController extends Zend_Controller_Action
        $link = My_DbLink::connect();
        //$config = new Zend_Config_Ini(APPLICATION_PATH.
        //                            '/configs/application.ini','production');
-             
+
        $db = new My_Db();
+
        //$db = $db->getLink();
        $role = $db->getRowById('coop_roles', 9);
        die(var_dump($role));
@@ -34,7 +35,8 @@ class TestController extends Zend_Controller_Action
        $cols = $db->insertFormData('blah');
        
        $row = $db->fetchRow("SELECT * FROM coop_roles where role = 'user'");
-       die(var_dump($cols));
+       //die(var_dump($cols));
+
 
        //$link->update('coop_classes', $updates, 'id = 1');
        
