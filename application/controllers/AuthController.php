@@ -22,10 +22,6 @@ class AuthController extends Zend_Controller_Action
        
     }
 
-    public function indexAction()
-    {
-        // action body
-    }
 
     public function casAction()
     {
@@ -84,51 +80,13 @@ class AuthController extends Zend_Controller_Action
     {
 
        $coopSess = new Zend_Session_Namespace('coop');
-
-//       // Get currest semester.
-//       $curSemester = new My_Semester();
-//       $curSemester = $curSemester->getCurrentSem();
-//       
-//       $db = new My_Db();
-//
-//       // Get the semester that the database thinks is the current semester.
-//       $sem = $db->getCol('coop_semesters', 'semester', array('current'=>1));
-//
-//       // If the current semester is not set as current in the database, it means the semester 
-//       // has changed and the database needs to update the current semester.
-//       if ($curSemester != $sem) {
-//          $db->update('coop_semesters', array('current'=>0), 'current = 1');
-//
-//          $db->update('coop_semesters', array('current'=>1), "semester = '$curSemester'");
-//
-//          // Because it is a new semester, deactivate users so they have to accept the 
-//          // disclaimer again.
-//          $db->update('coop_users', array('active'=>0));
-//       }
-       
-       
-       // Checks if there is an agreement form for current semester in
-       // coop_contracts table.
-//       $qryResult = $link->query("SELECT id FROM coop_contracts WHERE
-//                               semester = '$curSemester'");
-//       $record = $qryResult->fetch();
-//       $contractId = $record['id'];
-       
-       // If current semester isn't in contracts table, set all users
-       // "agreedto_contract" fields to 0 and insert the current semester
-       // into the contracts table.
-//       if (!$contractId) {
-//          //die('hi');
-//          $link->query("UPDATE coop_users SET agreedto_contract = 0");
-//          $link->insert('coop_contracts', array('semester'=>$curSemester));
-//
-//       }
        
        /*
         * START SETTING SESSION VARIABLES
         */
 
        $sem = new My_Semester();
+       // Sets the current semester in the database.
        $sem->setCurrentSem();
        
        $db = new My_Db();
@@ -136,24 +94,21 @@ class AuthController extends Zend_Controller_Action
 
        $funcs = new My_Funcs();
 
-       // If user is in coop_users (student)
+       // If user is in the database
        if ( $user = $db->getRow('coop_users', array('username'=>$coopSess->uhinfo['user'])) ) {
 
-          $coopSess->role = $db->getCol('coop_roles', 'role', array('id'=>$user['roles_id']));
+          // If user is not enrolled for the current semester
+          if (!$funcs->isEnrolled($user)) {
+             $this->_helper->redirector('access-denied', 'pages');
+          }
 
-          die($coopSess->role);
-
+          // Set the user's initial session variables
           $funcs->setSessions($user, $coopSess);
        
-          // If user is in coop_coordinators (coordinator)
-       } else if ( $user = $db->getRow('coop_coordinators', array('username'=>$coopSess->uhinfo['user'])) ) {
-
-          $coopSess->role = 'coordinator';
-
-          $funcs->setSessions($user, $coopSess);
-
+       // If not in the database
        } else {
 
+          // Deny access
           $coopSess->inDb = false;
           $this->_helper->redirector('access-denied', 'pages');
 
@@ -182,12 +137,4 @@ class AuthController extends Zend_Controller_Action
        
        //}
     }
-
-    public function dbAction()
-    {
-
-        
-    }
-
-
 }

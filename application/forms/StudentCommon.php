@@ -43,12 +43,12 @@ class Application_Form_StudentCommon extends Zend_Form
        $this->uuid = $elems->getUuidTbox();
        $this->employer = $elems->getCommonTbox('employer','Employer:');
        $this->wantedJob = $elems->getCommonTbox('wanted_job','What job do you want for your co-op experience?');
-       $this->curJob = $elems->getCommonTbox('cur_job', 'Job title:');
+       $this->curJob = $elems->getCommonTbox('current_job', 'Job title:');
        $this->department = $elems->getCommonTbox('department', 'Department:');
        $this->sdate = $elems->getDateTbox('start_date','Start date');
        $this->edate = $elems->getDateTbox('end_date','End date');
        $this->payRate = $elems->getPayRateTbox();
-       $this->address = $elems->getCommonTbox('address', 'Address/City/ZIP:');
+       $this->address = $elems->getCommonTbox('address', 'Street address:');
        $this->jobAddr = $elems->getCommonTbox('job_address', 'Address/City/ZIP:');
        $this->grad = $elems->getDateTbox('grad_date', 'Graduation date:');
        $this->major = $elems->getMajorSelect();

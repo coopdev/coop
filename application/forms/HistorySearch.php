@@ -20,9 +20,14 @@ class Application_Form_HistorySearch extends Zend_Form
        $elems = new My_FormElement();
 
        $search = $elems->getCommonTbox('username', "Enter student's username:");
+       $search->setDecorators(array('ViewHelper',
+                                    'Label'
+                                    ));
        //$search->addValidator(new Zend_Validate_Db_RecordExists( array('table'=>'coop_users', 'field'=>'username')));
 
        $submit = $elems->getSubmit('Search');
+       $submit->setDecorators(array('ViewHelper'
+                                    ));
 
        $this->addElements(array($search, $submit));
     }

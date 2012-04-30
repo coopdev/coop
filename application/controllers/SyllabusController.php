@@ -8,11 +8,6 @@ class SyllabusController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    public function indexAction()
-    {
-        
-    }
-    
     /*
      * Lists all class syllabuses. Only teachers should be able to view this, and
      * maybe admins.
@@ -47,8 +42,8 @@ class SyllabusController extends Zend_Controller_Action
           // the class id stored in their record so they can only view the 
           // syllabus for their class, and not get to other ones through the url.
           if ($coopSess->role == 'user') {
-             $userId = $coopSess->userId;
-             $classId = (int)$link->getCol('coop_users_semesters', 'classes_id', array('users_id'=>$userId));
+             $classId = (int)$link->getCol('coop_users_semesters', 'classes_id', 
+                                          array('student'=>$coopSess->username));
              //$id = (int)$link->fetchOne("SELECT classes_id FROM coop_users 
              //                       WHERE uuid = '$uuid'");
           }

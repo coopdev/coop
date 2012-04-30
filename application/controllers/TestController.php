@@ -22,16 +22,15 @@ class TestController extends Zend_Controller_Action
        //                            '/configs/application.ini','production');
 
        $db = new My_Db();
+      $semester = new My_Semester();
+      $currentSem = $semester->getCurrentSem();
+      $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
 
-       //$db = $db->getLink();
-       $role = $db->getRowById('coop_roles', 9);
-       die(var_dump($role));
-       $col = $db->getCol('coop_roles', 'role', array('id'=>9));
-       die($col);
-       $role = $db->getRow('coop_roles', array('id'=>5));
-       die(var_dump($role));
-       $id = $db->getId('coop_roles', array('role'=>'user'));
-       die(var_dump($id));
+      $coopSess->classIds = $db->getCols('coop_users_semesters', 
+                                'classes_id',
+                                array('student'=>'johndoe', 
+                                   'semesters_id' => $coopSess->currentSemId));
+      die(var_dump($coopSess->classIds));
        $cols = $db->insertFormData('blah');
        
        $row = $db->fetchRow("SELECT * FROM coop_roles where role = 'user'");
@@ -157,56 +156,54 @@ class TestController extends Zend_Controller_Action
 
     public function decoratorAction()
     {
-
-       $dec = new My_Decorator_Test();
-
        $form = new Zend_Form();
+       $form->setAction('/test/decorator');
 
-       $fname = new Zend_Form_Element_Text('fname');
-       $fname->setLabel('First Name:');
-       $lname = new Zend_Form_Element_Text('lname');
+       $form->addElement('text', 'fname');
+       $form->addElement('text', 'lname');
+       $form->addElement('text', 'pass');
+       $form->addElement('text', 'user');
+       $form->addElement('submit', 'submit');
 
-       $form->addElements(array($fname, $lname));
+       $form->getElement('fname')->setRequired(true);
 
-       $firstRow = array($fname->getName(), $lname->getName() );
+       $form->addDisplayGroup(array('fname', 'lname'),  'first');
+       $form->addDisplayGroup(array('pass', 'user'),  'second');
+       $form->addDisplayGroup(array('submit'),  'submitrow');
 
+       $form->setDisplayGroupDecorators(array('FormElements',
+                                              array('HtmlTag', array('tag' => 'div', 'class' => 'fields'))
+                                       ));
 
-       $form->setElementDecorators(array(
-           'ViewHelper',
-           array('Label', array('HtmlTag'=>'td')),
-           array( array('inputDiv' => 'HtmlTag'), array('tag' => 'td') ),
-           array( array('row' => 'HtmlTag'), array('tag' => 'tr') ),
-
-           ), $firstRow
-       );
-
-       $temp1 = new Zend_Form_Element_Text('temp1');
-       $temp2 = new Zend_Form_Element_Text('temp2');
-
-       $form->addElements(array($temp1, $temp2));
-
-       $secRow = array($temp1->getName(), $temp2->getName());
-
-       $form->setElementDecorators(array(
-           'ViewHelper',
-           array( array('inputDiv' => 'HtmlTag'), array('tag' => 'td') ),
-           array( array('row' => 'HtmlTag'), array('tag' => 'tr') ),
-
-           ), $secRow
-       );
-
-       //$form->setE
-
-
-       $form->setDecorators(array('FormElements',
-                                  array('HtmlTag', array('tag' => 'table')),
-                                  'Form'
-                           ));
+       $form->setElementDecorators(array('ViewHelper',
+                                         'Errors',
+                                         array('HtmlTag', array('tag' => 'span', 'class' => 'fields'))
+                                   ));
 
        $this->view->form = $form;
 
+       if ($this->_request->isPost()) {
+          $data = $_POST;
+
+          //die(var_dump($data));
+
+          if ($form->isValid($data)) {       
+             die('hi');
+          }
+
+          //$errors = $form->getMessages();
+          //die(var_dump($errors));
+
+       }
+
        //$dec->render($text);
        //die(var_dump($name, $label));
+    }
+
+    public function subformAction()
+    {
+       
+       $this->view->form = $form;
     }
 
 

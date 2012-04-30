@@ -8,11 +8,6 @@ class UserController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    public function indexAction()
-    {
-        // action body
-    }
-
     public function newAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -99,6 +94,7 @@ class UserController extends Zend_Controller_Action
 
 
 
+    // Not used
     public function listUnenrolledAction()
     {
         $coopSess = new Zend_Session_Namespace('coop');
@@ -134,6 +130,7 @@ class UserController extends Zend_Controller_Action
                 
     }
 
+    // Not used
     public function activateAction()
     {
        if ($this->_request->isGet()) {
@@ -166,14 +163,12 @@ class UserController extends Zend_Controller_Action
 
        $this->view->form = $form;
 
-       if ($this->_request->isPost()) {
+       if ($this->_request->isPost() || $this->_request->isGet()) {
+
           $data = $_POST;
 
           if ($form->isValid($data)) {
              $coopSess = new Zend_Session_Namespace('coop');
-
-             // Set flag for historyShowAction indicating data is valid
-             $coopSess->validData = $data;
 
              $username = $data['username'];
 
@@ -181,7 +176,7 @@ class UserController extends Zend_Controller_Action
              $db = new My_Db();
 
              $query = $db->select()->from(array('u'=>'coop_users'), array('fname','lname'))
-                                   ->join(array('us'=>'coop_users_semesters'), 'u.id = us.users_id')
+                                   ->join(array('us'=>'coop_users_semesters'), 'u.username = us.student')
                                    ->join(array('c'=>'coop_classes'), 'us.classes_id = c.id',
                                                 array('class'=>'name'))
                                    ->join(array('s'=>'coop_semesters'), 'us.semesters_id = s.id',
@@ -205,8 +200,13 @@ class UserController extends Zend_Controller_Action
              //$this->_helper->redirector('history-show');
           }
        } 
+
+       else if ($this->_request->isGet()) {
+          
+       }
     }
 
+    // NOT USED ANYMORE
     public function historyShowAction()
     {
 
@@ -222,7 +222,7 @@ class UserController extends Zend_Controller_Action
           $db = new My_Db();
 
           $query = $db->select()->from(array('u'=>'coop_users'), array('fname','lname'))
-                                ->join(array('us'=>'coop_users_semesters'), 'u.id = us.users_id')
+                                ->join(array('us'=>'coop_users_semesters'), 'u.username = us.student')
                                 ->join(array('c'=>'coop_classes'), 'us.classes_id = c.id',
                                              array('class'=>'name'))
                                 ->join(array('s'=>'coop_semesters'), 'us.semesters_id = s.id',

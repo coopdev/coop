@@ -17,7 +17,6 @@ CREATE TABLE coop_users(
    coord_name TEXT,
    coord_phone TEXT,
    roles_id INT,
-   agreedto_contract BOOLEAN DEFAULT 0,
    active BOOLEAN DEFAULT 0,
    PRIMARY KEY(id),
    FOREIGN KEY(roles_id) REFERENCES coop_roles(id)
@@ -29,7 +28,7 @@ CREATE TABLE coop_phonenumbers(
    phonenumber CHAR(8),
    username VARCHAR(100),
    phonetypes_id INT,
-   date_mod DATE,
+   date_mod DATETIME,
    PRIMARY KEY(id),
    FOREIGN KEY(phonetypes_id) REFERENCES coop_phonetypes(id),
    FOREIGN KEY(username) REFERENCES coop_users(username)
@@ -49,9 +48,8 @@ CREATE TABLE coop_addresses(
    city TEXT,
    state TEXT,
    zipcode CHAR(5),
-   apartment TEXT,
    username VARCHAR(100),
-   date_mod DATE,
+   date_mod DATETIME,
    PRIMARY KEY(id),
    FOREIGN KEY(username) REFERENCES coop_users(username)
 );
@@ -62,7 +60,6 @@ CREATE TABLE coop_employmentinformation(
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(100),
    current_job TEXT,
-   wanted_job TEXT,
    start_date DATE,
    end_date DATE,
    rate_of_pay FLOAT,
@@ -78,6 +75,7 @@ CREATE TABLE coop_students(
    grad_date DATE,
    majors_id INT,
    semester_in_major INT,
+   wanted_job TEXT,
    agreedto_contract BOOLEAN DEFAULT 0,
    PRIMARY KEY(id),
    FOREIGN KEY(username) REFERENCES coop_users(username)
@@ -164,12 +162,22 @@ CREATE TABLE coop_supervisors(
    FOREIGN KEY(username) REFERENCES coop_users(username)
 );
 
--- DROP VIEW IF EXISTS coop_users_semesters_view;
--- CREATE VIEW coop_users_semesters_view AS select u.*, us.semesters_id, us.classes_id, 
---    us.credits, us.coordinators_id, us.student_coopagreement, us.superv_coopagreement, 
---    s.semester, s.current, cl.name AS class, cl.syllabus, co.fname AS coord_fname, co.lname AS 
---    coord_lname, su.fname AS superv_fname, su.lname AS superv_lname from coop_users AS 
---    u join coop_users_semesters AS us ON u.id = us.users_id join coop_semesters AS s 
---    ON us.semesters_id = s.id join coop_classes AS cl ON us.classes_id = cl.id 
---    left join coop_coordinators AS co ON us.coordinators_id = co.id 
---    left join coop_supervisors AS su ON us.supervisors_id = su.id;
+-- View for a specific semester for a specific student
+DROP VIEW IF EXISTS coop_users_semesters_view;
+CREATE VIEW coop_users_semesters_view AS SELECT u.*, us.semesters_id, us.classes_id, 
+   us.credits, us.coordinator, us.student_coopagreement, us.superv_coopagreement, 
+   s.semester, s.current, cl.name AS class, cl.syllabus FROM coop_users AS 
+   u join coop_users_semesters AS us ON u.username = us.student join coop_semesters AS s 
+   ON us.semesters_id = s.id join coop_classes AS cl ON us.classes_id = cl.id; 
+
+-- View for student information
+DROP VIEW IF EXISTS coop_studentinfo_view;
+CREATE VIEW coop_studentinfo_view AS SELECT u.*, pn.phonenumber, pn.date_mod AS phn_date_mod, 
+   pt.type, st.grad_date,st.semester_in_major,st.wanted_job,st.agreedto_contract, ad.address, 
+   ad.city, ad.state, ad.zipcode, ad.date_mod AS addr_date_mod, em.current_job,
+   em.start_date, em.end_date, em.rate_of_pay, em.job_address 
+   FROM coop_users AS u LEFT JOIN coop_addresses AS ad ON u.username = ad.username 
+   LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
+   LEFT JOIN coop_phonetypes AS pt on pn.phonetypes_id = pt.id 
+   LEFT JOIN coop_students AS st ON u.username = st.username
+   LEFT JOIN coop_employmentinformation AS em ON u.username = em.username;

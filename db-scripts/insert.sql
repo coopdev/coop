@@ -50,3 +50,6 @@ INSERT INTO coop_users_semesters (student, semesters_id, classes_id, supervisor,
           ('janedoe', 2, 2, 'superv2', 11),
           ('ousley', 1, 3, 'superv3', 10);
 
+INSERT INTO coop_phonetypes (type)
+   VALUES ('home'),
+          ('mobile');

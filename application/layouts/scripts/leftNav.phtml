@@ -1,0 +1,41 @@
+<?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   
+   echo "<ul>";
+
+   // COORDINATOR VIEW
+
+   if ($coopSess->role == 'coordinator') {
+      echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
+                          'action'=>'listall'))."'> Class syllabuses </a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'user',
+                          'action'=>'new'))."'> Add student </a></li> <br />";
+      
+
+      //echo    "<li><a href='".$this->url(array('controller'=>'user',
+      //             'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'user',
+                   'action'=>'history-search'))."'> Student co-op history </a></li> <br />";
+
+   // USER VIEW
+
+   } else if ($coopSess->role == 'user') {
+      echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
+                                        'action'=>'view')).">Syllabus</a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'contract',
+                          'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'form',
+                            'action'=>'student-info-show'))."'> Student Information Sheet </a></li>";
+   } else if ($coopSess->role == 'supervisor') {
+
+      echo    "<li><a href='".$this->url(array('controller'=>'contract',
+                          'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
+
+   }
+
+   echo "</ul>";
+?>

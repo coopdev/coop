@@ -1,12 +1,13 @@
 <?php
 
 /**
- * Creates HTML elements.
+ * Creates Form elements.
  *
  * @author joseph
  */
 class My_FormElement 
 {  
+   private $requiredVal = true;
    
    /* * * * * * * * * * * * * * * * * * * * * 
     * STUDENT INFORMATION SHEET FORM FIELDS *
@@ -24,7 +25,7 @@ class My_FormElement
    public function getCommonTbox($name,$label)
    {
       $elem = new Zend_Form_Element_Text($name);
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -40,7 +41,7 @@ class My_FormElement
       $strLen->setMessage('Must be exactly %min% digits', 'stringLengthTooShort')
              ->setMessage('Must be exactly %min% digits', 'stringLengthTooLong');
 
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('Student ID#:')
            ->addValidator($strLen)
            ->addValidator(new Zend_Validate_Digits())      
@@ -49,6 +50,22 @@ class My_FormElement
       return $elem;
    }
    
+   public function getZipcodeTbox()
+   {
+      $elem = new Zend_Form_Element_Text('zipcode');
+
+      $strLen = new Zend_Validate_StringLength(array('min'=>5,'max'=>5));
+      $strLen->setMessage('Must be exactly %min% digits', 'stringLengthTooShort')
+             ->setMessage('Must be exactly %min% digits', 'stringLengthTooLong');
+
+      $elem->setRequired($this->requiredVal)
+           ->setLabel('Zipcode:')
+           ->addValidator($strLen)
+           ->addValidator(new Zend_Validate_Digits())      
+           ->addFilter('StripTags')
+           ->addFilter('StringTrim');
+      return $elem;
+   }
       
    /*
     * Should display semesters from database as options.
@@ -59,7 +76,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Select('semesters_id');
       
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('When are you planning to enroll in co-op (Semester/Year)?');
       
       foreach ($sems as $sem) {
@@ -75,7 +92,7 @@ class My_FormElement
       $classes = $this->getClasses();
                              
       $elem = new Zend_Form_Element_Select('classes_id');
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('Which co-op class are you planning to enroll in?');
       foreach ($classes as $c) {
          $elem->addMultiOptions(array($c['id'] => $c['name']));
@@ -87,7 +104,7 @@ class My_FormElement
    public function getCreditAmtTbox()
    {
       $elem = new Zend_Form_Element_Text('credits');
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('How many credits will you enroll this semester')
            ->addValidator(new Zend_Validate_Int())
            ->addFilter('StripTags')
@@ -101,7 +118,7 @@ class My_FormElement
    public function getGradDateTbox()
    {
       $elem = new Zend_Form_Element_Text('grad_date');
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('Graduation date:')
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -116,7 +133,7 @@ class My_FormElement
       // get majors from database //
       
       $elem = new Zend_Form_Element_Select('major');
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('Major:');
                  
       return $elem;
@@ -125,7 +142,7 @@ class My_FormElement
    public function getSemesterInMajorRadio()
    {
       $elem = new Zend_Form_Element_Radio('semester_in_major');
-      $elem->setRequired(true)
+      $elem->setRequired($this->requiredVal)
            ->setLabel('Semester in major:')
            ->setMultiOptions(array('1st' => '1st',
                                    '2nd' => '2nd',
@@ -144,7 +161,7 @@ class My_FormElement
       $elem->setLabel($label)
            ->addFilter('StripTags')
            ->addFilter('StringTrim')
-           ->setRequired(true)
+           ->setRequired($this->requiredVal)
            ->addValidator(new Zend_Validate_EmailAddress());
       return $elem;
    }
@@ -161,7 +178,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text($name);
       $elem->setLabel("$label (mm/dd/yyyy):")
-           ->setRequired(true)
+           ->setRequired($this->requiredVal)
            ->addValidator($dateValidator)
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -174,7 +191,7 @@ class My_FormElement
       
       $elem = new Zend_Form_Element_Text('rate_of_pay');
       $elem->setLabel('Rate of pay:')
-           ->setRequired(true)
+           ->setRequired($this->requiredVal)
            ->addValidator(new Zend_Validate_Float())
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
@@ -197,7 +214,7 @@ class My_FormElement
            ->setName($name)
            ->setLabel($label)
            ->setSeparator('')
-           ->setRequired(true)
+           ->setRequired($this->requiredVal)
            ->addErrorMessage('Must agree before continuing');
       
       return $elem;

@@ -35,7 +35,6 @@ class PagesController extends Zend_Controller_Action
 
              if ($user = $db->getRow('coop_users', array('username'=>$username))) {
                 if ($user['password'] == $password) {
-                   $coopSess->role = 'user';
 
                    $funcs->setSessions($user, $coopSess);
 
@@ -46,23 +45,9 @@ class PagesController extends Zend_Controller_Action
                    $this->_helper->redirector('home');
                    
                 } 
-             } else if ( $user = $db->getRow('coop_coordinators', array('username'=>$username))) {
-                if ($user['password'] == $password) {
-                   $coopSess->role = 'coordinator';
-
-                   $funcs->setSessions($user, $coopSess);
-
-                   $this->_helper->redirector('home');
-                }
-             } else if ( $user = $db->getRow('coop_supervisors', array('username'=>$username))) {
-                if ($user['password'] == $password) {
-                   $coopSess->role = 'supervisor';
-
-                   $funcs->setSessions($user, $coopSess);
-
-                   $this->_helper->redirector('home');
-                }
-             }
+             } else {
+                $coopSess->inDb = false;
+             } 
 
              $this->view->message = "Incorrect username or password";
           }
@@ -84,16 +69,6 @@ class PagesController extends Zend_Controller_Action
         //$auth = Zend_Auth::getInstance();
         //$identity = $auth->getStorage()->read();
         //die(var_dump($identity));
-    }
-
-    public function studentsAction()
-    {
-        // action body
-    }
-
-    public function teachersAction()
-    {
-        // action body
     }
 
     public function disclaimerAction()
@@ -118,7 +93,7 @@ class PagesController extends Zend_Controller_Action
 
                 $semId = $db->getId('coop_semesters', array('current'=>1));
 
-                $vals = array('users_id'=> $coopSess->userId, 'semesters_id' => $semId, 'date_agreed'=> date('Ymd') );
+                $vals = array('username'=> $coopSess->username, 'semesters_id' => $semId, 'date_agreed'=> date('Ymd') );
                 $db->insert('coop_disclaimers', $vals);
 
                 $this->_helper->redirector('home');
@@ -130,8 +105,6 @@ class PagesController extends Zend_Controller_Action
 
           }
        }
-
-
        
     }
 

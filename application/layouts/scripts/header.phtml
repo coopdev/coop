@@ -1,0 +1,19 @@
+<?php
+   $coopSess = new Zend_Session_Namespace('coop');
+
+   echo    "<div id=headerUpperRight>";
+   echo       $coopSess->fname." ".$coopSess->lname."<br />";
+   //echo       $coopSess->uhinfo['name']."<br />";
+   
+   if ($coopSess->role != 'none' || !empty($coopSess->uhinfo)) {
+      echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Logout </a>";
+   } else {
+      echo "<a href='".$this->url(array('controller'=>'auth','action'=>'cas'))."'> Login (CAS) </a>";
+   }
+
+   //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
+   echo    "</div>";
+   echo    "<div id=headerMain>";
+   echo       "<h2> Header </h2>";
+   echo    "</div>";
+?>

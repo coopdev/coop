@@ -84,6 +84,15 @@ table.padded td {
    vertical-align: center;
 }
 
+table.studentInfo tr td {
+   background:white;
+}
+
+span.fields {
+   padding: 20px;
+}
+
+
 /*
 table.all-syllabuses {
    width: 100%;

@@ -65,14 +65,42 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
 
    public function getCol($table, $col, array $where)
    {
-      $keys = array_keys($where);
-      $whereCol = $keys[0];
-      $whereVal = $where[$whereCol];
+      //$keys = array_keys($where);
+      //$whereCol = $keys[0];
+      //$whereVal = $where[$whereCol];
       //die(var_dump($whereCol, $whereVal, $col));
-      $query = $this->select()->from($table, array($col))->where("$whereCol = ?", $whereVal);
-      $col = $this->fetchOne($query);
-      return $col;
+      //$query = $this->select()->from($table, array($col))->where("$whereCol = ?", $whereVal);
+      $query = $this->select()->from($table, array($col));
+      foreach ($where as $key => $val) {
 
+         $query = $query->where("$key = ?", $val);
+
+      }
+      $val = $this->fetchOne($query);
+      return $val;
+
+   }
+
+   public function getCols($table, $col, array $where)
+   {
+      //$keys = array_keys($where);
+      //$whereCol = $keys[0];
+      //$whereVal = $where[$whereCol];
+      ////die(var_dump($whereCol, $whereVal, $col));
+      //$query = $this->select()->from($table, array($col))->where("$whereCol = ?", $whereVal);
+      $query = $this->select()->from($table, $col);
+      foreach ($where as $key => $val) {
+
+         $query = $query->where("$key = ?", $val);
+
+      }
+      $result = $this->fetchAll($query);
+
+      foreach ($result as $r) {
+         $vals[] = $r[$col];
+      }
+
+      return $vals;
    }
 
    public function rowExists($table, array $where)

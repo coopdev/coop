@@ -7,6 +7,7 @@
    echo $this->doctype();
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <?php 
@@ -20,6 +21,7 @@
       echo $this->headLink();
    ?>
 </head>
+
 <body>
    <?php
       echo "<div id=main>";
@@ -28,78 +30,34 @@
       
       // Start Header.
       echo "<div id='header'>";
-      echo    "<div id=headerUpperRight>";
-      echo       $coopSess->fname." ".$coopSess->lname."<br />";
-      //echo       $coopSess->uhinfo['name']."<br />";
-      
-      if ($coopSess->role != 'none' || !empty($coopSess->uhinfo)) {
-         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Logout </a>";
-      } else {
-         echo "<a href='".$this->url(array('controller'=>'auth','action'=>'cas'))."'> Login (CAS) </a>";
-      }
 
-      //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
-      echo    "</div>";
-      echo    "<div id=headerMain>";
-      echo       "<h2> Header </h2>";
-      echo    "</div>";
+         echo $this->render('header.phtml');
+
       echo "</div>";
       // End Header.
       
-      // Start main nav
+      // Start left nav
       echo "<div id=leftNav>";
-      echo "<ul>";
 
-      // COORDINATOR VIEW
+         echo $this->render('leftNav.phtml');
 
-      if ($coopSess->role == 'coordinator') {
-         echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
-                             'action'=>'listall'))."'> Class syllabuses </a></li> <br />";
-
-         echo    "<li><a href='".$this->url(array('controller'=>'user',
-                             'action'=>'new'))."'> Add student </a></li> <br />";
-         
-
-         //echo    "<li><a href='".$this->url(array('controller'=>'user',
-         //             'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
-
-         echo    "<li><a href='".$this->url(array('controller'=>'user',
-                      'action'=>'history-search'))."'> Student co-op history </a></li> <br />";
-
-      // USER VIEW
-
-      } else if ($coopSess->role == 'user') {
-         echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
-                                           'action'=>'view')).">Syllabus</a></li> <br />";
-
-         echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                             'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
-
-         echo    "<li><a href='".$this->url(array('controller'=>'form',
-                               'action'=>'student-info-show'))."'> Student Information Sheet </a></li>";
-      } else if ($coopSess->role == 'supervisor') {
-
-         echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                             'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
-
-      }
-
-      echo "</ul>";
       echo "</div>";
-      // End main nav
+      // End left nav
       
       // Start content
       echo "<div id=content>";
-      echo "<h2>$this->pageTitle</h2>";
-      
-      echo $this->layout()->content;
+
+         echo "<h2>$this->pageTitle</h2>";
+         echo $this->layout()->content;
       
       echo "</div>";
       // End content
       
       // Start footer
       echo "<div id='footer'>";
-      echo "<h1> Footer </h1>";
+
+         echo $this->render('footer.phtml');
+
       echo "<div>";
       // End footer
       

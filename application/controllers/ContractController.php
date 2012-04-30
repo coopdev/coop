@@ -11,11 +11,6 @@ class ContractController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    public function indexAction()
-    {
-        // action body
-    }
-
     public function newAction()
     {
         $coopSess = new Zend_Session_Namespace('coop');
@@ -38,39 +33,6 @@ class ContractController extends Zend_Controller_Action
         }
     }
 
-    public function renewAction()
-    {
-        /* IMPORTANT: WHEN POPULATING THE FORM DATA WITH DATA FROM DATABASE, THE
-         * FORM ELEMENT NAMES MUST MATCH THE TABLE FIELD NAMES.
-         */
-        $coopSess = new Zend_Session_Namespace('coop');
-        $username = $coopSess->uhinfo['user'];
-        
-        $link = My_DbLink::connect();
-        
-        $sel = $link->select();
-        
-        $qry = $sel->from('coop_users',array('fname','lname'))
-                   ->where('username = ?',$username);
-        //$stmt = $qry->query();
-        $result = $link->fetchRow($qry);
-        $form = new Application_Form_Contract();
-                
-        $form->setAction($coopSess->baseUrl.'/contract/renew');
-        $form->populate($result);
-        $this->view->form = $form;
-        
-        if ($this->_request->isPost()) {
-           $data = $_POST;
-           $valid = $this->handlePost($form, $data);
-           if ($valid) {
-             $this->_helper->redirector('create');
-          }
-        }
-           
-              
-    }
-    
     public function createAction()
     {
        
@@ -101,8 +63,45 @@ class ContractController extends Zend_Controller_Action
        }
        
     }
+
+    // Not being used
+    public function renewAction()
+    {
+        /* IMPORTANT: WHEN POPULATING THE FORM DATA WITH DATA FROM DATABASE, THE
+         * FORM ELEMENT NAMES MUST MATCH THE TABLE FIELD NAMES.
+         */
+        $coopSess = new Zend_Session_Namespace('coop');
+        $username = $coopSess->uhinfo['user'];
+        
+        $link = My_DbLink::connect();
+        
+        $sel = $link->select();
+        
+        $qry = $sel->from('coop_users',array('fname','lname'))
+                   ->where('username = ?',$username);
+        //$stmt = $qry->query();
+        $result = $link->fetchRow($qry);
+        $form = new Application_Form_Contract();
+                
+        $form->setAction($coopSess->baseUrl.'/contract/renew');
+        $form->populate($result);
+        $this->view->form = $form;
+        
+        if ($this->_request->isPost()) {
+           $data = $_POST;
+           $valid = $this->handlePost($form, $data);
+           if ($valid) {
+             $this->_helper->redirector('create');
+          }
+        }
+              
+    }
     
     
+    
+    /* HELPERS */
+    
+
     private function handlePost($form, $data)
     {
        $coopSess = new Zend_Session_Namespace('coop');
