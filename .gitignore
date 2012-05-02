@@ -1,2 +1,5 @@
 nbproject/*
 nbproject/private/*
+
+application/configs/application.ini*
+db-scripts/dbconn.php*

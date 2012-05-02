@@ -86,6 +86,8 @@ table.padded td {
 
 table.studentInfo tr td {
    background:white;
+   vertical-align: top; 
+   /*border: thin solid #000000;*/
 }
 
 span.fields {

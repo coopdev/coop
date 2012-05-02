@@ -60,8 +60,8 @@ CREATE TABLE coop_employmentinformation(
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(100),
    current_job TEXT,
-   start_date DATE,
-   end_date DATE,
+   start_date DATE NULL,
+   end_date DATE NULL,
    rate_of_pay FLOAT,
    job_address TEXT,
    PRIMARY KEY(id),
@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS coop_students;
 CREATE TABLE coop_students(
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(100),
-   grad_date DATE,
+   grad_date DATE NULL,
    majors_id INT,
    semester_in_major INT,
    wanted_job TEXT,
@@ -148,7 +148,7 @@ CREATE TABLE coop_disclaimers(
    id INT NOT NULL AUTO_INCREMENT,
    semesters_id INT,
    username VARCHAR(100),
-   date_agreed DATE,
+   date_agreed DATE DEFAULT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE CASCADE,
    FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
@@ -172,10 +172,12 @@ CREATE VIEW coop_users_semesters_view AS SELECT u.*, us.semesters_id, us.classes
 
 -- View for student information
 DROP VIEW IF EXISTS coop_studentinfo_view;
-CREATE VIEW coop_studentinfo_view AS SELECT u.*, pn.phonenumber, pn.date_mod AS phn_date_mod, 
-   pt.type, st.grad_date,st.semester_in_major,st.wanted_job,st.agreedto_contract, ad.address, 
-   ad.city, ad.state, ad.zipcode, ad.date_mod AS addr_date_mod, em.current_job,
-   em.start_date, em.end_date, em.rate_of_pay, em.job_address 
+CREATE VIEW coop_studentinfo_view AS SELECT u.*, 
+   pn.phonenumber, pn.date_mod AS phn_date_mod, 
+   pt.type AS phonetype, 
+   st.grad_date, st.semester_in_major, st.wanted_job, st.agreedto_contract,
+   ad.address, ad.city, ad.state, ad.zipcode, ad.date_mod AS addr_date_mod, 
+   em.current_job, em.start_date, em.end_date, em.rate_of_pay, em.job_address 
    FROM coop_users AS u LEFT JOIN coop_addresses AS ad ON u.username = ad.username 
    LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
    LEFT JOIN coop_phonetypes AS pt on pn.phonetypes_id = pt.id 
