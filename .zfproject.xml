@@ -56,6 +56,10 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="submit"/>
         </controllerFile>
+        <controllerFile controllerName="Async">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="studentRecSearchResult"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -173,6 +177,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Assignment">
             <viewScriptFile forActionName="submit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Async">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Async">
+            <viewScriptFile forActionName="studentRecSearchResult"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
