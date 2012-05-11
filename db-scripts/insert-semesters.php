@@ -4,7 +4,7 @@
    $query = $link->prepare('INSERT INTO coop_semesters (semester) 
                   VALUES (?)');
    
-   $year = 2012;
+   $year = 2008;
    
    for ($i = $year; $i < 2051; $i++) {
       $query->execute(array("Spring $i"));  

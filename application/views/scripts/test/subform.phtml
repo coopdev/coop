@@ -1,3 +1,55 @@
 <?php
    echo $this->form;
+
+ //<input type="button" class=.addsf' name=.addsf" value="Add a Site"/>
 ?>
+
+
+<script type="text/javascript">
+
+   $(document).ready(function()
+   {
+
+      $(".addsf").live('click', function() {
+         getSubf("addsf");
+      });
+
+      $(".rmsf").live('click', function() {
+         getSubf("rmsf");
+      });
+
+      function getSubf(flag)
+      {
+         //data = $("#studentInfoSheet").serializeArray();
+         data = $("#studentInfoSheet").toJSON();
+         //alert(data);
+         $.post("/test/add-subform", {"flag" : flag, "data" : data}, function($resp) {
+            //alert($resp);
+            //$("#content").append($(".addsf"));
+            //$("#content > *").not("#content > .addsf").remove();
+            $("#content").empty();
+            $("#content").append($resp);
+            //$("#content").append($(".addsf"));
+            //$("#studentInfoSheet").append($("#Submit"));
+         });
+
+      }
+      //$(".addsf").on('click',
+      ////$(document).on('click', '.addsf', 
+      //   function() {
+      //      //alert('hi');
+      //      //var val = 'hi';
+      //      $.post("/test/add-subform", {"flag" : "sf"}, function($resp) {
+      //         //alert($resp);
+      //         $("#content").append($(".addsf"));
+      //         $("#content > *").not("#content > .addsf").remove();
+      //         $("#content").append($resp);
+      //         $("#content").append($(".addsf"));
+      //         $("#studentInfoSheet").append($("#Submit"));
+
+      //      })
+      //   }
+      //)
+
+   });
+</script>

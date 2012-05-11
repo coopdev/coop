@@ -234,7 +234,7 @@ class My_FormElement
       $semester = new My_Semester();
       
       // Get current semester.
-      $curSem = $semester->getCurrentSem();
+      $curSem = $semester->getRealSem();
       //$curSem = "Fall 2012";
 
       $semPieces = explode(' ',$curSem);

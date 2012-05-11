@@ -6,3 +6,6 @@ Change application.ini baseUrl to "/coop/public"
 Change Bootstrap.php setBaseUrl to be setBaseUrl("/coop/public")
 
 And remember to load new SQL scripts into database.
+
+change the jQuery $.post path to /coop/public/restofpath/ in whatever views are using
+it because the document roots are different.

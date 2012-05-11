@@ -3,39 +3,41 @@
    
    echo "<ul>";
 
-   // COORDINATOR VIEW
+   // COORDINATOR LINKS
 
-   if ($coopSess->role == 'coordinator') {
+   //if ($coopSess->role == 'coordinator') {
       echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
-                          'action'=>'listall'))."'> Class syllabuses </a></li> <br />";
+                          'action'=>'listall'), null, true)."'> Class syllabuses </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'user',
-                          'action'=>'new'))."'> Add student </a></li> <br />";
+                          'action'=>'new'), null, true)."'> Add student </a></li> <br />";
       
 
       //echo    "<li><a href='".$this->url(array('controller'=>'user',
       //             'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'user',
-                   'action'=>'history-search'))."'> Student co-op history </a></li> <br />";
+                   'action'=>'searchstudent'), null, true)."'> Search student records </a></li> <br />";
 
-   // USER VIEW
+      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
+                   'action'=>'submit'), null, true)."'> Submit an assignment </a></li> <br />";
+   // STUDENT LINKS
 
-   } else if ($coopSess->role == 'user') {
+  // } else if ($coopSess->role == 'user') {
       echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
-                                        'action'=>'view')).">Syllabus</a></li> <br />";
+                                        'action'=>'view'), null, true).">Syllabus</a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                          'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
+                          'action'=>'new'), null, true)."'> Co-op Agreement Form </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'form',
-                            'action'=>'student-info-show'))."'> Student Information Sheet </a></li>";
-   } else if ($coopSess->role == 'supervisor') {
+                            'action'=>'student-info-show'), null, true)."'> Student Information Sheet </a></li><br />";
+   //} else if ($coopSess->role == 'supervisor') {
 
       echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                          'action'=>'new'))."'> Co-op Agreement Form </a></li> <br />";
+                          'action'=>'new'), null, true)."'> Co-op Agreement Form </a></li> <br />";
 
-   }
+   //}
 
    echo "</ul>";
 ?>

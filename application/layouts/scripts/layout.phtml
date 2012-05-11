@@ -19,14 +19,16 @@
       $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/main.css'); 
       $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); 
       echo $this->headLink();
+
+      echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jquery.js');
+      echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jquery.to_json.js');
+      echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/myJs.js');
    ?>
 </head>
 
 <body>
    <?php
       echo "<div id=main>";
-      
-      echo "<div id=innerMain>";
       
       // Start Header.
       echo "<div id='header'>";
@@ -45,11 +47,13 @@
       // End left nav
       
       // Start content
+      echo "<div id='contentContainer'>";
       echo "<div id=content>";
 
          echo "<h2>$this->pageTitle</h2>";
          echo $this->layout()->content;
       
+      echo "</div>";
       echo "</div>";
       // End content
       
@@ -60,9 +64,6 @@
 
       echo "<div>";
       // End footer
-      
-      echo "</div>";
-      // End inner main div
       
       echo "</div>";
       // End main div

@@ -17,7 +17,7 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          $elems = new My_FormElement();
          $semester = new Zend_Form_Element_Hidden('semester');
          $curSem = new My_Semester();
-         $curSem = $curSem->getCurrentSem();
+         $curSem = $curSem->getRealSem();
          $semester->setValue($curSem);
          
          $coordName = $elems->getCommonTbox('coord_name', 'Co-op coordinator\'s name:');
@@ -48,7 +48,7 @@ class Application_Form_Contract extends Application_Form_StudentCommon
 //        //$this->setAction('/coop/public/user/create');
 //        $semester = new Zend_Form_Element_Hidden('semester');
 //        $curSem = new My_Semester();
-//        $curSem = $curSem->getCurrentSem();
+//        $curSem = $curSem->getRealSem();
 //        $semester->setValue($curSem);
 //        
 //        $elems = new My_FormElement();

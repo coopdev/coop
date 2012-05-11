@@ -22,8 +22,13 @@ class TestController extends Zend_Controller_Action
        //                            '/configs/application.ini','production');
 
        $db = new My_Db();
+
+       $temp = new Application_Model_DbTable_Assignment();
+
+       $row = $temp->rowExists(array('username' => 'vlah'));
+       die(var_dump($row));
       $semester = new My_Semester();
-      $currentSem = $semester->getCurrentSem();
+      $currentSem = $semester->getRealSem();
       $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
 
       $coopSess->classIds = $db->getCols('coop_users_semesters', 
@@ -105,7 +110,7 @@ class TestController extends Zend_Controller_Action
        
         $link = My_DbLink::connect();
         $semester = new My_Semester();
-        $curSem = $semester->getCurrentSem();
+        $curSem = $semester->getRealSem();
         
         $semPieces = explode(' ',$curSem);
         $curYear = (int)$semPieces[1];
@@ -202,8 +207,165 @@ class TestController extends Zend_Controller_Action
 
     public function subformAction()
     {
-       
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       if (isset($coopSess->subfcount) && $coopSess->subfcount > 0) {
+
+          // Preserve the subfcount if it's greater than 0
+          $sfCount = $coopSess->subfcount;
+
+       }
+
+       $coopSess->subfcount = 0;
+       $form = new Application_Form_StudentInfo();
+
        $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          if ($coopSess->dynamicForm instanceof Application_Form_StudentInfo) {
+
+             $dynaForm = $coopSess->dynamicForm;
+
+             //unset($coopSess->dynamicForm);
+             //die(var_dump($data));
+             if ($dynaForm->isValid($data)) {
+
+             } else {
+
+                // If not valid, must use the preserved subfcount so the count doesn't reset
+                // causing users to lose the subforms they have added.
+                if (isset($sfCount)) {
+                   $coopSess->subfcount = $sfCount;
+                }
+                $this->view->form = $dynaForm;
+             }
+
+          } else {
+             $form->isValid($data);
+          }
+       } else {
+          if (isset($coopSess->dynamicForm)) {
+             unset($coopSess->dynamicForm);
+          }
+          
+       }
+       
+    }
+
+    public function addSubformAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $coopSess->dynamicForm = new Application_Form_StudentInfo();
+       $form = $coopSess->dynamicForm;
+       $form->setAction('/test/subform');
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $this->getRequest()->getPost('data');
+          $flag = $this->getRequest()->getPost('flag');
+
+          $form->makeDynaForm($flag, $data);
+
+          $coopSess->dynamicForm = $form;
+
+          //if ($flag == "addsf") {
+          //   //die('hi');
+          //   $coopSess->subfcount++;
+          //} else if ($flag == "rmsf") {
+          //   $coopSess->subfcount--;
+          //   if ($coopSess->subfcount < 0) {
+          //      $coopSess->subfcount = 0;
+          //   }
+          //}
+
+          //$subfcount = $coopSess->subfcount;
+
+          //for ($i = 0; $i < $subfcount; $i++) {
+          //   $num = $i + 1;
+          //   $sfname = "empinfo";
+          //   $empInfoText = new Zend_Form_Element_Hidden("empinfoText$num");
+          //   //die(var_dump($empInfo));
+          //   $empInfoText->setLabel("EMPLOYMENT INFORMATION (If you are currently working at a job related to your major please describe below)");
+          //   $empInfoText->setDecorators(array('ViewHelper',
+          //                                  array('Label', array('tag' => 'p', 'style' => 'font-size: 14px;border-width:1px;border-style:solid;padding:10px')),
+          //                                  array('HtmlTag', array('tag' => 'br', 'placement' => 'PREPEND'))
+          //                            ));
+          //   $form->addElement($empInfoText);
+          //   $empSubf = $form->makeEmpSubf();
+          //   $empSubf->setElementsBelongTo("$sfname\[$num]");
+          //   
+          //   $form->addSubForm($empSubf, "$sfname\[$num]");
+          //   $addsf = $form->getElement('addsf');
+          //   $form->removeElement('addsf');
+          //   $rmsf = $form->getElement('rmsf');
+          //   $form->removeElement('rmsf');
+          //   $agreeLabel = $form->getElement('partAgreement');
+          //   $form->removeElement('partAgreement');
+          //   $agree = $form->getElement('agreement');
+          //   $form->removeElement('agreement');
+          //   $submit = $form->getElement('Submit');
+          //   $form->removeElement('Submit');
+          //   $form->addElements(array($addsf, $rmsf, $agreeLabel, $agree, $submit));
+
+          //}
+          //$form->populate($data);
+          //$coopSess->dynamicForm = $form;
+          //die(var_dump($coopSess->dynamicForm));
+          
+          //$this->_helper->redirector('get-form');
+
+          //} else {
+          //   $form = $coopSess->dynamicForm;
+          //   $form->isValid($_POST);
+          //}
+
+          $form->setSubFormDecorators(array('FormElements',
+                                             array('HtmlTag', array('tag' => 'table', 'class' => 'studentInfo'))
+                                      ));
+          echo $form;
+
+          $this->_helper->viewRenderer->setNoRender();
+          $this->_helper->getHelper('layout')->disableLayout();
+       } else {
+          //echo "<h2> Access Denied </h2>";
+       }
+
+
+       //echo $form;
+
+
+    }
+
+    public function subfAction()
+    {
+       $form = new Zend_Form();
+       $sf1 = new Zend_Form_SubForm();
+       //$sf2 = new Zend_Form_SubForm();
+
+       $sf1->addElement('text', 'fname')
+           ->addElement('text', 'lname');
+
+
+       //$sf2->addElement('text', 'fname')
+       //    ->addElement('text', 'lname');
+
+       $sf2 = $sf1;
+
+       $form->addSubForm($sf1, 'sf1');
+       $form->addSubForm($sf2, 'sf2');
+
+       $this->view->form = $form;
+
+		 $this->_helper->getHelper('layout')->disableLayout();
+    }
+
+
+    public function blahAction()
+    {
+       $assign = new My_Model_Assignment();
+
+       $assign->getAll();
     }
 
 

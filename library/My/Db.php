@@ -23,7 +23,6 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
    }
 
    public function getRowById($table, $id)
-
    {
       $query = $this->query("SELECT * FROM $table WHERE id = $id");
       $row = $query->fetch();
@@ -133,8 +132,14 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
     */
    public function prepFormInserts($data, $table)
    {
-      $cols = $this->describeTable($table);
-      $cols = array_keys($cols);
+      if (is_string($table)) {
+         $cols = $this->describeTable($table);
+         $cols = array_keys($cols);
+      } else if ($table instanceof Zend_Db_Table_Abstract) {
+         $cols = $table->info();
+         $cols = $cols['cols'];
+         //die(var_dump($cols));
+      }
       $vals = array();
 
       // compare names of posted form elements against table columns

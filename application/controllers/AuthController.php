@@ -97,14 +97,13 @@ class AuthController extends Zend_Controller_Action
        // If user is in the database
        if ( $user = $db->getRow('coop_users', array('username'=>$coopSess->uhinfo['user'])) ) {
 
-          // If user is not enrolled for the current semester
-          if (!$funcs->isEnrolled($user)) {
-             $this->_helper->redirector('access-denied', 'pages');
-          }
-
           // Set the user's initial session variables
           $funcs->setSessions($user, $coopSess);
        
+          // If user is not enrolled for the current semester
+          if ($coopSess->role == 'user' && !$funcs->isEnrolled($user)) {
+             $this->_helper->redirector('access-denied', 'pages');
+          }
        // If not in the database
        } else {
 

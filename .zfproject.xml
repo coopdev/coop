@@ -52,6 +52,10 @@
           <actionMethod actionName="studentInfo"/>
           <actionMethod actionName="studentInfoSubmit"/>
         </controllerFile>
+        <controllerFile controllerName="Assignment">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="submit"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -62,6 +66,7 @@
         <formFile formName="NewUser"/>
         <formFile formName="Disclaimer"/>
         <formFile formName="Login"/>
+        <formFile formName="SubmitAssignment"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -72,6 +77,8 @@
         <dbTableDirectory>
           <dbTableFile dbTableName="Person"/>
           <dbTableFile dbTableName="Role"/>
+          <dbTableFile dbTableName="Assignment"/>
+          <dbTableFile dbTableName="SubmittedAssignment"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
@@ -160,6 +167,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Pages">
             <viewScriptFile forActionName="accessDenied"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Assignment">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Assignment">
+            <viewScriptFile forActionName="submit"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

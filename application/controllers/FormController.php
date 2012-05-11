@@ -46,7 +46,7 @@ class FormController extends Zend_Controller_Action
              $addrVals = array();
           }
 
-          $query = $db->select()->from('coop_employmentinformation', 
+          $query = $db->select()->from('coop_employmentinfo', 
                                           array('current_job', 'start_date', 'end_date', 'rate_of_pay', 'job_address'))
                                    ->where("username = '" . $coopSess->username . "'");
           $empVals = $db->fetchRow($query);
@@ -134,7 +134,8 @@ class FormController extends Zend_Controller_Action
           
           $data = $coopSess->validData;
           $subf1 = $data['subf1'];
-          $subf2 = $data['subf2'];
+          $subf2 = $data["empinfo"];
+          $subf2 = $subf2[0];
           $data = $subf1 + $subf2;
 
           unset($coopSess->validData);
@@ -156,8 +157,8 @@ class FormController extends Zend_Controller_Action
           $addrVals['username'] = $coopSess->username;
           $addrVals['date_mod'] = date('Ymdhis');
 
-          // get only the submited form data that matches table fields in coop_employmentinformation
-          $empVals = $db->prepFormInserts($data, 'coop_employmentinformation');
+          // get only the submited form data that matches table fields in coop_employmentinfo
+          $empVals = $db->prepFormInserts($data, 'coop_employmentinfo');
           //die(var_dump($empVals));
           $empVals['username'] = $coopSess->username;
 
@@ -199,10 +200,10 @@ class FormController extends Zend_Controller_Action
              $db->insert('coop_addresses', $addrVals);
           }
 
-          if ($temp = $db->getId('coop_employmentinformation', array('username' => $coopSess->username))) {
-             $db->update('coop_employmentinformation', $empVals, "username = '" . $coopSess->username . "'");
+          if ($temp = $db->getId('coop_employmentinfo', array('username' => $coopSess->username))) {
+             $db->update('coop_employmentinfo', $empVals, "username = '" . $coopSess->username . "'");
           } else {
-             $db->insert('coop_employmentinformation', $empVals);
+             $db->insert('coop_employmentinfo', $empVals);
           }
 
           if ($temp = $db->getId('coop_students', array('username' => $coopSess->username))) {

@@ -24,7 +24,7 @@ class My_Funcs
       $coopSess->role = $db->getCol('coop_roles', 'role', array('id'=>$user['roles_id']));
        
       $semester = new My_Semester();
-      $currentSem = $semester->getCurrentSem();
+      $currentSem = $semester->getRealSem();
       $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
 
       if ($coopSess->role == 'user') {

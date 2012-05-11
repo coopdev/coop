@@ -46,7 +46,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user_create'), 'user');
       $this->add(new Zend_Acl_Resource('user_list-unenrolled'), 'user');
       $this->add(new Zend_Acl_Resource('user_activate'), 'user');
-      $this->add(new Zend_Acl_Resource('user_history-search'), 'user');
+      $this->add(new Zend_Acl_Resource('user_searchstudent'), 'user');
       $this->add(new Zend_Acl_Resource('user_history-show'), 'user');
       
       /* Contract Controller */
@@ -116,7 +116,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator','user','user_create');
       $this->allow('coordinator', 'user', 'user_list-unenrolled');
       $this->allow('coordinator', 'user', 'user_activate');
-      $this->allow('coordinator', 'user', 'user_history-search');
+      $this->allow('coordinator', 'user', 'user_searchstudent');
       $this->allow('coordinator', 'user', 'user_history-show');
       
       /* 

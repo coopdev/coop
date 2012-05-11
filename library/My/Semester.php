@@ -9,7 +9,7 @@ class My_Semester
 {
    private $curSem = null;
    
-   public function getCurrentSem()
+   public function getRealSem()
    {
       date_default_timezone_set('US/Hawaii');
       $curDate = date('Y-m-d');
@@ -31,7 +31,7 @@ class My_Semester
    public function setCurrentSem()
    {
       // Get currest semester.
-       $curSemester = $this->getCurrentSem();
+       $curSemester = $this->getRealSem();
        
        $db = new My_Db();
 

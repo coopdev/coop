@@ -1,20 +1,10 @@
 #main {
-   
-   /* position: relative; */
-   /* height: 50px; */
-   /* text-align: center; 
-   border-width: 1px;
-   border-color: #0398CA;
-   border-style: solid;
-    */
-   /* width: 1000px; */
-   /*text-align:center;*/
-}
-
-#innerMain {
    /*position:relative;*/
-   width:75%;
-   
+   /*min-width: 500px;
+   max-width: 1350px;*/
+   /*width: 1350px;*/
+   overflow: hidden;
+   width:90%;
    background-color:#FFFFFF;
    margin-top: 50px;
    margin-bottom: 50px;
@@ -24,7 +14,6 @@
    border: thin solid #000000;
    /*overflow: hidden;*/
    /* border-style: solid; */
-   
 }
 
 #header {
@@ -53,20 +42,26 @@
    list-style-type: none;
    border-right-style: groove;
    border-right-width: 2px;
-   /*border: thin solid #000000;*/
+   border: thin solid #000000;
+   font-size: 16px;
 }
 
 #content {
    /*margin-right: 30%;*/
+   /*max-width: 1000px;
+   min-width: 300px;*/
    min-height: 300px;
    text-align: left;
-   width: 79%;
+   /*width: 1000px;*/
+   width: 100%;
    float: left;
-   /*float:left;*/
-   
    margin-top: 1px;
    padding: 10px;
-   /*border: thin solid #000000;*/
+   border: thin solid #000000;
+}
+
+#content .error, .success {
+   font-size: 16px;
 }
 
 #footer {
@@ -85,7 +80,7 @@ table.padded td {
 }
 
 table.studentInfo tr td {
-   background:white;
+   background: white;
    vertical-align: top; 
    /*border: thin solid #000000;*/
 }
@@ -94,6 +89,9 @@ span.fields {
    padding: 20px;
 }
 
+.addsf  {
+   
+}
 
 /*
 table.all-syllabuses {
@@ -120,9 +118,13 @@ table.all-syllabuses {
 */
 #test {
    font-style:italic;
-   
 }
 
 .errors {
    color: red;
+}
+
+#contentContainer {
+   overflow: hidden;
+   border: thin solid #000000;
 }
