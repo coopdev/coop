@@ -1,12 +1,7 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of User
+ * Handles actions for the different users of the application.
  *
  * @author joseph
  */
@@ -29,9 +24,47 @@ class My_Model_User extends Zend_Db_Table_Abstract
       //return $this->fetchAll()->toArray();
    }
 
-   public function searchStudentRecs()
+   // Queries for student records based on submitted criteria from the search form.
+   // Returns semester related information.
+   public function searchStudentRecs($criteria)
    {
-      
+      $data = $criteria['data'];
+
+      $where['fname'] = trim($data['fname']);
+      $where['lname'] = trim($data['lname']);
+      $where['username'] = trim($data['username']);
+      $where['classes_id'] = trim($data['classes_id']);
+      $where['semesters_id'] = trim($data['semesters_id']);
+      $where['coordinator'] = trim($data['coordinator']);
+
+      $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username');
+      $sel = $this->select()->setIntegrityCheck(false);
+      $query = $sel->from('coop_users_semesters_view', $cols);
+
+      foreach ($where as $key => $val) {
+         trim($where[$key]);
+         if (!empty($where[$key])) {
+            $query = $query->where("$key = ?", $val);
+         }
+      }
+
+      $rows = $this->fetchAll($query)->toArray();
+
+      return $rows;
+
+   }
+
+   public function getAllCoords()
+   {
+      $role = new My_Model_Role();
+      $sel = $this->select()->setIntegrityCheck(false);
+      $res = $sel->from(array('u' => $this->_name), array('fname', 'lname', 'u.username'))
+                 ->join(array('r' => 'coop_roles'), "u.roles_id = r.id", array())
+                 ->where("r.role = 'coordinator'");
+
+      $rows = $this->fetchAll($res)->toArray();
+
+      return $rows;
 
    }
 

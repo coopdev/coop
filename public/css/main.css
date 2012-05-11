@@ -26,6 +26,7 @@
 
 #headerUpperRight {
    float: right;
+   font-size: 14px;
 }
 
 #headerMain {
@@ -43,7 +44,12 @@
    border-right-style: groove;
    border-right-width: 2px;
    border: thin solid #000000;
-   font-size: 16px;
+   font-size: 14px;
+}
+
+#contentContainer {
+   overflow: hidden;
+   border: thin solid #000000;
 }
 
 #content {
@@ -85,46 +91,26 @@ table.studentInfo tr td {
    /*border: thin solid #000000;*/
 }
 
+
 span.fields {
    padding: 20px;
-}
-
-.addsf  {
-   
-}
-
-/*
-table.all-syllabuses {
-   width: 100%;
-}
-
-   table.all-syllabuses td {
-      border-style: solid;
-      border-width: 2px;
-      padding-bottom: 15px; 
-   }
-
-   table.all-syllabuses td.link {
-      border-style: solid;
-      border-width: 2px;
-      padding-right: 5px;
-   }
-
-   table.all-syllabuses td.link-last {
-      padding-right: 5px;
-      border-style: solid;
-      border-width: 2px;
-   }
-*/
-#test {
-   font-style:italic;
 }
 
 .errors {
    color: red;
 }
 
-#contentContainer {
-   overflow: hidden;
-   border: thin solid #000000;
+
+/* Student Record Search stuff */
+#searchform-table {
+   width: 20%;
+   font-size: 14px;
+}
+
+#searchform-table tr td {
+   background:white;
+}
+
+#searchresults-table {
+   font-size: 14px;
 }

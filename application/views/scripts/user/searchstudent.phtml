@@ -1,4 +1,103 @@
 <?php
-   echo $this->form;
+   echo "<form id='searchform'>";
+   echo "<table id='searchform-table'>";
+
+   echo "<tr>";
+
+   echo    "<td><b>Enter first name:</b><br />";
+   echo    $this->form->fname."</td>";
+
+   echo    "<td><b>Select semester:</b><br />";
+   echo    $this->form->semesters_id."<br /></td>";
+
+   echo "</tr>";
+
+   echo "<tr>";
+   echo    "<td><b>Enter last name:</b><br />";
+   echo    $this->form->lname."</td>";
+
+   echo    "<td><b>Select class:</b><br />";
+   echo    $this->form->classes_id."</td>";
+
+
+   echo "</tr>";
+
+   echo "<tr>";
+   echo    "<td><b>Enter username:</b><br />";
+   echo    $this->form->username."</td>";
+
+
+   echo    "<td><b>Select coordinator:</b><br />";
+   echo    $this->form->coordinator."</td>";
+   echo "</tr>";
+
+   echo "<tr>";
+   echo "<td>".$this->form->search. "</td>";
+   echo "</tr>";
+
+   echo "</table>";
+   echo "<form><br /><br />";
+
+   echo "<input type='hidden' id='resultFlag' value='' />";
+   //echo $this->form;
 
 ?>
+
+<div class="buttonpanel">
+   <button> Assignment History </button>
+
+</div>
+
+<div id="asyncContainer">
+
+</div>
+
+
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("#search").live('click', function() {
+
+         search();
+
+      });
+
+      $(".buttonpanel").hide();
+
+
+
+      function search() {
+         data = $("#searchform").toJSON();
+
+         $.post("/async/student-rec-search-result", {'data' : data}, function($resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append($resp);
+
+            if ( $("#searchresults-table").length > 0) {
+               $(".buttonpanel").show();
+               $("#resultFlag").val("success");
+            } else {
+               $(".buttonpanel").hide();
+               $("#resultFlag").val("");
+            }
+
+            //if ( $( "#resultFlag").val().length > 0 ) {
+            //   alert('hi');
+            //}
+
+
+         });
+      }
+
+
+
+
+
+
+
+
+
+
+   })
+
+</script>

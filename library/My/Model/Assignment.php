@@ -17,6 +17,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
 
+   // Submits an assignment.
    public function submit(array $data)
    {
       $db = new My_Db();
@@ -40,6 +41,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   // Checks if a specific assignment has already been submitted.
    public function isSubmitted(array $data)
    {
       $sa = new My_Model_SubmittedAssignment();

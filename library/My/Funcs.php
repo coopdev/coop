@@ -22,24 +22,20 @@ class My_Funcs
       $coopSess->lname = $user['lname'];
       $coopSess->username = $user['username'];
       $coopSess->role = $db->getCol('coop_roles', 'role', array('id'=>$user['roles_id']));
+
+
        
       $semester = new My_Semester();
       $currentSem = $semester->getRealSem();
       $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
 
       if ($coopSess->role == 'user') {
+         //die(var_dump($coopSess->role));
 
-         
          $coopSess->classIds = $db->getCols('coop_users_semesters', 
                                    'classes_id',
                                    array('student'=>$user['username'], 
-                                      'semesters_id' => $coopSess->currentSemId));
-
-         if ($user['agreedto_contract']) {
-            $coopSess->contractStatus = 'contractYes';
-         } else {
-            $coopSess->contractStatus = 'contractNo';
-         }
+                                   'semesters_id' => $coopSess->currentSemId));
 
          if (!$user['active']) {
             $coopSess->role = "notActive";
