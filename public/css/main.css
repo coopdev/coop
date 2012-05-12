@@ -52,6 +52,11 @@
    border: thin solid #000000;
 }
 
+#contentContainer {
+   overflow: hidden;
+   border: thin solid #000000;
+}
+
 #content {
    /*margin-right: 30%;*/
    /*max-width: 1000px;
