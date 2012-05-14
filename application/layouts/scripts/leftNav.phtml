@@ -5,7 +5,7 @@
 
    // COORDINATOR LINKS
 
-   //if ($coopSess->role == 'coordinator') {
+   if ($coopSess->role == 'coordinator') {
       echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
                           'action'=>'listall'), null, true)."'> Class syllabuses </a></li> <br />";
 
@@ -23,7 +23,7 @@
                    'action'=>'submit'), null, true)."'> Submit an assignment </a></li> <br />";
    // STUDENT LINKS
 
-  // } else if ($coopSess->role == 'user') {
+   } else if ($coopSess->role == 'user') {
       echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
                                         'action'=>'view'), null, true).">Syllabus</a></li> <br />";
 
@@ -32,12 +32,12 @@
 
       echo    "<li><a href='".$this->url(array('controller'=>'form',
                             'action'=>'student-info-show'), null, true)."'> Student Information Sheet </a></li><br />";
-   //} else if ($coopSess->role == 'supervisor') {
+   } else if ($coopSess->role == 'supervisor') {
 
       echo    "<li><a href='".$this->url(array('controller'=>'contract',
                           'action'=>'new'), null, true)."'> Co-op Agreement Form </a></li> <br />";
 
-   //}
+   }
 
    echo "</ul>";
 ?>
