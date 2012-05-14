@@ -44,6 +44,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
        
       Zend_Validate_Abstract::setDefaultTranslator($translator);
       // end changing messages
+      // alskjflasjfl
    }
       
    protected function _initRoutes()
