@@ -32,7 +32,8 @@
                $redirector->direct('cas','auth');
                
             } else {
-               $redirector->direct($prevAct, $prevCont);
+               $redirector->direct('access-denied', 'pages');
+               //$redirector->direct($prevAct, $prevCont);
                //$request->setControllerName('error');
                //$request->setActionName('error');
             }

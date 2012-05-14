@@ -7,7 +7,7 @@
  */
 class My_FormElement 
 {  
-   private $requiredVal = true;
+   private $requiredVal = false;
    
    /* * * * * * * * * * * * * * * * * * * * * 
     * STUDENT INFORMATION SHEET FORM FIELDS *
@@ -131,10 +131,16 @@ class My_FormElement
    public function getMajorSelect()
    {  
       // get majors from database //
+      $major = new My_Model_Major();
+      $rows = $major->getAll();
       
-      $elem = new Zend_Form_Element_Select('major');
+      $elem = new Zend_Form_Element_Select('majors_id');
       $elem->setRequired($this->requiredVal)
            ->setLabel('Major:');
+
+      foreach ($rows as $r) {
+         $elem->addMultiOptions(array($r['id'] => $r['major']));
+      }
                  
       return $elem;
    }
@@ -144,11 +150,11 @@ class My_FormElement
       $elem = new Zend_Form_Element_Radio('semester_in_major');
       $elem->setRequired($this->requiredVal)
            ->setLabel('Semester in major:')
-           ->setMultiOptions(array('1st' => '1st',
-                                   '2nd' => '2nd',
-                                   '3rd' => '3rd',
-                                   '4th' => '4th',
-                                   '5th' => '5th'))
+           ->setMultiOptions(array('1' => '1st',
+                                   '2' => '2nd',
+                                   '3' => '3rd',
+                                   '4' => '4th',
+                                   '5' => '5th'))
            ->setSeparator('');
            
       return $elem;

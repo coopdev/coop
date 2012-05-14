@@ -15,9 +15,22 @@ class Application_Form_NewUser extends Zend_Form
        $semester = $elems->getEnrollDateSelect();
        $semester->setLabel("Choose semester:");
 
+       $coord = new Zend_Form_Element_Select('coordinator');
+       $coord->setLabel('Choose coordinator:');
+
+       $user = new My_Model_User();
+       $coords = $user->getAllCoords();
+
+       foreach ($coords as $c) {
+          $fname = $c['fname'];
+          $lname = $c['lname'];
+          $uname = $c['username'];
+          $coord->addMultiOptions(array($uname => "$lname, $fname ($uname)"));
+       }
+
        $submit = $elems->getSubmit();
 
-       $this->addElements(array($username, $class, $semester, $submit));
+       $this->addElements(array($username, $class, $semester, $coord, $submit));
     }
 
 

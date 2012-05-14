@@ -56,7 +56,8 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
         $this->addElement($empinfoText);
         $subf2->setElementsBelongTo("empinfo[0]");
         $this->addSubForm($subf2, "empinfo[0]");
-        $this->addElements(array($addsubf, $rmsubf, $partAgreement, $this->agree, $this->submit ));
+        //$this->addElements(array($addsubf, $rmsubf, $partAgreement, $this->agree, $this->submit ));
+        $this->addElements(array($partAgreement, $this->agree, $this->submit ));
         $this->setSubFormDecorators(array('FormElements',
                                           array('HtmlTag', array('tag' => 'table', 'class' => 'studentInfo'))
                                    ));
@@ -69,6 +70,7 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
 
         // Add <br /> after agreement radio button
         $this->setElementDecorators(array('ViewHelper',
+                                          'Errors',
                                            array('HtmlTag', array('tag' => 'br', 'placement' => 'APPEND'))),
                                            array("agreement", "rmsf")
                                     );
@@ -120,7 +122,7 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
 
         $subf1->addDisplayGroup(array('fname', 'lname', 'uuid'), 'firstrow');
         $subf1->addDisplayGroup(array('address', 'city', 'state', 'zipcode'), 'secondrow');
-        $subf1->addDisplayGroup(array('wanted_job', 'credits', 'grad_date', 'major'), 'thirdrow');
+        $subf1->addDisplayGroup(array('wanted_job', 'credits', 'grad_date', 'majors_id'), 'thirdrow');
         $subf1->addDisplayGroup(array('semester_in_major', 'phone', 'mobile', 'email'), 'fourthrow');
 
         $subf1->setElementDecorators(array('ViewHelper',

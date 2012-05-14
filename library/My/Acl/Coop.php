@@ -76,6 +76,7 @@ class My_Acl_Coop extends Zend_Acl
       //$this->addRole(new Zend_Acl_Role('contractNo'));
       $this->addRole(new Zend_Acl_Role('notActive'));
       
+      $this->addRole(new Zend_Acl_Role('notEnrolled'), 'none');
       
       /* PERMISSIONS */    
       
@@ -86,6 +87,7 @@ class My_Acl_Coop extends Zend_Acl
       //$this->allow('none', 'auth', 'auth_cas');
       $this->allow('none', 'auth');
       //$this->deny('none', 'auth', 'logout');
+
 
       $this->allow('supervisor', 'pages', 'pages_home');
       $this->allow('supervisor', 'contract', 'contract_new');

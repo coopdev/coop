@@ -1,6 +1,12 @@
 INSERT INTO coop_roles (role) 
    VALUES ('supervisor'),('admin'),('coordinator'),('user');
 
+INSERT INTO coop_majors (major)
+   VALUES ('HUM'),
+          ('SSCI'),
+          ('CENT'),
+          ('AMT');
+
 INSERT INTO coop_classes (name) 
    VALUES ('HUM 193V'),
           ('SSCI 193V'),
@@ -63,6 +69,6 @@ INSERT INTO coop_phonetypes (type)
           ('mobile');
 
 INSERT INTO coop_assignments (assignment, due_date)
-   VALUES ('Student Info Sheet', 20120629),
-          ('assignment2', 20120629),
-          ('assignment3', 20120629);
+   VALUES ('Student Info Sheet', 20120420),
+          ('assignment2', 20120609),
+          ('assignment3', 20120519);

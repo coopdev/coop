@@ -1,0 +1,40 @@
+<?php
+   $recs = $this->recs;
+?>
+
+<h3> Assignment Record For  </h3>
+
+<table>
+   <th> Assignment </th> <th> Submitted? </th> <th> Date Submitted </th> <th> Due Date </th>
+
+   <?php foreach ($recs as $r) { 
+      if ($r['classes_id'] == NULL) {
+         $subed = "<font color='red'> No </font>";
+         $dateSubed = "N/A";
+      } else {
+         $subed = "<font color='green'> Yes </font>";
+         $dateSubed = $r['date_submitted'];
+      }
+      
+   ?>
+      <tr> 
+         <td> 
+            <?php echo $r['assignment'] ?> 
+         </td> 
+
+         <td> 
+            <?php echo $subed ?>
+         </td> 
+
+         <td>
+            <?php echo $dateSubed ?>
+         </td>
+
+         <td>
+            <?php echo $r['due_date'] ?>
+         </td>
+      </tr>
+
+
+   <?php } // End foreach ?>
+</table>

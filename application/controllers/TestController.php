@@ -363,9 +363,10 @@ class TestController extends Zend_Controller_Action
 
     public function blahAction()
     {
-       $assign = new My_Model_Assignment();
+       $user = new My_Model_User();
 
-       $assign->getAll();
+       $rows = $user->getEmpInfo(array('username' => 'kuukekoa', 'classes_id' => 4, 'semesters_id' => 9));
+       die(var_dump($rows));
     }
 
 

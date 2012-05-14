@@ -7,17 +7,32 @@ if (empty($results)) { ?>
 
 <?php } else { ?>
 
-   <h2 id="searchresults-header"> Search Results </h2>
+   <h3 id="searchresults-header"> Search Results </h3>
 
    <table id="searchresults-table">
-      <th> Name </th> <th> Class </th> <th> Semester </th> <th> Coordinator </th>
+      <th></th> <th> Name </th> <th> Class </th> <th> Semester </th> <th> Coordinator </th>
 
-   <?php foreach ($results as $r) { ?>
+   <?php foreach ($results as $r) { 
+      
+            $uname = $r['username'];
+            $cid = $r['classes_id'];
+            $sid = $r['semesters_id'];
+            $coord = $r['coordinator'];
+            $semid = $r['semesters_id'];
+    ?>
 
       <tr>
+         <td> 
+            <input type="radio" name="rec-choice" class="record" 
+                   data-rec='[{"username":"<?php echo $uname ?>","classes_id":"<?php echo $cid ?>","semesters_id":"<?php echo $semid ?>","coordinator":"<?php echo $coord ?>"}]' />
+         </td>
+
          <td> <?php echo $r['fname'].' '.$r['lname'].' ('.$r['username'].')' ?> </td>
+
          <td> <?php echo $r['class'] ?> </td>
+
          <td> <?php echo $r['semester'] ?> </td>
+
          <td> <?php echo $r['coordfname'].' '.$r['coordlname'] ?> </td>
       </tr>
 

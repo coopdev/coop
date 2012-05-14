@@ -51,12 +51,7 @@ class Application_Form_StudentRecSearch extends Zend_Form
        foreach ($coords as $c) {
           $coord->addMultiOptions(array($c['username'] => $c['lname'].", ".$c['fname']." (".$c['username'].")"));
        }
-       //$search->addValidator(new Zend_Validate_Db_RecordExists( array('table'=>'coop_users', 'field'=>'username')));
 
-       //$search = $elems->getSubmit('Search');
-       //$search->setDecorators(array('ViewHelper'
-       //                            ))
-       //       ->setAttrib('id', 'search');
        $search = new Zend_Form_Element_Button('search');
        $search->setLabel('Search')
               ->setAttrib('id', 'search');

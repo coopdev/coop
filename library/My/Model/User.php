@@ -24,8 +24,30 @@ class My_Model_User extends Zend_Db_Table_Abstract
       //return $this->fetchAll()->toArray();
    }
 
-   // Queries for student records based on submitted criteria from the search form.
-   // Returns semester related information.
+   public function getEmpInfo($data)
+   {
+      $username = $data['username'];
+      $class = $data['classes_id'];
+      $sem = $data['semesters_id'];
+
+      $empInfo = new My_Model_EmpInfo();
+      $empInfoTab = $empInfo->info('name');
+
+      $sel = $this->select()->setIntegrityCheck(false);
+
+      // MIGHT HAVE TO SELECT ONLY NEEDED COLUMNS INCASE OF DUPLICATE FIELD NAMES IN THE 
+      // FORM, E.G. "semesters_id" OR "classes_id" MIGHT APPEAR MORE THAN ONCE IN THE FORM.
+      $res = $sel->from($empInfoTab)
+                 ->where('username = ?', $username)
+                 ->where('classes_id = ?', $class)
+                 ->where('semesters_id = ?', $sem);
+
+      return $this->fetchAll($res)->toArray();
+
+   }
+
+   // Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
+   // based on submitted criteria from the search form.
    public function searchStudentRecs($criteria)
    {
       $data = $criteria['data'];
@@ -37,7 +59,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
       $where['semesters_id'] = trim($data['semesters_id']);
       $where['coordinator'] = trim($data['coordinator']);
 
-      $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username');
+      $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username', 'classes_id', 'semesters_id', 'coordinator');
       $sel = $this->select()->setIntegrityCheck(false);
       $query = $sel->from('coop_users_semesters_view', $cols);
 

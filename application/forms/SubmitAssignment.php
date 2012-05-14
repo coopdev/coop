@@ -7,6 +7,20 @@ class Application_Form_SubmitAssignment extends Zend_Form
     {
        $req = true;
 
+       $classes = new Zend_Form_Element_Select('classes_id');
+       $classes->setLabel("Select class:")
+               ->setRequired($req);
+
+       $class = new My_Model_Class();
+
+       $rows = $class->getAll();
+
+       $firstClass = $rows[0]['id'];
+       //$firstClass = 2;
+       foreach ($rows as $row) {
+          $classes->addMultiOptions(array($row['id'] => $row['name']));
+       }
+
        $assignments = new Zend_Form_Element_Select('assignments_id');
        $assignments->setLabel("Select assignment:")
              ->setRequired($req);
@@ -22,22 +36,15 @@ class Application_Form_SubmitAssignment extends Zend_Form
        $students->setLabel("Select student:")
                 ->setRequired($req);
 
-       $user = new My_Model_User(); 
-       $rows = $user->getAllStudents();
+       //$user = new My_Model_User(); 
+       //$rows = $user->getAllStudents();
+
+       $class = new My_Model_Class();
+       $rows = $class->getRollForCurrentSem($firstClass);
        foreach ($rows as $row) {
           $students->addMultiOptions(array($row['username'] => "".$row['lname'].", ".$row['fname']." (".$row['username'].")"));
        }
 
-       $classes = new Zend_Form_Element_Select('classes_id');
-       $classes->setLabel("Select class:")
-               ->setRequired($req);
-
-       $class = new My_Model_Class();
-       $rows = $class->getAll();
-
-       foreach ($rows as $row) {
-          $classes->addMultiOptions(array($row['id'] => $row['name']));
-       }
 
        $submit = new Zend_Form_Element_Submit('submit');
        $submit->setLabel('Submit');

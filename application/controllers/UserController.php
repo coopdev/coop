@@ -79,13 +79,14 @@ class UserController extends Zend_Controller_Action
           $query = $db->select()->from('coop_users_semesters', 'id')
                           ->where('student = ?', $username)
                           ->where('semesters_id = ?', $data['semesters_id'])
-                          ->where('classes_id = ?', $data['classes_id']);
+                          ->where('classes_id = ?', $data['classes_id'])
+                          ->where('coordinator = ?', $data['coordinator']);
 
           $userSemId = $db->fetchOne($query);
 
           if (!empty($userSemId)) {
              $this->_helper->redirector('new', 'user', null, array('result' => 'fail'));
-             $this->view->result = "That student has already been added for this semester";
+             //$this->view->result = "That student has already been added for this semester";
           } else {
              $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
              $userSemVals['student'] = $username;
@@ -93,7 +94,7 @@ class UserController extends Zend_Controller_Action
              try {
                 $db->insert('coop_users_semesters', $userSemVals);
                 $this->_helper->redirector('new', 'user', null, array('result' => 'success'));
-                $this->view->message = "Student has been added";
+                //$this->view->message = "Student has been added";
 
              } catch (Exception $e) {
                 $this->view->message = $e;

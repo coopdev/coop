@@ -30,7 +30,15 @@ class My_Funcs
       $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
 
       if ($coopSess->role == 'user') {
-         //die(var_dump($coopSess->role));
+
+          $funcs = new My_Funcs();
+
+          // If user is not enrolled for the current semester, deny access
+          if (!$funcs->isEnrolled($user)) {
+             $coopSess->role = "notEnrolled";
+             $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+             $redirector->gotoSimple('access-denied', 'pages');
+          }
 
          $coopSess->classIds = $db->getCols('coop_users_semesters', 
                                    'classes_id',
@@ -46,6 +54,8 @@ class My_Funcs
    public function isEnrolled($user)
    {
       $db = new My_Db();
+
+      $coopSess = new Zend_Session_Namespace('coop');
 
       $id = $db->getCol('coop_users_semesters_view', 'id', 
               array('username' => $user['username'], 'current' => 1));
