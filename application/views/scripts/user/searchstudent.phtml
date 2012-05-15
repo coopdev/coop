@@ -47,8 +47,6 @@
 
    <button type="button" id="assignment-hist"> Assignment Record </button>
 
-   <input type="button" onClick="location.href='<?php echo $url ?>'" value="link" />
-
    <input type="hidden" id="rec" data-rec="" />
 
 </div><br />
@@ -73,7 +71,6 @@
       $("#assignment-hist").live('click', function() {
 
          data = getRec();
-         alert(data);
 
          //temp = {'foo' : 'bar'};
          //alert(temp);

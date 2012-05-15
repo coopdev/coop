@@ -37,6 +37,22 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       
    }
 
+   // Checks if an assignment is submitted
+   public function isSubmitted(array $data)
+   {
+      $where['classes_id'] = $data['classes_id'];
+      $where['semesters_id'] = $data['semesters_id'];
+      $where['assignments_id'] = $data['assignments_id'];
+      $where['username'] = $data['username'];
+
+      if ($this->rowExists($where)) {
+         return true;
+      }
+
+      return false;
+
+   }
+
 
 
 

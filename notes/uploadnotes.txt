@@ -1,0 +1,12 @@
+Change cas.ini (there is one that works for the server on the server called 
+cas.ini.UserThisOne
+
+Change application.ini baseUrl to "/coop/public" (server versions are in ~/zendconfigs on
+the devserv)
+
+Change Bootstrap.php setBaseUrl to be setBaseUrl("/coop/public")
+
+And remember to load new SQL scripts into database.
+
+change the jQuery "base" variable to be /coop/public in the assignment/submit.phtml, 
+user/searchstudent.phtml files because the document roots are different.

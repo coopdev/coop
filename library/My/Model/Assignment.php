@@ -58,6 +58,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    {
        $coopSess = new Zend_Session_Namespace('coop');
 
+       // If $opts['username'] is set, then use that as the criteria for the users info.
+       // $opts['username'] is used for coordinators when viewing different students' 
+       // Student Info Sheet. Else, use the current user's username (used for students filling
+       // out their own Student Info Sheet).
        if (isset($opts['username'])) {
           $username = $opts['username'];
        } else {
@@ -70,6 +74,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
                                        array('fname', 'lname', 'uuid', 'email'))
                                 ->where("username = '" . $username . "'");
        $userVals = $db->fetchRow($query);
+       if (!is_array($userVals)) {
+          $userVals = array();
+       }
 
        $query = $db->select()->from('coop_students')
                              ->where("username = '" . $username . "'");
@@ -176,6 +183,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        
        // get only the submited form data that matches table fields in coop_users
        $userVals = $db->prepFormInserts($data, 'coop_users'); 
+       if ($userVals['uuid'] == "") {
+          $userVals['uuid'] = null;
+       }
        //die(var_dump($userVals));
        $userVals['username'] = $coopSess->username;
 
@@ -189,6 +199,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $empVals = $db->prepFormInserts($data, 'coop_employmentinfo');
        //die(var_dump($empVals));
        $empVals['username'] = $coopSess->username;
+       $empVals['classes_id'] = $coopSess->currentClassId;
+       $empVals['semesters_id'] = $coopSess->currentSemId;
+
+       //die(var_dump($empVals));
 
        // get only the submited form data that matches table fields in coop_phonenumbers
        $homePhoneVals = $db->prepFormInserts($data, 'coop_phonenumbers');
@@ -271,8 +285,30 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        } else {
           $db->insert('coop_phonenumbers', $mobilePhoneVals);
        }
-      
 
+       // Submit as an assignment
+       $semester = new My_Model_Semester();
+       $assignVals['semesters_id'] = $coopSess->currentSemId;
+       $assignVals['classes_id'] = $coopSess->currentClassId;
+       $assignVals['username'] = $coopSess->username;
+       $assignVals['assignments_id'] = $this->getStuInfoId();
+       $assignVals['date_submitted'] = date('Ymd');
+
+       $subAs = new My_Model_SubmittedAssignment();
+       // First check if the assignment has already been submitted
+       if (!$subAs->isSubmitted($assignVals)) {
+          $subAs->insert($assignVals);
+       }
+
+   }
+
+   public function getStuInfoId()
+   {
+      $id = $this->getId(array('assignment' => 'Student Info Sheet'));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
    }
 
    public function getAll()

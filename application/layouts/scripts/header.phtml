@@ -17,13 +17,26 @@
    echo       "<h2> Header </h2>";
    echo    "</div>";
 
-   echo    "<div id='classTabs'>";
-   echo       "<h3> Select Class </h2>";
-   echo       "<a href=# class='classTab'> HUM 193V </a>"; 
-   echo       "<a href=# class='classTab'> AMT 93V </a>"; 
-   echo    "</div>";
+   // Class tabs
+   if (count($coopSess->classNames) > 1) {
+      $classname = $coopSess->currentClassName;
+      echo    "<div id='classTabs'>";
+      echo       "<h3> Select Class </h3>";
+      echo       "<h4 id='currentClass'> Current class: $classname</h4>";
+      for ($i = 0; $i < count($coopSess->classNames); $i++) {
+         $cname = $coopSess->classNames[$i];
+         $cid = $coopSess->classIds[$i];
 
-   echo    "<div id='clearClassTabs'>";
+         $url = $this->url(array('action' => 'change', 'controller' => 'class', 'classId' => $cid));
+         echo "<a href='$url' class='classTab'> $cname </a>"; 
+         //echo "<a href='' value='$cid' class='classTab'> $cname </a>"; 
 
-   echo    "</div>";
+      }
+      echo    "</div>";
+      // End class tabs
+
+      echo    "<div id='clearClassTabs'>";
+
+      echo    "</div>";
+   }
 ?>

@@ -1,0 +1,14 @@
+<?php
+   $form = $this->form;
+   $empForm = $form->getSubForm('empinfo[0]');
+   $empinfo = $this->empinfo;
+   $funcs = new My_Funcs();
+
+   foreach ($empinfo as $e) {
+      $e['start_date'] = $funcs->formatDateOut($e['start_date']);
+      $e['end_date'] = $funcs->formatDateOut($e['end_date']);
+      $empForm->populate($e);
+      $form->removeElement('Submit');
+      echo $form;
+   }
+?>

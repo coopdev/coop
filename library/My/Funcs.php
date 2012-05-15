@@ -25,9 +25,10 @@ class My_Funcs
 
 
        
-      $semester = new My_Semester();
-      $currentSem = $semester->getRealSem();
-      $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
+      $semester = new My_Model_Semester();
+      //$currentSem = $semester->getRealSem();
+      //$coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
+      $coopSess->currentSemId = $semester->getCurrentSemId();
 
       if ($coopSess->role == 'user') {
 
@@ -44,6 +45,25 @@ class My_Funcs
                                    'classes_id',
                                    array('student'=>$user['username'], 
                                    'semesters_id' => $coopSess->currentSemId));
+
+         if (empty($coopSess->classIds)) {
+            $coopSess->classIds = array();
+         }
+
+         $coopSess->currentClassId = $coopSess->classIds[0];
+
+         $class = new My_Model_Class();
+         $coopSess->classNames = array();
+         foreach ($coopSess->classIds as $cid) {
+            $name = $class->getName($cid);
+            $coopSess->classNames[] = $name;
+            if ($cid == $coopSess->currentClassId) {
+               $coopSess->currentClassName = $name;
+            }
+
+         }
+         //die(var_dump($coopSess->classNames));
+
 
          if (!$user['active']) {
             $coopSess->role = "notActive";
@@ -64,6 +84,21 @@ class My_Funcs
          return false;
       }
       return true;
+   }
+
+   public function formatDateOut($date)
+   {
+      
+      if (!empty($date)) {
+         $dateTokens = explode("-", $date);
+         $temp = $dateTokens[0];
+         $dateTokens[0] = $dateTokens[1];
+         $dateTokens[1] = $dateTokens[2];
+         $dateTokens[2] = $temp;
+         $date = implode("/", $dateTokens);
+
+         return $date;
+      }
    }
 }
 

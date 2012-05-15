@@ -188,6 +188,7 @@ CREATE TABLE coop_employmentinfo(
    start_date DATE NULL,
    end_date DATE NULL,
    rate_of_pay FLOAT,
+   department TEXT,
    job_address TEXT,
    superv_name TEXT,
    superv_title TEXT,

@@ -11,6 +11,7 @@
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
           <actionMethod actionName="test"/>
+          <actionMethod actionName="viewStuInfoSheet"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Auth">
@@ -59,6 +60,11 @@
         <controllerFile controllerName="Async">
           <actionMethod actionName="index"/>
           <actionMethod actionName="studentRecSearchResult"/>
+          <actionMethod actionName="viewStuInfoSheet"/>
+        </controllerFile>
+        <controllerFile controllerName="Class">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="change"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -183,6 +189,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Async">
             <viewScriptFile forActionName="studentRecSearchResult"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="viewStuInfoSheet"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Async">
+            <viewScriptFile forActionName="viewStuInfoSheet"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Class">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Class">
+            <viewScriptFile forActionName="change"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

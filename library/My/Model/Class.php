@@ -22,6 +22,19 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $this->fetchAll()->toArray();
    }
 
+   // Returns the name of the class specified by the passed in id
+   public function getName($id)
+   {
+      $sel = $this->select()->setIntegrityCheck(false);
+
+      $res = $sel->from($this, array('name'))
+                  ->where("id = $id");
+
+      $row = $this->fetchRow($res)->toArray();
+
+      return $row['name'];
+   }
+
 
    // Gets all the students enrolled in a specified class for the current semester
    public function getRollForCurrentSem($id)

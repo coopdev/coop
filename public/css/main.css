@@ -134,3 +134,7 @@ span.fields {
    font-size:16px; display:block; float:left; padding:10px 15px; background:#aaa; border:1px solid #777;
    border-bottom:none; border-radius:4px 4px 0 0; margin-right:1px; color:#fff; text-decoration:none; 
 }
+
+.classTab:hover, .classTab:visited {
+   color:#fff;
+}

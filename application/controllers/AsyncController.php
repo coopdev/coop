@@ -8,8 +8,6 @@ class AsyncController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-
-    // Retrieve and displays student records after search
     public function studentRecSearchResultAction()
     {
        if ($this->_request->isPost()) {
@@ -30,11 +28,13 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
-    // Records of submitted assignments for student, semester, class combination
     public function submissionRecsAction()
     {
        if ($this->getRequest()->isPost()) {
-          $data = $_POST['data'][0];
+          $data = array();
+          if (isset($_POST['data'][0])) {
+             $data = $_POST['data'][0];
+          }
           //die(var_dump($data));
 
           //die(var_dump($arr));
@@ -53,7 +53,6 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
-
     public function classRollJsonAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -63,6 +62,12 @@ class AsyncController extends Zend_Controller_Action
           $class = new My_Model_Class();
 
           $rows = $class->getRollForCurrentSem($id);
+
+          if (!is_array($rows)) {
+             $rows = array();
+          }
+
+          //die(var_dump($rows));
 
           $json = Zend_Json_Encoder::encode($rows);
           //$json = json_encode($rows);
@@ -75,7 +80,25 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
+    public function viewStuInfoSheetAction()
+    {
+       $user = new My_Model_User();
+
+       $form = new Application_Form_StudentInfo();
+
+       $as = new My_Model_Assignment();
+       $form = $as->populateStuInfoSheet($form, array('username' => 'johndoe'));
+
+       $empinfo = $user->getEmpInfo(array('username' => 'johndoe', 'classes_id' => 1, 'semesters_id' => 9));
+
+       $this->view->empinfo = $empinfo;
+       $this->view->form = $form;
+    }
+
+
 }
+
+
 
 
 

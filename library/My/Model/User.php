@@ -20,11 +20,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
                    ->where("coop_roles.role = 'user'");
 
       $res = $this->fetchAll($query)->toArray();
+
+      if (empty($res)) {
+         $res = array();
+      }
+
       return $res;
       //return $this->fetchAll()->toArray();
    }
 
-   public function getEmpInfo($data)
+   public function getEmpInfo(array $data)
    {
       $username = $data['username'];
       $class = $data['classes_id'];
@@ -42,7 +47,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
                  ->where('classes_id = ?', $class)
                  ->where('semesters_id = ?', $sem);
 
-      return $this->fetchAll($res)->toArray();
+      $rows = $this->fetchAll($res)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
+
+      $funcs = new My_Funcs();
+
 
    }
 
@@ -72,6 +86,10 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
       $rows = $this->fetchAll($query)->toArray();
 
+      if (empty($rows)) {
+         $rows = array();
+      }
+
       return $rows;
 
    }
@@ -85,6 +103,10 @@ class My_Model_User extends Zend_Db_Table_Abstract
                  ->where("r.role = 'coordinator'");
 
       $rows = $this->fetchAll($res)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
 
       return $rows;
 
