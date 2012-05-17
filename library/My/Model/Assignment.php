@@ -23,9 +23,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $db = new My_Db();
       $sa = new My_Model_SubmittedAssignment();
       $sem = new My_Model_Semester();
+      $data = $db->prepFormInserts($data, $sa);
       $data['semesters_id'] = $sem->getCurrentSemId();
       $data['date_submitted'] = date('Ymd');
-      $data = $db->prepFormInserts($data, $sa);
 
       $chk['username'] = $data['username'];
       $chk['classes_id'] = $data['classes_id'];
@@ -36,12 +36,19 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          return "submitted";
       }
 
+      //$inserts['username'] = $data['username'];
+      //$inserts['classes_id'] = $data['classes_id'];
+      //$inserts['assignments_id'] = $data['assignments_id'];
+      //$inserts['semesters_id'] = $sem->getCurrentSemId();
+      //$inserts['date_submitted'] = date('Ymd');
+
       $sa->insert($data);
 
       return true;
    }
 
-   // Checks if a specific assignment has already been submitted.
+   // Checks if a specific assignment has already been submitted based on username, class,
+   // semester, assignment.
    public function isSubmitted(array $data)
    {
       $sa = new My_Model_SubmittedAssignment();
@@ -54,6 +61,16 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /*
+    * Populates a Zend_Form Student Information Sheet with either the current users 
+    * information based on their username, or uses the passed in username in the $opts 
+    * associative array (using the 'username' key).
+    * 
+    * @param $form - The Zend_Form to populate
+    * @param $opts - Option to use the passed in username in the where clause. If no
+    *                 username is passed, the current user's username is used.
+    * @return A populated Zend_Form Student Information Sheet 
+    */
    public function populateStuInfoSheet($form, array $opts = array())
    {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -294,12 +311,28 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $assignVals['assignments_id'] = $this->getStuInfoId();
        $assignVals['date_submitted'] = date('Ymd');
 
+       //die(var_dump($coopSess->currentClassId));
+       //die(var_dump($assignVals));
+
        $subAs = new My_Model_SubmittedAssignment();
        // First check if the assignment has already been submitted
        if (!$subAs->isSubmitted($assignVals)) {
           $subAs->insert($assignVals);
        }
 
+   }
+
+   // Returns assignments that are submitted offline
+   public function getOffLine()
+   {
+      $res = $this->select()->where("online = 0");
+      $rows = $this->fetchAll("online = 0")->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
    }
 
    public function getStuInfoId()

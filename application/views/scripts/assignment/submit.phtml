@@ -16,12 +16,8 @@
 <script type="text/javascript">
    $('document').ready(function () {
 
-      base = '';
-
       $("[name=classes_id]").change(function() {
          val = $(this).val();
-
-         //alert(val);
 
          $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
             opts = resp;

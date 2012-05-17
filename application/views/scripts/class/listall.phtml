@@ -1,0 +1,52 @@
+<?php
+   $classes = $this->classes;
+   $url = $this->url(array('action' => 'edit', 'controller' => 'class'));
+?>
+
+<h2> List of Coop classes </h2>
+
+<table class="classList">
+
+<?php foreach ($classes as $c) { ?>
+
+   <tr>
+      <td class="className"> <?php echo $c['name'] ?> </td>
+
+      <td class="editLink"> <a href='<?php echo "$url?id=".$c['id'] ?>' class="editLink"> EDIT </a> </td> 
+
+   </tr>
+
+   
+
+
+<?php } ?>
+
+</table>
+
+
+<script type="text/javascript">
+
+   $('document').ready(function() {
+      $("a.editLink").live('click', function(e) {
+         //e.preventDefault();
+         //val = $(this).attr('value');
+         //alert(val);
+
+         //$(this).after("<input type=text /> <input type='submit' value='Submit' />");
+         
+         //$("td."+val).after("<td> TEST </td>");
+
+      });
+
+   });
+   
+
+
+
+
+
+
+
+
+
+</script>

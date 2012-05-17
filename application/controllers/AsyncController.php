@@ -28,6 +28,7 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
+
     public function submissionRecsAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -42,6 +43,12 @@ class AsyncController extends Zend_Controller_Action
           $sub = new My_Model_SubmittedAssignment();
           $recs = $sub->getSubmissionRec($data);
 
+          $user = new My_Model_User();
+
+          $recText = $user->getSemesterInfo($data);
+          $recText = $recText[0];
+          $this->view->recText = $recText;
+
           $this->view->recs = $recs;
 
           //die(var_dump($recs));
@@ -53,6 +60,43 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
+    
+    public function viewStuInfoSheetAction()
+    {
+       if ($this->getRequest()->isPost()) {
+          $data = array();
+          if (isset($_POST['data'][0])) {
+             $data = $_POST['data'][0];
+          }
+
+          
+
+          $user = new My_Model_User();
+
+          $recText = $user->getSemesterInfo($data);
+          $recText = $recText[0];
+          $this->view->recText = $recText;
+
+          $form = new Application_Form_StudentInfo();
+
+          $as = new My_Model_Assignment();
+          $form = $as->populateStuInfoSheet($form, array('username' => $data['username']));
+
+          $empinfo = $user->getEmpInfo($data);
+
+          $this->view->empinfo = $empinfo;
+          $this->view->form = $form;
+
+       } else {
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+       $this->_helper->getHelper('layout')->disableLayout();
+    }
+
+
+    // Gets all students for a specific class (used to populate student dropdown based
+    // on selected class in the assignment submit view)
     public function classRollJsonAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -80,20 +124,6 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
-    public function viewStuInfoSheetAction()
-    {
-       $user = new My_Model_User();
-
-       $form = new Application_Form_StudentInfo();
-
-       $as = new My_Model_Assignment();
-       $form = $as->populateStuInfoSheet($form, array('username' => 'johndoe'));
-
-       $empinfo = $user->getEmpInfo(array('username' => 'johndoe', 'classes_id' => 1, 'semesters_id' => 9));
-
-       $this->view->empinfo = $empinfo;
-       $this->view->form = $form;
-    }
 
 
 }

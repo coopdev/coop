@@ -29,6 +29,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
       //return $this->fetchAll()->toArray();
    }
 
+
    public function getEmpInfo(array $data)
    {
       $username = $data['username'];
@@ -40,8 +41,6 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
       $sel = $this->select()->setIntegrityCheck(false);
 
-      // MIGHT HAVE TO SELECT ONLY NEEDED COLUMNS INCASE OF DUPLICATE FIELD NAMES IN THE 
-      // FORM, E.G. "semesters_id" OR "classes_id" MIGHT APPEAR MORE THAN ONCE IN THE FORM.
       $res = $sel->from($empInfoTab)
                  ->where('username = ?', $username)
                  ->where('classes_id = ?', $class)
@@ -82,6 +81,27 @@ class My_Model_User extends Zend_Db_Table_Abstract
          if (!empty($where[$key])) {
             $query = $query->where("$key = ?", $val);
          }
+      }
+
+      $rows = $this->fetchAll($query)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
+
+   }
+
+   // Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
+   public function getSemesterInfo(array $data)
+   {
+      $sel = $this->select()->setIntegrityCheck(false);
+
+      $query = $sel->from('coop_users_semesters_view');
+
+      foreach($data as $key => $val) {
+         $query = $query->where("$key = ?", $val);
       }
 
       $rows = $this->fetchAll($query)->toArray();

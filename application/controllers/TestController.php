@@ -13,7 +13,6 @@ class TestController extends Zend_Controller_Action
         // action body
     }
 
-
     public function dbqueriesAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -360,7 +359,6 @@ class TestController extends Zend_Controller_Action
 		 $this->_helper->getHelper('layout')->disableLayout();
     }
 
-
     public function blahAction()
     {
        $user = new My_Model_User();
@@ -369,6 +367,13 @@ class TestController extends Zend_Controller_Action
        die(var_dump($rows));
     }
 
+    public function simplePagerAction()
+    {
+       
+    }
+
 
 }
+
+
 

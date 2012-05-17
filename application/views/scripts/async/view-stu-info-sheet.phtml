@@ -2,13 +2,50 @@
    $form = $this->form;
    $empForm = $form->getSubForm('empinfo[0]');
    $empinfo = $this->empinfo;
+   $recText = $this->recText;
    $funcs = new My_Funcs();
 
-   foreach ($empinfo as $e) {
-      $e['start_date'] = $funcs->formatDateOut($e['start_date']);
-      $e['end_date'] = $funcs->formatDateOut($e['end_date']);
-      $empForm->populate($e);
-      $form->removeElement('Submit');
-      echo $form;
+   echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+   echo $recText['class'] . "<br /> ";
+   echo $recText['semester'] . "<br />";
+
+   // If $empinfo is empty, it means the student hasn't submitted it yet
+   if (empty($empinfo)) {
+      echo "<p class='error'> Form has not been submitted </p>";
+   } else {
+
+      // For each record of empinfo that the student has, echo a separate form and populate
+      // the empinfo section of the form with the empinfo record.
+      $page = 0;
+      //echo "<div class='simplePagerContainer'>";
+      echo "<ul class='paging'>";
+      foreach ($empinfo as $e) {
+         $page++;
+         $e['start_date'] = $funcs->formatDateOut($e['start_date']);
+         $e['end_date'] = $funcs->formatDateOut($e['end_date']);
+         $empForm->populate($e);
+         $form->removeElement('Submit');
+         echo "<li class='simplePagerPage$page'>";
+         echo $form;
+         echo "</li>";
+      }
+      echo "</ul>";
+      //echo "</div>";
    }
+
+
 ?>
+
+
+<script type="text/javascript">
+
+   $('document').ready(function() {
+
+      $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
+
+
+      $('.simplePagerNav').after('<br />');
+
+   });
+
+</script>

@@ -68,7 +68,7 @@ INSERT INTO coop_phonetypes (type)
    VALUES ('home'),
           ('mobile');
 
-INSERT INTO coop_assignments (assignment, due_date)
-   VALUES ('Student Info Sheet', 20120420),
-          ('assignment2', 20120609),
-          ('assignment3', 20120519);
+INSERT INTO coop_assignments (assignment, due_date, online)
+   VALUES ('Student Info Sheet', 20120411, 1),
+          ('assignment2', 20120609, 0),
+          ('assignment3', 20120519, 0);

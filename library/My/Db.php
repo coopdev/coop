@@ -121,7 +121,8 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
     * used in, for example, the insert() method for easy inserts.
     * 
     * @param $data - the data submited from the form.
-    * @param $table - the table which the data will be inserted to
+    * @param $table - the table which the data will be inserted to. Can be a string or Zend_Db_Table_Abstract
+    *                 object.
     * 
     * @return - an associative array whose keys match the columns of the table
     *           that will be operated on. 

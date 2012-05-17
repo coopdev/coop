@@ -32,6 +32,25 @@
    clear: both;
 }
 
+/* Class Tabs */
+#classTabs {
+   text-align:left;
+   /*border: thin solid #000000;*/
+   /* max-width:100%;
+   margin: 0px auto;*/
+}
+.classTab {
+   /*display:block;float:left;padding:10px 15px;background:#aaa;border:1px solid #777;border-bottom:none;border-radius:4px 4px 0 0;margin-right:1px;color:#fff;text-decoration:none*/
+
+   font-size:16px; display:block; float:left; padding:10px 15px; background:#aaa; border:1px solid #777;
+   border-bottom:none; border-radius:4px 4px 0 0; margin-right:1px; color:#fff; text-decoration:none; 
+}
+
+.classTab:hover, .classTab:visited {
+   color:#fff;
+}
+/* End Class Tabs */
+
 #clearClassTabs {
    clear:both;
 }
@@ -73,27 +92,20 @@
    font-size: 16px;
 }
 
-#footer {
-   padding: 15px;
-   margin: 0px;
-   margin-top: 1px;
-   border-top: thin solid #000000;
-   text-align: center;
-   clear:both;
-}
-
-table.padded td {
-   padding-bottom: 12px;
-   padding-top: 12px;
-   vertical-align: center;
-}
-
+/* Table that holds Student Information Sheet form */
 table.studentInfo tr td {
    background: white;
    vertical-align: top; 
    /*border: thin solid #000000;*/
 }
 
+/* List of all coop classes */
+table.classList {
+   font-size: 18px;
+   width: 50%;
+}
+
+/* End List of all coop classes */
 
 span.fields {
    padding: 20px;
@@ -117,24 +129,60 @@ span.fields {
 #searchresults-table {
    /*font-size: 14px;*/
 }
+/* End Student Record Search stuff */
 
 #sub {
    color: green;
 }
 
-#classTabs {
-   text-align:left;
-   /*border: thin solid #000000;*/
-   /* max-width:100%;
-   margin: 0px auto;*/
-}
-.classTab {
-   /*display:block;float:left;padding:10px 15px;background:#aaa;border:1px solid #777;border-bottom:none;border-radius:4px 4px 0 0;margin-right:1px;color:#fff;text-decoration:none*/
 
-   font-size:16px; display:block; float:left; padding:10px 15px; background:#aaa; border:1px solid #777;
-   border-bottom:none; border-radius:4px 4px 0 0; margin-right:1px; color:#fff; text-decoration:none; 
+/* PAGER */
+.simplePagerContainer ul.paging, ul.simplePagerNav {
+   list-style-type: none;
 }
 
-.classTab:hover, .classTab:visited {
-   color:#fff;
+ul.simplePagerNav li {
+    display: block;
+    float: left;
+    font-family: georgia;
+    margin-bottom: 10px;
+    padding: 3px;
+}
+ul.simplePagerNav li a {
+    color: #333333;
+    text-decoration: none;
+    font-size: 20px;
+}
+li.currentPage {
+    background: none repeat scroll 0 0 #83BD63;
+}
+ul.simplePagerNav li.currentPage a {
+    color: #FFFFFF;
+}
+/* End Pager */
+
+a.editLink {
+    color: #333333;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+#footer {
+   padding: 15px;
+   margin: 0px;
+   margin-top: 1px;
+   border-top: thin solid #000000;
+   text-align: center;
+   clear:both;
+}
+
+table.padded td {
+   padding-bottom: 12px;
+   padding-top: 12px;
+   vertical-align: center;
 }

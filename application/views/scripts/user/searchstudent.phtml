@@ -34,7 +34,7 @@
    echo "</tr>";
 
    echo "</table>";
-   echo "<form><br /><br />";
+   echo "</form><br /><br />";
 
    echo "<input type='hidden' id='resultFlag' value='' />";
    //echo $this->form;
@@ -46,10 +46,11 @@
 <div class="buttonpanel">
 
    <button type="button" id="assignment-hist"> Assignment Record </button>
+   <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
 
-   <input type="hidden" id="rec" data-rec="" />
+   <input type="hidden" id="stored-rec" data-rec="" />
 
-</div><br />
+</div><br /><br />
 
 <div id="asyncContainer">
 
@@ -57,9 +58,10 @@
 
 
 <script type="text/javascript">
-   $(document).ready(function(){
 
-      base = '';
+   $(".buttonpanel").hide();
+
+   $(document).ready(function(){
 
 
       $("#search").live('click', function() {
@@ -73,7 +75,6 @@
          data = getRec();
 
          //temp = {'foo' : 'bar'};
-         //alert(temp);
          $.post(base + "/async/submission-recs", {'data' : data}, function(resp) {
 
             $("#asyncContainer").empty();
@@ -82,7 +83,19 @@
          });
       });
 
-      $(".buttonpanel").hide();
+
+      $("#stuInfoSheet").live('click', function() {
+         data = getRec();
+         //alert(data);
+         $.post(base + "/async/view-stu-info-sheet", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+
+         });
+
+      });
+
 
 
 
@@ -91,13 +104,18 @@
 
       // FUNCTIONS
       
+      // Gets the record information of the selected record (username, class, semester) to
+      // use in queries for different assignment information.
       function getRec() {
+         // If the search results table (the table with student's name, class, semester, 
+         // coordinator, etc.) is present, then the record information should be coming from
+         // the selected record, so reset the stored record (#stored-rec) to that. 
          if ( $("#searchresults-table").length > 0 ) {
-            $("#rec").data("rec", "");
+            $("#stored-rec").data("rec", "");
             rec = $("input[name=rec-choice]:checked").data('rec');
-            $("#rec").data("rec", rec);
+            $("#stored-rec").data("rec", rec);
          } 
-         data = $("#rec").data("rec");
+         data = $("#stored-rec").data("rec");
          return data;
       }
 
