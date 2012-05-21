@@ -93,7 +93,7 @@
 }
 
 /* Table that holds Student Information Sheet form */
-table.studentInfo tr td {
+table.tableform tr td {
    background: white;
    vertical-align: top; 
    /*border: thin solid #000000;*/
@@ -101,8 +101,12 @@ table.studentInfo tr td {
 
 /* List of all coop classes */
 table.classList {
-   font-size: 18px;
+   font-size: 16px;
    width: 50%;
+}
+
+table#coordList {
+   width:60%;
 }
 
 /* End List of all coop classes */

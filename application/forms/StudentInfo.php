@@ -11,10 +11,13 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
              ->setAttrib('name', 'studentInfoSheet');
         
         $elems = new My_FormElement();        
+        
         $enrollDate = $elems->getEnrollDateSelect();
         $classChoice = $elems->getClassChoiceSelect();
         $mobile = $elems->getCommonTbox('mobile', 'Mobile phone:');
         $wantedJob = $elems->getCommonTbox('wanted_job', 'What job do you want for your co-op experience?');
+        $coopClass = $elems->getCommonTbox('wanted_class', 'Which co-op class are you planning to enroll in?');
+        $coopClass->setAttrib('disabled', true);
         $city = $elems->getCommonTbox('city', 'City:');
         $state = $elems->getCommonTbox('state', 'State:');
         $zipcode = $elems->getZipcodeTbox();
@@ -49,31 +52,53 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
         
         // Creates an employment information subform attached to the student information sheet
         $subf2 = $this->makeEmpSubf();
+        
+        // FOR TEMPLATE
+        $this->setDecorators( array( 
+            array('ViewScript', array('viewScript' => '/form/stuinfo-form-template.phtml'))));
 
         // Add to the form
-        $this->addElement($perInfo);
-        $this->addSubForm($subf1, 'subf1');
-        $this->addElement($empinfoText);
-        $subf2->setElementsBelongTo("empinfo[0]");
-        $this->addSubForm($subf2, "empinfo[0]");
+        //$this->addElement($perInfo);
+        //$this->addSubForm($subf1, 'subf1');
+        //$this->addElement($empinfoText);
+        //$subf2->setElementsBelongTo("empinfo[0]");
+        //$this->addSubForm($subf2, "empinfo[0]");
         //$this->addElements(array($addsubf, $rmsubf, $partAgreement, $this->agree, $this->submit ));
-        $this->addElements(array($partAgreement, $this->agree, $this->submit ));
-        $this->setSubFormDecorators(array('FormElements',
-                                          array('HtmlTag', array('tag' => 'table', 'class' => 'studentInfo'))
-                                   ));
 
-        // Add <span> to the form buttons
-        $this->setElementDecorators(array('ViewHelper',
-                                           array('HtmlTag', array('tag' => 'span'))),
-                                           array("addsf", "rmsf", "Submit")
-                                    );
 
-        // Add <br /> after agreement radio button
+        // ORIGINAL ADD ELEMENTS WITHOUT TEMPLATE
+        //$this->addElements(array($partAgreement, $this->agree, $this->submit ));
+
+        $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->address,
+                           $wantedJob, $coopClass, $creds, $this->grad, $this->major, 
+                           $this->semInMaj, $this->phone, $mobile, $this->email, 
+                           $this->curJob, $this->sdate, $this->edate, $this->payRate, 
+                           $this->employer, $this->department, $this->jobAddr, $this->supervEmail,
+                           $this->supervName, $this->supervTitle, $this->supervPhone, 
+                           $this->agree, $this->submit ));
+                                                                                          
+        
+        // CLEAR DECORATORS FOR TEMPLATE
         $this->setElementDecorators(array('ViewHelper',
-                                          'Errors',
-                                           array('HtmlTag', array('tag' => 'br', 'placement' => 'APPEND'))),
-                                           array("agreement", "rmsf")
-                                    );
+                                          "Errors"));
+
+
+        //$this->setSubFormDecorators(array('FormElements',
+        //                                  array('HtmlTag', array('tag' => 'table', 'class' => 'studentInfo'))
+        //                           ));
+
+        //// Add <span> to the form buttons
+        //$this->setElementDecorators(array('ViewHelper',
+        //                                   array('HtmlTag', array('tag' => 'span'))),
+        //                                   array("addsf", "rmsf", "Submit")
+        //                            );
+
+        //// Add <br /> after agreement radio button
+        //$this->setElementDecorators(array('ViewHelper',
+        //                                  'Errors',
+        //                                   array('HtmlTag', array('tag' => 'br', 'placement' => 'APPEND'))),
+        //                                   array("agreement", "rmsf")
+        //                            );
     }
 
     // Creates an employment information subform attached to the student information sheet
@@ -92,14 +117,14 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
         //$subf2->addDisplayGroup(array('agreement'), 'eighthrow');
         //$subf2->addDisplayGroup(array('Submit'), 'ninthrow');
 
-        $empSubf->setElementDecorators(array('ViewHelper',
-                                           array('Label', array('tag' => 'br', 'placement' => 'PREPEND')),
-                                           'Errors',
-                                           array('HtmlTag', array('tag'=>'td'))
-                                     ));
-        $empSubf->setDisplayGroupDecorators(array('FormElements',
-                                                array('HtmlTag', array('tag' => 'tr'))
-                                         ));
+        //$empSubf->setElementDecorators(array('ViewHelper',
+        //                                   array('Label', array('tag' => 'br', 'placement' => 'PREPEND')),
+        //                                   'Errors',
+        //                                   array('HtmlTag', array('tag'=>'td'))
+        //                             ));
+        //$empSubf->setDisplayGroupDecorators(array('FormElements',
+        //                                        array('HtmlTag', array('tag' => 'tr'))
+        //                                 ));
 
         return $empSubf;
     }
@@ -110,6 +135,8 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
         $elems = new My_FormElement();        
         $mobile = $elems->getCommonTbox('mobile', 'Mobile phone:');
         $wantedJob = $elems->getCommonTbox('wanted_job', 'What job do you want for your co-op experience?');
+        $coopClass = $elems->getCommonTbox('wanted_class', 'Which co-op class are you planning to enroll in?');
+        $coopClass->setAttrib('disabled', true);
         $city = $elems->getCommonTbox('city', 'City:');
         $state = $elems->getCommonTbox('state', 'State:');
         $zipcode = $elems->getZipcodeTbox();
@@ -117,32 +144,32 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
 
         $subf1 = new Zend_Form_SubForm();
         $subf1->addElements(array($this->fname, $this->lname, $this->uuid, $this->address,
-                           $city, $state, $zipcode, $wantedJob, $creds, $this->grad, $this->major, 
+                           $wantedJob, $coopClass, $creds, $this->grad, $this->major, 
                            $this->semInMaj, $this->phone, $mobile, $this->email)); 
 
-        $subf1->addDisplayGroup(array('fname', 'lname', 'uuid'), 'firstrow');
-        $subf1->addDisplayGroup(array('address', 'city', 'state', 'zipcode'), 'secondrow');
-        $subf1->addDisplayGroup(array('wanted_job', 'credits', 'grad_date', 'majors_id'), 'thirdrow');
-        $subf1->addDisplayGroup(array('semester_in_major', 'phone', 'mobile', 'email'), 'fourthrow');
+        $subf1->addDisplayGroup(array('fname', 'lname', 'uuid', 'address'), 'firstrow');
+        $subf1->addDisplayGroup(array('wanted_job','wanted_class', 'credits', 'grad_date'), 'secondrow');
+        $subf1->addDisplayGroup(array('majors_id', 'semester_in_major', 'phone', 'mobile'), 'thirdrow');
+        $subf1->addDisplayGroup(array('email'), 'fourthrow');
 
-        $subf1->setElementDecorators(array('ViewHelper',
-                                           array('Label', array('tag' => 'br', 'placement' => 'PREPEND')),
-                                           'Errors',
-                                           array('HtmlTag', array('tag'=>'td'))
-                                     ));
-        $subf1->setDisplayGroupDecorators(array('FormElements',
-                                                array('HtmlTag', array('tag' => 'tr'))
-                                          ));
+        //$subf1->setElementDecorators(array('ViewHelper',
+        //                                   array('Label', array('tag' => 'br', 'placement' => 'PREPEND')),
+        //                                   'Errors',
+        //                                   array('HtmlTag', array('tag'=>'td'))
+        //                             ));
+        //$subf1->setDisplayGroupDecorators(array('FormElements',
+        //                                        array('HtmlTag', array('tag' => 'tr'))
+        //                                  ));
 
         return $subf1;
     }
 
     public function textDeco($elem)
     {
-        $elem->setDecorators(array('ViewHelper',
-                                   array('Label', array('tag' => 'p', 'style' => 'font-size: 16px;')),//border-width:1px;border-style:solid;padding:10px')),
-                                   array('HtmlTag', array('tag' => 'br', 'placement' => 'PREPEND'))
-                             ));
+        //$elem->setDecorators(array('ViewHelper',
+        //                           array('Label', array('tag' => 'p', 'style' => 'font-size: 16px;')),//border-width:1px;border-style:solid;padding:10px')),
+        //                           array('HtmlTag', array('tag' => 'br', 'placement' => 'PREPEND'))
+        //                     ));
        
     }
 

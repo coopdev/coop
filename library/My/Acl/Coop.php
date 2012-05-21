@@ -39,21 +39,28 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('form'));
       $this->add(new Zend_Acl_Resource('form_student-info-show'), 'form');
       $this->add(new Zend_Acl_Resource('form_student-info-submit'), 'form');
+      $this->add(new Zend_Acl_Resource('form_coop-agreement-show'), 'form');
+      $this->add(new Zend_Acl_Resource('form_coop-agreement-pdf'), 'form');
       
       /* User Controller */
       $this->add(new Zend_Acl_Resource('user'));
       $this->add(new Zend_Acl_Resource('user_new'), 'user');
       $this->add(new Zend_Acl_Resource('user_create'), 'user');
-      $this->add(new Zend_Acl_Resource('user_list-unenrolled'), 'user');
-      $this->add(new Zend_Acl_Resource('user_activate'), 'user');
       $this->add(new Zend_Acl_Resource('user_searchstudent'), 'user');
-      $this->add(new Zend_Acl_Resource('user_history-show'), 'user');
+      $this->add(new Zend_Acl_Resource('user_list-coords'), 'user');
+      $this->add(new Zend_Acl_Resource('user_edit-coord'), 'user');
+      $this->add(new Zend_Acl_Resource('user_add-coord'), 'user');
+
+
+
+      /* Class Controller */
+      $this->add(new Zend_Acl_Resource('class'));
+      $this->add(new Zend_Acl_Resource('class_change'), 'class');
+      $this->add(new Zend_Acl_Resource('class_listall'), 'class');
+      $this->add(new Zend_Acl_Resource('class_edit'), 'class');
+      $this->add(new Zend_Acl_Resource('class_delete'), 'class');
+      $this->add(new Zend_Acl_Resource('class_create'), 'class');
       
-      /* Contract Controller */
-      $this->add(new Zend_Acl_Resource('contract'));
-      $this->add(new Zend_Acl_Resource('contract_new'), 'contract');
-      $this->add(new Zend_Acl_Resource('contract_renew'), 'contract');
-      $this->add(new Zend_Acl_Resource('contract_create'), 'contract');
       
       /* Syllabus Controller */
       $this->add(new Zend_Acl_Resource('syllabus'));
@@ -61,6 +68,18 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('syllabus_view'), 'syllabus');
       $this->add(new Zend_Acl_Resource('syllabus_edit'), 'syllabus');
       $this->add(new Zend_Acl_Resource('syllabus_create'), 'syllabus');
+
+      /* Assignment Controller */
+      $this->add(new Zend_Acl_Resource('assignment'));
+      $this->add(new Zend_Acl_Resource('asignment_submit'), 'assignment');
+
+
+      /* Async Controller */
+      $this->add(new Zend_Acl_Resource('async'));
+      $this->add(new Zend_Acl_Resource('async_student-rec-search-result'), 'async');
+      $this->add(new Zend_Acl_Resource('async_submission-recs'), 'async');
+      $this->add(new Zend_Acl_Resource('async_view-stu-info-sheet'), 'async');
+      $this->add(new Zend_Acl_Resource('async_class-roll-json'), 'async');
 
       /* Roles */
 
@@ -88,11 +107,6 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('none', 'auth');
       //$this->deny('none', 'auth', 'logout');
 
-
-      $this->allow('supervisor', 'pages', 'pages_home');
-      $this->allow('supervisor', 'contract', 'contract_new');
-      $this->allow('supervisor', 'contract', 'contract_create');
-      
       //$this->allow('guest','auth');
       //$this->allow('guest','pages');
       //$this->allow('guest','user','user_new');
@@ -103,10 +117,9 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user','auth');
       $this->allow('user','pages');
       $this->allow('user','index');
-      $this->allow('user', 'contract');
       $this->allow('user', 'syllabus','syllabus_view');
-      $this->allow('user', 'form','form_student-info-show');
-      $this->allow('user', 'form','form_student-info-submit');
+      $this->allow('user', 'form');
+      $this->allow('user', 'class', 'class_change');
       // Think about if a user needs to get to "user" actions if they are already a user 
       // (i.e. in the database as a student).
       //$this->allow('user', 'user', 'user_new');
@@ -116,10 +129,15 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'syllabus', 'syllabus_view');
       $this->allow('coordinator','user','user_new');
       $this->allow('coordinator','user','user_create');
-      $this->allow('coordinator', 'user', 'user_list-unenrolled');
-      $this->allow('coordinator', 'user', 'user_activate');
       $this->allow('coordinator', 'user', 'user_searchstudent');
       $this->allow('coordinator', 'user', 'user_history-show');
+      $this->allow('coordinator', 'user', 'user_list-coords');
+      $this->allow('coordinator', 'user', 'user_delete-coord');
+      $this->allow('coordinator', 'user', 'user_edit-coord');
+      $this->allow('coordinator', 'user', 'user_add-coord');
+      $this->allow('coordinator', 'class');
+      $this->allow('coordinator', 'async');
+      $this->allow('coordinator', 'assignment', 'assignment_submit');
       
       /* 
        * Users who haven't filled out a contract can

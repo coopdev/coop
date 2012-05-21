@@ -3,11 +3,14 @@
    $empForm = $form->getSubForm('empinfo[0]');
    $empinfo = $this->empinfo;
    $recText = $this->recText;
+   //die(var_dump($recText));
    $funcs = new My_Funcs();
 
-   echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
-   echo $recText['class'] . "<br /> ";
-   echo $recText['semester'] . "<br />";
+   if (!empty($recText)) {
+      echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+      echo $recText['class'] . "<br /> ";
+      echo $recText['semester'] . "<br />";
+   }
 
    // If $empinfo is empty, it means the student hasn't submitted it yet
    if (empty($empinfo)) {
@@ -23,7 +26,8 @@
          $page++;
          $e['start_date'] = $funcs->formatDateOut($e['start_date']);
          $e['end_date'] = $funcs->formatDateOut($e['end_date']);
-         $empForm->populate($e);
+         //$empForm->populate($e);
+         $form->populate($e);
          $form->removeElement('Submit');
          echo "<li class='simplePagerPage$page'>";
          echo $form;

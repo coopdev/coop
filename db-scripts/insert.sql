@@ -30,6 +30,7 @@ INSERT INTO coop_users (fname, lname, username, password, roles_id)
           ('coord1', 'coord1', 'coord1', 'pass', 3),
           ('coord2', 'coord2', 'coord2', 'pass', 3),
           ('coord3', 'coord3', 'coord3', 'pass', 3),
+          ('Travis', 'Toka', 'toka', 'pass', 3),
           ('superv1', 'superv1', 'superv1', 'pass', 1),
           ('superv2', 'superv2', 'superv2', 'pass', 1),
           ('superv3', 'superv3', 'superv3', 'pass', 1);

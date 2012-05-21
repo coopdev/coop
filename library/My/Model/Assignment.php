@@ -148,10 +148,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
           $mobilePhoneVals = array();
        }
 
+       $currentClass = array();
+       if ($coopSess->role === 'user') {
+          $currentClass['wanted_class'] = $coopSess->currentClassName;
+       }
+
        //die(var_dump($userVals, $addrVals, $empVals, $homePhoneVals, $mobilePhoneVals));
 
        //$formVals = $userVals + $addrVals + $empVals + $homePhoneVals + $mobilePhoneVals + $stuVals;
-       $formVals = $userVals + $addrVals + $homePhoneVals + $mobilePhoneVals + $stuVals;
+       $formVals = $userVals + $addrVals + $homePhoneVals + $mobilePhoneVals + $stuVals + $currentClass;
 
        if (!empty($formVals['start_date'])) {
           $dateTokens = explode("-", $formVals['start_date']);
@@ -200,9 +205,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        
        // get only the submited form data that matches table fields in coop_users
        $userVals = $db->prepFormInserts($data, 'coop_users'); 
-       if ($userVals['uuid'] == "") {
-          $userVals['uuid'] = null;
-       }
+       //if ($userVals['uuid'] == "") {
+       //   $userVals['uuid'] = null;
+       //}
        //die(var_dump($userVals));
        $userVals['username'] = $coopSess->username;
 
@@ -215,6 +220,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        // get only the submited form data that matches table fields in coop_employmentinfo
        $empVals = $db->prepFormInserts($data, 'coop_employmentinfo');
        //die(var_dump($empVals));
+       if (empty($empVals['rate_of_pay'])) {
+          $empVals['rate_of_pay'] = null;
+       }
        $empVals['username'] = $coopSess->username;
        $empVals['classes_id'] = $coopSess->currentClassId;
        $empVals['semesters_id'] = $coopSess->currentSemId;

@@ -19,7 +19,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
    public function getAll()
    {
-      return $this->fetchAll()->toArray();
+      return $this->fetchAll(null, "name")->toArray();
    }
 
    // Returns the name of the class specified by the passed in id
@@ -55,9 +55,35 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    {
       $vals['name'] = $data['name'];
       $vals['coordinator'] = $data['coordinator'];
+      if (empty($vals['coordinator'])) {
+         $vals['coordinator'] = null;
+      }
 
-      $this->update($vals, "id = $id");
+      if ($this->rowExists(array('name' => $vals['name']))) {
+         return "exists";
+      }
 
+      if ($this->update($vals, "id = $id")) {
+         return true;
+      }
+
+   }
+
+   public function create($data)
+   {
+      if (empty($data['coordinator'])) {
+         $data['coordinator'] = null;
+      }
+
+      if ($this->rowExists(array('name' => $data['name']))) {
+         return "exists";
+      }
+      
+      if ($this->insert($data)) {
+         return true;
+      } else {
+         return false;
+      }
    }
 
 
@@ -85,5 +111,23 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $recs;
    }
 
+   public function rowExists(array $where)
+   {
+      $query = $this->select();
+
+      foreach ($where as $key => $val) {
+         $query = $query->where("$key = ?", $val);
+
+      }
+              
+      $row = $this->fetchRow($query);
+
+      if (empty($row)) {
+         return false;
+      }
+
+      return true;
+   }
 }
+
 ?>

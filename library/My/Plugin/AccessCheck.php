@@ -23,6 +23,7 @@
          $contStat = $coopSess->contractStatus;
          $prevCont = $coopSess->prevController;
          $prevAct = $coopSess->prevAction;
+         //die("$prevCont: $prevAct");
          $redirector = new Zend_Controller_Action_Helper_Redirector();
          
          if (!$this->_acl->isAllowed($role, $resource, $resource."_".$action)) {

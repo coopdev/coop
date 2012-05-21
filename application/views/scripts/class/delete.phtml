@@ -1,0 +1,28 @@
+<?php
+
+   $form = $this->form;
+
+   echo "<h2> Delete a class </h2>";
+
+   echo $this->success;
+
+   echo $form;
+?>
+
+<script type="text/javascript">
+
+   $('document').ready(function() {
+      $('#classDelete').bind("submit", function() {
+         if (!confirm("Are you sure?")) {
+            return false;
+         }
+      });
+
+   });
+
+
+
+
+
+
+</script>

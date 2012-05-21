@@ -79,7 +79,7 @@ CREATE TABLE coop_coordinators(
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(100),
    PRIMARY KEY(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_classes;
@@ -88,7 +88,8 @@ CREATE TABLE coop_classes(
    coordinator VARCHAR(100) COMMENT "username of coordinator",
    name TEXT,
    PRIMARY KEY(id),
-   FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL
+   FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
+      ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_syllabuses;
@@ -109,7 +110,7 @@ CREATE TABLE coop_disclaimers(
    date_agreed DATE DEFAULT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE CASCADE,
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_supervisors;
@@ -117,7 +118,7 @@ CREATE TABLE coop_supervisors(
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(100),
    PRIMARY KEY(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username)
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_submittedassignments;
@@ -130,7 +131,7 @@ CREATE TABLE coop_submittedassignments(
    date_submitted DATE NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id),
    FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE SET NULL
 ) ENGINE InnoDB;
@@ -145,11 +146,12 @@ CREATE TABLE coop_users_semesters(
    supervisor VARCHAR(100),
    credits INT,
    PRIMARY KEY(id),
-   FOREIGN KEY(student) REFERENCES coop_users(username) ON DELETE CASCADE,
+   FOREIGN KEY(student) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id),
    FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE SET NULL, 
-   FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL,
-   FOREIGN KEY(supervisor) REFERENCES coop_users(username) 
+   FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
+      ON UPDATE CASCADE,
+   FOREIGN KEY(supervisor) REFERENCES coop_users(username) ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_phonenumbers;
@@ -161,7 +163,7 @@ CREATE TABLE coop_phonenumbers(
    date_mod DATETIME,
    PRIMARY KEY(id),
    FOREIGN KEY(phonetypes_id) REFERENCES coop_phonetypes(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
 
 -- Addresses for users in database
@@ -175,7 +177,7 @@ CREATE TABLE coop_addresses(
    username VARCHAR(100),
    date_mod DATETIME,
    PRIMARY KEY(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE InnoDB;
    
 -- Student employment info
@@ -186,17 +188,20 @@ CREATE TABLE coop_employmentinfo(
    classes_id INT,
    semesters_id INT,
    current_job TEXT,
+   wanted_job TEXT,
+   wanted_class TEXT,
    start_date DATE NULL,
    end_date DATE NULL,
    rate_of_pay FLOAT,
    department TEXT,
    job_address TEXT,
+   employer TEXT,
    superv_name TEXT,
    superv_title TEXT,
    superv_phone TEXT,
    superv_email TEXT,
    PRIMARY KEY(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE SET NULL,
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id)
 ) ENGINE InnoDB;
@@ -210,9 +215,8 @@ CREATE TABLE coop_students(
    semester_in_major INT,
    coord_name TEXT,
    coord_phone TEXT,
-   wanted_job TEXT,
    PRIMARY KEY(id),
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY(majors_id) REFERENCES coop_majors(id) ON DELETE SET NULL
 ) ENGINE InnoDB;
 
@@ -236,9 +240,9 @@ CREATE VIEW coop_studentinfo_view AS SELECT u.*,
    r.role,
    pn.phonenumber, pn.date_mod AS phn_date_mod, 
    pt.type AS phonetype, 
-   st.grad_date, st.semester_in_major, st.wanted_job,
+   st.grad_date, st.semester_in_major,
    ad.address, ad.city, ad.state, ad.zipcode, ad.date_mod AS addr_date_mod, 
-   em.current_job, em.start_date, em.end_date, em.rate_of_pay, em.job_address 
+   em.current_job,em.wanted_job, em.start_date, em.end_date, em.rate_of_pay, em.job_address 
    FROM coop_users AS u LEFT JOIN coop_addresses AS ad ON u.username = ad.username 
    LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
    LEFT JOIN coop_phonetypes AS pt on pn.phonetypes_id = pt.id 
@@ -253,3 +257,18 @@ CREATE VIEW coop_classinfo_view AS
    FROM coop_classes AS c 
    LEFT JOIN coop_users AS u
       ON c.coordinator = u.username;
+
+DROP VIEW IF EXISTS coop_userrole_view;
+CREATE VIEW coop_userrole_view AS
+   SELECT u.*, r.role
+   FROM coop_users AS u 
+   LEFT JOIN coop_roles AS r
+      ON u.roles_id = r.id;
+
+DROP VIEW IF EXISTS coop_coordinfo_view;
+CREATE VIEW coop_coordinfo_view AS
+   SELECT u.*, pn.phonenumber
+   FROM coop_users AS u 
+   LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
+   LEFT JOIN coop_phonetypes AS pt ON pn.phonetypes_id = pt.id and pt.type = 'home';
+

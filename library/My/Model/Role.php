@@ -16,6 +16,12 @@ class My_Model_Role extends Zend_Db_Table_Abstract
    protected $_name = "coop_roles";
 
 
+   public function getCoordId()
+   {
+      $row = $this->fetchRow("role = 'coordinator'")->toArray();
+
+      return $row['id'];
+   }
 
 
    public function getRow(array $where)

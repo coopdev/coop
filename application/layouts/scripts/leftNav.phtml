@@ -6,8 +6,9 @@
    // COORDINATOR LINKS
 
    //if ($coopSess->role == 'coordinator') {
+      echo "<h4> Coordinator Links </h4>";
       echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
-                          'action'=>'listall'), null, true)."'> Class syllabuses </a></li> <br />";
+                          'action'=>'listall'), null, true)."'> Class syllabi </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                           'action'=>'new'), null, true)."'> Add student </a></li> <br />";
@@ -23,22 +24,24 @@
                    'action'=>'submit'), null, true)."'> Submit an assignment </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'class',
-                   'action'=>'listall'), null, true)."'> Coop class list </a></li> <br />";
+                   'action'=>'listall'), null, true)."'> Manage coop classes </a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'user',
+                   'action'=>'list-coords'), null, true)."'> Manage coordinators </a></li> <br />";
+
    // STUDENT LINKS
 
    //} else if ($coopSess->role == 'user') {
+      echo "<h4> Student Links </h4>";
       echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
                                         'action'=>'view'), null, true).">Syllabus</a></li> <br />";
-
-      echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                          'action'=>'new'), null, true)."'> Co-op Agreement Form </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'form',
                             'action'=>'student-info-show'), null, true)."'> Student Information Sheet </a></li><br />";
    //} else if ($coopSess->role == 'supervisor') {
 
-      echo    "<li><a href='".$this->url(array('controller'=>'contract',
-                          'action'=>'new'), null, true)."'> Co-op Agreement Form </a></li> <br />";
+      echo    "<li><a href='".$this->url(array('controller'=>'form',
+                          'action'=>'coop-agreement-show'), null, true)."'> Co-op Agreement Form </a></li> <br />";
 
    //}
 

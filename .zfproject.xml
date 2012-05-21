@@ -12,6 +12,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="test"/>
           <actionMethod actionName="viewStuInfoSheet"/>
+          <actionMethod actionName="stuinfoFormTemplate.phtml"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Auth">
@@ -39,6 +40,7 @@
           <actionMethod actionName="update"/>
           <actionMethod actionName="listUnenrolled"/>
           <actionMethod actionName="history"/>
+          <actionMethod actionName="editCoord"/>
         </controllerFile>
         <controllerFile controllerName="Syllabus">
           <actionMethod actionName="index"/>
@@ -53,6 +55,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="studentInfo"/>
           <actionMethod actionName="studentInfoSubmit"/>
+          <actionMethod actionName="stuinfoFormTemplate"/>
         </controllerFile>
         <controllerFile controllerName="Assignment">
           <actionMethod actionName="index"/>
@@ -66,6 +69,8 @@
         <controllerFile controllerName="Class">
           <actionMethod actionName="index"/>
           <actionMethod actionName="change"/>
+          <actionMethod actionName="delete"/>
+          <actionMethod actionName="create"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -79,6 +84,11 @@
         <formFile formName="Login"/>
         <formFile formName="SubmitAssignment"/>
         <formFile formName="ClassEdit"/>
+        <formFile formName="DeleteCoord"/>
+        <formFile formName="AddCoord"/>
+        <formFile formName="ClassDelete"/>
+        <formFile formName="AddClass"/>
+        <formFile formName="EditCoord"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -206,6 +216,21 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Test">
             <viewScriptFile forActionName="simplePager"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Class">
+            <viewScriptFile forActionName="delete"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Class">
+            <viewScriptFile forActionName="create"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="editCoord"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="stuinfoFormTemplate.phtml"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Form">
+            <viewScriptFile forActionName="stuinfoFormTemplate"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

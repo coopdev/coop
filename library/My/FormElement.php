@@ -89,7 +89,11 @@ class My_FormElement
       
    public function getClassChoiceSelect()
    {  
-      $classes = $this->getClasses();
+      //$classes = $this->getClasses();
+
+      $class = new My_Model_Class();
+      $classes = $class->getall();
+
                              
       $elem = new Zend_Form_Element_Select('classes_id');
       $elem->setRequired($this->requiredVal)
@@ -154,7 +158,6 @@ class My_FormElement
        $user = new My_Model_User();
        $coords = $user->getAllCoords();
 
-       //$coord->addMultiOptions(array('' => "--------------"));
        
        foreach ($coords as $c) {
           $coord->addMultiOptions(array($c['username'] => $c['lname'].", ".$c['fname']." (".$c['username'].")"));

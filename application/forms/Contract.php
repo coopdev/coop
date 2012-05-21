@@ -8,7 +8,9 @@ class Application_Form_Contract extends Application_Form_StudentCommon
    
       public function init()
       {  
-         $this->setName('contract');
+         $this->setName('contract')
+              ->setAction('/form/coop-agreement-pdf');
+
          
          // Create common elements
          $this->makeElems();
@@ -25,8 +27,12 @@ class Application_Form_Contract extends Application_Form_StudentCommon
 
          $studentAgree = $elems->getAgreementRadio("Student's agreement", 'student_coopagreement');
          $supervAgree = $elems->getAgreementRadio("Supervisor's agreement", 'superv_coopagreement');
+
+         $this->submit->setLabel('Print PDF');
          
                   
+         $this->setDecorators(array(array('ViewScript', 
+                                      array('viewScript' => '/form/coop-agreement-template.phtml'))));
          // Add elements. 
          $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
                                  $this->curJob, $this->department, $this->sdate, 
@@ -36,6 +42,10 @@ class Application_Form_Contract extends Application_Form_StudentCommon
                                  $this->supervName, $this->supervTitle, $this->supervEmail,
                                  $this->supervPhone, $studentAgree, $supervAgree, $semester, $this->submit));
          
+
+         $this->setElementDecorators(array('ViewHelper',
+                                           'Errors'
+                                    ));
          //$this->addElements(array($this->fname, $this->agree, $this->submit));
       }
    

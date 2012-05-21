@@ -1,0 +1,17 @@
+<?php
+   echo "<h2> Add a coordinator </h2>";
+
+   $form = $this->form;
+
+   $success = $this->success;
+
+   if ($success === true) {
+      echo "<p class='success'> Coordinator has been added </p>";
+   } else if ($success === false) {
+      echo "<p class='error'> Failed to add coordinator </p>";
+   } else if ($success == "exists") {
+      echo "<p class='error'> That username already exists </p>";
+   }
+
+   echo $form;
+?>

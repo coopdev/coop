@@ -1,9 +1,16 @@
 <?php
    $classes = $this->classes;
    $url = $this->url(array('action' => 'edit', 'controller' => 'class'));
+   $delUrl = $this->url(array('action' => 'delete', 'controller' => 'class'));
+   $addUrl = $this->url(array('action' => 'create', 'controller' => 'class'));
+   $count = 0;
+   $page = 1;
 ?>
 
-<h2> List of Coop classes </h2>
+<h2> Manage Coop Classes </h2>
+
+<p> <a href="<?php echo $addUrl ?>"> Add a class </a> </p>
+<p> <a href="<?php echo $delUrl ?>"> Delete a class </a> </p>
 
 <table class="classList">
 
@@ -27,16 +34,7 @@
 <script type="text/javascript">
 
    $('document').ready(function() {
-      $("a.editLink").live('click', function(e) {
-         //e.preventDefault();
-         //val = $(this).attr('value');
-         //alert(val);
-
-         //$(this).after("<input type=text /> <input type='submit' value='Submit' />");
-         
-         //$("td."+val).after("<td> TEST </td>");
-
-      });
+      
 
    });
    

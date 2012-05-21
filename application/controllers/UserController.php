@@ -8,7 +8,6 @@ class UserController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    // Shows the Add Student page
     public function newAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -43,7 +42,6 @@ class UserController extends Zend_Controller_Action
 
     }
 
-    // Inserts a student
     public function createAction()
     {
        /*
@@ -110,8 +108,6 @@ class UserController extends Zend_Controller_Action
         // action body
     }
 
-
-    // Page to search for student records.
     public function searchstudentAction()
     {
        $form = new Application_Form_StudentRecSearch();
@@ -120,4 +116,104 @@ class UserController extends Zend_Controller_Action
 
     }
 
+    public function listCoordsAction()
+    {
+       $user = new My_Model_User();
+
+       //$coords = $user->getCoordInfo(array('username' => 'johndoe'));
+       $coords = $user->getCoordInfo();
+
+       $this->view->coords = $coords;
+    }
+
+    public function deleteCoordAction()
+    {
+
+       if ($this->getRequest()->isPost()) {
+          $coord = $_POST['coordinator'];
+
+          $user = new My_Model_User();
+          if ($user->deleteCoord($coord)) {
+             $this->view->success = true;
+          } else {
+             $this->view->success = false;
+          }
+       }
+
+       $form = new Application_Form_DeleteCoord();
+
+       $this->view->form = $form;
+    }
+
+    public function addCoordAction()
+    {
+
+       $form = new Application_Form_AddCoord();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          if ($form->isValid($data)) {
+             $user = new My_Model_User();
+
+             $res = $user->addCoord($data);
+
+             if ($res === true) {
+                $this->view->success = true;
+             } else if ($res == 'exists') {
+                $this->view->success = "exists";
+             } else {
+                $this->view->success = false;
+             }
+          }
+       }
+
+    }
+
+    public function editCoordAction()
+    {
+       // Use AddCord form since it uses same fields
+       $form = new Application_Form_AddCoord();
+       $hidden = new Zend_Form_Element_Hidden('origUsername');
+       $form->addElement($hidden);
+
+       if ($this->getRequest()->isGet()) {
+          $username = $_GET['username'];
+          $user = new My_Model_User();
+          $coords = $user->getCoordInfo(array('username' => $username));
+          if (empty($coord)) {
+             $coord = $coords[0];
+          }
+          $coord['origUsername'] = $username;
+          //die(var_dump($coords));
+
+          //$coords['']
+
+          $form->populate($coord);
+
+
+       } else if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $user = new My_Model_User();
+
+             $res = $user->editCoord($data['origUsername'], $data);
+             if ($res === false) {
+                $this->view->message = "<p class='error'> Unable to update coordinator </p>";
+             } else {
+                $this->_helper->redirector('list-coords');
+             }
+          }
+
+       }
+       //$form->populate(array('username' =>'test'));
+
+       $this->view->form = $form;
+    }
+
+
 }
+

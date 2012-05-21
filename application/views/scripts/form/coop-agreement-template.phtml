@@ -1,0 +1,188 @@
+<form method="POST" action="<?php echo $this->element->getAction() ?>" >
+   <table class="tableform">
+
+      <tr>
+
+         <td>
+            First name: <br />
+            <?php echo $this->element->fname ?>
+         </td>
+
+         <td>
+            Last name: <br />
+            <?php echo $this->element->lname ?>
+         </td>
+
+         <td>
+            Employer: <br />
+            <?php echo $this->element->employer ?>
+         </td>
+
+         <td>
+            Job title: <br />
+            <?php echo $this->element->current_job ?>
+         </td>
+
+      </tr>
+
+      <tr>
+
+         <td>
+            Department: <br />
+            <?php echo $this->element->department ?>
+         </td>
+
+         <td>
+            Start date (mm/dd/yy): <br />
+            <?php echo $this->element->start_date ?>
+         </td>
+
+         <td>
+            End date (mm/dd/yy): <br />
+            <?php echo $this->element->end_date ?>
+         </td>
+
+         <td>
+            Rate of pay: <br />
+            <?php echo $this->element->rate_of_pay ?>
+         </td>
+      </tr>
+
+      <tr>
+
+         <td>
+            Address/City/State/ZIP: <br />
+            <?php echo $this->element->address ?>
+         </td>
+
+         <td>
+            Grad date: <br />
+            <?php echo $this->element->grad_date ?>
+         </td>
+
+         <td>
+            Major: <br />
+            <?php echo $this->element->majors_id ?>
+         </td>
+
+         <td>
+            Semester in major: <br />
+            <?php echo $this->element->semester_in_major ?>
+         </td>
+      </tr>
+
+      <tr>
+
+         <td>
+            Supervisor name: <br />
+            <?php echo $this->element->superv_name ?>
+         </td>
+
+         <td>
+            Telephone: <br />
+            <?php echo $this->element->phone ?>
+         </td>
+
+         <td>
+            E-mail: <br />
+            <?php echo $this->element->email ?>
+         </td>
+
+         <td>
+            Supervisor title: <br />
+            <?php echo $this->element->superv_title ?>
+         </td>
+
+      </tr>
+
+      <tr>
+
+         <td>
+            Co-op coordinator name: <br />
+            <?php echo $this->element->coord_name ?>
+         </td>
+
+         <td>
+            Supervisor telephone: <br />
+            <?php echo $this->element->superv_phone ?>
+         </td>
+
+         <td>
+            Co-op coordinator telephone: <br />
+            <?php echo $this->element->coord_phone ?>
+         </td>
+
+         <td>
+            Supervisor e-mail: <br />
+            <?php echo $this->element->superv_email ?>
+         </td>
+
+      </tr>
+
+   </table>
+
+   <h4> <b> The Student Agrees To: </b> </h4>
+
+   <ol>
+      <li> Maintain regular attendance a school and work, and notify the school and employer prior to any absence; </li>
+
+      <li> Complete assignments on time, show honesty, punctuality, a cooperative attitude, proper grooming/dress, and willingness to learn; </li>
+
+      <li> Consult the Co-op coordinator and work supervisor about any problems; and,</li>
+      
+      <li> Conform to the rules and regulations of the worksite, and maintain confidentiality. </li>
+
+      <li> Indemnify, defend and hold harmless the University of Hawaii and the State of Hawaii and the State of Hawaii, and their officers, 
+           employees, agents, or any person acting on their behalf from and against any claim or demand for loss, liability or damage connected 
+           with the performance of this agreement, or made by reason of the non-performance of any of the terms, covenants and conditions herein,
+           or any Federal, state municipal or county rules; and, </li>
+
+      <li> Authorize the Co-op coordinator to release information about my academic records to the Co-op Employer for purposes of obtaining or maintaining
+           employment. These records include grades, grade point average, courses attempted, courses completed, academic status (probation, suspension,
+           Dean's list, honor's graduate) and any other information contained in my academic history. This authorization is valid for 5 years from the date signed</li>
+   </ol>
+
+   <h4> <b> The Employer Agrees To: </b></h4>
+
+   <ol>
+      <li> Provide thorough orientation to job and worksite, as well as a meaningful, well-supervised work experience;</li>
+
+      <li> Provide evaluation of performance, time for consultation with, and on-site monitoring visits by Co-op coordinator; </li>
+
+      <li> Consult Co-op coordinator regarding problems related to the work experience, and prior to suspension or termination; </li>
+
+      <li> Conform to all State and Federal laws which prohibit discrimination and promote affirmative action and adhere to the UH EEO/AA Policy </li>
+
+      <li> Offer jobs that pay a base salary equal to or greater than a minimum wage in compliance with city/state/federal labor laws and ordinances 
+           or provide internship training as compensation. </li>
+
+      <li> Provide adequate protection to the student through Workman's Compensation and/or liability insurance as required by law and OSHA regulation. </li>
+
+   </ol>
+
+   <h4> <b> Student Learning Outcomes: </b> </h4> Upon completion of the Co-op Work Experience, the student will demonstrate the following knowledge & skills:
+
+   <ol>
+      <li> Secure an appropriate Cooperative Education Job Training Position (carry out a career self-assessment, identify potential employers,
+           conduct a job search, apply for a position, write a cover letter, resume, and interview for a position). </li>
+
+      <li> Perform all duties required at the cooperative education work site according to industry standards (demonstrate positive work habits, use
+           appropriate work procedures, tools, and equipment, and follow all safety procedures). </li>
+
+      <li> Apply classroom/laboratory skills to solve work related problems. </li>
+
+      <li> Assess personal abilities and skills in relation to job duties (evaluate personal performance in relation to job duties, demonstrate willingness
+           to learn, listen to criticism and change behavior). </li>
+   </ol>
+
+   <h4> <b> Brief Description of Duties </b> Please describe briefly the duties and performance objective as assigned to this student during the co-op period. </h4> 
+   <br /><br /><br /><br /><br /><br /><br />
+
+   Student's Signature: _____________________________________________________ Date: ____________ <br /><br />
+   Supervisor's Signature: __________________________________________________ Date: ____________ <br /><br />
+   Cooperative Education Coordinator's Signature: _____________________________________________ Date: ____________ <br /><br /><br /><br /><br />
+
+
+   <?php echo $this->element->Submit ?>
+
+</form>

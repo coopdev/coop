@@ -1,0 +1,48 @@
+<?php
+   $coords = $this->coords;
+   $editUrl = $this->url(array('controller' => 'user', 'action' => 'edit-coord'));
+   $addUrl = $this->url(array('controller' => 'user', 'action' => 'add-coord'));
+   $delUrl = $this->url(array('controller' => 'user', 'action' => 'delete-coord'));
+?>
+
+<h2> Manage Coordinators </h2>
+
+<p> <a href="<?php echo $addUrl ?>"> Add coordinator</a> </p>
+<p> <a href="<?php echo $delUrl ?>"> Delete coordinator</a> </p>
+
+<table id="coordList">
+
+   <th> Name </th> <th> Number </th> <th> Email </th>
+
+
+   <?php foreach ($coords as $c) { ?>
+
+      <tr>
+
+         <td>
+            <?php echo $c['fname'] . " " . $c['lname'] ?>
+
+         </td>
+
+         <td>
+            <?php echo $c['phonenumber'] ?>
+
+         </td>
+
+         <td>
+            <?php echo $c['email'] ?>
+
+         </td>
+
+         <td>
+            <a class="editLink" href='<?php echo "$editUrl?username=".$c['username'] ?>'> EDIT </a>
+         </td>
+      </tr>
+
+   <?php } ?>
+
+
+
+
+
+</table>

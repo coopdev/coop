@@ -74,7 +74,12 @@ class AsyncController extends Zend_Controller_Action
           $user = new My_Model_User();
 
           $recText = $user->getSemesterInfo($data);
-          $recText = $recText[0];
+
+          //die(var_dump($recText));
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+
           $this->view->recText = $recText;
 
           $form = new Application_Form_StudentInfo();

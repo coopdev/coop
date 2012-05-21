@@ -83,7 +83,11 @@ class My_Model_User extends Zend_Db_Table_Abstract
          }
       }
 
+      $query = $query->order(array("class", "lname"));
+
       $rows = $this->fetchAll($query)->toArray();
+
+      //die(var_dump($rows));
 
       if (empty($rows)) {
          $rows = array();
@@ -118,7 +122,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
    {
       $role = new My_Model_Role();
       $sel = $this->select()->setIntegrityCheck(false);
-      $res = $sel->from(array('u' => $this->_name), array('fname', 'lname', 'u.username'))
+      $res = $sel->from(array('u' => $this->_name))
                  ->join(array('r' => 'coop_roles'), "u.roles_id = r.id", array())
                  ->where("r.role = 'coordinator'");
 
@@ -129,6 +133,120 @@ class My_Model_User extends Zend_Db_Table_Abstract
       }
 
       return $rows;
+
+   }
+
+   public function getCoordInfo(array $where = array())
+   {
+      $pnType = new My_Model_PhoneTypes();
+      
+      $pnTypeId = $pnType->getHomeId();
+
+      $pn = new My_Model_PhoneNumbers();
+      $pnName = $pn->info('name');
+
+      $role = new My_Model_Role();
+      $row = $role->fetchRow("role = 'coordinator'")->toArray();
+      $coordId = $row['id'];
+
+      $sel = $this->select()->setIntegrityCheck(false);
+
+      $query = $sel->from(array('u' => $this->_name))
+                   ->joinLeft(array('pn' => $pnName), "u.username = pn.username AND pn.phonetypes_id = $pnTypeId", array('phonenumber'))
+                   ->where('roles_id = ?', $coordId);
+
+      foreach ($where as $key =>$val) {
+         $query = $query->where("u.$key = ?", $val);
+      }
+
+      $rows = $this->fetchAll($query)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      //die(var_dump($rows));
+
+      return $rows;
+
+   }
+
+
+   public function deleteCoord($coord)
+   {
+      //die(var_dump($coord));
+      if ($this->delete("username = '$coord'")) {
+         return true;
+      }
+
+      return false;
+
+   }
+
+   public function addCoord($data)
+   {
+      $db = new My_Db();
+
+      $data = $db->prepFormInserts($data, $this);
+
+      $role = new My_Model_Role();
+      $roleId = $role->getCoordId();
+
+      $data['roles_id'] = $roleId;
+
+      if ($this->rowExists(array('username' => $data['username']))) {
+         return "exists";
+      }
+
+      if ($this->insert($data)) {
+         return true;
+      }
+
+      return false;
+
+   }
+
+   public function editCoord($username, $data)
+   {
+      $db = new My_Db();
+
+      // prepare coop_users updates
+      $userVals = $db->prepFormInserts($data, $this);
+
+      // update coop_users table
+      $this->update($userVals, "username = '$username'");
+
+
+      $pt = new My_Model_PhoneTypes();
+      // get id for home phone type
+      $ptId = $pt->getHomeId();
+
+      // prepare coop_phonenumbers updates
+      $phoneVals['phonenumber'] = $data['phonenumber'];
+      $phoneVals['date_mod'] = date('Ymdhis');
+
+      $pn = new My_Model_PhoneNumbers();
+
+      // if coordinator already has a home phone record, do an update
+      if ($pn->rowExists(array('username' => $data['username'], 'phonetypes_id' => $ptId))) {
+         if ($pn->update($phoneVals, "username = '".$data['username']."' AND phonetypes_id = $ptId")) {
+            return true;
+         }
+      // if not, insert
+      } else {
+         $phoneVals['username'] = $data['username'];
+         $phoneVals['phonetypes_id'] = $pt->getHomeId();
+         if ($pn->insert($phoneVals)) {
+            return true;
+         }
+      }
+
+      return false;
+
+
+      //$data = $userVals + $phoneVals;
+
+      //die(var_dump($data));
 
    }
 
@@ -214,11 +332,15 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    public function rowExists(array $where)
    {
-      $keys = array_keys($where);
-      $whereCol = $keys[0];
-      $whereVal = $where[$whereCol];
 
-      $query = $this->select()->where("$whereCol = ?", $whereVal);
+      $query = $this->select();
+
+      foreach ($where as $key => $val) {
+         $query = $query->where("$key = ?", $val);
+
+      }
+              
+              
       $row = $this->fetchRow($query);
 
       if (empty($row)) {

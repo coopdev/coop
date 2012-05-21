@@ -1,0 +1,147 @@
+<?php
+
+?>
+
+<br /><br /><h4> <b> PERSONAL INFORMATION (Please complete this form) </b> </h4>
+
+<form id="studentInfoSheet" name="studentInfoSheet" method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" >
+<table class="tableform">
+
+   <tr>
+
+      <td> First name: <br />
+         <?php echo $this->element->fname ?> </td>
+
+      <td> Last name: <br />
+         <?php echo $this->element->lname ?> </td>
+
+      <td> Address/City/State/ZIP: <br />
+         <?php echo $this->element->address ?> </td>
+
+      <td> What job do you want for your co-op experience? <br />
+         <?php echo $this->element->wanted_job ?> </td>
+
+
+   </tr>
+   
+   <tr>
+
+      <td> Which co-op class are you planning to enroll in <br />
+         <?php echo $this->element->wanted_class ?> </td>
+
+      <td> How many credits will you enroll this semester? <br />
+         <?php echo $this->element->credits ?> </td>
+
+      <td> Grad date: <br />
+         <?php echo $this->element->grad_date ?> </td>
+
+      <td> Major: <br />
+         <?php echo $this->element->majors_id ?> </td>
+
+   </tr>
+
+   <tr> 
+   
+      <td> Semester in major: <br />
+         <?php echo $this->element->semester_in_major ?> </td>
+   
+      <td> Telephone: <br />
+         <?php echo $this->element->phone ?> </td>
+   
+      <td> Mobile: <br />
+         <?php echo $this->element->mobile ?> </td>
+
+      <td> Email: <br />
+         <?php echo $this->element->email ?> </td>
+   </tr>
+
+</table>
+
+<br /><h4> <b> EMPLOYMENT INFORMATION (If you are currently working at a job related to your major, please describe below) </b> </h4>
+
+<table class="tableform">
+   <tr>
+
+      <td> Job title: <br />
+         <?php echo $this->element->current_job ?> </td>
+
+      <td> Start date (mm/dd/yyyy): <br />
+         <?php echo $this->element->start_date ?> </td>
+
+      <td> End date (mm/dd/yyyy): <br />
+         <?php echo $this->element->end_date ?> </td>
+
+      <td> Rate of pay: <br />
+         <?php echo $this->element->rate_of_pay ?> </td>
+   </tr>
+
+   <tr>
+
+      <td> Employer: <br />
+         <?php echo $this->element->employer ?> </td>
+
+      <td> Address/City/State/ZIP: <br />
+         <?php echo $this->element->job_address ?> </td>
+
+      <td> Supervisor's name: <br />
+         <?php echo $this->element->superv_name ?> </td>
+
+      <td> Supervisor's title: <br />
+         <?php echo $this->element->superv_title ?> </td>
+
+   </tr>
+
+   <tr>
+
+      <td> Telephone: <br />
+         <?php echo $this->element->superv_phone ?> </td>
+
+      <td> E-mail: <br />
+         <?php echo $this->element->superv_email ?> </td>
+
+   </tr>
+
+
+
+
+
+
+</table>
+
+<h4> <b> STUDENT PARTICIPATION AGREEMENT </b> </h4><br />
+<p> Participation in Cooperative Education requires agreement with the terms and conditions below. By submitting this form, you agree to the following: </p> 
+
+<ol>
+   <li> I certify that to the best of my knowledge and belief, all of the information on and attached to this application is true, correct
+        complete and made in good faith. I understand that this information may be investigated. </li>
+
+   <li> I will maintain good academic standing at all times (at least 2.0 on a 4.0 scale in my major and cumulative G.P.A); </li>
+
+   <li> I will maintain regular attendance at school and work, follow all rules, and notify my employer prior to any absence; </li>
+
+   <li> I will demonstrate honesty, punctuality, a cooperative attitude, proper grooming/dress, and willingness to learn; </li>
+
+   <li> I agree to consult the Co-op coordinator and work supervisor about any problems; </li>
+
+   <li> I agree to conform to the rules and regulationsof the worksite, and maintain confidentiality; </li>
+
+   <li> I wiill complete required assignments on time and finish necessary information, reports or time sheets; </li>
+
+   <li> I hereby indemnify, defend and hold harmless the Employer and the University of Hawaii and the State of Hawaii, and their officers,
+        employees, agents, or any person acting on their behalf from and against any claim or demand for loss, liability or damage connected 
+        with the performance of this agreement, or made by reason of the non-performance of any of the terms, covenants and conditions herein, 
+        or any Federal, state municipal or county rules; and, </li>
+
+   <li> I authorize the Co-op coordinator to release information about my academic records to the Co-op Employer for puposes of obttaining or 
+        maintaining employment. These records include grades, grade point aerage, courses attempted, courses completed, academic status 
+        (probation, suspension, Dean's list, honor's graduate) and any other information contained in my academic history. 
+        This authorization is valid for 5 years from the date signed.</li>
+
+</ol>
+
+
+<p> <?php echo $this->element->agreement ?> </p> 
+<p> <?php echo $this->element->Submit ?> </p>
+
+</form>
+
