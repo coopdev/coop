@@ -89,6 +89,8 @@
         <formFile formName="ClassDelete"/>
         <formFile formName="AddClass"/>
         <formFile formName="EditCoord"/>
+        <formFile formName="EditDuedate"/>
+        <formFile formName="EditQuestions"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

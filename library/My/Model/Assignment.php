@@ -16,7 +16,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
 
-
    // Submits an assignment.
    public function submit(array $data)
    {
@@ -47,6 +46,82 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   public function edit($data)
+   {
+      $db = new My_Db();
+
+      $id = $data['id'];
+      unset($data['id']);
+
+      $data = $db->prepFormInserts($data, $this);
+      $funcs = new My_Funcs();
+      $data['due_date'] = $funcs->formatDateIn($data['due_date']);
+
+      $this->update($data, "id = $id");
+
+
+   }
+
+   public function getAll()
+   {
+      $rows = $this->fetchAll()->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
+   }
+
+
+   // Returns assignments that are submitted offline
+   public function getOffLine()
+   {
+      $rows = $this->fetchAll("online = 0")->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
+   }
+
+   public function getAssignment($id)
+   {
+      $row = $this->fetchRow("id = $id")->toArray();
+
+      if (empty($row)) {
+         $row = array();
+      }
+
+      return $row;
+
+   }
+
+   public function getStuInfoId()
+   {
+      $id = $this->getId(array('assignment' => 'Student Information Sheet'));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+   }
+
+   public function getQuestions($id)
+   {
+      $aq = new My_Model_AssignmentQuestions();
+
+      $rows = $aq->fetchAll("assignments_id = $id")->toArray();
+
+      if (empty($row)) {
+         $row = array();
+      }
+
+      return $rows;
+      
+   }
+
+
    // Checks if a specific assignment has already been submitted based on username, class,
    // semester, assignment.
    public function isSubmitted(array $data)
@@ -60,6 +135,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return false;
 
    }
+
+
 
    /*
     * Populates a Zend_Form Student Information Sheet with either the current users 
@@ -330,33 +407,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
-   // Returns assignments that are submitted offline
-   public function getOffLine()
-   {
-      $res = $this->select()->where("online = 0");
-      $rows = $this->fetchAll("online = 0")->toArray();
-
-      if (empty($rows)) {
-         $rows = array();
-      }
-
-      return $rows;
-   }
-
-   public function getStuInfoId()
-   {
-      $id = $this->getId(array('assignment' => 'Student Info Sheet'));
-      if (empty($id)) {
-         $id = 0;
-      }
-      return $id;
-   }
-
-   public function getAll()
-   {
-      $arr = $this->fetchAll()->toArray();
-      return $arr;
-   }
 
 
 

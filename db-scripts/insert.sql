@@ -69,7 +69,14 @@ INSERT INTO coop_phonetypes (type)
    VALUES ('home'),
           ('mobile');
 
-INSERT INTO coop_assignments (assignment, due_date, online)
-   VALUES ('Student Info Sheet', 20120411, 1),
-          ('assignment2', 20120609, 0),
-          ('assignment3', 20120519, 0);
+INSERT INTO coop_assignments (assignment, due_date, online, questions_editable)
+   VALUES ('Student Information Sheet', 20120411, 1, 0),
+          ('Midterm Report', 20120809, 1, 1),
+          ('assignment2', 20120609, 0, 0),
+          ('assignment3', 20120519, 0, 0);
+
+INSERT INTO coop_assignmentquestions (assignments_id, question_number, question_text, 
+                                      answer_minlength)
+   VALUES (2, '1', 'First Question', 10),
+          (2, '2', 'Second Question', 10),
+          (2, '3', 'Third Question', 10);

@@ -1,0 +1,17 @@
+<?php
+   
+   $assign = $this->assign;
+   $dueDateUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
+   $editQuestsUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-questions'));
+
+?>
+
+<h2> <?php echo $assign['assignment'] ?> </h2>
+
+<a href='<?php echo "$dueDateUrl?id=".$assign['id'] ?>'> Edit Due Date </a>
+
+<?php if ($assign['questions_editable']) { ?>
+
+   <br /> <a href='<?php echo "$editQuestsUrl?id=" . $assign['id'] ?> '> Edit Questions </a>
+
+<?php } ?>

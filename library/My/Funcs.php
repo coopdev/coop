@@ -100,6 +100,17 @@ class My_Funcs
          return $date;
       }
    }
+
+   public function formatDateIn($date)
+   {
+      if(!empty($date)) {
+         $tokens = explode('/',$date);
+         $date = $tokens[2] . $tokens[0] . $tokens[1];
+
+         return $date;
+      }
+
+   }
 }
 
 ?>

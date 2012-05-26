@@ -184,7 +184,6 @@ class FormController extends Zend_Controller_Action
        //$this->view->form = new Application_Form_StudentInfo();
     }
 
-
 }
 
 

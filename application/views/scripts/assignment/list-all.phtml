@@ -1,0 +1,22 @@
+<?php
+   
+   $assigns = $this->assignments;
+
+   $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
+
+?>
+
+<table class="assignmentList">
+
+   <?php foreach ($assigns as $as) { ?>
+
+      <tr>
+
+         <td> <a class="editLink" href="<?php echo $url . '?id=' . $as['id'] ?>"> <?php echo $as['assignment'] ?> </a> </td>
+
+      </tr>
+
+   <?php } ?>
+
+
+</table>
