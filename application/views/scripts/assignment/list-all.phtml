@@ -4,7 +4,11 @@
 
    $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
 
+   $editUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
+
 ?>
+
+<a class="regText" href="<?php echo $editUrl ?>"> Edit due dates </a><br /><br /><br />
 
 <table class="assignmentList">
 
@@ -12,7 +16,9 @@
 
       <tr>
 
-         <td> <a class="editLink" href="<?php echo $url . '?id=' . $as['id'] ?>"> <?php echo $as['assignment'] ?> </a> </td>
+         <td>  <?php echo $as['assignment'] ?> </td>
+
+         <td> <a class="editLink" href="<?php echo $url . '?id=' . $as['id'] ?>">  Properties </a> </td>
 
       </tr>
 

@@ -46,21 +46,60 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
-   public function edit($data)
+   public function updateDuedates($data)
    {
-      $db = new My_Db();
+      //$db = new My_Db();
 
-      $id = $data['id'];
-      unset($data['id']);
+      //$id = $data['id'];
+      //unset($data['id']);
 
-      $data = $db->prepFormInserts($data, $this);
+      //$data = $db->prepFormInserts($data, $this);
+      //$funcs = new My_Funcs();
+      //$data['due_date'] = $funcs->formatDateIn($data['due_date']);
+
+      //$this->update($data, "id = $id");
+
+      unset($data['Submit']);
+
+      //die(var_dump($data));
+
       $funcs = new My_Funcs();
-      $data['due_date'] = $funcs->formatDateIn($data['due_date']);
+      foreach ($data as $id => $dueDate) {
 
-      $this->update($data, "id = $id");
+         //die(var_dump($dueDate));
+         $dueDate['due_date'] = $funcs->formatDateIn($dueDate['due_date']); 
+         //die(var_dump($dueDate['due_date']));
+         try {
+            $res = $this->update($dueDate, "id = $id");
+         } catch(Exception $e) {
+            return false;
+         }
+      }
 
+      return true;
 
    }
+
+   public function updateQuestions($data)
+   {
+      unset($data['submit']);
+      $assignId = $data['assignId'];
+      unset($data['assignId']);
+
+      $aq = new My_Model_AssignmentQuestions();
+
+      foreach ($data as $qNum => $vals) {
+         try {
+            $res = $aq->update($vals, "assignments_id = $assignId AND question_number = $qNum");
+         } catch(Exception $e) {
+            return false;
+         }
+      }
+
+      return true;
+
+   }
+
 
    public function getAll()
    {

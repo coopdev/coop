@@ -45,12 +45,21 @@ class AssignmentController extends Zend_Controller_Action
     public function propertiesAction()
     {
        if ($this->getRequest()->isGet()) {
+
+          if (!isset($_GET['id'])) {
+             $this->view->message = "<p class=error> Must select an assignment first </p>";
+             return;
+          }
+
           $id = $_GET['id'];
 
           $as = new My_Model_Assignment();
 
           $assign = $as->getAssignment($id);
           //die(var_dump($assign));
+
+          $funcs = new My_Funcs();
+          $assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
 
           $this->view->assign = $assign;
        }
@@ -59,23 +68,32 @@ class AssignmentController extends Zend_Controller_Action
 
     public function editDuedateAction()
     {
-       $form = new Application_Form_EditDuedate();
-       $this->view->form = $form;
+
        $as = new My_Model_Assignment();
 
-       if ($this->getRequest()->isGet()) {
+       $assigns = $as->getAll();
 
-          $id = $_GET['id'];
-          $assign = $as->getAssignment($id);
-          $funcs = new My_Funcs();
-          $assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
-          $form->populate($assign);
+       $form = new Application_Form_EditDuedate($assigns);
+       $this->view->form = $form;
 
-       } else if ($this->getRequest()->isPost()) {
+          //$id = $_GET['id'];
+          //$assign = $as->getAssignment($id);
+          //$funcs = new My_Funcs();
+          //$assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
+          //$form->populate($assign);
+
+       if ($this->getRequest()->isPost()) {
           $data = $_POST;
 
           if ($form->isValid($data)) {
-             $as->edit($data);
+             $res = $as->updateDuedates($data);
+
+             if ($res === true) {
+                $this->view->result = "<p class=success> Updated Due Dates </p>";
+             } else if ($res ===false) {
+                $this->view->result = "<p class=error> Failed to Update </p>";
+             }
+             
           }
        }
 
@@ -84,6 +102,11 @@ class AssignmentController extends Zend_Controller_Action
     public function editQuestionsAction()
     {
        if ($this->getRequest()->isGet()) {
+          if (!isset($_GET['id'])) {
+             $this->view->result = "<p class=error> Must select an assignment first </p>";
+             return;
+          }
+
           $id = $_GET['id'];
 
           $as = new My_Model_Assignment();
@@ -123,6 +146,21 @@ class AssignmentController extends Zend_Controller_Action
           $hiddenId->setValue($id);
           $form->addElements(array($hiddenId,$submit));
           $this->view->form = $form;
+       } else if ($this->getRequest()->isPost()) {
+       //if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          //die(var_dump($data));
+
+          $as = new My_Model_Assignment();
+
+          $res = $as->updateQuestions($data);
+
+          if ($res === false) {
+             $this->view->result = "<p class=error> Unable to update </p>";
+          } else if ($res === true) {
+             $this->view->result = "<p class=success> Updated successfully </p>";
+          }
+
        }
     }
 
