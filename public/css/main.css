@@ -118,6 +118,11 @@ table#coordList {
    width:60%;
 }
 
+form.editQuestions textarea {
+   height: 100px;
+   width: 550px;
+}
+   
 /* End List of all coop classes */
 
 span.fields {

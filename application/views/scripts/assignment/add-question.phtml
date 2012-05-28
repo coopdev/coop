@@ -1,0 +1,20 @@
+<h2> Add a Question </h2>
+
+<?php
+
+   $form = $this->form;
+   $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
+
+   // Link back to assignment properties
+   echo "<p> <a class=regText href=$url?id=$this->assignId> Back to properties </a> </p>";
+
+   echo $this->message;
+
+   // If an assignment hasn't been selected first
+   if ($this->noAssignment === true) {
+      echo "<p class=error> Must select an assignment first </p>";
+   } else {
+      echo $form;
+   }
+
+?>

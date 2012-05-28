@@ -3,21 +3,10 @@
 class Application_Form_EditDuedate extends Zend_Form
 {
 
-    //public function init()
-    //{
-    //   $elems = new My_FormElement();
-    //   $duedate = $elems->getDateTbox('due_date', 'Enter due date:');
-
-    //   $id = new Zend_Form_Element_Hidden('id');
-
-    //   $submit = $elems->getSubmit();
-
-    //   $this->addElements(array($duedate, $id, $submit));
-    //}
-
     /*
-     * Creates the form to edit assignments' due dates. Takes the assignments as a parameter 
-     * since there can be a variable amount of assignments whose due dates need editing.
+     * Creates the form to edit all assignment due dates. Has a separate text box for each assignment.
+     * Takes the rows of assigments as a parameter since there can be a variable amount of 
+     * assignments whose due dates need editing.
      * 
      * @param $data All assignment records
      */
@@ -45,8 +34,6 @@ class Application_Form_EditDuedate extends Zend_Form
 
        $submit = $elems->getSubmit();
        $this->addElement($submit);
-
-
 
     }
 

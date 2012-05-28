@@ -91,6 +91,8 @@
         <formFile formName="EditCoord"/>
         <formFile formName="EditDuedate"/>
         <formFile formName="EditQuestions"/>
+        <formFile formName="AddQuestion"/>
+        <formFile formName="DeleteQuestion"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

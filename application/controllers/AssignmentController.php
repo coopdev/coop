@@ -99,6 +99,49 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    public function addQuestionAction()
+    {
+       $form = new Application_Form_AddQuestion();
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isGet()) {
+          if (!isset($_GET['id'])) {
+             $this->view->noAssignment = true;
+             return;
+          }
+
+          $id = $_GET['id'];
+          $this->view->assignId = $id;
+          $temp['assignId'] = $id;
+          $form->populate($temp);
+
+       } else if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+
+          $id = $_GET['id'];
+          $this->view->assignId = $id;
+          $temp['assignId'] = $id;
+          $form->populate($temp);
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->addQuestion($data);
+             if ($res === true) {
+                $this->view->message = "<p class=success> Question added </p>";
+             } else if ($res === false) {
+                $this->view->message = "<p class=error> Failed to add question </p>";
+             }
+
+          }
+          //die(var_dump($data));
+
+       }
+
+
+       
+    }
+
     public function editQuestionsAction()
     {
        if ($this->getRequest()->isGet()) {
@@ -109,11 +152,14 @@ class AssignmentController extends Zend_Controller_Action
 
           $id = $_GET['id'];
 
+          $this->view->assignId = $id;
+
           $as = new My_Model_Assignment();
 
           $questions = $as->getQuestions($id);
           //die(var_dump($questions));
           $form = new Application_Form_EditQuestions();
+          $form->setAttrib('class', 'editQuestions');
           foreach ($questions as $q) {
 
              $qNum = $q['question_number'];
@@ -121,10 +167,11 @@ class AssignmentController extends Zend_Controller_Action
              $subf = new Zend_Form_SubForm();
 
              $qText = new Zend_Form_Element_Textarea("question_text");
-             $qText->setLabel("Question text:")
+             $qText->setLabel("Question # ". $q['question_number'])
                    ->setRequired(true)
                    ->addFilter("StringTrim")
-                   ->addFilter("StripTags");
+                   ->addFilter("StripTags")
+                   ->setAttrib('rows', '10');
              $minLen = new Zend_Form_Element_Text("answer_minlength");
              $minLen->setRequired(true)
                     ->setLabel("Answer's minimum length:")
@@ -149,6 +196,7 @@ class AssignmentController extends Zend_Controller_Action
        } else if ($this->getRequest()->isPost()) {
        //if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          $this->view->assignId = $data['assignId'];
           //die(var_dump($data));
 
           $as = new My_Model_Assignment();
@@ -162,6 +210,52 @@ class AssignmentController extends Zend_Controller_Action
           }
 
        }
+    }
+
+    public function deleteQuestionAction()
+    {
+       $req = $this->getRequest();
+       if ($req->isGet()) {
+
+          $assignId = $req->getParam('id');
+          $params = $req->getParams();
+          if ($req->getParam('result') === 'success') {
+             $this->view->message = "<p class=success> Question has been deleted </p>";
+          } else if ($req->getParam('result') === 'fail') {
+             $this->view->message = "<p class=error> Failed to delete question </p>";
+          }
+
+          
+          $form = new Application_Form_DeleteQuestion($assignId);
+          $this->view->form = $form;
+          $this->view->assignId = $assignId;
+
+       } else if ($req->isPost()) {
+
+          $data = $_POST;
+
+          $assignId = $data['assignments_id'];
+          $form = new Application_Form_DeleteQuestion($assignId);
+          $this->view->form = $form;
+
+          if ($form->isValid($data)) {
+             $questions = $data['questions'];
+             $as = new My_Model_Assignment();
+             $res = $as->deleteQuestion($questions, $assignId);
+
+             if ($res === true) {
+                $result = 'success';
+             } else {
+                $result = 'fail';
+             }
+
+             $this->_helper->redirector('delete-question', 'assignment', null, array('id' => $assignId, 'result' => $result));
+
+          }
+
+          //die(var_dump($data));
+       }
+
     }
 
     public function midtermReportCoordAction()

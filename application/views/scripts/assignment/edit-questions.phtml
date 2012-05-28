@@ -1,5 +1,11 @@
 <div class="subform">
+
+   <h2> Edit Questions </h2>
+
 <?php
+   $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
+
+   echo "<p> <a class=regText href=$url?id=$this->assignId> Back to properties </a> </p>";
 
    $form = $this->form;
 

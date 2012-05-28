@@ -100,6 +100,62 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function addQuestion($data)
+   {
+      unset($data['Add']);
+      $assignId = $data['assignId'];
+      unset($data['assignId']);
+
+      $aq = new My_Model_AssignmentQuestions();
+
+      $qNum = $aq->getLastQuestionNum($assignId);
+
+      $data['question_number'] = $qNum+1;
+      $data['assignments_id'] = $assignId;
+
+      try {
+         $aq->insert($data);
+      } catch(Exception $e) {
+         return false;
+      }
+
+      return true;
+
+   }
+
+   /*
+    * Tables referenced - coop_assignmentquestions
+    */
+   public function deleteQuestion($questions, $assignId)
+   {
+      $aq = new My_Model_AssignmentQuestions();
+
+      //die(var_dump($questions));
+      // count how many questions were deleted to know how much to decrement the other question numbers
+      // (used in update below).
+      $count = 0; 
+      foreach ($questions as $q) {
+         try {
+            $aq->delete("question_number = $q AND assignments_id = $assignId");
+            $count++;
+            $qNum = $q; // $qNum ends up with the value of the last question number deleted (used in update below).
+         } catch(Exception $e) {
+
+            return false;
+
+         }
+      }
+
+      $exp = new Zend_Db_Expr("question_number-$count");
+
+      // update the table so that question numbers greater than the last one deleted will
+      // be adjusted so there is no gap between numbers after deletion.
+      $aq->update(array('question_number' => $exp), "assignments_id = $assignId AND question_number > $qNum");
+
+      return true;
+
+   }
+
 
    public function getAll()
    {

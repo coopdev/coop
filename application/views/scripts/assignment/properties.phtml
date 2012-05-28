@@ -4,6 +4,7 @@
    $dueDateUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
    $editQuestsUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-questions'));
    $addQuestUrl = $this->url(array('controller' => 'assignment', 'action' => 'add-question'));
+   $delQuestUrl = $this->url(array('controller' => 'assignment', 'action' => 'delete-question'));
 
    echo $this->message;
 
@@ -16,7 +17,8 @@
 <?php if ($assign['questions_editable']) { ?>
 
     <a class="regText" href='<?php echo "$editQuestsUrl?id=" . $assign['id'] ?> '> Edit Questions </a><br /><br />
-    <a class="regText" href='<?php echo "$addQuestUrl?id=" . $assign['id'] ?> '> Add Question </a><br /><br />
+    <a class="regText" href='<?php echo "$addQuestUrl?id=" . $assign['id'] ?> '> Add a Question </a><br /><br />
+    <a class="regText" href='<?php echo "$delQuestUrl?id=" . $assign['id'] ?> '> Delete a Question </a><br /><br />
 
 <?php } ?>
 
