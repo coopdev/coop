@@ -1,0 +1,18 @@
+<h2> Midterm Report </h2>
+
+<?php
+   $recText = $this->recText;
+
+   if (!empty($recText)) {
+      echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+      echo $recText['class'] . "<br /> ";
+      echo $recText['semester'] . "<br /><br /><br />";
+   }
+
+   if ($this->submitted === false) {
+      echo "<p class=error> Report has not been submitted </p>";
+   } else {
+      echo $this->form;
+   }
+
+?>

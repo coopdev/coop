@@ -27,11 +27,13 @@
    echo    "<td><b>Select semester:</b><br />";
    echo    $this->form->semesters_id."<br /></td>";
 
+   echo "<td>".$this->form->search. "</td>";
+
    echo "</tr>";
 
-   echo "<tr>";
-   echo "<td>".$this->form->search. "</td>";
-   echo "</tr>";
+   //echo "<tr>";
+   //echo "<td>".$this->form->search. "</td>";
+   //echo "</tr>";
 
    echo "</table>";
    echo "</form><br /><br />";
@@ -47,6 +49,7 @@
 
    <button type="button" id="assignment-hist"> Assignment Record </button>
    <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
+   <button type="button" class="midtermReport"> Midterm Report </button>
 
    <input type="hidden" id="stored-rec" data-rec="" />
 
@@ -74,6 +77,9 @@
 
          data = getRec();
 
+         if (data == "") {
+            return;
+         }
          //temp = {'foo' : 'bar'};
          $.post(base + "/async/submission-recs", {'data' : data}, function(resp) {
 
@@ -86,6 +92,9 @@
 
       $("#stuInfoSheet").live('click', function() {
          data = getRec();
+         if (data == "") {
+            return;
+         }
          //alert(data);
          $.post(base + "/async/view-stu-info-sheet", {'data' : data}, function(resp) {
 
@@ -96,6 +105,19 @@
 
       });
 
+      $(".midtermReport").live('click', function() {
+         data = getRec();
+         if (data == "") {
+            return;
+         }
+         $.post(base + "/async/midterm-report", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+
+         });
+
+      });
 
 
 

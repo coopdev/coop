@@ -56,24 +56,6 @@ CREATE TABLE coop_assignmentquestions(
    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE
 ) ENGINE InnoDB;
 
-CREATE TABLE coop_assignmentanswers(
-   id INT NOT NULL AUTO_INCREMENT,
-   assignments_id INT,
-   assignmentquestions_id INT,
-   classes_id INT,
-   semesters_id INT,
-   username TEXT,
-   answer_text, TEXT,
-   PRIMARY KEY(id),
-   FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id)
-   FOREIGN KEY(assignmentquestions_id) REFERENCES coop_assignmentquestions(id)
-      ON DELETE CASCADE,
-   FOREIGN KEY(class_id) REFERENCES coop_classes(id) ON DELETE CASCADE,
-   FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE CASCADE,
-   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
-) ENGINE InnoDB;
-   
-
 DROP TABLE IF EXISTS coop_semesters;
 CREATE TABLE coop_semesters(
    id INT NOT NULL AUTO_INCREMENT,
@@ -121,6 +103,23 @@ CREATE TABLE coop_classes(
    PRIMARY KEY(id),
    FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
       ON UPDATE CASCADE
+) ENGINE InnoDB;
+
+CREATE TABLE coop_assignmentanswers(
+   id INT NOT NULL AUTO_INCREMENT,
+   assignments_id INT,
+   assignmentquestions_id INT,
+   classes_id INT,
+   semesters_id INT,
+   username VARCHAR(100),
+   answer_text TEXT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
+   FOREIGN KEY(assignmentquestions_id) REFERENCES coop_assignmentquestions(id)
+      ON DELETE CASCADE,
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE CASCADE,
+   FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE CASCADE,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_syllabuses;

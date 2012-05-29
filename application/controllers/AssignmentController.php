@@ -8,6 +8,35 @@ class AssignmentController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+    public function midtermReportAction()
+    {
+       $form = new Application_Form_MidtermReport();
+
+       $this->view->form = $form;
+
+       $req = $this->getRequest();
+       if ($req->isPost()) {
+          $data = $_POST;
+          unset($data['Submit']);
+
+          if ($form->isValid($data)) {
+
+             $as = new My_Model_Assignment();
+             $res = $as->submitMidtermReport($data);
+
+             if ($res === "submitted") {
+                $this->view->message = "<p class=error> Assignment has already been submitted </p>";
+             } else if ($res === false) {
+                $this->view->message = "<p class=error> Error occured </p>";
+             } else if ($res === true) {
+                $this->view->message = "<p class=success> Assignment has been submitted </p>";
+             }
+
+          }
+       }
+
+    }
+
     public function submitAction()
     {
        $form = new Application_Form_SubmitAssignment();
@@ -37,6 +66,25 @@ class AssignmentController extends Zend_Controller_Action
        $as = new My_Model_Assignment();
 
        $assignments = $as->getAll();
+
+       $this->view->assignments = $assignments;
+
+    }
+
+    public function listAllForStudentAction()
+    {
+       $as = new My_Model_Assignment();
+
+       $assignments = $as->getNonSubmitted();
+
+       $this->view->assignments = $assignments;
+    }
+
+    public function listSubmittedAction()
+    {
+       $as = new My_Model_Assignment();
+
+       $assignments = $as->getSubmitted();
 
        $this->view->assignments = $assignments;
 
@@ -137,8 +185,6 @@ class AssignmentController extends Zend_Controller_Action
           //die(var_dump($data));
 
        }
-
-
        
     }
 

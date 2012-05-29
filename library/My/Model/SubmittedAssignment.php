@@ -17,7 +17,8 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
 
 
 
-   // Queries for submitted assignments for student, semester, class combination
+   // Queries for assignment status for student, semester, class combination. If not submitted,
+   // the left joined table fields will show up as null.
    public function getSubmissionRec(array $data)
    {
       //die(var_dump($data));
@@ -32,6 +33,18 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
                WHERE username = '$uname') AS s LEFT JOIN coop_submittedassignments AS sub 
                ON s.username = sub.username and sub.classes_id = $classes_id and sub.semesters_id = $semesters_id RIGHT JOIN 
                coop_assignments AS a ON sub.assignments_id = a.id ORDER BY a.due_date");
+
+      // Format dates for output
+      $funcs = new My_Funcs();
+      for ($i = 0; $i < count($res); $i++) {
+         if (!empty($res[$i]['date_submitted'])) {
+            $res[$i]['date_submitted'] = $funcs->formatDateOut($res[$i]['date_submitted']);
+            //die($res[$i]['date_submitted']);
+         }
+         $res[$i]['due_date'] = $funcs->formatDateOut($res[$i]['due_date']);
+      }
+
+      //die(var_dump($res));
 
       return $res;
       

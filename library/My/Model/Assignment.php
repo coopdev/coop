@@ -31,6 +31,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $chk['semesters_id'] = $data['semesters_id'];
       $chk['assignments_id'] = $data['assignments_id'];
 
+      //die(var_dump($chk));
+
       if ($this->isSubmitted($chk)) {
          return "submitted";
       }
@@ -41,9 +43,73 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //$inserts['semesters_id'] = $sem->getCurrentSemId();
       //$inserts['date_submitted'] = date('Ymd');
 
+
       $sa->insert($data);
 
       return true;
+   }
+
+   public function populateMidTermReport($form, $data)
+   {
+      unset($data['coordinator']);
+
+      $aa = new My_Model_AssignmentAnswers();
+
+      $answers = $aa->getRows($data);
+
+      //die(var_dump($answers));
+
+      $formVals = array();
+
+      foreach ($answers as $a) {
+         $formVals[$a['assignmentquestions_id']] = $a['answer_text'];
+      }
+
+      $form->populate($formVals);
+
+      return $form;
+
+      //die(var_dump($formVals));
+
+   }
+
+   public function submitMidtermReport($data)
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+
+      $submit['username'] = $coopSess->username;
+      $submit['classes_id'] = $coopSess->currentClassId;
+      $submit['assignments_id'] = $this->getMidtermId();
+
+      // Submit assignment into coop_submittedassignments
+      $res = $this->submit($submit);
+
+      // If already submitted.
+      if ($res === 'submitted') {
+         return "submitted";
+      }
+
+      // current semester
+      $submit['semesters_id'] = $coopSess->currentSemId;
+
+      $aa = new My_Model_AssignmentAnswers();
+
+      foreach ($data as $key => $val) {
+         $submit['assignmentquestions_id'] = $key;
+         $submit['answer_text'] = $val;
+
+         try {
+            // insert into coop_assignmentanswers
+            $aa->insert($submit);
+         } catch(Exception $e) {
+            return false;
+         }
+
+      }
+
+      return true;
+
+      //die(var_dump($submit));
    }
 
    public function updateDuedates($data)
@@ -168,6 +234,53 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return $rows;
    }
 
+   // Gets non-submitted assignments for a student, class, semester
+   public function getNonSubmitted()
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+      $assigns = $this->getAll();
+
+      $chk['semesters_id'] =  $coopSess->currentSemId;
+      $chk['classes_id'] =  $coopSess->currentClassId;
+      $chk['username'] =  $coopSess->username;
+
+      $nonSubmitted = array();
+      foreach ($assigns as $a) {
+         $chk['assignments_id'] = $a['id'];
+
+         if ($this->isSubmitted($chk) === false) {
+            $nonSubmitted[] = $a;
+         }
+
+      }
+
+      return $nonSubmitted;
+   }
+
+   // Gets submitted assignments for a student, class, semester
+   public function getSubmitted()
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+      $assigns = $this->getAll();
+
+      $chk['semesters_id'] =  $coopSess->currentSemId;
+      $chk['classes_id'] =  $coopSess->currentClassId;
+      $chk['username'] =  $coopSess->username;
+
+      $submitted = array();
+      foreach ($assigns as $a) {
+         $chk['assignments_id'] = $a['id'];
+
+         if ($this->isSubmitted($chk) === true) {
+            $submitted[] = $a;
+         }
+
+      }
+
+      return $submitted;
+
+   }
+
 
    // Returns assignments that are submitted offline
    public function getOffLine()
@@ -202,6 +315,21 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return $id;
    }
 
+   public function getMidtermId()
+   {
+      $id = $this->getId(array('assignment' => 'Midterm Report'));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
+
+   /*
+    * Gets all questions for a specific assignment based on assignment id
+    * 
+    * Tables referenced - coop_assignmentquestions
+    */
    public function getQuestions($id)
    {
       $aq = new My_Model_AssignmentQuestions();
@@ -217,11 +345,21 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
-   // Checks if a specific assignment has already been submitted based on username, class,
-   // semester, assignment.
+   /*
+    * Checks if a specific assignment has already been submitted based on username, class,
+    * semester, assignment.
+    * 
+    * 
+    * @param $data associative array with the keys 'username', 'classes_id', 'semesters_id',
+    *              'assignments_id'
+    */
    public function isSubmitted(array $data)
    {
       $sa = new My_Model_SubmittedAssignment();
+
+      $db = new My_Db();
+      $data = $db->prepFormInserts($data, $sa);
+      //die(var_dump($data));
 
       if ($sa->rowExists($data)) {
          return true;
@@ -532,13 +670,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function getRows(array $where)
    {
-      $keys = array_keys($where);
-      $col = $keys[0];
-     // die($col);
-      $val = $where[$col];
-      $result = $this->select()->where("$col = ?", $val);
-      $rows = $this->fetchAll($result);
-      $rows = $rows->toArray();
+      $sel = $this->select();
+      foreach ($where as $key => $val) {
+         $sel = $sel->where("$key = ?", $val);
+      }
+      $rows = $this->fetchAll($sel)->toArray();
+
       return $rows;
    }
 

@@ -93,6 +93,7 @@
         <formFile formName="EditQuestions"/>
         <formFile formName="AddQuestion"/>
         <formFile formName="DeleteQuestion"/>
+        <formFile formName="MidtermReport"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

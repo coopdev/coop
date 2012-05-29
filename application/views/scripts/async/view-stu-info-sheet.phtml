@@ -1,3 +1,5 @@
+<h2> Student Information Sheet </h2>
+
 <?php
    $form = $this->form;
    $empForm = $form->getSubForm('empinfo[0]');
@@ -9,7 +11,7 @@
    if (!empty($recText)) {
       echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
       echo $recText['class'] . "<br /> ";
-      echo $recText['semester'] . "<br />";
+      echo $recText['semester'] . "<br /><br /><br />";
    }
 
    // If $empinfo is empty, it means the student hasn't submitted it yet

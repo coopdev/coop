@@ -1,0 +1,38 @@
+<?php
+   $assigns = $this->assignments;
+
+   $coopSess = new Zend_Session_Namespace('coop');
+
+   $as = new My_Model_Assignment();
+
+   $chk['semesters_id'] =  $coopSess->currentSemId;
+   $chk['classes_id'] =  $coopSess->currentClassId;
+   $chk['username'] =  $coopSess->username;
+
+   $onclick = "return true";
+
+   $url = $this->url(array('controller' => 'as'))
+
+?>
+
+
+<ul>
+
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'form',
+                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a></li><br />
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'form',
+                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form </a></li><br />
+
+   <?php 
+      $chk['assignments_id'] = $as->getMidtermId();
+      if ($as->isSubmitted($chk) === true) { 
+         //$onclick = "return false";
+      } 
+    ?>
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'assignment',
+                         'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a></li><br />
+
+</ul>

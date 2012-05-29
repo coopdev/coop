@@ -104,7 +104,7 @@ table.tableform tr td {
 }
 
 /* List of all coop classes */
-table.classList {
+table.classList, table.submittedAssignments {
    font-size: 16px;
    width: 50%;
 }
@@ -118,7 +118,7 @@ table#coordList {
    width:60%;
 }
 
-form.editQuestions textarea {
+form.editQuestions textarea, form.midtermReport textarea {
    height: 100px;
    width: 550px;
 }

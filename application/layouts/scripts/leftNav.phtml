@@ -38,14 +38,11 @@
       echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
                                         'action'=>'view'), null, true).">Syllabus</a></li> <br />";
 
-      echo    "<li><a href='".$this->url(array('controller'=>'form',
-                            'action'=>'student-info-show'), null, true)."'> Student Information Sheet </a></li><br />";
-   //} else if ($coopSess->role == 'supervisor') {
+      echo    "<li><a href=".$this->url(array('controller'=>'assignment',
+                                        'action'=>'list-all-for-student'), null, true)."> Assignments/Forms </a></li> <br />";
 
-      echo    "<li><a href='".$this->url(array('controller'=>'form',
-                          'action'=>'coop-agreement-show'), null, true)."'> Co-op Agreement Form </a></li> <br />";
-
-   //}
+      echo    "<li><a href=".$this->url(array('controller'=>'assignment',
+                                        'action'=>'list-submitted'), null, true)."> View submitted assignments </a></li> <br />";
 
    echo "</ul>";
 ?>

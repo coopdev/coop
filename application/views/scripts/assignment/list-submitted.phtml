@@ -1,0 +1,17 @@
+<?php
+   $assigns = $this->assignments;
+?>
+
+<table class="submittedAssignments">
+
+   <?php foreach ($assigns as $a) { ?>
+
+      <tr>
+
+         <td> <?php echo $a['assignment'] ?> </td>
+
+      </tr>
+
+   <?php } ?>
+
+</table>
