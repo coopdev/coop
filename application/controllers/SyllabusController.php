@@ -42,21 +42,91 @@ class SyllabusController extends Zend_Controller_Action
           // the class id stored in their record so they can only view the 
           // syllabus for their class, and not get to other ones through the url.
           if ($coopSess->role == 'user') {
-             $classId = (int)$link->getCol('coop_users_semesters', 'classes_id', 
-                                          array('student'=>$coopSess->username));
+             $classId = $coopSess->currentClassId;
+
+             //die($classId);
+             //$classId = (int)$link->getCol('coop_users_semesters', 'classes_id', 
+             //                             array('student'=>$coopSess->username));
              //$id = (int)$link->fetchOne("SELECT classes_id FROM coop_users 
              //                       WHERE uuid = '$uuid'");
           }
+
+          $syl = new My_Model_Syllabus();
+          $sylText = $syl->getFinal($classId);
+          //die(var_dump($sylText));
           
-          $class = $link->fetchRow("SELECT id, name, syllabus FROM coop_classes 
-                                     WHERE id = $classId");
-      
-          if ($class) {
-             $this->view->class = $class;
+          if ($sylText !== false) {
+             $this->view->sylText = $sylText;
+             $this->view->classId = $classId;
           } else {
              $this->view->noclass = true;
           }
        } 
+    }
+
+    /*
+     * Populates the textarea with the DRAFT syllabus of the chosen class for editing.
+     * Updates the DRAFT syllabus every time it is submitted, and updates both the DRAFT
+     * and FINAL syllabus when the "Submit as final" checkbox is checked.
+     * 
+     */
+    public function editAction()
+    {
+       $syl = new My_Model_Syllabus();
+
+       if ( $this->getRequest()->isPost() ) {
+          $data = $_POST;
+
+          //die(var_dump($data));
+
+          // update draft everytime
+          $res = $syl->editDraft($data);
+
+          if ($res === false) {
+             $message = "<p class=error> Error updating syllabus </p>";
+             return;
+          }
+
+          // if the "Submit as final" checkbox was checked, then also update the final draft
+          if (isset($data['isFinal'])) {
+             $res = $syl->editFinal($data);
+
+             if ($res === false) {
+                $message = "<p class=error> Error updating syllabus </p>";
+                return;
+             }
+
+          }
+
+          $message = "<p class=success> Syllabus has been updated </p>";
+          $this->view->message = $message;
+
+          // define classId and sylText again so the view can set the values to the text
+          // area and hidden classId incase more editing for the same class syllabus needs 
+          // to be done.
+          $this->view->classId = $data['classId'];
+          $this->view->sylText = $data['syllabus'];
+
+
+       } else if ( $this->getRequest()->isGet() ) {
+
+          // make sure a class has been chosen first
+          if (isset($_GET['id']) && !empty($_GET['id'])) {
+             $classId = $_GET['id'];
+             $this->view->classId = $classId;
+
+             $sylText = $syl->getDraft($classId);
+             //die(var_dump($sylText));
+
+             $this->view->sylText = $sylText;
+
+          } else {
+             $this->view->classId = false; // classId used in view to give error message
+          }
+
+       }
+
+
     }
 }
 

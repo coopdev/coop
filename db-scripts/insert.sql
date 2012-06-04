@@ -15,9 +15,13 @@ INSERT INTO coop_classes (name)
 
 INSERT INTO coop_syllabuses (syllabus, classes_id, final)
    VALUES ('Syllabus for HUM 193V', 1, 1),
+          ('Syllabus for HUM 193V', 1, 0),
           ('Syllabus for SSCI 193V', 2, 1),
+          ('Syllabus for SSCI 193V', 2, 0),
           ('Syllabus for CENT 293V', 3, 1),
-          ('Syllabus for AMT 93V', 4, 1);
+          ('Syllabus for CENT 293V', 3, 0),
+          ('Syllabus for AMT 93V', 4, 1),
+          ('Syllabus for AMT 93V', 4, 0);
 
 INSERT INTO coop_users (fname, lname, username, password, roles_id)
    VALUES ('Joseph', 'Workman', 'kuukekoa','pass', 4),

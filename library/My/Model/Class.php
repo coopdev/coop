@@ -50,6 +50,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
    }
 
+
    // Edits a classes information, i.e name, coordinator
    public function edit($id, $data)
    {
@@ -78,12 +79,19 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       if ($this->rowExists(array('name' => $data['name']))) {
          return "exists";
       }
-      
-      if ($this->insert($data)) {
+
+      $id = $this->insert($data);
+
+      $syl = new My_Model_Syllabus();
+      $finalId = $syl->addFinal($id);
+      $draftId = $syl->addDraft($id);
+
+      if ($id != false && $finalId === true && $draftId === true) {
          return true;
       } else {
          return false;
       }
+
    }
 
 

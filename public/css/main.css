@@ -122,6 +122,10 @@ form.editQuestions textarea, form.midtermReport textarea {
    height: 100px;
    width: 550px;
 }
+
+.editSyllabus {
+   max-width: 20%;
+}
    
 /* End List of all coop classes */
 
@@ -179,9 +183,8 @@ ul.simplePagerNav li.currentPage a {
 }
 /* End Pager */
 
-a.editLink {
-    color: #333333;
-    text-decoration: none;
+a {
+   text-decoration: none;
 }
 
 .regText {
