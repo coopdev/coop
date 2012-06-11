@@ -72,6 +72,16 @@ class My_Acl_Coop extends Zend_Acl
       /* Assignment Controller */
       $this->add(new Zend_Acl_Resource('assignment'));
       $this->add(new Zend_Acl_Resource('asignment_submit'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_list-all'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_list-all-for-student'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_edit-duedate'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_properties'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_edit-questions'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_add-question'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_delete-question'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_list-status-by-class'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_midterm-report'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_list-submitted'), 'assignment');
 
 
       /* Async Controller */
@@ -120,6 +130,9 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'syllabus','syllabus_view');
       $this->allow('user', 'form');
       $this->allow('user', 'class', 'class_change');
+      $this->allow('user', 'assignment', 'assignment_list-all-for-student');
+      $this->allow('user', 'assignment', 'assignment_midterm-report');
+      $this->allow('user', 'assignment', 'assignment_list-submitted');
       // Think about if a user needs to get to "user" actions if they are already a user 
       // (i.e. in the database as a student).
       //$this->allow('user', 'user', 'user_new');
@@ -127,6 +140,7 @@ class My_Acl_Coop extends Zend_Acl
             
       $this->allow('coordinator', 'syllabus', 'syllabus_listall');
       $this->allow('coordinator', 'syllabus', 'syllabus_view');
+      $this->allow('coordinator', 'syllabus', 'syllabus_edit');
       $this->allow('coordinator','user','user_new');
       $this->allow('coordinator','user','user_create');
       $this->allow('coordinator', 'user', 'user_searchstudent');
@@ -138,7 +152,15 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'class');
       $this->allow('coordinator', 'async');
       $this->allow('coordinator', 'assignment', 'assignment_submit');
+      $this->allow('coordinator', 'assignment', 'assignment_list-all');
+      $this->allow('coordinator', 'assignment', 'assignment_edit-duedate');
+      $this->allow('coordinator', 'assignment', 'assignment_properties');
+      $this->allow('coordinator', 'assignment', 'assignment_edit-questions');
+      $this->allow('coordinator', 'assignment', 'assignment_add-question');
+      $this->allow('coordinator', 'assignment', 'assignment_delete-question');
+      $this->allow('coordinator', 'assignment', 'assignment_list-status-by-class');
       
+
       /* 
        * Users who haven't filled out a contract can
        * only access certain things.

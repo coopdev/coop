@@ -15,6 +15,7 @@
       {
          $resource = $request->getControllerName();   
          $action = $request->getActionName();   
+         //die("$resource,$action");
 
          $role = $this->_role;
          $coopSess = new Zend_Session_Namespace('coop');

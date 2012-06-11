@@ -17,8 +17,6 @@ class AsyncController extends Zend_Controller_Action
           $user = new My_Model_User();
           $results = $user->searchStudentRecs($data);
 
-          
-
           $this->view->results = $results;
 
        } else {
@@ -176,6 +174,36 @@ class AsyncController extends Zend_Controller_Action
           // If not a POST request, don't render the view
           $this->_helper->viewRenderer->setNoRender();
        } 
+    }
+
+    public function assignmentStatusByClassAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       if ($this->getRequest()->isPost()) {
+          //die(var_dump($_POST));
+          $classId = $_POST['classId'];
+          //die($classId);
+          $sa = new My_Model_SubmittedAssignment();
+
+          $recs = $sa->getAssignmentStatusByClass($classId);
+          if($recs === "emptyClass") {
+             $this->view->error = "<p class=error> Class is empty </p>";
+             return;
+          }
+
+          $assign = new My_Model_Assignment();
+          $assigns = $assign->getAll();
+
+          $this->view->recs = $recs;
+          $this->view->assigns = $assigns;
+
+          //$this->_helper->viewRenderer->setRenderView(false);
+          //echo "hello";
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       }
+       
     }
 }
 

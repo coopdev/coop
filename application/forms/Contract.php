@@ -22,24 +22,59 @@ class Application_Form_Contract extends Application_Form_StudentCommon
          $curSem = $curSem->getRealSem();
          $semester->setValue($curSem);
          
-         $coordName = $elems->getCommonTbox('coord_name', 'Co-op coordinator\'s name:');
          $coordPhone = $elems->getCommonTbox('coord_phone', 'Co-op coordinator\'s telephone:');
 
          $studentAgree = $elems->getAgreementRadio("Student's agreement", 'student_coopagreement');
          $supervAgree = $elems->getAgreementRadio("Supervisor's agreement", 'superv_coopagreement');
 
+         $address = $elems->getCommonTarea('address', 'Address/City/State/ZIP:');
+         $address->setAttrib('rows', '1')
+                  ->setAttrib('class', 'textbox')
+                  ->setAttrib('cols', '45');
+
+         $employer = $elems->getCommonTarea('employer', 'Enter employer\'s name:');
+         $employer->setAttrib('rows', '1')
+                  ->setAttrib('cols', '45')
+                  ->setAttrib('class', 'textbox');
+
+         $curJob = $elems->getCommonTarea('current_job', 'Job title:');
+         $curJob->setAttrib('rows', '1')
+                  ->setAttrib('class', 'textbox')
+                  ->setAttrib('cols', '45');
+
+         $department = $elems->getCommonTarea('department', 'Department:');
+         $department->setAttrib('rows', '1')
+                    ->setAttrib('class', 'textbox')
+                    ->setAttrib('cols', '45');
+
+         $coordName = $elems->getCommonTarea('coord_name', 'Co-op coordinator\'s name:');
+         $coordName->setAttrib('rows', '1')
+                    ->setAttrib('class', 'textbox')
+                    ->setAttrib('cols', '45');
+
+         $supervTitle = $elems->getCommonTarea('superv_title', 'Supervisor title:');
+         $supervTitle->setAttrib('rows', '1')
+                    ->setAttrib('class', 'textbox')
+                    ->setAttrib('cols', '45');
+
+         $supervName = $elems->getCommonTarea('superv_name', 'Supervisor name:');
+         $supervName->setAttrib('rows', '1')
+                    ->setAttrib('class', 'textbox')
+                    ->setAttrib('cols', '45');
+
          $this->submit->setLabel('Print PDF');
+         $this->address->setAttrib('cols', '80');
          
                   
          $this->setDecorators(array(array('ViewScript', 
                                       array('viewScript' => '/form/coop-agreement-template.phtml'))));
          // Add elements. 
-         $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->employer,  
-                                 $this->curJob, $this->department, $this->sdate, 
-                                 $this->edate, $this->payRate, $this->address,
+         $this->addElements(array($this->fname, $this->lname, $this->uuid, $employer,  
+                                 $curJob, $department, $this->sdate, 
+                                 $this->edate, $this->payRate, $address,
                                  $this->grad, $this->major, $this->semInMaj, 
                                  $this->phone, $this->email, $coordName, $coordPhone, 
-                                 $this->supervName, $this->supervTitle, $this->supervEmail,
+                                 $supervName, $supervTitle, $this->supervEmail,
                                  $this->supervPhone, $studentAgree, $supervAgree, $semester, $this->submit));
          
 

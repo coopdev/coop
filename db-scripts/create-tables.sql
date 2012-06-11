@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS coop_extended_duedates;
 DROP TABLE IF EXISTS coop_disclaimers;
 DROP TABLE IF EXISTS coop_submittedassignments;
 DROP TABLE IF EXISTS coop_assignmentanswers;
@@ -41,8 +42,9 @@ CREATE TABLE coop_assignments(
    id INT NOT NULL AUTO_INCREMENT,
    assignment VARCHAR(100),
    due_date DATE NULL,
+   assignment_num INT,
    online BOOLEAN,
-   questions_editable BOOLEAN,
+   questions_editable BOOLEAN DEFAULT 0,
    PRIMARY KEY(id)
 ) ENGINE InnoDB;
 
@@ -250,6 +252,17 @@ CREATE TABLE coop_students(
    FOREIGN KEY(majors_id) REFERENCES coop_majors(id) ON DELETE SET NULL
 ) ENGINE InnoDB;
 
+create table coop_extended_duedates(
+   id INT NOT NULL AUTO_INCREMENT 
+   assignments_id INT,
+   classes_id INT,
+   username VARCHAR(100),
+   due_date DATE
+   PRIMARY KEY(id),
+   FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
+   FOREIGN KEY(class_id) REFERENCES coop_classes(id) ON DELETE SET NULL,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+);
    
 
 -- View for a specific semester for a specific student

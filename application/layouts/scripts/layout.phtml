@@ -14,10 +14,10 @@
       echo $this->headTitle();
       
       //echo $this->headTitle($this->pageTitle);
-      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); 
-      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); 
-      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/main.css'); 
-      $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); 
+      $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
+      $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); 
+      $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); 
+      $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); 
       echo $this->headLink();
 
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/global.js');

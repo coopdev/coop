@@ -10,8 +10,9 @@ class ClassController extends Zend_Controller_Action
 
     public function changeAction()
     {
-       if ($this->getRequest()->isGet()) {
+       if ($this->_request->isGet()) {
           $coopSess = new Zend_Session_Namespace('coop');
+          //die($coopSess->prevAction);
           $id = $this->getRequest()->getParam('classId');
 
           if (in_array($id, $coopSess->classIds)) {
@@ -22,13 +23,9 @@ class ClassController extends Zend_Controller_Action
 
           $action = $coopSess->prevAction;
           $controller = $coopSess->prevController;
-          $url = $coopSess->prevUrl;
-
-          //die($coopSess->currentClassId);
 
           // This won't work right if the previous action, controller was one which was
           // meant for async posts
-          //die("$controller: $action");
           $this->_helper->redirector($action, $controller);
        
       

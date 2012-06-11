@@ -67,11 +67,13 @@ class FormController extends Zend_Controller_Action
     {
        $form = new Application_Form_Contract();
 
-       $form->setAction('/form/coop-agreement-pdf');
-
        $coopSess = new Zend_Session_Namespace('coop');
+
+       $form->setAction($coopSess->baseUrl . '/form/coop-agreement-pdf');
+
        $username = $coopSess->username;
 
+       //die($username);
 
        $user = new My_Model_User();
 
@@ -87,57 +89,53 @@ class FormController extends Zend_Controller_Action
     {
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
-          $form = new Application_Form_Contract();
 
-          $form->populate($data);
-          //die(var_dump($data));
+          $data = rawurlencode(serialize($data));
 
-          $this->view->form = $form;
+          $server = $_SERVER['SERVER_NAME'];
+
+          $coopSess = new Zend_Session_Namespace('coop');
+          $baseUrl = $coopSess->baseUrl;
+
+          // Returns the rendered HTML as a string
+          //$page = file_get_contents("http://$server$baseUrl/form/coop-agreement-pdf?data=".$data);
+
+          exec("/var/www/coop/pdfs/wkhtmltopdf-i386  http://$server$baseUrl/form/coop-agreement-pdf?data=$data " . APPLICATION_PATH . '/../pdfs/coopAgreement.pdf');
+
+          $pdfPath = APPLICATION_PATH . '/../pdfs/coopAgreement.pdf';
+          //die(var_dump($path));
+          $pdf = Zend_Pdf::load($pdfPath);
+          //$pdf->pages[] = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_A4);
+          //die(var_dump($pdf));
+          header("Content-Disposition: attachment; filename=Coop Agreement.pdf");
+          header("Content-type: application/x-pdf");
+          $pdfData = $pdf->render();
+
+          echo $pdfData;
+
           $this->_helper->layout->disableLayout();
+          $this->_helper->viewRenderer->setNoRender(true);
 
-          $pdfPath = APPLICATION_PATH . '/../pdfs';
-          $pdfPath = realpath($pdfPath);
-          $filePath = $pdfPath . '/test.pdf';
-          //die($filePath);
-          //die($pdfPath);
+       } else if ($this->getRequest()->isGet()) {
 
-          require_once(APPLICATION_PATH . '/../external-classes/WkHtmlToPdf.php');
+          if (isset($_GET['data'])) {
+             $data = $_GET['data'];
 
-          $pdf = new WkHtmlToPdf();
+             $data = unserialize(rawurldecode($data));
 
-          $pdf->addPage('http://coop/form/coop-agreement-pdf');
-          $pdf->saveAs('/var/www/pdfs/test.pdf');
-          //$pdf->send('test.pdf');
+             //die($data);
 
-          //$result = exec("wkhtmltopdf http://coop/form/coop-agreement-pdf $filePath", $output, $return);
-          //$result = exec("/usr/bin/wkhtmltopdf http://coop/form/coop-agreement-pdf /var/www/coop/pdfs/test.pdf", $output, $return);
+             $form = new Application_Form_Contract();
+             $form->removeElement('Submit');
+             $form->populate($data);
 
-          sleep(5);
-          //$result = exec("echo 'hello'");
+             $this->view->form = $form;
 
-          //die(var_dump($result));
-          //die(var_dump($return));
+             $this->_helper->layout->disableLayout();
+          }
 
-          //$this->_helper->redirector('test');
+
        }
-
-       //$coopSess = new Zend_Session_Namespace('coop');
-       //$username = $coopSess->username;
-
-
-       //$user = new My_Model_User();
-
-       //$data = $user->fetchRow("username = '$username'")->toArray();
-
-       //require_once(APPLICATION_PATH . '/../tcpdf/tcpdf.php');
-       //$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-       ////$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
-       //$htmlcontent = $this->view->render('/form/coop-agreement-pdf.phtml');
-       //// output the HTML content
-       //$pdf->writeHTML($htmlcontent, true, 0, true, 0);
-       //$pdf->lastPage();
-       //$pdf->Output("pdf-name.pdf", 'D');
-
 
     }
 
@@ -179,10 +177,10 @@ class FormController extends Zend_Controller_Action
        
     }
 
-    public function stuinfoFormTemplateAction()
-    {
-       //$this->view->form = new Application_Form_StudentInfo();
-    }
+    //public function stuinfoFormTemplateAction()
+    //{
+    //   //$this->view->form = new Application_Form_StudentInfo();
+    //}
 
 }
 

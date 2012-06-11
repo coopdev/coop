@@ -94,6 +94,7 @@
         <formFile formName="AddQuestion"/>
         <formFile formName="DeleteQuestion"/>
         <formFile formName="MidtermReport"/>
+        <formFile formName="ExtendDuedates"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

@@ -7,7 +7,7 @@
  */
 class My_FormElement 
 {  
-   private $requiredVal = false;
+   private $requiredVal = true;
    
    /* * * * * * * * * * * * * * * * * * * * * 
     * STUDENT INFORMATION SHEET FORM FIELDS *
@@ -32,6 +32,15 @@ class My_FormElement
       return $elem;
    }
    
+   public function getCommonTarea($name,$label)
+   {
+      $elem = new Zend_Form_Element_Textarea($name);
+      $elem->setRequired($this->requiredVal)
+           ->setLabel($label)
+           ->addFilter('StripTags')
+           ->addFilter('StringTrim');
+      return $elem;
+   }
     
    public function getUuidTbox()
    {

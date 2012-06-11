@@ -14,6 +14,7 @@ class My_Plugin_PreviousUrl extends Zend_Controller_Plugin_Abstract
       $prevUrl = $request->getRequestUri();
       $prevController = $request->getControllerName();
       $prevAction = $request->getActionName();
+      //die("$prevAction, $prevController");
       $coopSess = new Zend_Session_Namespace('coop');
       $coopSess->prevUrl = $prevUrl;
       $coopSess->prevController = $prevController;
@@ -23,6 +24,15 @@ class My_Plugin_PreviousUrl extends Zend_Controller_Plugin_Abstract
       //$coopSess->prevController = $request->getControllerName();
       //$coopSess->prevAction = $request->getActionName();
       
+   }
+
+   public function preDispatch(Zend_Controller_Request_Abstract $request) 
+   {
+      parent::preDispatch($request);
+
+      $cont = $request->getControllerName();
+      $act = $request->getActionName();
+      //die("$cont,$act");
    }
 }
 

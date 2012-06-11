@@ -7,6 +7,7 @@
 
    //if ($coopSess->role == 'coordinator') {
       echo "<h4> Coordinator Links </h4>";
+
       echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
                           'action'=>'listall'), null, true)."'> Class syllabi </a></li> <br />";
 
@@ -22,6 +23,9 @@
 
       echo    "<li><a href='".$this->url(array('controller'=>'assignment',
                    'action'=>'submit'), null, true)."'> Submit an assignment </a></li> <br />";
+
+      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
+                   'action'=>'list-status-by-class'), null, true)."'> Assignment status by class </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'class',
                    'action'=>'listall'), null, true)."'> Manage coop classes </a></li> <br />";

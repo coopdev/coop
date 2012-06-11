@@ -10,11 +10,10 @@
  *
  * @author joseph
  */
-class UsersSemester 
+class My_Model_UsersSemester extends Zend_Db_Table_Abstract 
 {
-   protected $_name = "coop_users_semesters_view";
+   protected $_name = "coop_users_semesters";
 
-   protected $_primary = "username";
 
 }
 

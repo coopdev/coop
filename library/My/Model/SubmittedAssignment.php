@@ -50,6 +50,43 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       
    }
 
+   // gets the assignment status for all students in a particular class.
+   public function getAssignmentStatusByClass($classId)
+   {
+      $sem = new My_Model_Semester();
+      $curSemId = $sem->getCurrentSemId();
+
+      $class = new My_Model_Class();
+      $students = $class->getRollForCurrentSem($classId);
+      if(empty($students)) {
+         return "emptyClass";
+      }
+      //die(var_dump($students));
+
+      $user = new My_Model_User();
+      $sel = $user->select()->setIntegrityCheck(false);
+      $userTablename = $user->info('name');
+      $sel = $sel->from(array('u' => $userTablename))
+                 ->joinLeft(array('sa' => $this->_name), 
+                      "u.username = sa.username AND sa.semesters_id = $curSemId AND sa.classes_id = $classId",
+                      array('assignments_id'));
+
+      foreach($students as $s) {
+         $sel = $sel->orWhere('u.username = ?', $s['username']);
+         //$sel = $sel->orWhere('u.username = ?', 'hi');
+      }
+      $sel = $sel->order('u.lname');
+
+      //$sql = $sel->assemble();
+      //die(var_dump($sql));
+
+      $rows = $this->fetchAll($sel)->toArray();
+
+      return $rows;
+
+      //die(var_dump($rows));
+   }
+
    // Checks if an assignment is submitted
    public function isSubmitted(array $data)
    {

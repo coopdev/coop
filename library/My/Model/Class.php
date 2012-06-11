@@ -119,6 +119,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $recs;
    }
 
+
    public function rowExists(array $where)
    {
       $query = $this->select();

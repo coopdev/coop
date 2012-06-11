@@ -8,9 +8,42 @@ class TestController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+    public function dateToTimeAction()
+    {
+       $assign = new My_Model_Assignment();
+       $assign->isDue(1);
+
+    }
+
     public function indexAction()
     {
         // action body
+    }
+    
+    public function htmlStringAction()
+    {
+
+       //$doc = new DOMDocument();
+       //$doc->loadHTMLFile(APPLICATION_PATH . '/views/scripts/form/coop-agreement-template.phtml');
+       //die(var_dump($doc->saveHTML()));
+
+       $name = $_SERVER['SERVER_NAME'];
+
+       //die($name);
+
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       //$page = file_get_contents('http://coop/form/coop-agreement-show?uname=');
+       $page = file_get_contents("http://$name/form/coop-agreement-show?uname=");
+
+       $ofile = fopen('/var/www/coop/pdfs/temp.html', 'w');
+       fwrite($ofile, $page);
+       fclose($ofile);
+
+       die(var_dump($page));
+
+       $this->_helper->viewRenderer->setNoRender(true);
+       
     }
 
     public function dbqueriesAction()

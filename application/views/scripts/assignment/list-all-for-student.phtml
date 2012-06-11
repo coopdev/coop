@@ -10,6 +10,7 @@
    $chk['username'] =  $coopSess->username;
 
    $onclick = "return true";
+   $isDisabled = "enabled";
 
    $url = $this->url(array('controller' => 'as'))
 
@@ -18,21 +19,35 @@
 
 <ul>
 
-
-   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a></li><br />
-
-   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form </a></li><br />
-
    <?php 
-      $chk['assignments_id'] = $as->getMidtermId();
-      if ($as->isSubmitted($chk) === true) { 
+      $onclick = "return true";
+      $isDisabled = "enabled";
+      $assignId = $as->getStuInfoId();
+      if ( $as->isDue($assignId) ) { 
          $onclick = "return false";
+         $isDisabled = "disabled";
       } 
     ?>
 
-   <li><a onclick="<?php echo $onclick ?>" class="regText" href='<?php echo $this->url(array('controller'=>'assignment',
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'form',
+                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a></li><br />
+
+
+   <li><a class="regText" href='<?php echo $this->url(array('controller'=>'form',
+                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form </a></li><br />
+
+   <?php 
+      $onclick = "return true";
+      $isDisabled = "enabled";
+      $assignId = $as->getMidtermId();
+      $chk['assignments_id'] = $assignId;
+      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
+         $onclick = "return false";
+         $isDisabled = "disabled";
+      } 
+    ?>
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
                          'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a></li><br />
 
 </ul>

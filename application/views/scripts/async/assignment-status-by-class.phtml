@@ -1,0 +1,95 @@
+<?php
+   $recs = $this->recs;
+   $assigns = $this->assigns;
+   $error = $this->error;
+
+   if(isset($error)) {
+      echo $error;
+   } else {
+?>
+
+   <table>
+      <!-- set flag to know when we are dealing with a record of the same student as the previous record 
+           so that the table does not duplicate students -->
+      <?php $rowName = 'temp' ?>
+
+      <tr>
+         <!-- first header -->
+         <th> Student </th>
+
+         <!-- assignment headers -->
+         <?php foreach($assigns as $a) { ?>
+            <th> <?php echo $a['assignment'] ?> </th> 
+         <?php } ?>
+
+      </tr>
+
+      <!-- loop through student assignment records -->
+      <?php foreach($recs as $r) { ?>
+
+         <!-- check if record is a different student from previous record to prevent duplicates -->
+         <?php if($rowName !== $r['username']) { ?>
+
+            <!-- new row for each student -->
+            <tr>
+
+               <td> <?php echo $r['fname'] .' '. $r['lname'] . ' (' . $r['username'] . ')' ?> </td>
+
+               <!-- since it is a different student from previous record, set $rowName to the
+                    new rec's student -->
+               <?php $rowName = $r['username'] ?>
+
+               <!-- use length of $assigns to create table divs to match amount of assignment headers -->
+               <?php foreach($assigns as $a) { ?>
+
+                  <!-- set id of the <td> to the current records username and the assignment 
+                       id so that the inner HTML can be set in jQuery -->
+                  <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >
+
+                     <!-- if the current student submitted the assignment (evaluates to not null) and
+                          the assignments_id field of the record == the id of the assignment we are currently on,
+                          then fill in the <td> tag with "Submitted". -->
+                     <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
+
+                        <font color="green"> Submitted </font>
+
+                     <?php } ?>
+
+                  </td>
+
+               <?php } ?>
+
+            </tr>
+
+         <!-- If $rowName is the same as the previous, then we don't want a new row because 
+              we are currently on the same student (but a different submitted assignment record). Just
+              set the inner html of the assignment <td> for which the student has submitted. -->
+         <?php } else { ?>
+
+            <?php foreach($assigns as $a) { ?>
+
+               <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
+
+                  <!-- $td is being assigned the value of the id attribute of the appropriate <td> 
+                       so that the <td> inner html can be set -->
+                  <?php $td = $r['username'] .'-'. (string)$a['id'] ?>
+
+                  <!-- must use javascript to set html in the <td>s since the <td>s already 
+                       exist at this point -->
+                  <script type="text/javascript">
+                     // quotes arount the php tags are necessary to assign it to a JS variable
+                     td = '<?php echo $td ?>'
+                     $("#"+td).html("<font color=green> Submitted </font>");
+                  </script>
+
+               <?php } ?>
+
+            <?php } ?>
+
+         <?php } ?>
+
+      <?php } ?>
+
+   </table>
+
+<?php } ?>

@@ -14,6 +14,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 {
    protected $_name = 'coop_assignments';
 
+   /*
+    * Assignment numbers for each assignment (Used to identify an assignment 
+    * rather than using the name, since the name can change):
+    * 
+    * Student info sheet = 1,
+    * Midterm report = 2,
+    */
+
 
 
    // Submits an assignment.
@@ -253,6 +261,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          }
 
       }
+      //die('hi');
+
 
       return $nonSubmitted;
    }
@@ -308,7 +318,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function getStuInfoId()
    {
-      $id = $this->getId(array('assignment' => 'Student Information Sheet'));
+      $id = $this->getId(array('assignment_num' => 1));
+      //$id = $this->getId(array('assignment' => "Student Information Sheet"));
+
       if (empty($id)) {
          $id = 0;
       }
@@ -317,7 +329,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function getMidtermId()
    {
-      $id = $this->getId(array('assignment' => 'Midterm Report'));
+      $id = $this->getId(array('assignment_num' => 2));
+      //$id = $this->getId(array('assignment' => "Midterm Report"));
       if (empty($id)) {
          $id = 0;
       }
@@ -356,6 +369,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function isSubmitted(array $data)
    {
       $sa = new My_Model_SubmittedAssignment();
+      //die(var_dump($data));
 
       $db = new My_Db();
       $data = $db->prepFormInserts($data, $sa);
@@ -364,9 +378,35 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       if ($sa->rowExists($data)) {
          return true;
       }
+      //die('hi');
       
       return false;
 
+   }
+
+   public function isDue($assignId)
+   {
+      $res = $this->select()->where("id = $assignId");
+
+      $row = $this->fetchRow($res);
+
+      if (is_null($row)) {
+         return false;
+      }
+      $row = $row->toArray();
+      $dueDate = $row['due_date'];
+
+      $dueDate = strtotime($dueDate);
+
+      $curDate = strtotime(date('Ymd'));
+
+      if ($curDate > $dueDate) {
+         return true;
+      }
+
+      return false;
+
+      //die(var_dump($curDate));
    }
 
 

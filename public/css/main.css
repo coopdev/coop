@@ -123,6 +123,13 @@ form.editQuestions textarea, form.midtermReport textarea {
    width: 550px;
 }
 
+table#coopAgreement td {
+}
+
+table#studentInfoSheet, table#coopAgreement td {
+   vertical-align: top;
+}
+
 .editSyllabus {
    max-width: 20%;
 }
@@ -152,6 +159,11 @@ span.fields {
    /*font-size: 14px;*/
 }
 /* End Student Record Search stuff */
+
+textarea.textbox {
+   width: 300px;
+   height: 10px;
+}
 
 #sub {
    color: green;
@@ -191,8 +203,11 @@ a {
    font-size: 14px;
 }
 
-
-
+/* make disabled links grey and prevent highlighting when hovering */
+a.disabled, a.disabled:hover {
+   color:#777;
+   outline: 0;
+}
 
 
 

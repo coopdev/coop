@@ -8,6 +8,23 @@ class AssignmentController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+    // form to choose class to see assignment status for each of the classe's student's
+    public function listStatusByClassAction()
+    {
+       $form = new Zend_Form();
+
+       $elems = new My_FormElement();
+       $classDropdown = $elems->getClassChoiceSelect();
+       $classDropdown->setLabel('Select class');
+       //die(var_dump($classDropdown));
+       $submit = new Zend_Form_Element_Button('Submit');
+       //die(var_dump($submit));
+
+       $form->addElements(array($classDropdown, $submit));
+
+       $this->view->form = $form;
+    }
+
     public function midtermReportAction()
     {
        $form = new Application_Form_MidtermReport();
