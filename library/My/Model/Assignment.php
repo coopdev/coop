@@ -20,6 +20,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * 
     * Student info sheet = 1,
     * Midterm report = 2,
+    * Coop Agreement = 3,
     */
 
 
@@ -149,10 +150,61 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             return false;
          }
       }
+      return true;
+   }
+
+   public function extendDuedate($data)
+   {
+      if (isset($data['Submit'])) {
+         unset($data['Submit']);
+      }
+      $coopSess = new Zend_Session_Namespace('coop');
+      $sem = new My_Model_Semester();
+      $funcs = new My_Funcs();
+      $data['semesters_id'] = $coopSess->currentSemId;
+      $data['due_date'] = $funcs->formatDateIn($data['due_date']);
+
+      $ext = new My_Model_ExtendedDuedates();
+      $uniqueness = $data; // unique fields to match when checking if record exists and when updating
+      unset($uniqueness['due_date']); // don't want due date for this.
+
+      // if record already exists, do an update instead of insert.
+      if ($ext->rowExists($uniqueness)) {
+         $where = array(); // array of where clauses (column = value string).
+         $updateVals['due_date'] = $data['due_date']; // column to update
+
+         foreach ($uniqueness as $key => $val) {
+
+            // must single quote the value of 'username' key since it's a string
+            if ($key === 'username') {
+               //$where[] = $ext->_db->quoteInto("where $key = ?", $val);
+               $where[] = "$key = '$val'";
+            // rest are INTs or DATES so don't quote.
+            } else {
+               $where[] = "$key = $val";
+            }
+         }
+
+         // UPDATE
+         try {
+            $ext->update($updateVals, $where);
+         } catch(Exception $e) {
+            return false;
+         }
+
+      } else {
+
+         // INSERT
+         try {
+            $ext->insert($data);
+         } catch(Exception $e) {
+            return false;
+         }
+      }
 
       return true;
-
    }
+
 
    public function updateQuestions($data)
    {
@@ -338,6 +390,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function getCoopAgreementId()
+   {
+      $id = $this->getId(array('assignment_num' => 3));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
    /*
     * Gets all questions for a specific assignment based on assignment id
     * 
@@ -386,15 +447,29 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function isDue($assignId)
    {
-      $res = $this->select()->where("id = $assignId");
+      $coopSess = new Zend_Session_Namespace('coop');
+      $ext = new My_Model_ExtendedDuedates();
+      // uniqueness to get due_date from coop_extended_duedates.
+      $extWhere = array( 'semesters_id' => $coopSess->currentSemId, 
+                         'classes_id' => $coopSess->currentClassId,
+                         'assignments_id' => $assignId,
+                         'username' => $coopSess->username);  
 
-      $row = $this->fetchRow($res);
+      // if there is an extended due date matching the uniqueness, use that due date.
+      if ($extDuedate = $ext->getDuedate($extWhere)) {
+         $dueDate = $extDuedate;
+      // otherwise, use the default due date in coop_assignments.
+      } else {
+         $res = $this->select()->where("id = $assignId");
 
-      if (is_null($row)) {
-         return false;
+         $row = $this->fetchRow($res);
+
+         if (is_null($row)) {
+            return false;
+         }
+         $row = $row->toArray();
+         $dueDate = $row['due_date'];
       }
-      $row = $row->toArray();
-      $dueDate = $row['due_date'];
 
       $dueDate = strtotime($dueDate);
 

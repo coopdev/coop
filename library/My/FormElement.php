@@ -114,6 +114,20 @@ class My_FormElement
       return $elem;
    }
    
+   public function getAssignmentSelect()
+   {  
+      $assign = new My_Model_Assignment();
+      $assigns = $assign->getall();
+
+      $elem = new Zend_Form_Element_Select('assignments_id');
+      $elem->setRequired($this->requiredVal)
+           ->setLabel('Select assignment:');
+      foreach ($assigns as $a) {
+         $elem->addMultiOptions(array($a['id'] => $a['assignment']));
+      }
+                      
+      return $elem;
+   }
    public function getCreditAmtTbox()
    {
       $elem = new Zend_Form_Element_Text('credits');
@@ -288,7 +302,7 @@ class My_FormElement
       
       // Get current semester.
       $curSem = $semester->getRealSem();
-      //$curSem = "Fall 2012";
+      //$curSem = "Summer 2012";
 
       $semPieces = explode(' ',$curSem);
       
@@ -322,6 +336,24 @@ class My_FormElement
      
       $link = My_DbLink::connect();
       $sems = $link->fetchAll($qry);
+
+      $temp = array();
+      $tempPos = "";
+      $ind = 0;
+      //die(var_dump($sems));
+      foreach ($sems as $s) {
+         $tokens = explode(' ', $s['semester']);
+         if ($tokens[0] === 'Summer') {
+            $temp = $s;
+            $tempPos = $ind;
+         } else if ($tokens[0] === 'Spring') {
+            $sems[$tempPos] = $s;
+            $sems[$ind] = $temp;
+         }
+         $ind++;
+
+      }
+      //die(var_dump($sems));
       
       return $sems;
    }

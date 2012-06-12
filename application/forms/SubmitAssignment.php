@@ -35,16 +35,18 @@ class Application_Form_SubmitAssignment extends Zend_Form
 
        $students = new Zend_Form_Element_Select('username');
        $students->setLabel("Select student:")
-                ->setRequired($req);
+                ->setRequired($req)
+                ->setRegisterInArrayValidator(false); 
+
 
        //$user = new My_Model_User(); 
        //$rows = $user->getAllStudents();
 
-       $class = new My_Model_Class();
-       $rows = $class->getRollForCurrentSem($firstClass);
-       foreach ($rows as $row) {
-          $students->addMultiOptions(array($row['username'] => "".$row['lname'].", ".$row['fname']." (".$row['username'].")"));
-       }
+       //$class = new My_Model_Class();
+       //$rows = $class->getRollForCurrentSem($firstClass);
+       //foreach ($rows as $row) {
+       //   $students->addMultiOptions(array($row['username'] => "".$row['lname'].", ".$row['fname']." (".$row['username'].")"));
+       //}
 
 
        $submit = new Zend_Form_Element_Submit('submit');

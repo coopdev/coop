@@ -8,10 +8,11 @@ class TestController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    public function dateToTimeAction()
+    public function extendDuedatesAction()
     {
-       $assign = new My_Model_Assignment();
-       $assign->isDue(1);
+       $form = new Application_Form_ExtendDuedates();
+
+
 
     }
 
@@ -58,7 +59,7 @@ class TestController extends Zend_Controller_Action
        $temp = new Application_Model_DbTable_Assignment();
 
        $row = $temp->rowExists(array('username' => 'vlah'));
-       die(var_dump($row));
+       //die(var_dump($row));
       $semester = new My_Semester();
       $currentSem = $semester->getRealSem();
       $coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
@@ -141,8 +142,8 @@ class TestController extends Zend_Controller_Action
 //      die($curSem);
        
         $link = My_DbLink::connect();
-        $semester = new My_Semester();
-        $curSem = $semester->getRealSem();
+        $semester = new My_Model_Semester();
+        $curSem = $semester->setCurrentSem();
         
         $semPieces = explode(' ',$curSem);
         $curYear = (int)$semPieces[1];

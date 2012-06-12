@@ -8,6 +8,7 @@
    
    for ($i = $year; $i < 2051; $i++) {
       $query->execute(array("Spring $i"));  
+      $query->execute(array("Summer $i"));  
       $query->execute(array("Fall $i"));
    }
 ?>

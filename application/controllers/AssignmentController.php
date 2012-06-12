@@ -62,16 +62,18 @@ class AssignmentController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
 
-          $as = new My_Model_Assignment();
-          $result = $as->submit($data);
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $result = $as->submit($data);
 
+             if ($result === "submitted") {
+                //$this->view->submitted = true;
+                $this->view->message = "<p class='error'> That assignment has already been submitted </p>";
+             } else {
+                //$this->view->submitted = false;
+                $this->view->message = "<p class='success'> Assignment has successfully been submitted </p>";
+             }
 
-          if ($result === "submitted") {
-             //$this->view->submitted = true;
-             $this->view->message = "<p class='error'> That assignment has already been submitted </p>";
-          } else {
-             //$this->view->submitted = false;
-             $this->view->message = "<p class='success'> Assignment has successfully been submitted </p>";
           }
 
        }
@@ -159,6 +161,30 @@ class AssignmentController extends Zend_Controller_Action
                 $this->view->result = "<p class=error> Failed to Update </p>";
              }
              
+          }
+       }
+
+    }
+
+    public function extendDuedateAction()
+    {
+       $form = new Application_Form_ExtendDuedates();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          //die(var_dump($data));
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->extendDuedate($data);
+             if ($res) {
+                $this->view->message = "<p class=success> Due date has been extended </p>";
+             } else {
+                $this->view->message = "<p class=error> Failed to extend due date </p>";
+             }
           }
        }
 

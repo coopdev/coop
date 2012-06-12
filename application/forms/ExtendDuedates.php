@@ -5,7 +5,40 @@ class Application_Form_ExtendDuedates extends Zend_Form
 
     public function init()
     {
-        /* Form Elements & Other Definitions Here ... */
+       $elems = new My_FormElement();
+
+       $classes = $elems->getClassChoiceSelect();
+       $classes->setLabel("Select class:");
+
+       $classOptions = $classes->getMultiOptions();
+       $classIds = array_keys($classOptions);
+       $firstClass = array_shift($classIds); // the id of the first class in the dropdown
+
+       //die(var_dump($firstClass));
+
+       $assigns = $elems->getAssignmentSelect();
+
+       $students = new Zend_Form_Element_Select('username');
+       $students->setLabel("Select student:")
+                ->setRequired(true)
+                ->setRegisterInArrayValidator(false);
+
+       $dueDate = $elems->getDateTbox('due_date', 'Enter due date');
+
+       $class = new My_Model_Class();
+       //$stuRecs = $class->getRollForCurrentSem($firstClass);
+
+       //foreach ($stuRecs as $s) {
+       //   $username = $s['username'];
+       //   $lname = $s['lname'];
+       //   $fname = $s['fname'];
+       //   $students->addMultiOptions(array($username => "$lname, $fname ($username)"));
+       //}
+
+       $submit = $elems->getSubmit();
+
+       $this->addElements(array($classes, $assigns, $students, $dueDate, $submit));
+
     }
 
 

@@ -5,10 +5,16 @@
 
    $as = new My_Model_Assignment();
 
-   $chk['semesters_id'] =  $coopSess->currentSemId;
-   $chk['classes_id'] =  $coopSess->currentClassId;
-   $chk['username'] =  $coopSess->username;
+   $curSem = $coopSess->currentSemId;
+   $curClass = $coopSess->currentClassId;
+   $username = $coopSess->username;
 
+
+
+
+   $chk['semesters_id'] = $curSem;
+   $chk['classes_id'] = $curClass;
+   $chk['username'] = $username;
    $onclick = "return true";
    $isDisabled = "enabled";
 

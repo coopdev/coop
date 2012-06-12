@@ -85,7 +85,7 @@ class AuthController extends Zend_Controller_Action
         * START SETTING SESSION VARIABLES
         */
 
-       $sem = new My_Semester();
+       $sem = new My_Model_Semester();
        // Sets the current semester in the database.
        $sem->setCurrentSem();
        

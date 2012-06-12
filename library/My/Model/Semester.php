@@ -17,15 +17,31 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
       $curDate = date('Y-m-d');
       $dateParts = explode('-',$curDate);
       $curYear = $dateParts[0];
+      $curDate = strtotime(date('Ymd'));
       $curMonth = $dateParts[1];
-      
-      if ($curMonth < 7) {
-         $this->curSem = 'Spring';
-      } else {
+
+
+      $sprSummer = strtotime($curYear."0520");
+      $sumFall = strtotime($curYear."0820");
+      //die(var_dump($curDate));
+      //die(var_dump($curDate > $sprSummer));
+
+      if ($curDate < $sprSummer) {
+         $this->curSem = "Spring";
+      } else if ($curDate > $sumFall) {
          $this->curSem = 'Fall';
+      } else {
+         $this->curSem = 'Summer';
       }
       
+      //if ($curMonth < 7) {
+      //   $this->curSem = 'Spring';
+      //} else {
+      //   $this->curSem = 'Fall';
+      //}
+      
       $this->curSem .= ' ' . $curYear;
+      //die($this->curSem);
       
       return $this->curSem;
    }
@@ -35,18 +51,23 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    {
       // Get currest semester.
        $curSemester = $this->getRealSem();
+       //die($curSemester);
        
        $db = new My_Db();
 
        // Get the semester that the database thinks is the current semester.
        $sem = $db->getCol('coop_semesters', 'semester', array('current'=>1));
+       //die($sem);
 
        // If the current semester is not set as current in the database, it means the semester 
        // has changed and the database needs to update the current semester.
        if ($curSemester != $sem) {
+          //die('hi');
           $db->update('coop_semesters', array('current'=>0), 'current = 1');
 
           $db->update('coop_semesters', array('current'=>1), "semester = '$curSemester'");
+          //$sem = $db->getCol('coop_semesters', 'semester', array('current'=>1));
+          //die($sem);
 
           // Because it is a new semester, deactivate users so they have to accept the 
           // disclaimer again.
@@ -80,6 +101,24 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
                             (SELECT * FROM coop_semesters LIMIT $c) AS s 
                             ORDER BY SUBSTRING_INDEX(semester, ' ', -1) DESC, 
                             SUBSTRING_INDEX(semester, ' ', 1)");
+
+      $temp = array(); // hold record to be swapped.
+      $tempPos = ""; // hold position for swapping.
+      $ind = 0;
+      // swap the order of Spring and Summer since we want summer to come first in this case.
+      foreach ($rows as $r) {
+         $tokens = explode(' ', $r['semester']);
+         if ($tokens[0] === "Spring") {
+            $temp = $r;
+            $tempPos = $ind;
+         } else if ($tokens[0] === "Summer") {
+            $rows[$tempPos] = $r;
+            $rows[$ind] = $temp;
+         }
+         $ind++;
+      }
+      //die(var_dump($rows));
+
       return $rows;
    }
 
