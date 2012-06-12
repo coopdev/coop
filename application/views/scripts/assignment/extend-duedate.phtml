@@ -1,0 +1,49 @@
+<h2> Extend A Due Date </h2>
+
+
+<?php
+   echo $this->message;
+   echo $this->form;
+?>
+
+
+<script type="text/javascript">
+
+   $("document").ready(function() {
+
+      fillStudents();
+
+      $("[name=classes_id]").change(function() {
+         fillStudents();
+      });
+
+
+      function fillStudents() {
+         val = $("[name=classes_id]").val();
+
+         $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
+
+            opts = resp;
+
+            $("[name=username]").empty();
+
+            optString = "";
+
+            for (i = 0; i < opts.length; i++) {
+               fname = opts[i].fname;
+               lname = opts[i].lname;
+               username = opts[i].username;
+
+               optString += "<option value='" + username + "'>" +
+                                lname + ", " + fname + " (" + username + ")" +
+                            "</option>";
+            }
+
+            $("[name=username]").html(optString);
+
+         }, 'json');
+      }
+
+   });
+
+</script>
