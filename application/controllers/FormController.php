@@ -100,13 +100,10 @@ class FormController extends Zend_Controller_Action
           // Returns the rendered HTML as a string
           //$page = file_get_contents("http://$server$baseUrl/form/coop-agreement-pdf?data=".$data);
 
-          exec("/var/www/coop/pdfs/wkhtmltopdf-i386  http://$server$baseUrl/form/coop-agreement-pdf?data=$data " . APPLICATION_PATH . '/../pdfs/coopAgreement.pdf');
+          exec(APPLICATION_PATH . "/../pdfs/wkhtmltopdf-i386  http://$server$baseUrl/form/coop-agreement-pdf?data=$data " . APPLICATION_PATH . '/../pdfs/coopAgreement.pdf');
 
           $pdfPath = APPLICATION_PATH . '/../pdfs/coopAgreement.pdf';
-          //die(var_dump($path));
           $pdf = Zend_Pdf::load($pdfPath);
-          //$pdf->pages[] = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_A4);
-          //die(var_dump($pdf));
           header("Content-Disposition: attachment; filename=Coop Agreement.pdf");
           header("Content-type: application/x-pdf");
           $pdfData = $pdf->render();
