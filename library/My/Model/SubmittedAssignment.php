@@ -198,10 +198,16 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
    {
       $query = $this->select();//->where("$whereCol = ?", $whereVal);
       foreach ($where as $key => $val) {
+         if ($key === 'username') {
+            $query = $query->where("$key = ?", $val);
+         } else {
+            $query = $query->where("$key = $val");
+         }
 
-         $query = $query->where("$key = ?", $val);
 
       }
+      //$sql = $query->assemble();
+      //die($sql);
       $row = $this->fetchRow($query);
 
       if (empty($row)) {

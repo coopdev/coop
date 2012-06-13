@@ -5,10 +5,12 @@
    $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
 
    $editUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
+   $extendUrl = $this->url(array('controller' => 'assignment', 'action' => 'extend-duedate'));
 
 ?>
 
-<a class="regText" href="<?php echo $editUrl ?>"> Edit due dates </a><br /><br /><br />
+<a class="regText" href="<?php echo $editUrl ?>"> Edit due dates </a><br /><br />
+<a class="regText" href="<?php echo $extendUrl ?>"> Extend due date </a><br /><br /><br />
 
 <table class="assignmentList">
 
