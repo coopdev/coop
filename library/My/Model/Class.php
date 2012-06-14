@@ -60,9 +60,11 @@ class My_Model_Class extends Zend_Db_Table_Abstract
          $vals['coordinator'] = null;
       }
 
-      if ($this->rowExists(array('name' => $vals['name']))) {
-         return "exists";
-      }
+      // This check was causing problems when the name of the class wasn't changed (because 
+      // the name already exists if it wasn't changed...).
+      //if ($this->rowExists(array('name' => $vals['name']))) {
+      //   return "exists";
+      //}
 
       if ($this->update($vals, "id = $id")) {
          return true;

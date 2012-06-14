@@ -175,7 +175,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
    public function deleteCoord($coord)
    {
       //die(var_dump($coord));
-      if ($this->delete("username = '$coord'")) {
+      if ($this->delete("username = " . $this->_db->quote($coord) )) {
          return true;
       }
 
@@ -187,22 +187,44 @@ class My_Model_User extends Zend_Db_Table_Abstract
    {
       $db = new My_Db();
 
-      $data = $db->prepFormInserts($data, $this);
+      // filter fields for coop_users
+      $userVals = $db->prepFormInserts($data, $this);
 
       $role = new My_Model_Role();
+      // coordinator role id from coop_roles
       $roleId = $role->getCoordId();
 
-      $data['roles_id'] = $roleId;
+      $userVals['roles_id'] = $roleId;
+      // make user active
+      $userVals['active'] = 1;
 
-      if ($this->rowExists(array('username' => $data['username']))) {
+      //die(var_dump($userVals));
+      // if user with specified username already exists
+      if ($this->rowExists(array('username' => $userVals['username']))) {
          return "exists";
       }
 
-      if ($this->insert($data)) {
-         return true;
+      // if insert into coop_users fails
+      if (!$this->insert($userVals)) {
+         return false;
       }
 
-      return false;
+      // if a phone number was entered through the form (it is optional)
+      if (!empty($data['phonenumber'])) {
+         //die('hi');
+         $pn = new My_Model_PhoneNumbers();
+         $pt = new My_Model_PhoneTypes();
+         // just make it a home phone number for simplicity
+         $homeId = $pt->getHomeId();
+         $pnVals = array('username' => $data['username'], 'phonenumber' => $data['phonenumber'], 'phonetypes_id' => $homeId);
+
+         // if insert fails
+         if (!$pn->insert($pnVals)) {
+            return false;
+         }
+      }
+
+      return true;
 
    }
 
@@ -248,6 +270,90 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
       //die(var_dump($data));
 
+   }
+
+   public function addStudentAid($data)
+   {
+      $db = new My_Db();
+
+      // filter fields for coop_users
+      $userVals = $db->prepFormInserts($data, $this);
+
+      $role = new My_Model_Role();
+      // coordinator role id from coop_roles
+      $roleId = $role->getStuAidId();
+
+      $userVals['roles_id'] = $roleId;
+      // make user active
+      $userVals['active'] = 1;
+
+      //die(var_dump($userVals));
+      // if user with specified username already exists
+      if ($this->rowExists(array('username' => $userVals['username']))) {
+         return "exists";
+      }
+
+      // if insert into coop_users fails
+      if (!$this->insert($userVals)) {
+         return false;
+      }
+
+      // if a phone number was entered through the form (it is optional)
+      if (!empty($data['phonenumber'])) {
+         //die('hi');
+         $pn = new My_Model_PhoneNumbers();
+         $pt = new My_Model_PhoneTypes();
+         // just make it a home phone number for simplicity
+         $homeId = $pt->getHomeId();
+         $pnVals = array('username' => $data['username'], 'phonenumber' => $data['phonenumber'], 'phonetypes_id' => $homeId);
+
+         // if insert fails
+         if ($pn->insert($pnVals)) {
+            return true;
+         }
+      }
+
+      return false;
+
+   }
+
+   public function editStuAid($username, $data)
+   {
+      // try to emulate editCoord()
+
+   }
+
+   public function getStuAidInfo(array $where = array())
+   {
+      $pnType = new My_Model_PhoneTypes();
+      
+      $pnTypeId = $pnType->getHomeId();
+
+      $pn = new My_Model_PhoneNumbers();
+      $pnName = $pn->info('name');
+
+      $role = new My_Model_Role();
+      $stuAidId = $role->getStuAidId();
+
+      $sel = $this->select()->setIntegrityCheck(false);
+
+      $query = $sel->from(array('u' => $this->_name))
+                   ->joinLeft(array('pn' => $pnName), "u.username = pn.username AND pn.phonetypes_id = $pnTypeId", array('phonenumber'))
+                   ->where('roles_id = ?', $stuAidId);
+
+      foreach ($where as $key =>$val) {
+         $query = $query->where("u.$key = ?", $val);
+      }
+
+      $rows = $this->fetchAll($query)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      //die(var_dump($rows));
+
+      return $rows;
    }
 
 

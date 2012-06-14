@@ -447,6 +447,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function isDue($assignId)
    {
+      date_default_timezone_set('US/Hawaii');
       $coopSess = new Zend_Session_Namespace('coop');
       $ext = new My_Model_ExtendedDuedates();
       // uniqueness to get due_date from coop_extended_duedates.

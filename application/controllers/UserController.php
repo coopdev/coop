@@ -214,6 +214,40 @@ class UserController extends Zend_Controller_Action
        $this->view->form = $form;
     }
 
+    public function listStudentaidsAction()
+    {
+       $user = new My_Model_User();
+
+       $this->view->stuAids = $user->getStuAidInfo();
+
+    }
+
+    public function addStudentAidAction()
+    {
+       $form = new Application_Form_AddStudentAid();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $user = new My_Model_User();
+
+             $res = $user->addStudentAid($data);
+
+             if ($res === 'exists') {
+                $this->view->message = "<p class=error> Student aid already exists </p>";
+             } else if ($res === false) {
+                $this->view->message = "<p class=error> Failed to add student aid </p>";
+             } else {
+                $this->view->message = "<p class=success> Student aid has been added </p>";
+             }
+          }
+       }
+
+    }
+
 
 }
 

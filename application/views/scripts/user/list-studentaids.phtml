@@ -1,0 +1,49 @@
+<?php
+   $stuAids = $this->stuAids;
+   //die(var_dump($stuAids));
+   $editUrl = $this->url(array('controller' => 'user', 'action' => 'edit-student-aid'));
+   $addUrl = $this->url(array('controller' => 'user', 'action' => 'add-student-aid'));
+   $delUrl = $this->url(array('controller' => 'user', 'action' => 'delete-student-aid'));
+?>
+
+<h2> Manage student helpers </h2>
+
+<p> <a href="<?php echo $addUrl ?>"> Add student helper</a> </p>
+<p> <a href="<?php echo $delUrl ?>"> Delete student helper</a> </p>
+
+<table id="stuAidList">
+
+   <th> Name </th> <th> Number </th> <th> Email </th>
+
+
+   <?php foreach ($stuAids as $s) { ?>
+
+      <tr>
+
+         <td>
+            <?php echo $s['fname'] . " " . $s['lname'] ?>
+
+         </td>
+
+         <td>
+            <?php echo $s['phonenumber'] ?>
+
+         </td>
+
+         <td>
+            <?php echo $s['email'] ?>
+
+         </td>
+
+         <td>
+            <a class="editLink" href='<?php echo "$editUrl?username=".$s['username'] ?>'> EDIT </a>
+         </td>
+      </tr>
+
+   <?php } ?>
+
+
+
+
+
+</table>

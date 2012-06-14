@@ -14,8 +14,10 @@ class Application_Form_AddCoord extends Zend_Form
        $lname = $elems->getCommonTbox('lname', "Enter coordinator's last name:");
 
        $email = $elems->getEmailTbox('email', "Enter coordinator's email:");
+       $email->setRequired(false);
 
        $phone = $elems->getCommonTbox('phonenumber', "Enter coordinator's phone number:");
+       $phone->setRequired(false);
 
        $submit = $elems->getSubmit('Add');
 
