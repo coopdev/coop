@@ -96,6 +96,7 @@
         <formFile formName="MidtermReport"/>
         <formFile formName="ExtendDuedates"/>
         <formFile formName="AddStudentAid"/>
+        <formFile formName="DeleteStuAid"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

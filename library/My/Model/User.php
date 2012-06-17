@@ -136,6 +136,24 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   public function getAllStuAids()
+   {
+      $role = new My_Model_Role();
+      $sel = $this->select()->setIntegrityCheck(false);
+      $res = $sel->from(array('u' => $this->_name))
+                 ->join(array('r' => 'coop_roles'), "u.roles_id = r.id", array())
+                 ->where("r.role = 'studentAid'");
+
+      $rows = $this->fetchAll($res)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
+      }
+
+      return $rows;
+
+   }
+
    public function getCoordInfo(array $where = array())
    {
       $pnType = new My_Model_PhoneTypes();
@@ -170,6 +188,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
       return $rows;
 
    }
+
 
 
    public function deleteCoord($coord)
@@ -319,9 +338,61 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    public function editStuAid($username, $data)
    {
-      // try to emulate editCoord()
+      $db = new My_Db();
+
+      // prepare coop_users updates
+      $userVals = $db->prepFormInserts($data, $this);
+
+      // update coop_users table
+      $this->update($userVals, "username = '$username'");
+
+
+      $pt = new My_Model_PhoneTypes();
+      // get id for home phone type
+      $ptId = $pt->getHomeId();
+
+      // prepare coop_phonenumbers updates
+      $phoneVals['phonenumber'] = $data['phonenumber'];
+      $phoneVals['date_mod'] = date('Ymdhis');
+
+      $pn = new My_Model_PhoneNumbers();
+
+      // if coordinator already has a home phone record, do an update
+      if ($pn->rowExists(array('username' => $data['username'], 'phonetypes_id' => $ptId))) {
+         if ($pn->update($phoneVals, "username = '".$data['username']."' AND phonetypes_id = $ptId")) {
+            return true;
+         }
+      // if not, insert
+      } else {
+         $phoneVals['username'] = $data['username'];
+         $phoneVals['phonetypes_id'] = $pt->getHomeId();
+         if ($pn->insert($phoneVals)) {
+            return true;
+         }
+      }
+
+      return false;
+
+
+      //$data = $userVals + $phoneVals;
+
+      //die(var_dump($data));
 
    }
+
+   
+   public function deleteStuAid($stuAid)
+   {
+      //die(var_dump($coord));
+      if ($this->delete("username = " . $this->_db->quote($stuAid) )) {
+         return true;
+      }
+
+      return false;
+
+   }
+
+
 
    public function getStuAidInfo(array $where = array())
    {

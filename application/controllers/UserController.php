@@ -182,6 +182,7 @@ class UserController extends Zend_Controller_Action
           $username = $_GET['username'];
           $user = new My_Model_User();
           $coords = $user->getCoordInfo(array('username' => $username));
+          //die(var_dump($coords));
           if (empty($coord)) {
              $coord = $coords[0];
           }
@@ -246,6 +247,71 @@ class UserController extends Zend_Controller_Action
           }
        }
 
+    }
+
+
+    public function editStudentAidAction()
+    {
+       // Use AddStudentAid form since it uses same fields
+       $form = new Application_Form_AddStudentAid();
+       $hidden = new Zend_Form_Element_Hidden('origUsername');
+       $form->addElement($hidden);
+
+       if ($this->getRequest()->isGet()) {
+          $username = $_GET['username'];
+          $user = new My_Model_User();
+          $stuAids = $user->getStuAidInfo(array('username' => $username));
+          //die(var_dump($stuAid));
+          if (empty($stuAid)) {
+             $stuAid = $stuAids[0];
+          }
+          $stuAid['origUsername'] = $username;
+          //die(var_dump($coords));
+
+          //$coords['']
+
+          $form->populate($stuAid);
+
+
+       } else if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $user = new My_Model_User();
+
+             $res = $user->editStuAid($data['origUsername'], $data);
+             if ($res === false) {
+                $this->view->message = "<p class='error'> Unable to update coordinator </p>";
+             } else {
+                $this->_helper->redirector('list-studentaids');
+             }
+          }
+
+       }
+       //$form->populate(array('username' =>'test'));
+
+       $this->view->form = $form;
+    }
+
+
+    public function deleteStudentAidAction()
+    {
+
+       if ($this->getRequest()->isPost()) {
+          $stuAid = $_POST['studentAid'];
+
+          $user = new My_Model_User();
+          if ($user->deleteStuAid($stuAid)) {
+             $this->view->success = true;
+          } else {
+             $this->view->success = false;
+          }
+       }
+
+       $form = new Application_Form_DeleteStuAid();
+
+       $this->view->form = $form;
     }
 
 

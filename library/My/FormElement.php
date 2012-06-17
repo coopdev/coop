@@ -188,6 +188,7 @@ class My_FormElement
 
        return $coord;
    }
+
    
    public function getCoordsSelectOptional()
    {
@@ -206,6 +207,44 @@ class My_FormElement
 
        return $coord;
    }
+
+   public function getStuAidsSelect()
+   {
+
+       $stuAid = new Zend_Form_Element_Select('studentAid');
+       $stuAid->setLabel("Select student helper:");
+
+       $user = new My_Model_User();
+       $coords = $user->getAllStuAids();
+
+       
+       foreach ($coords as $c) {
+          $stuAid->addMultiOptions(array($c['username'] => $c['lname'].", ".$c['fname']." (".$c['username'].")"));
+       }
+
+       return $stuAid;
+   }
+
+
+   public function getStuAidsSelectOptional()
+   {
+
+       $coord = new Zend_Form_Element_Select('coordinator');
+       $coord->setLabel("Select coordinator:");
+
+       $user = new My_Model_User();
+       $coords = $user->getAllCoords();
+
+       $coord->addMultiOptions(array('' => "--------------"));
+       
+       foreach ($coords as $c) {
+          $coord->addMultiOptions(array($c['username'] => $c['lname'].", ".$c['fname']." (".$c['username'].")"));
+       }
+
+       return $coord;
+   }
+
+
    public function getSemesterInMajorRadio()
    {
       $elem = new Zend_Form_Element_Radio('semester_in_major');

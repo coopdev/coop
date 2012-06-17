@@ -1,0 +1,30 @@
+<?php
+   $form = $this->form;
+
+   echo "<h2> Delete a student helper </h2>";
+
+   if ($this->success === true) {
+      echo "<p class='success'> Student helper has been deleted </p>";
+   } else if ($this->success === false) {
+      echo "<p class='error'> Deletion failed </p>";
+   }
+
+
+   echo $form;
+?>
+
+
+<script type="text/javascript">
+   $('document').ready(function() {
+
+      $("#delete-studentaid").bind("submit", function() {
+         if (!confirm("Are you sure you want to delete this student helper?")) {
+            return false;
+         }
+      });
+
+   });
+
+
+
+</script>
