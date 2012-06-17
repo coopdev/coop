@@ -51,11 +51,6 @@ INSERT INTO coop_coordinators (username)
           ('coord2'),
           ('coord3');
 
-INSERT INTO coop_supervisors (username)
-   VALUES ('superv1'),
-          ('superv2'),
-          ('superv3');
-
 
 INSERT INTO coop_users_semesters (student, semesters_id, classes_id, 
                                  credits, coordinator)
@@ -74,6 +69,7 @@ INSERT INTO coop_assignments (assignment, due_date, assignment_num, online, ques
    VALUES ('Student Information Sheet', 20120411, 1, 1, 0),
           ('Midterm Report', 20120809, 2, 1, 1),
           ('Cooperative Education Agreement', 20120701, 3, 0, 0),
+          ('Learning Outcome Report', 20120701, 4, 1, 0),
           ('assignment2', 20120609, 20, 0, 0),
           ('assignment3', 20120519, 21, 0, 0);
 

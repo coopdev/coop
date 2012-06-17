@@ -97,6 +97,7 @@
         <formFile formName="ExtendDuedates"/>
         <formFile formName="AddStudentAid"/>
         <formFile formName="DeleteStuAid"/>
+        <formFile formName="LearningOutcomeReport"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

@@ -121,6 +121,114 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //die(var_dump($submit));
    }
 
+   public function populateLearningOutcome($form)
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+
+      $where['username'] = $coopSess->username;
+      $where['classes_id'] = $coopSess->currentClassId;
+      $where['semesters_id'] = $coopSess->currentSemId;
+      $where['assignments_id'] = $this->getLearningOutcomeId();
+
+      $aa = new My_Model_AssignmentAnswers();
+
+      $report = $aa->getRows($where);
+      if (!empty($report)) {
+         $report = $report[0];
+         $form->populate(array('report' => $report['answer_text']));
+      }
+
+      //die(var_dump($report));
+
+
+      return $form;
+   }
+
+   public function submitLearningOutcome($data)
+   {
+      $isFinal = false;
+      if (isset($data['Submit'])) {
+         $isFinal = true;
+      }
+
+
+      $coopSess = new Zend_Session_Namespace('coop');
+
+      $sub['username'] = $coopSess->username;
+      $sub['classes_id'] = $coopSess->currentClassId;
+      $sub['semesters_id'] = $coopSess->currentSemId;
+      $sub['assignments_id'] = $this->getLearningOutcomeId();
+      //$sub['is_final'] = $isFinal;
+
+      $sa = new My_Model_SubmittedAssignment();
+      $aa = new My_Model_AssignmentAnswers();
+
+      // select the specified record
+      $sel = $sa->select();
+      foreach ($sub as $key => $val) {
+         if ($key === 'username') {
+            $val = $this->_db->quote($val);
+         }
+         $sel = $sel->where("$key = $val");
+      }
+
+      $res = $this->fetchRow($sel);
+
+      // if a record was found
+      if ($res) {
+         $row = $res->toArray();
+
+         // if this record has already been submitted as final.
+         if ($row['is_final']) {
+            return "submitted";
+
+         // else if it was submitted as save only, do updates
+         } else {
+            $where = array();
+            //unset($sub['is_final']);
+
+            foreach ($sub as $key => $val) {
+               if ($key === 'username') {
+                  $val = $this->_db->quote($val);
+               } 
+
+               $where[]= "$key = $val";
+            }
+
+            $sub['answer_text'] = $data['report'];
+
+            try {
+               $aa->update($sub, $where);
+
+               // if the current submission is final update the is_final field to true
+               if ($isFinal) {
+                  $sa->update(array('is_final' => 1), $where);
+               }
+               return true;
+            } catch(Exception $e) {
+               return false;
+            }
+         }
+
+      // else if no record was found, submit the assignment
+      } else {
+         $funcs = new My_Funcs();
+         $sub['date_submitted'] = date('Ymd');
+         $sub['is_final'] = $isFinal;
+
+         $sa->insert($sub);
+
+         unset($sub['is_final']);
+         unset($sub['date_submitted']);
+
+         $sub['answer_text'] = $data['report'];
+         $aa->insert($sub);
+         return true;
+
+      }
+
+   }
+
    public function updateDuedates($data)
    {
       //$db = new My_Db();
@@ -399,6 +507,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return $id;
 
    }
+
+   public function getLearningOutcomeId()
+   {
+      $id = $this->getId(array('assignment_num' => 4));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
+
    /*
     * Gets all questions for a specific assignment based on assignment id
     * 
@@ -430,13 +549,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function isSubmitted(array $data)
    {
       $sa = new My_Model_SubmittedAssignment();
-      //die(var_dump($data));
 
       $db = new My_Db();
       $data = $db->prepFormInserts($data, $sa);
-      //die(var_dump($data));
 
       if ($sa->rowExists($data)) {
+         //die(var_dump($data));
          return true;
       }
       //die('hi');

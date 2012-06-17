@@ -54,6 +54,37 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    public function learningOutcomeAction()
+    {
+       $form = new Application_Form_LearningOutcomeReport();
+
+       $as = new My_Model_Assignment();
+
+       $form = $as->populateLearningOutcome($form);
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $res = $as->submitLearningOutcome($data);
+
+             if ($res === 'submitted') {
+                $message = "<p class=error> Already submitted </p>";
+             } else if ($res === false) {
+                $message = "<p class=error> Error occured </p>";
+             } else {
+                $message = "<p class=success> Success </p>";
+             }
+
+             $this->view->message = $message;
+          }
+
+       }
+    }
+
+    // for submitting an offline assignment
     public function submitAction()
     {
        $form = new Application_Form_SubmitAssignment();

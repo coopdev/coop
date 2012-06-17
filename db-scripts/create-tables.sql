@@ -161,6 +161,7 @@ CREATE TABLE coop_submittedassignments(
    semesters_id INT,
    classes_id INT,
    date_submitted DATE NULL,
+   is_final BOOLEAN DEFAULT 1,
    PRIMARY KEY(id),
    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
    FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
