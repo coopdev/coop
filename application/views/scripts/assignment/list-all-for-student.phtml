@@ -56,4 +56,17 @@
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
                          'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a></li><br />
 
+   <?php 
+      $onclick = "return true";
+      $isDisabled = "enabled";
+      $assignId = $as->getLearningOutcomeId();
+      $chk['assignments_id'] = $assignId;
+      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
+         $onclick = "return false";
+         $isDisabled = "disabled";
+      } 
+    ?>
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
+                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report </a></li><br />
 </ul>

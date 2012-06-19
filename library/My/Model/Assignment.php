@@ -121,14 +121,35 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //die(var_dump($submit));
    }
 
+   /*
+    * @param $form Zend_Form - The form to populate
+    * 
+    * @param - optional parameter may be passed as the criteria to populate the form (use func_get_arg()).
+    *          if no optional parameter is passed, use session data as the criteria.
+    * 
+    * @return The populated form.
+    */
    public function populateLearningOutcome($form)
    {
       $coopSess = new Zend_Session_Namespace('coop');
 
-      $where['username'] = $coopSess->username;
-      $where['classes_id'] = $coopSess->currentClassId;
-      $where['semesters_id'] = $coopSess->currentSemId;
-      $where['assignments_id'] = $this->getLearningOutcomeId();
+      // get number of arguments passed to this method
+      $argNum = func_num_args();
+      // if the second optional parameter was passed
+      if ($argNum > 1) {
+         // use the second parameter is the "where" criteria
+         $where = func_get_arg(1);
+         unset($where['coordinator']);
+         if (!is_array($where)) {
+            $where = array();
+         }
+      } else {
+         $where['username'] = $coopSess->username;
+         $where['classes_id'] = $coopSess->currentClassId;
+         $where['semesters_id'] = $coopSess->currentSemId;
+         $where['assignments_id'] = $this->getLearningOutcomeId();
+      }
+
 
       $aa = new My_Model_AssignmentAnswers();
 
@@ -202,7 +223,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
                // if the current submission is final update the is_final field to true
                if ($isFinal) {
-                  $sa->update(array('is_final' => 1), $where);
+                  $sa->update(array('is_final' => 1, 'date_submitted' => date('Ymd')), $where);
                }
                return true;
             } catch(Exception $e) {
@@ -551,6 +572,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $sa = new My_Model_SubmittedAssignment();
 
       $db = new My_Db();
+      $data['is_final'] = true;
       $data = $db->prepFormInserts($data, $sa);
 
       if ($sa->rowExists($data)) {

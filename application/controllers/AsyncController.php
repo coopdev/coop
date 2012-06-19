@@ -176,6 +176,59 @@ class AsyncController extends Zend_Controller_Action
        } 
     }
 
+    public function learningOutcomeAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+
+       if ($this->getRequest()->isPost()) {
+          $form = new Application_Form_LearningOutcomeReport();
+
+          $data = array();
+          if (isset($_POST['data'][0])) {
+             $data = $_POST['data'][0];
+          }
+
+          //die(var_dump($data));
+
+          // To get text for the record being viewed (student's name, semester, class)
+          $user = new My_Model_User();
+          $recText = $user->getSemesterInfo($data);
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+          $this->view->recText = $recText;
+
+          $as = new My_Model_Assignment();
+          // Learning Outcome Report's id
+          $data['assignments_id'] = $as->getLearningOutcomeId();
+
+          // check if learning outcome report has been submitted first
+          $res = $as->isSubmitted($data);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
+
+          //die(var_dump($data));
+
+          // Populate the form based on data
+          $form = $as->populateLearningOutcome($form, $data);
+          // the content of the textarea.
+          $report = $form->getValue('report');
+
+          // Take out submit button since it's for coordinator view
+          $form->removeElement("Submit");
+          $form->removeElement("SaveOnly");
+          $this->view->form = $form;
+          $this->view->report = $report;
+          
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       } 
+    }
+
     public function assignmentStatusByClassAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
