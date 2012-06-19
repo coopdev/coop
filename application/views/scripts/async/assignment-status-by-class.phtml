@@ -49,7 +49,7 @@
                      <!-- if the current student submitted the assignment (evaluates to not null) and
                           the assignments_id field of the record == the id of the assignment we are currently on,
                           then fill in the <td> tag with "Submitted". -->
-                     <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
+                     <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
 
                         <font color="green"> Submitted </font>
 

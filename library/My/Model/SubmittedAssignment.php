@@ -69,7 +69,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       $sel = $sel->from(array('u' => $userTablename))
                  ->joinLeft(array('sa' => $this->_name), 
                       "u.username = sa.username AND sa.semesters_id = $curSemId AND sa.classes_id = $classId",
-                      array('assignments_id'));
+                      array('assignments_id', 'is_final'));
 
       foreach($students as $s) {
          $sel = $sel->orWhere('u.username = ?', $s['username']);

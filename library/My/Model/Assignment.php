@@ -167,6 +167,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function submitLearningOutcome($data)
    {
+      date_default_timezone_set('US/Hawaii');
       $isFinal = false;
       if (isset($data['Submit'])) {
          $isFinal = true;
