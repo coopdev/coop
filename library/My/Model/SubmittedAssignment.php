@@ -28,7 +28,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
 
       $db = new My_Db();
       $res = $db->fetchAll("SELECT s.username, s.fname, s.lname, 
-               sub.semesters_id, sub.classes_id, sub.assignments_id, sub.date_submitted, 
+               sub.semesters_id, sub.classes_id, sub.assignments_id, sub.date_submitted, sub.is_final, 
                a.assignment, a.due_date FROM (SELECT fname, lname, username FROM coop_users 
                WHERE username = '$uname') AS s LEFT JOIN coop_submittedassignments AS sub 
                ON s.username = sub.username and sub.classes_id = $classes_id and sub.semesters_id = $semesters_id RIGHT JOIN 

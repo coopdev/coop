@@ -54,12 +54,12 @@ INSERT INTO coop_coordinators (username)
 
 INSERT INTO coop_users_semesters (student, semesters_id, classes_id, 
                                  credits, coordinator)
-   VALUES ('kuukekoa', 1, 3, 12, 'dcaulfie'),
-          ('johndoe', 3, 1, 12, 'coord3'),
-          ('johndoe', 2, 1, 12, 'coord1'),
-          ('johndoe', 1, 2, 12, 'coord2'),
-          ('janedoe', 2, 2, 11, 'coord3'),
-          ('ousley', 1, 3, 10, 'coord2');
+   VALUES ('kuukekoa', 14, 3, 12, 'dcaulfie'),
+          ('johndoe', 14, 1, 12, 'coord3'),
+          ('johndoe', 14, 4, 12, 'coord1'),
+          ('johndoe', 14, 2, 12, 'coord2'),
+          ('janedoe', 14, 2, 11, 'coord3'),
+          ('ousley', 14, 3, 10, 'coord2');
 
 INSERT INTO coop_phonetypes (type)
    VALUES ('home'),
