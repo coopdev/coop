@@ -5,8 +5,8 @@
 
    // COORDINATOR LINKS
 
-   //if ($coopSess->role == 'coordinator') {
-      echo "<h4> Coordinator Links </h4>";
+   if ($coopSess->role == 'coordinator') {
+      //echo "<h4> Coordinator Links </h4>";
 
       echo    "<li><a href='".$this->url(array('controller'=>'syllabus',
                           'action'=>'listall'), null, true)."'> Class syllabi </a></li> <br />";
@@ -14,9 +14,6 @@
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                           'action'=>'new'), null, true)."'> Add student </a></li> <br />";
       
-      //echo    "<li><a href='".$this->url(array('controller'=>'user',
-      //             'action'=>'list-unenrolled'))."'> Enroll students </a></li> <br />";
-
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                    'action'=>'searchstudent'), null, true)."'> Search student records </a></li> <br />";
 
@@ -39,8 +36,8 @@
                    'action'=>'list-all'), null, true)."'> Manage assignments </a></li> <br />";
    // STUDENT LINKS
 
-   //} else if ($coopSess->role == 'user') {
-      echo "<h4> Student Links </h4>";
+   } else if ($coopSess->role == 'user') {
+      //echo "<h4> Student Links </h4>";
       echo    "<li><a href=".$this->url(array('controller'=>'syllabus',
                                         'action'=>'view'), null, true).">Syllabus</a></li> <br />";
 
@@ -50,5 +47,10 @@
       echo    "<li><a href=".$this->url(array('controller'=>'assignment',
                                         'action'=>'list-submitted'), null, true)."> View submitted assignments </a></li> <br />";
 
+
+   } else if ($coopSess->role === 'studentAid') {
+      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
+                   'action'=>'submit'), null, true)."'> Submit an assignment </a></li> <br />";
+   }
    echo "</ul>";
 ?>

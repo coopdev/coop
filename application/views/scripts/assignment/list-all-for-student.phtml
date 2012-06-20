@@ -9,6 +9,7 @@
    $curClass = $coopSess->currentClassId;
    $username = $coopSess->username;
 
+   $funcs = new My_Funcs();
 
 
 
@@ -29,6 +30,9 @@
       $onclick = "return true";
       $isDisabled = "enabled";
       $assignId = $as->getStuInfoId();
+      //die($assignId);
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
       if ( $as->isDue($assignId) ) { 
          $onclick = "return false";
          $isDisabled = "disabled";
@@ -36,16 +40,23 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a></li><br />
+                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet | due: <?php echo $due ?>  </a></li><br />
 
+   <?php
+      $assignId = $as->getCoopAgreementId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
+   ?>
 
    <li><a class="regText" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form </a></li><br />
+                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form | due: <?php echo $due ?></a></li><br />
 
    <?php 
       $onclick = "return true";
       $isDisabled = "enabled";
       $assignId = $as->getMidtermId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -54,12 +65,14 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a></li><br />
+                         'action'=>'midterm-report'), null, true) ?>'> Midterm Report | due: <?php echo $due ?> </a></li><br />
 
    <?php 
       $onclick = "return true";
       $isDisabled = "enabled";
       $assignId = $as->getLearningOutcomeId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -68,5 +81,5 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report </a></li><br />
+                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report | due: <?php echo $due ?> </a></li><br />
 </ul>

@@ -103,11 +103,6 @@ class UserController extends Zend_Controller_Action
       
     }
 
-    public function updateAction()
-    {
-        // action body
-    }
-
     public function searchstudentAction()
     {
        $form = new Application_Form_StudentRecSearch();

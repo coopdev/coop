@@ -26,6 +26,14 @@
          $prevAct = $coopSess->prevAction;
          //die("$prevCont: $prevAct");
          $redirector = new Zend_Controller_Action_Helper_Redirector();
+
+         // need this when executing wkhtmltopdf since it has a role of none and gets sent to 
+         // the weblogin page.
+         if($this->getRequest()->isGet()) {
+            if (isset($_GET['role']) && $_GET['role'] === 'A592NXZ71680STWVR926' ) {
+               return;
+            }
+         }
          
          if (!$this->_acl->isAllowed($role, $resource, $resource."_".$action)) {
             if ($role == 'none') {

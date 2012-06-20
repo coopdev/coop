@@ -53,7 +53,7 @@ class PagesController extends Zend_Controller_Action
                 $coopSess->inDb = false;
              } 
 
-             $this->view->message = "Incorrect username or password";
+             $this->view->message = "<p class=error> Incorrect username or password </p>";
           }
        
        }

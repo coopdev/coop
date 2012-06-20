@@ -50,6 +50,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user_list-coords'), 'user');
       $this->add(new Zend_Acl_Resource('user_edit-coord'), 'user');
       $this->add(new Zend_Acl_Resource('user_add-coord'), 'user');
+      $this->add(new Zend_Acl_Resource('user_list-studentaids'), 'user');
 
 
 
@@ -97,15 +98,14 @@ class My_Acl_Coop extends Zend_Acl
       //$this->addRole(new Zend_Acl_Role('guest'), 'none');
       
       $this->addRole(new Zend_Acl_Role('user'),'none');
+      $this->addRole(new Zend_Acl_Role('studentAid'),'none');
       $this->addRole(new Zend_Acl_Role('coordinator'), 'user');
-      $this->addRole(new Zend_Acl_Role('admin'), 'coordinator');
-      $this->addRole(new Zend_Acl_Role('super-admin'), 'admin');
-      $this->addRole(new Zend_Acl_Role('supervisor'), 'none');
+
+      // for students who may be in the database but are not enrolled in the current semester.
+      $this->addRole(new Zend_Acl_Role('notEnrolled'), 'none');       
+      // for users who have not agreed to disclaimer yet.
+      $this->addRole(new Zend_Acl_Role('notActive')); 
       
-      //$this->addRole(new Zend_Acl_Role('contractNo'));
-      $this->addRole(new Zend_Acl_Role('notActive'));
-      
-      $this->addRole(new Zend_Acl_Role('notEnrolled'), 'none');
       
       /* PERMISSIONS */    
       
@@ -116,6 +116,10 @@ class My_Acl_Coop extends Zend_Acl
       //$this->allow('none', 'auth', 'auth_cas');
       $this->allow('none', 'auth');
       //$this->deny('none', 'auth', 'logout');
+
+      $this->allow('studentAid', 'assignment', 'assignment_submit');
+      $this->allow('studentAid', 'async', 'async_class-roll-json');
+      $this->allow('studentAid', 'pages', 'pages_home');
 
       //$this->allow('guest','auth');
       //$this->allow('guest','pages');
@@ -133,36 +137,42 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'assignment', 'assignment_list-all-for-student');
       $this->allow('user', 'assignment', 'assignment_midterm-report');
       $this->allow('user', 'assignment', 'assignment_list-submitted');
-      // Think about if a user needs to get to "user" actions if they are already a user 
-      // (i.e. in the database as a student).
       //$this->allow('user', 'user', 'user_new');
       //$this->allow('user', 'user', 'user_create');
             
       $this->allow('coordinator', 'syllabus', 'syllabus_listall');
       $this->allow('coordinator', 'syllabus', 'syllabus_view');
       $this->allow('coordinator', 'syllabus', 'syllabus_edit');
-      $this->allow('coordinator','user','user_new');
-      $this->allow('coordinator','user','user_create');
-      $this->allow('coordinator', 'user', 'user_searchstudent');
-      $this->allow('coordinator', 'user', 'user_history-show');
-      $this->allow('coordinator', 'user', 'user_list-coords');
-      $this->allow('coordinator', 'user', 'user_delete-coord');
-      $this->allow('coordinator', 'user', 'user_edit-coord');
-      $this->allow('coordinator', 'user', 'user_add-coord');
+      $this->allow('coordinator','user');
       $this->allow('coordinator', 'class');
+      $this->deny('coordinator', 'class', 'class_change');
       $this->allow('coordinator', 'async');
-      $this->allow('coordinator', 'assignment', 'assignment_submit');
-      $this->allow('coordinator', 'assignment', 'assignment_list-all');
-      $this->allow('coordinator', 'assignment', 'assignment_edit-duedate');
-      $this->allow('coordinator', 'assignment', 'assignment_properties');
-      $this->allow('coordinator', 'assignment', 'assignment_edit-questions');
-      $this->allow('coordinator', 'assignment', 'assignment_add-question');
-      $this->allow('coordinator', 'assignment', 'assignment_delete-question');
-      $this->allow('coordinator', 'assignment', 'assignment_list-status-by-class');
+      $this->allow('coordinator', 'assignment');
+      $this->deny('coordinator', 'assignment', 'assignment_midterm-report');
+      $this->deny('coordinator', 'assignment', 'assignment_list-submitted');
+      $this->deny('coordinator', 'assignment', 'assignment_list-all-for-student');
+      $this->deny('coordinator', 'form');
+      //$this->allow('coordinator','user','user_new');
+      //$this->allow('coordinator','user','user_create');
+      //$this->allow('coordinator', 'user', 'user_searchstudent');
+      //$this->allow('coordinator', 'user', 'user_history-show');
+      //$this->allow('coordinator', 'user', 'user_list-coords');
+      //$this->allow('coordinator', 'user', 'user_delete-coord');
+      //$this->allow('coordinator', 'user', 'user_edit-coord');
+      //$this->allow('coordinator', 'user', 'user_add-coord');
+      //$this->allow('coordinator', 'user', 'user_list-studentaid');
+      //$this->allow('coordinator', 'assignment', 'assignment_submit');
+      //$this->allow('coordinator', 'assignment', 'assignment_list-all');
+      //$this->allow('coordinator', 'assignment', 'assignment_edit-duedate');
+      //$this->allow('coordinator', 'assignment', 'assignment_properties');
+      //$this->allow('coordinator', 'assignment', 'assignment_edit-questions');
+      //$this->allow('coordinator', 'assignment', 'assignment_add-question');
+      //$this->allow('coordinator', 'assignment', 'assignment_delete-question');
+      //$this->allow('coordinator', 'assignment', 'assignment_list-status-by-class');
       
 
       /* 
-       * Users who haven't filled out a contract can
+       * Users who haven't agreed to disclaimer can
        * only access certain things.
        */
       $this->allow('notActive','pages','pages_login');

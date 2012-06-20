@@ -66,7 +66,7 @@ INSERT INTO coop_phonetypes (type)
           ('mobile');
 
 INSERT INTO coop_assignments (assignment, due_date, assignment_num, online, questions_editable)
-   VALUES ('Student Information Sheet', 20120411, 1, 1, 0),
+   VALUES ('Student Information Sheet', 20120811, 1, 1, 0),
           ('Midterm Report', 20120809, 2, 1, 1),
           ('Cooperative Education Agreement', 20120701, 3, 0, 0),
           ('Learning Outcome Report', 20120701, 4, 1, 0),
