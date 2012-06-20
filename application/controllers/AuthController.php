@@ -114,6 +114,10 @@ class AuthController extends Zend_Controller_Action
           $this->_helper->redirector('disclaimer', 'pages');
        }
 
+       if ($coopSess->role == 'user') {
+          $this->_helper->redirector('view', 'syllabus');
+       }
+
        $this->_redirect($local_service."/pages/home");
        
     }

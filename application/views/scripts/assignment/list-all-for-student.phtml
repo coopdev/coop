@@ -40,7 +40,7 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet | due: <?php echo $due ?>  </a></li><br />
+                         'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a> | due: <?php echo $due ?>  </li><br />
 
    <?php
       $assignId = $as->getCoopAgreementId();
@@ -49,7 +49,7 @@
    ?>
 
    <li><a class="regText" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form | due: <?php echo $due ?></a></li><br />
+                         'action'=>'coop-agreement-show'), null, true) ?>'> Cooperative Agreement Form </a> | due: <?php echo $due ?></li><br />
 
    <?php 
       $onclick = "return true";
@@ -65,7 +65,7 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'midterm-report'), null, true) ?>'> Midterm Report | due: <?php echo $due ?> </a></li><br />
+                         'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a> | due: <?php echo $due ?> </li><br />
 
    <?php 
       $onclick = "return true";
@@ -81,5 +81,5 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report | due: <?php echo $due ?> </a></li><br />
+                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report </a> | due: <?php echo $due ?> </li><br />
 </ul>

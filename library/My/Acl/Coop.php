@@ -83,6 +83,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_list-status-by-class'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_midterm-report'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_list-submitted'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_learning-outcome'), 'assignment');
 
 
       /* Async Controller */
@@ -137,6 +138,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'assignment', 'assignment_list-all-for-student');
       $this->allow('user', 'assignment', 'assignment_midterm-report');
       $this->allow('user', 'assignment', 'assignment_list-submitted');
+      $this->allow('user', 'assignment', 'assignment_learning-outcome');
       //$this->allow('user', 'user', 'user_new');
       //$this->allow('user', 'user', 'user_create');
             
