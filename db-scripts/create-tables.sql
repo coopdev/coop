@@ -48,20 +48,6 @@ CREATE TABLE coop_assignments(
    PRIMARY KEY(id)
 ) ENGINE InnoDB;
 
-CREATE TABLE coop_assignmentquestions(
-   id INT NOT NULL AUTO_INCREMENT,
-   assignments_id INT,
-   classes_id INT,
-   question_number TEXT,
-   question_type INT,
-   belongs_to INT,
-   question_text TEXT,
-   answer_minlength INT,
-   PRIMARY KEY(id),
-   FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE
-   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE CASCADE
-) ENGINE InnoDB;
-
 DROP TABLE IF EXISTS coop_semesters;
 CREATE TABLE coop_semesters(
    id INT NOT NULL AUTO_INCREMENT,
@@ -109,6 +95,20 @@ CREATE TABLE coop_classes(
    PRIMARY KEY(id),
    FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
       ON UPDATE CASCADE
+) ENGINE InnoDB;
+
+CREATE TABLE coop_assignmentquestions(
+   id INT NOT NULL AUTO_INCREMENT,
+   assignments_id INT,
+   classes_id INT,
+   question_number TEXT,
+   question_type TEXT,
+   parent INT,
+   question_text TEXT,
+   answer_minlength INT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE CASCADE
 ) ENGINE InnoDB;
 
 CREATE TABLE coop_assignmentanswers(

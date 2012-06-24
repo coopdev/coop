@@ -21,6 +21,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Student info sheet = 1,
     * Midterm report = 2,
     * Coop Agreement = 3,
+    * Learning Outcome = 4,
+    * Student eval = 5,
     */
 
 
@@ -356,6 +358,23 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function updateQuestionsStuEval($data)
+   {
+      unset($data['submit']);
+
+      $aq = new My_Model_AssignmentQuestions();
+
+      foreach ($data as $id => $vals) {
+         try {
+            $aq->update($vals, "id = $id");
+         } catch(Exception $e) {
+            return false;
+         }
+         
+      }
+      return true;
+   }
+
    public function addQuestion($data)
    {
       unset($data['Add']); // unset the submit button.
@@ -373,6 +392,50 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       $data['question_number'] = $qNum+1; // make sure it gets the last question number
       $data['assignments_id'] = $assignId;
+
+      try {
+         $aq->insert($data);
+      } catch(Exception $e) {
+         return false;
+      }
+
+      return true;
+
+   }
+
+   public function addQuestionStudentEval($data)
+   {
+      unset($data['Add']); // unset the submit button.
+      $assignId = $data['assignId'];
+      unset($data['assignId']);
+
+      $aq = new My_Model_AssignmentQuestions();
+
+      //if (isset($data['type'])) {
+      //   $opts = array('classes_id')
+      //   $qNum = 
+      //}
+
+      $coopSess = new Zend_Session_Namespace('coop');
+      $stuEvalData = $coopSess->stuEvalManagementData;
+      $where['classes_id'] = $stuEvalData['classId'];
+      if ($data['question_type'] === 'parent') {
+         $where['question_type'] = 'parent';
+         unset($data['parent']);
+      } else {
+         if (isset($data['parent'])) {
+            $where['parent'] = $data['parent'];
+         }
+      }
+
+
+      $qNum = $aq->getLastQuestionNum($assignId, $where);
+
+      $data['question_number'] = $qNum+1; // make sure it gets the last question number
+      $data['assignments_id'] = $assignId;
+      $data['classes_id'] = $stuEvalData['classId'];
+
+      //die(var_dump($data));
 
       try {
          $aq->insert($data);
@@ -548,16 +611,45 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    /*
     * Gets all questions for a specific assignment based on assignment id
     * 
+    * @param $id - the assignment ID to search on
+    * @param optional $where - the where parameters.
+    * @param optional $order - the order clause.
+    * 
     * Tables referenced - coop_assignmentquestions
     */
    public function getQuestions($id)
    {
       $aq = new My_Model_AssignmentQuestions();
 
-      $rows = $aq->fetchAll("assignments_id = $id")->toArray();
+      $sel = $aq->select()->where("assignments_id = $id");
 
-      if (empty($row)) {
-         $row = array();
+      $args = func_get_args();
+
+      if (count($args) > 1) {
+         $where = $args['1'];
+         foreach ($where as $key => $val) {
+            if ($key === 'question_type') {
+               $sel = $sel->where("$key = '$val'");
+            } else {
+               $sel = $sel->where("$key = $val");
+            }
+
+         }
+      }
+
+
+      if (count($args) > 2) {
+         $order = $args['2'];
+         $sel->order($order);
+      }
+
+      $sql = $sel->assemble();
+      //die($sql);
+      
+      $rows = $aq->fetchAll($sel)->toArray();
+
+      if (empty($rows)) {
+         $rows = array();
       }
 
       return $rows;

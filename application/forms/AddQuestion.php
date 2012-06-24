@@ -5,6 +5,7 @@ class Application_Form_AddQuestion extends Zend_Form
 
     public function init()
     {
+       $formElements = array();
        $elems = new My_FormElement();
 
        $question = new Zend_Form_Element_Textarea('question_text');
@@ -23,6 +24,4 @@ class Application_Form_AddQuestion extends Zend_Form
        $this->addElements(array($question, $answerLen, $assignId, $submit));
     }
 
-
 }
-

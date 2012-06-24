@@ -21,6 +21,14 @@
 
          <td>  <?php echo $as['assignment'] ?> </td>
 
+         <?php
+            //echo $as['assignment_num'];
+            if ($as['assignment_num'] === '5') {
+               $url = $this->url(array('controller' => 'assignment', 'action' => 'student-eval-choose-class'));
+            }
+
+         ?>
+
          <td> <a class="editLink" href="<?php echo $url . '?id=' . $as['id'] ?>">  Properties </a> </td>
 
       </tr>

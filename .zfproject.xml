@@ -98,6 +98,8 @@
         <formFile formName="AddStudentAid"/>
         <formFile formName="DeleteStuAid"/>
         <formFile formName="LearningOutcomeReport"/>
+        <formFile formName="AddQuestionStudentEval"/>
+        <formFile formName="EditQuestionStudentEval"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

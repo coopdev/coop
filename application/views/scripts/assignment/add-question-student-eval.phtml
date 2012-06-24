@@ -1,0 +1,31 @@
+<?php
+   $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
+
+   // Link back to assignment properties
+   $coopSess = new Zend_Session_Namespace('coop');
+   $assignId = $coopSess->stuEvalManagementData['assignId'];
+   echo "<p> <a class=regText href=$url?id=$assignId> Back to properties </a> </p>";
+
+   echo $this->form;
+
+?>
+
+
+<script type="text/javascript">
+
+   $('document').ready(function() {
+      $('#question_type').change(function() {
+         val = $(this).val();
+         if (val == 'parent') {
+            $('#parent').hide();
+            $('#parent-label').hide();
+         } else {
+            $('#parent').show();
+            $('#parent-label').show();
+         }
+
+      });
+   
+   });
+
+</script>

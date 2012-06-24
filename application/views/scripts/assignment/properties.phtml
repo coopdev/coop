@@ -2,9 +2,18 @@
    
    $assign = $this->assign;
    $dueDateUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
-   $editQuestsUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-questions'));
-   $addQuestUrl = $this->url(array('controller' => 'assignment', 'action' => 'add-question'));
-   $delQuestUrl = $this->url(array('controller' => 'assignment', 'action' => 'delete-question'));
+   if ($assign['assignment_num'] === '5') {
+      $addAction = "add-question-student-eval";
+      $editAction = "edit-question-student-eval";
+      $deleteAction = "delete-question-student-eval";
+   } else {
+      $addAction = "add-question";
+      $editAction = "edit-questions";
+      $deleteAction = "delete-question";
+   }
+   $editQuestsUrl = $this->url(array('controller' => 'assignment', 'action' => $editAction));
+   $addQuestUrl = $this->url(array('controller' => 'assignment', 'action' => $addAction));
+   $delQuestUrl = $this->url(array('controller' => 'assignment', 'action' => $deleteAction));
 
    echo $this->message;
 

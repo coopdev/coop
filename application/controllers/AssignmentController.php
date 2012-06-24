@@ -142,6 +142,7 @@ class AssignmentController extends Zend_Controller_Action
 
     public function propertiesAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
        if ($this->getRequest()->isGet()) {
 
           if (!isset($_GET['id'])) {
@@ -151,17 +152,21 @@ class AssignmentController extends Zend_Controller_Action
 
           $id = $_GET['id'];
 
-          $as = new My_Model_Assignment();
+       } else if ($this->getRequest()->isPost()) {
+          $classId = $_POST['classes_id'];
+          $coopSess->stuEvalManagementData['classId'] = $classId;
+          $id = $coopSess->stuEvalManagementData['assignId'];
 
-          $assign = $as->getAssignment($id);
-          //die(var_dump($assign));
-
-          $funcs = new My_Funcs();
-          $assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
-
-          $this->view->assign = $assign;
        }
+       $as = new My_Model_Assignment();
 
+       $assign = $as->getAssignment($id);
+       //die(var_dump($assign));
+
+       $funcs = new My_Funcs();
+       $assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
+
+       $this->view->assign = $assign;
     }
 
     public function editDuedateAction()
@@ -305,8 +310,8 @@ class AssignmentController extends Zend_Controller_Action
 
              $form->addSubForm($subf, "$qNum");
 
-
           }
+
           $submit = new Zend_Form_Element_Submit("submit");
           $submit->setLabel("Submit");
           $hiddenId = new Zend_Form_Element_Hidden('assignId');
@@ -374,6 +379,69 @@ class AssignmentController extends Zend_Controller_Action
           }
 
           //die(var_dump($data));
+       }
+
+    }
+
+
+    public function studentEvalChooseClassAction()
+    {
+       if ($this->getRequest()->isGet()) {
+          $id = $_GET['id'];
+
+          $coopSess = new Zend_Session_Namespace('coop');
+          $coopSess->stuEvalManagementData['assignId'] = $id;
+
+          $form = new Zend_Form;
+          $form->setAction('properties');
+          $elems = new My_FormElement();
+          $classes = $elems->getClassChoiceSelect();
+          $classes->setLabel("Choose class:");
+          $submit = $elems->getSubmit();
+          $form->addElements(array($classes, $submit));
+
+          $this->view->form = $form;
+       }
+       
+    }
+
+    public function addQuestionStudentEvalAction()
+    {
+       $form = new Application_Form_AddQuestionStudentEval();
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isGet()) {
+          $coopSess = new Zend_Session_Namespace('coop');
+
+       } else if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $as->addQuestionStudentEval($data);
+             $form->reset();
+          }
+       }
+    }
+
+    public function editQuestionStudentEvalAction()
+    {
+
+       $form = new Application_Form_EditQuestionStudentEval();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+
+             $as->updateQuestionsStuEval($data);
+          }
+
+          //die(var_dump($data));
+
        }
 
     }
