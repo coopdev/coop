@@ -358,15 +358,20 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function addQuestion($data)
    {
-      unset($data['Add']);
+      unset($data['Add']); // unset the submit button.
       $assignId = $data['assignId'];
       unset($data['assignId']);
 
       $aq = new My_Model_AssignmentQuestions();
 
+      //if (isset($data['type'])) {
+      //   $opts = array('classes_id')
+      //   $qNum = 
+      //}
+
       $qNum = $aq->getLastQuestionNum($assignId);
 
-      $data['question_number'] = $qNum+1;
+      $data['question_number'] = $qNum+1; // make sure it gets the last question number
       $data['assignments_id'] = $assignId;
 
       try {

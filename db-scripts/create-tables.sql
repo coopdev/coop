@@ -51,11 +51,15 @@ CREATE TABLE coop_assignments(
 CREATE TABLE coop_assignmentquestions(
    id INT NOT NULL AUTO_INCREMENT,
    assignments_id INT,
+   classes_id INT,
    question_number TEXT,
+   question_type INT,
+   belongs_to INT,
    question_text TEXT,
    answer_minlength INT,
    PRIMARY KEY(id),
    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE CASCADE
 ) ENGINE InnoDB;
 
 DROP TABLE IF EXISTS coop_semesters;
