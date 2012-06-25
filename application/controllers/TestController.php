@@ -16,6 +16,32 @@ class TestController extends Zend_Controller_Action
 
     }
 
+    public function dbRowAction()
+    {
+       $aq = new My_Model_AssignmentQuestions();
+
+       $res = $aq->select()->where('assignments_id = 7')->where('classes_id = 4');
+
+       $rows = $aq->fetchAll($res);
+
+       //die(var_dump($rows));
+       $row = $rows->getRow(0);
+
+       $row->question_text = "newest question text";
+       $row->save();
+
+       $qType = $row->question_type;
+
+       die(var_dump($qType));
+
+
+
+
+
+       //$rows = $aq->getParentQuestions(array('assignments_id' => 7, 'classes_id' => 4));
+
+    }
+
     public function indexAction()
     {
         // action body

@@ -360,11 +360,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function updateQuestionsStuEval($data)
    {
-      unset($data['submit']);
+      unset($data['Submit']);
 
       $aq = new My_Model_AssignmentQuestions();
 
       foreach ($data as $id => $vals) {
+         //die(var_dump($vals));
          try {
             $aq->update($vals, "id = $id");
          } catch(Exception $e) {
@@ -405,7 +406,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function addQuestionStudentEval($data)
    {
-      unset($data['Add']); // unset the submit button.
+      if (isset($data['Add'])) {
+         unset($data['Add']); // unset the submit button.
+      }
       $assignId = $data['assignId'];
       unset($data['assignId']);
 
@@ -419,15 +422,30 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $coopSess = new Zend_Session_Namespace('coop');
       $stuEvalData = $coopSess->stuEvalManagementData;
       $where['classes_id'] = $stuEvalData['classId'];
+
+      // if a parent is being added
       if ($data['question_type'] === 'parent') {
          $where['question_type'] = 'parent';
          unset($data['parent']);
+      // if a child is being added
       } else {
+         // if a parent was chosen for the child question
          if (isset($data['parent'])) {
             $where['parent'] = $data['parent'];
-         }
-      }
+         // if no parent was chosen, then that means there were no parents to begin with 
+         // since the dropdown would automatically have a parent selected if at least one existed.
+         } else {
+            $where['parent'] = 1;
+            $data['parent'] = 1; // make the child belong to the first parent if it was created before the parent.
+            // the parent might not exist at this point
+            //$parentExists = $aq->chkParentExistence(array('assignments_id' => $assignId, 'classes_id' => $stuEvaldata['classId'], 'question_number' => $data['parent']));
 
+            // insert the parent since none exists yet, and a child must have a parent.
+            $aq->insert(array('assignments_id' => $assignId, 'classes_id' => $stuEvalData['classId'], 'question_type' => 'parent', 'question_number' => 1));
+
+         }
+
+      }
 
       $qNum = $aq->getLastQuestionNum($assignId, $where);
 
@@ -477,6 +495,48 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $aq->update(array('question_number' => $exp), "assignments_id = $assignId AND question_number > $qNum");
 
       return true;
+
+   }
+
+   public function deleteQuestionsStudentEval($data)
+   {
+      unset($data['Submit']);
+
+      $coopSess = new Zend_Session_Namespace('coop');
+      $stuEvalData = $coopSess->stuEvalManagementData;
+      $assignId = $stuEvalData['assignId'];
+      $classId = $stuEvalData['classId'];
+
+      $questions = $data['questions'];
+
+      $aq = new My_Model_AssignmentQuestions();
+      foreach ($questions as $qid) {
+         $question = $aq->fetchRow("id = $qid");
+         //die(var_dump($question->question_type));
+         $qType = $question->question_type;
+         if ($qType === 'parent') {
+            //die(var_dump($q['question_text']));
+            $children = $aq->fetchAll(array("assignments_id = $assignId", "classes_id = $classId", "question_type = 'child'", "parent = '" . $question['question_number'] . "'"));
+            $rows = $children->toArray();
+            //die(var_dump($rows));
+
+            foreach ($children as $c) {
+               $c->parent = 1;
+
+               $lastQNum = $aq->getLastQuestionNum($assignId, array("assignments_id" => $assignId, "classes_id" => $classId, "parent" => 1));
+               //die(var_dump($lastQNum));
+
+               $c->question_number = $lastQNum+1;
+
+               $c->save();
+
+               //die(var_dump($c));
+            }
+         }
+
+         $aq->delete("id = $qid");
+
+      }
 
    }
 
@@ -651,6 +711,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       if (empty($rows)) {
          $rows = array();
       }
+      //die(var_dump($rows));
 
       return $rows;
       

@@ -419,7 +419,9 @@ class AssignmentController extends Zend_Controller_Action
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
              $as->addQuestionStudentEval($data);
-             $form->reset();
+
+             $form = new Application_Form_AddQuestionStudentEval();
+             $this->view->form = $form;
           }
        }
     }
@@ -443,6 +445,31 @@ class AssignmentController extends Zend_Controller_Action
           //die(var_dump($data));
 
        }
+
+    }
+
+    public function deleteQuestionStudentEvalAction()
+    {
+       $aq = new My_Model_AssignmentQuestions();
+
+       $form = new Application_Form_DeleteQuestionStudentEval();
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+
+             $as = new My_Model_Assignment();
+             $as->deleteQuestionsStudentEval($data);
+             
+             $form = new Application_Form_DeleteQuestionStudentEval();
+             $this->view->form = $form;
+             //die(var_dump($data));
+
+          }
+       }
+
 
     }
 

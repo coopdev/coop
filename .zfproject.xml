@@ -100,6 +100,7 @@
         <formFile formName="LearningOutcomeReport"/>
         <formFile formName="AddQuestionStudentEval"/>
         <formFile formName="EditQuestionStudentEval"/>
+        <formFile formName="DeleteQuestionStudentEval"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

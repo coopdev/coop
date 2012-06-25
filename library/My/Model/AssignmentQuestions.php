@@ -65,8 +65,64 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
       return $rows;
 
    }
-      
 
+   /*
+    * Returns a single array of parent child questions in the order of 1st parent followed by
+    * it's children, 2nd parent followed by it's children, etc.
+    * Uses the stuEvalManagementData session values to specify the WHERE and ORDER criteria.
+    */
+   public function getChildParentQuestions()
+   {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $stuEvalData = $coopSess->stuEvalManagementData;
+       $where = array('classes_id' => $stuEvalData['classId'], 'assignments_id' => $stuEvalData['assignId']);
+
+       // get all parent questions for a specific assignment and class.
+       $parents = $this->getParentQuestions($where);
+
+       // prepare the paramenter for $as->getQuestions().
+       $assignId = $where['assignments_id'];
+       unset($where['assignments_id']);
+
+       $as = new My_Model_Assignment();
+
+       // array to hold parent and child questions.
+       $combined = array();
+
+       foreach ($parents as $p) {
+          $combined[] = $p;
+          $where['parent'] = $p['question_number'];
+          $children = $as->getQuestions($assignId, $where, 'question_number');
+
+          foreach ($children as $c) {
+             $combined[] = $c;
+          }
+       }
+
+       return $combined;
+   }
+
+   public function chkParentExistence($where = array())
+   {
+      $sel = $this->select()->where("question_type = 'parent'");
+      
+      foreach ($where as $key => $val) {
+         if ($key === 'question_number') {
+            $sel = $sel->where("$key = '$val'");
+         } else {
+            $sel = $sel->where("$key = $val");
+         }
+      }
+
+      $res = $this->fetchRow();
+
+      if (!$res) {
+         return false;
+      }
+      $row = $res->toArray();
+
+      return $row;
+   }
 
 }
 

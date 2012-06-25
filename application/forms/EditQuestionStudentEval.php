@@ -47,6 +47,7 @@ class Application_Form_EditQuestionStudentEval extends Zend_Form
              $this->addSubForm($subf, "".$c['id']."");
           }
        }
+       $this->setSubFormDecorators(array('FormElements'));
 
        $elems = new My_FormElement();
        $submit = $elems->getSubmit();
