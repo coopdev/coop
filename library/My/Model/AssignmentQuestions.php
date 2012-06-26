@@ -79,11 +79,12 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
        $coopSess = new Zend_Session_Namespace('coop');
        $args = func_get_args();
        // if optional array was passed.
-       if (count($args > 0)) {
+       if (count($args) > 0) {
           $stuEvalData = $args[0];
        // else use session
        } else {
           $stuEvalData = $coopSess->stuEvalManagementData;
+          //die(var_dump($stuEvalData));
        }
 
        $where = array('classes_id' => $stuEvalData['classId'], 'assignments_id' => $stuEvalData['assignId']);

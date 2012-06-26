@@ -225,3 +225,8 @@ table.padded td {
    padding-top: 12px;
    vertical-align: center;
 }
+
+.highlighted {
+    outline:1px solid #F00; /* Firefox, Opera, Chrome, IE8+ */
+    filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=-1, OffY=0,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=1, OffY=0,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=-1,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1,color=#FF0000); /* IE6, IE7 */
+}

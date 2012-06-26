@@ -27,7 +27,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
 
-   // Submits an assignment.
+   /* Submits an assignment.
+    * 
+    * @param $data - assoc array containing: username, classes_id, assignments_id
+    */
    public function submit(array $data)
    {
       $db = new My_Db();
@@ -167,6 +170,37 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return $form;
    }
 
+   public function populateStudentEval(Zend_Form $form, $data)
+   {
+      unset($data['coordinator']);
+
+      $aa = new My_Model_AssignmentAnswers();
+
+      $aaSel = $aa->select();
+      foreach ($data as $key => $val) {
+         if ($key === 'username') {
+            $aaSel->where("$key = '$val'");
+         } else {
+            $aaSel->where("$key = $val");
+         }
+      }
+
+      $rows = $aa->fetchAll($aaSel)->toArray(); 
+
+      $answers = array();
+      foreach ($rows as $r) {
+         // assignmentquestions_id is required to populate the form, since the form uses the question id as it's name.
+         $aqid = $r['assignmentquestions_id']; 
+         $atext = $r['answer_text'];
+         $answers[$aqid] = $atext;
+      }
+
+      $form->populate($answers);
+
+      return $form;
+      //return $rows;
+   }
+
    public function submitLearningOutcome($data)
    {
       date_default_timezone_set('US/Hawaii');
@@ -257,6 +291,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    {
       unset($data['Submit']);
 
+      $db = new My_Db();
       $aa = new My_Model_AssignmentAnswers();
       $as = new My_Model_Assignment();
       $assignId = $as->getStudentEvalId();
@@ -268,17 +303,29 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
                           'username' => $coopSess->username, 
                           'assignments_id' => $assignId);
 
+      // BEGIN TRANSACTION
+      $as->getAdapter()->beginTransaction();
+
+      // submit the assignment
+      $res = $this->submit($insertVals);
+
+      if ($res === 'submitted') {
+         return 'submitted';
+      }
+
       foreach ($data as $key => $val) {
          $insertVals['assignmentquestions_id'] = $key;
          $insertVals['answer_text'] = $val;
-
          
          try {
             $aa->insert($insertVals);
          } catch(Exception $e) {
+            $as->getAdapter()->rollBack(); // ROLL BACK IF ERROR OCCURED
             return false;
          }
       }
+      // COMMIT TRANSACTION
+      $as->getAdapter()->commit();
 
       return true;
 
@@ -547,14 +594,20 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $qType = $question->question_type;
          if ($qType === 'parent') {
             //die(var_dump($q['question_text']));
-            $children = $aq->fetchAll(array("assignments_id = $assignId", "classes_id = $classId", "question_type = 'child'", "parent = '" . $question['question_number'] . "'"));
+            $children = $aq->fetchAll(array("assignments_id = $assignId", 
+                                            "classes_id = $classId", 
+                                            "question_type = 'child'", 
+                                            "parent = '" . $question['question_number'] . "'"));
             $rows = $children->toArray();
             //die(var_dump($rows));
 
             foreach ($children as $c) {
                $c->parent = 1;
 
-               $lastQNum = $aq->getLastQuestionNum($assignId, array("assignments_id" => $assignId, "classes_id" => $classId, "parent" => 1));
+               $lastQNum = $aq->getLastQuestionNum($assignId, 
+                                                   array("assignments_id" => $assignId, 
+                                                         "classes_id" => $classId, 
+                                                         "parent" => 1));
                //die(var_dump($lastQNum));
 
                $c->question_number = $lastQNum+1;
@@ -570,10 +623,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          } catch(Exceptionn $e) {
             return false;
          }
-
-         return true;
-
       }
+      
+      return true;
 
    }
 

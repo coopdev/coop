@@ -12,6 +12,7 @@ class Application_Form_DeleteQuestionStudentEval extends Zend_Form
 
        $aq = new My_Model_AssignmentQuestions();
        $questions = $aq->getChildParentQuestions();
+       //die('hi');
 
        foreach ($questions as $q) {
           if ($q['question_type'] === 'parent' && $q['question_number'] === '1') {

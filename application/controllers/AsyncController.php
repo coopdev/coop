@@ -229,6 +229,62 @@ class AsyncController extends Zend_Controller_Action
        } 
     }
 
+    public function studentEvalAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       if ($this->getRequest()->isPost()) {
+          $data = array();
+          if (isset($_POST['data'][0])) {
+             $data = $_POST['data'][0];
+          }
+
+          //die(var_dump($data));
+          
+          // To get text for the record being viewed (student's name, semester, class)
+          $user = new My_Model_User();
+          $recText = $user->getSemesterInfo($data);
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+          $this->view->recText = $recText;
+
+          $as = new My_Model_Assignment();
+          // Student eval id
+          $data['assignments_id'] = $as->getStudentEvalId();
+
+          // check if student eval has been submitted first
+          $res = $as->isSubmitted($data);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
+
+          $form = new Application_Form_StudentEval(array('classId' => $data['classes_id']));
+
+          $as = new My_Model_Assignment();
+
+          //die(var_dump($data));
+
+          $form = $as->populateStudentEval($form, $data);
+          //$rows = $as->populateStudentEval($form, $data);
+
+          $form->removeElement('Submit');
+
+          foreach ($form as $f) {
+             $f->setAttrib('disabled', true);
+          }
+
+          $this->view->form = $form;
+          //die(var_dump($rows));
+          //var_dump($rows);
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+    }
+
     public function assignmentStatusByClassAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();

@@ -1,0 +1,30 @@
+<h2> Student Evaluation </h2>
+
+<?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
+   echo $this->headLink();
+
+   $recText = $this->recText;
+
+   if (!empty($recText)) {
+      echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+      echo $recText['class'] . "<br /> ";
+      echo $recText['semester'] . "<br /><br /><br />";
+   }
+
+   if ($this->submitted === false) {
+      echo "<p class=error> Form has not been submitted </p>";
+   } else {
+      echo $this->form;
+   }
+?>
+
+
+<script>
+   $('document').ready(function() {
+      $("input:checked").addClass('highlighted');
+      //$("input:checked").css('background-color', 'green');
+   });
+
+</script>

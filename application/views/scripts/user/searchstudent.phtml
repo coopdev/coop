@@ -57,6 +57,7 @@
    <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
    <button type="button" class="midtermReport"> Midterm Report </button>
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
+   <button type="button" class="studentEval"> Student Evaluation </button>
 
    <input type="hidden" id="stored-rec" data-rec="" />
 
@@ -126,6 +127,20 @@
 
       });
 
+      $(".studentEval").live('click', function() {
+         data = getRec();
+         if (data == "") {
+            return;
+         }
+         $.post(base + "/async/student-eval", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+            //$(".highlighted").css('background-color', 'green');
+
+         });
+
+      });
 
       $(".learningOutcome").live('click', function() {
          data = getRec();
@@ -153,6 +168,7 @@
          });
 
       });
+
 
 
 

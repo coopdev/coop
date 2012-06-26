@@ -74,7 +74,9 @@ class AssignmentController extends Zend_Controller_Action
              $res = $as->submitStudentEval($data);
 
              if ($res === true) {
-                $message = "<p class=success> Survey has been submitted </p>";
+                $message = "<p class=success> Evaluation has been submitted </p>";
+             } else if ($res === 'submitted') {
+                $message = "<p class=error> Evaluation has already been submitted </p>";
              } else {
                 $message = "<p class=error> Error occured </p>";
              }
