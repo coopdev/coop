@@ -33,6 +33,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     */
    public function submit(array $data)
    {
+      date_default_timezone_set('US/Hawaii');
       $db = new My_Db();
       $sa = new My_Model_SubmittedAssignment();
       $sem = new My_Model_Semester();
