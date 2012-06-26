@@ -54,6 +54,39 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    public function studentEvalAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $classId = $coopSess->currentClassId;
+
+       $form = new Application_Form_StudentEval(array('classId' => $classId));
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          //die(var_dump($data));
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+
+             $res = $as->submitStudentEval($data);
+
+             if ($res === true) {
+                $message = "<p class=success> Survey has been submitted </p>";
+             } else {
+                $message = "<p class=error> Error occured </p>";
+             }
+
+             $this->view->form->reset();
+
+             $this->view->message = $message;
+
+          }
+       }
+    }
+
     public function learningOutcomeAction()
     {
        $form = new Application_Form_LearningOutcomeReport();
@@ -418,10 +451,17 @@ class AssignmentController extends Zend_Controller_Action
 
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
-             $as->addQuestionStudentEval($data);
+             $res = $as->addQuestionStudentEval($data);
+
+             if ($res === true) {
+                $message = "<p class=success> Question has been added </p>";
+             } else {
+                $message = "<p class=error> Error occured </p>";
+             }
 
              $form = new Application_Form_AddQuestionStudentEval();
              $this->view->form = $form;
+             $this->view->message = $message;
           }
        }
     }
@@ -439,7 +479,15 @@ class AssignmentController extends Zend_Controller_Action
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
 
-             $as->updateQuestionsStuEval($data);
+             $res = $as->updateQuestionsStuEval($data);
+
+             if ($res === true) {
+                $message = "<p class=success> Question has been updated </p>";
+             } else {
+                $message = "<p class=error> Error occured </p>";
+             }
+
+             $this->view->message = $message;
           }
 
           //die(var_dump($data));
@@ -461,7 +509,15 @@ class AssignmentController extends Zend_Controller_Action
           if ($form->isValid($data)) {
 
              $as = new My_Model_Assignment();
-             $as->deleteQuestionsStudentEval($data);
+             $res = $as->deleteQuestionsStudentEval($data);
+
+             if ($res === true) {
+                $message = "<p class=success> Question has been deleted </p>";
+             } else {
+                $message = "<p class=error> Error occured </p>";
+             }
+
+             $this->view->message = $message;
              
              $form = new Application_Form_DeleteQuestionStudentEval();
              $this->view->form = $form;

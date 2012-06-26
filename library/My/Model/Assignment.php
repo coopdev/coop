@@ -253,6 +253,37 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function submitStudentEval($data)
+   {
+      unset($data['Submit']);
+
+      $aa = new My_Model_AssignmentAnswers();
+      $as = new My_Model_Assignment();
+      $assignId = $as->getStudentEvalId();
+
+      $coopSess = new Zend_Session_Namespace('coop');
+
+      $insertVals = array('classes_id' => $coopSess->currentClassId, 
+                          'semesters_id' => $coopSess->currentSemId, 
+                          'username' => $coopSess->username, 
+                          'assignments_id' => $assignId);
+
+      foreach ($data as $key => $val) {
+         $insertVals['assignmentquestions_id'] = $key;
+         $insertVals['answer_text'] = $val;
+
+         
+         try {
+            $aa->insert($insertVals);
+         } catch(Exception $e) {
+            return false;
+         }
+      }
+
+      return true;
+
+   }
+
    public function updateDuedates($data)
    {
       //$db = new My_Db();
@@ -534,7 +565,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             }
          }
 
-         $aq->delete("id = $qid");
+         try {
+            $aq->delete("id = $qid");
+         } catch(Exceptionn $e) {
+            return false;
+         }
+
+         return true;
 
       }
 
@@ -661,6 +698,16 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function getLearningOutcomeId()
    {
       $id = $this->getId(array('assignment_num' => 4));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
+
+   public function getStudentEvalId()
+   {
+      $id = $this->getId(array('assignment_num' => 5));
       if (empty($id)) {
          $id = 0;
       }

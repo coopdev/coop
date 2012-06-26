@@ -5,6 +5,7 @@ class Application_Form_DeleteQuestionStudentEval extends Zend_Form
 
     public function init()
     {
+       $this->setAttrib('id', 'deleteQuestionStudentEval');
        $cb = new Zend_Form_Element_MultiCheckbox('questions');
 
        $cb->setRequired(true);

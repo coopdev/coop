@@ -101,6 +101,7 @@
         <formFile formName="AddQuestionStudentEval"/>
         <formFile formName="EditQuestionStudentEval"/>
         <formFile formName="DeleteQuestionStudentEval"/>
+        <formFile formName="StudentEval"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
