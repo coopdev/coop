@@ -134,6 +134,22 @@ class ClassController extends Zend_Controller_Action
 
     }
 
+    public function listStudentsAction()
+    {
+       if ($this->getRequest()->isGet()) {
+          $classId = $_GET['id'];
+
+          $class = new My_Model_Class();
+
+          $roll = $class->getRollForCurrentSem($classId);
+
+          foreach ($roll as $r) {
+             echo var_dump($r) . "<br />";
+          }
+       }
+
+    }
+
 
 }
 

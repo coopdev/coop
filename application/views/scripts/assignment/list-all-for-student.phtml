@@ -97,5 +97,14 @@
     ?>
 
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'student-eval'), null, true) ?>'> Student Evaluation </a> | due: <?php echo $due ?> </li><br />
+                         'action'=>'student-eval'), null, true) ?>'> Student's Evaluation </a> | due: <?php echo $due ?> </li><br />
+
+   <?php
+      $assignId = $as->getSupervisorEvalId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
+   ?>
+
+   <li><a class="regText" href='<?php echo $this->url(array('controller'=>'assignment',
+                         'action'=>'supervisor-eval'), null, true) ?>'> Supervisor's Evaluation </a> | due: <?php echo $due ?></li><br />
 </ul>

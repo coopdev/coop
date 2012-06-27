@@ -137,25 +137,6 @@ class FormController extends Zend_Controller_Action
 
     }
 
-    // displays coop agreement pdf
-    public function testAction()
-    {
-
-       $this->_helper->layout->disableLayout();
-       $path = APPLICATION_PATH . '/views/scripts/form/test.pdf';
-       //die(var_dump($path));
-       $pdf = Zend_Pdf::load(APPLICATION_PATH . '/views/scripts/form/test.pdf');
-       //$pdf->pages[] = new Zend_Pdf_Page(Zend_Pdf_Page::SIZE_A4);
-       //die(var_dump($pdf));
-       header("Content-Disposition: inline; filename=Coop-Agreement.pdf");
-       header("Content-type: application/x-pdf");
-       $pdfData = $pdf->render();
-
-       echo $pdfData;
-
-
-
-    }
 
     private function handlePost($form, $data)
     {

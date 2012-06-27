@@ -3,6 +3,7 @@
    $url = $this->url(array('action' => 'edit', 'controller' => 'class'));
    $delUrl = $this->url(array('action' => 'delete', 'controller' => 'class'));
    $addUrl = $this->url(array('action' => 'create', 'controller' => 'class'));
+   $classRollUrl = $this->url(array('action' => 'list-students', 'controller' => 'class'));
    $count = 0;
    $page = 1;
 ?>
@@ -19,12 +20,12 @@
    <tr>
       <td class="className"> <?php echo $c['name'] ?> </td>
 
-      <td class="editLink"> <a href='<?php echo "$url?id=".$c['id'] ?>' class="editLink"> EDIT </a> </td> 
+      <td class=""> 
+         <a href='<?php echo "$url?id=".$c['id'] ?>' class="regText"> EDIT </a> | 
+         <a href='<?php echo "$classRollUrl?id=".$c['id'] ?>' class="regText"> VIEW STUDENTS </a> 
+      </td> 
 
    </tr>
-
-   
-
 
 <?php } ?>
 
@@ -37,14 +38,5 @@
       
 
    });
-   
-
-
-
-
-
-
-
-
 
 </script>

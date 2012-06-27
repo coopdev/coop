@@ -505,7 +505,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       // if a parent is being added
       if ($data['question_type'] === 'parent') {
          $where['question_type'] = 'parent';
-         unset($data['parent']);
+         unset($data['parent']); // unset because only child questions need this field set
       // if a child is being added
       } else {
          // if a parent was chosen for the child question
@@ -761,6 +761,16 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function getStudentEvalId()
    {
       $id = $this->getId(array('assignment_num' => 5));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
+
+   public function getSupervisorEvalId()
+   {
+      $id = $this->getId(array('assignment_num' => 6));
       if (empty($id)) {
          $id = 0;
       }

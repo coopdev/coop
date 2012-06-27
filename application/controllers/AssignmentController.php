@@ -89,6 +89,84 @@ class AssignmentController extends Zend_Controller_Action
        }
     }
 
+    public function supervisorEvalAction()
+    {
+       $as = new My_Model_Assignment();
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       // if get request is coming from the pdf action
+       if ($this->getRequest()->isGet() && isset($_GET['classId'])) {
+          $classId = $_GET['classId'];
+       } else {
+          $classId = $coopSess->currentClassId;
+       }
+
+       //die($classId);
+
+       $assignId = $as->getSupervisorEvalId();
+       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+                                                 'classId' => $classId));
+
+       $form->setAction('/assignment/supervisor-eval-pdf');
+       $this->view->form = $form;
+
+    }
+
+    public function supervisorEvalPdfAction()
+    {
+       if ($this->getRequest()->isPost()) {
+          $classId = $_POST;
+
+          $classId = rawurlencode(serialize($classId));
+
+          $server = $_SERVER['SERVER_NAME'];
+
+          $coopSess = new Zend_Session_Namespace('coop');
+          $baseUrl = $coopSess->baseUrl;
+          $classId = $coopSess->currentClassId;
+
+          // Returns the rendered HTML as a string
+          //$page = file_get_contents("http://$server$baseUrl/form/coop-agreement-pdf?data=".$data);
+
+          exec(APPLICATION_PATH . "/../pdfs/wkhtmltopdf-i386  http://$server$baseUrl/assignment/supervisor-eval-pdf?role=A592NXZ71680STWVR926\&classId=$classId " . 
+                  APPLICATION_PATH . '/../pdfs/supervisorEval.pdf');
+
+          $pdfPath = APPLICATION_PATH . '/../pdfs/supervisorEval.pdf';
+          $pdf = Zend_Pdf::load($pdfPath);
+          header("Content-Disposition: attachment; filename=Supervisor Evaluation.pdf");
+          header("Content-type: application/x-pdf");
+          $pdfData = $pdf->render();
+
+          echo $pdfData;
+
+          $this->_helper->layout->disableLayout();
+          $this->_helper->viewRenderer->setNoRender(true);
+
+       } else if ($this->getRequest()->isGet()) {
+
+          if (isset($_GET['classId'])) {
+             $classId = $_GET['classId'];
+
+             $as = new My_Model_Assignment();
+             $assignId = $as->getSupervisorEvalId();
+
+             //die($data);
+
+             $form = new Application_Form_StudentEval(array('classId' => $classId, 
+                                                            'assignId' => $assignId));
+             $form->removeElement('Submit');
+             //$form->populate($classId);
+
+             $this->view->form = $form;
+
+             $this->_helper->layout->disableLayout();
+          }
+
+
+       }
+
+    }
+
     public function learningOutcomeAction()
     {
        $form = new Application_Form_LearningOutcomeReport();

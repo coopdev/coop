@@ -23,10 +23,13 @@
 
          <?php
             //echo $as['assignment_num'];
+            // Student and Employer evaluations need to have a class chosen before going to 
+            // properties, so change the url for those assignments.
             if ($as['assignment_num'] === '5') {
                $url = $this->url(array('controller' => 'assignment', 'action' => 'student-eval-choose-class'));
+            } else if ($as['assignment_num'] === '6') {
+               $url = $this->url(array('controller' => 'assignment', 'action' => 'student-eval-choose-class'));
             }
-
          ?>
 
          <td> <a class="editLink" href="<?php echo $url . '?id=' . $as['id'] ?>">  Properties </a> </td>

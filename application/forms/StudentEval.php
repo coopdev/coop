@@ -3,12 +3,18 @@
 class Application_Form_StudentEval extends Zend_Form
 {
     protected $classId;
+    protected $assignId;
 
     public function init()
     {
        $aq = new My_Model_AssignmentQuestions();
        $as = new My_Model_Assignment();
-       $asId = $as->getStudentEvalId();
+
+       if (isset($this->assignId)) {
+          $asId = $this->assignId;
+       } else {
+          $asId = $as->getStudentEvalId();
+       }
 
        $questions = $aq->getChildParentQuestions(array('classId' => $this->classId, 'assignId' => $asId));
 
@@ -51,6 +57,12 @@ class Application_Form_StudentEval extends Zend_Form
     {
        //die($classId);
        $this->classId = $classId;
+    }
+
+    public function setAssignId($assignId)
+    {
+       $this->assignId = $assignId;
+
     }
 
 
