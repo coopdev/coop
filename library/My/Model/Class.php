@@ -101,6 +101,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
     * Gets all the students enrolled in a specified class for the current semester
     * 
     * @param $id - the class id
+    * @param Optional ORDER clause
     * 
     */
 
@@ -112,6 +113,13 @@ class My_Model_Class extends Zend_Db_Table_Abstract
           ->where("classes_id = $id")
           ->where("current = 1");
 
+      // if optional ORDER clause was passed
+      $args = func_get_args();
+      if (count($args) > 1) {
+         $order = $args[1];
+         $res = $res->order($order);
+      }
+
       $recs = $this->fetchAll($res)->toArray();
 
       if (!is_array($recs)) {
@@ -119,6 +127,30 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       }
 
       return $recs;
+   }
+
+   public function dropStudent(array $where)
+   {
+      $us = new My_Model_UsersSemester();
+
+      //die(var_dump($where));
+
+      $whereStrs = array();
+      foreach ($where as $key => $val) {
+         if ($key === 'student') {
+            $whereStrs[] = "$key = '$val'";
+         } else {
+            $whereStrs[] = "$key = $val";
+         }
+      }
+      //die(var_dump($whereStrs));
+
+      try {
+         $us->delete($whereStrs);
+      } catch(Exception $e) {
+         return false;
+      }
+      return true;
    }
 
 

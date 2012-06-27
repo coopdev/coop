@@ -102,6 +102,7 @@
         <formFile formName="EditQuestionStudentEval"/>
         <formFile formName="DeleteQuestionStudentEval"/>
         <formFile formName="StudentEval"/>
+        <formFile formName="ClassRoll"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

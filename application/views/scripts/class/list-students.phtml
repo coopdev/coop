@@ -1,7 +1,45 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+   $className = $this->className;
 ?>
+
+<h2> <?php echo $className ?> Class Roll </h2>
+
+<table>
+
+<!-- BEGIN FOREACH -->
+<?php 
+   echo $this->message;
+   $roll = $this->roll;
+
+   foreach ($roll as $r) { 
+   $fname = $r['fname'];
+   $lname = $r['lname'];
+   $username = $r['username'];
+
+   $url = $this->url(array('action' => 'drop-student', 'controller' => 'class', 
+                           'student' => $username, 'classes_id' => $r['classes_id']));
+?>
+   <tr> 
+      <td> <?php echo "$fname $lname ($username)" ?> </td>
+      <td> <a id="dropStudent" class="regText" href="<?php echo $url ?>"> Drop student </a> </td>
+   </tr>
+
+
+<?php } ?>
+<!-- END FOREACH -->
+
+</table>
+
+
+<script type="text/javascript">
+   $('document').ready(function() {
+
+      $("#dropStudent").bind('click', function() {
+         if (!confirm("Are you sure?")) {
+            return false;
+         }
+      });
+
+   });
+
+</script>

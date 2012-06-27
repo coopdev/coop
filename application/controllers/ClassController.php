@@ -137,11 +137,26 @@ class ClassController extends Zend_Controller_Action
     public function listStudentsAction()
     {
        if ($this->getRequest()->isGet()) {
-          $classId = $_GET['id'];
+          $req = $this->getRequest();
+
+          $classId = $req->getParam('id'); 
+
+          $message = "";
+          if ($req->getParam('success') === 'true') {
+             $message = "<p class=success> Student has been dropped </p>";
+          } else if ($req->getParam('success') === 'false') {
+             $message = "<p class=error> Error occured </p>";
+          }
+          //die($classId);
 
           $class = new My_Model_Class();
 
-          $roll = $class->getRollForCurrentSem($classId);
+          $className = $class->getName($classId);
+          $roll = $class->getRollForCurrentSem($classId, 'lname');
+
+          $this->view->message = $message;
+          $this->view->roll = $roll;
+          $this->view->className = $className;
 
           foreach ($roll as $r) {
              echo var_dump($r) . "<br />";
@@ -150,6 +165,31 @@ class ClassController extends Zend_Controller_Action
 
     }
 
+    public function dropStudentAction()
+    {
+       if ($this->getRequest()->isGet()) {
+          $req = $this->getRequest();
+          $classId = $req->getParam('classes_id');
+          $where['classes_id'] = $req->getParam('classes_id');
+          $where['student'] = $req->getParam('student');
+          $sem = new My_Model_Semester();
+          $where['semesters_id'] = $sem->getCurrentSemId();
+
+          //die(var_dump($where));
+          $class = new My_Model_Class();
+
+          if ($class->dropStudent($where)) {
+             $success = 'true';
+          } else {
+             $success = 'false';
+          }
+
+          $this->_helper->redirector('list-students', 'class', null, array('id' => $classId, 'success' => $success));
+
+          //die(var_dump($where));
+       }
+
+    }
 
 }
 
