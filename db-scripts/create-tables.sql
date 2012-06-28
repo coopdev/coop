@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS coop_logins;
 DROP TABLE IF EXISTS coop_extended_duedates;
 DROP TABLE IF EXISTS coop_disclaimers;
 DROP TABLE IF EXISTS coop_submittedassignments;
@@ -268,6 +269,14 @@ create table coop_extended_duedates(
    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id) ON DELETE CASCADE,
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE SET NULL,
    FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE SET NULL,
+   FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+) ENGINE InnoDB;
+
+create table coop_logins(
+   id INT NOT NULL AUTO_INCREMENT,
+   username VARCHAR(100),
+   login_date DATETIME,
+   PRIMARY KEY(id),
    FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
 ) ENGINE InnoDB;
    

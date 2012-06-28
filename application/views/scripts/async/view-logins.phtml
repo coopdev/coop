@@ -1,0 +1,24 @@
+<?php
+   $logins = $this->logins;
+?>
+
+<h2> Results </h2>
+
+<table>
+
+   <tr>
+
+      <th> Name </th> <th> Login Date </th>
+
+   </tr>
+
+   <?php foreach ($logins as $l) { ?>
+
+      <tr>
+         <td> <?php echo $l['fname'] . ' ' . $l['lname'] . " (" . $l['username'] . ")" ?>  </td>
+         <td> <?php echo $l['login_date'] ?> </td>
+      </tr>
+
+   <?php } ?>
+
+</table>

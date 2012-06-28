@@ -41,7 +41,7 @@ class SyllabusController extends Zend_Controller_Action
           // If user is a student with a "user" role, overwrite the $id variable with
           // the class id stored in their record so they can only view the 
           // syllabus for their class, and not get to other ones through the url.
-          if ($coopSess->role == 'user') {
+          if ($coopSess->role === 'user') {
              $classId = $coopSess->currentClassId;
 
              //die($classId);

@@ -137,6 +137,19 @@ class FormController extends Zend_Controller_Action
 
     }
 
+    public function editDisclaimerAction()
+    {
+       $form = new Zend_Form();
+
+       $elems = new My_FormElement();
+       $tArea = $elems->getCommonTarea('disclaimer', 'Enter text for disclaimer page:');
+       $submit = $elems->getSubmit();
+       $form->addElements(array($tArea, $submit));
+
+       $this->view->form = $form;
+
+    }
+
 
     private function handlePost($form, $data)
     {

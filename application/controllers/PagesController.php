@@ -87,7 +87,7 @@ class PagesController extends Zend_Controller_Action
 
           if($form->isValid($data)) {
              
-             if (isset($data['agreement']) && $data['agreement'] == true) {
+             if (isset($data['agreement']) && $data['agreement'] === '1') {
                 $coopSess = new Zend_Session_Namespace('coop');
 
                 $coopSess->role = 'user';
@@ -100,7 +100,10 @@ class PagesController extends Zend_Controller_Action
                 $vals = array('username'=> $coopSess->username, 'semesters_id' => $semId, 'date_agreed'=> date('Ymd') );
                 $db->insert('coop_disclaimers', $vals);
 
-                $this->_helper->redirector('home');
+                $login = new My_Model_Logins();
+                $login->recordLogin($coopSess->username);
+
+                $this->_helper->redirector('view','syllabus');
 
              } else {
                  

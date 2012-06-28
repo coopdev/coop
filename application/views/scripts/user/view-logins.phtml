@@ -1,0 +1,48 @@
+<?php
+   echo $this->form;
+?>
+
+<div id="asyncContainer">
+
+
+</div>
+
+<script type="text/javascript">
+   $("document").ready(function() {
+
+
+      $("#search").live('click', function() {
+
+         search();
+
+      });
+
+
+
+
+      function search() {
+         data = $("#searchform").toJSON();
+
+         //alert(data);
+
+         $.post(base + "/async/view-logins", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+
+            // If there are results, show the button panel
+            if ( $("#searchresults-table").length > 0) {
+               $(".buttonpanel").show();
+               //$("#resultFlag").val("success");
+            // If no results, hide the button panel.
+            } else {
+               $(".buttonpanel").hide();
+               //$("#resultFlag").val("");
+            }
+
+         });
+      }
+
+   });
+
+</script>

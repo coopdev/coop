@@ -115,6 +115,8 @@ class AuthController extends Zend_Controller_Action
        }
 
        if ($coopSess->role == 'user') {
+          $login = new My_Model_Logins();
+          $login->recordLogin($coopSess->username);
           $this->_helper->redirector('view', 'syllabus');
        }
 

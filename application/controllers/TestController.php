@@ -8,29 +8,44 @@ class TestController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
-    public function extendDuedatesAction()
+    public function loginAction()
     {
-       $form = new Application_Form_ExtendDuedates();
+       $login = new My_Model_Logins();
 
-
+       $login->getLogins(array("u.username = 'johndoe'"));
 
     }
 
     public function dbRowAction()
     {
-       $aq = new My_Model_AssignmentQuestions();
+       $aq = new My_Model_User();
 
-       $res = $aq->select()->where('assignments_id = 7')->where('classes_id = 4');
+       $newRow = $aq->fetchNew();
+
+       $newRow->setFromArray(array('fname' => 'newest', 'blah' => 'blah'));
+       $newRow->save();
+       die('hi');
+
+       $res = $aq->select();
 
        $rows = $aq->fetchAll($res);
+
+       //$rows->
 
        //die(var_dump($rows));
        $row = $rows->getRow(0);
 
-       $row->question_text = "newest question text";
-       $row->save();
+       $row->setFromArray(array('fname' => 'Joseph', 'blah' => 'blah', 'llname' => 'new lname'));
+       die(var_dump($row->getTableClass()));
 
-       $qType = $row->question_type;
+       //$row->
+       $row->save();
+       
+       //die(var_dump($row->isConnected()));
+
+       $row2 = new Zend_Db_Table_Row();
+       //$row->setFro
+       die(var_dump($row2->getTable()));
 
        die(var_dump($qType));
 

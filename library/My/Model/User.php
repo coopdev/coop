@@ -327,12 +327,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
          $pnVals = array('username' => $data['username'], 'phonenumber' => $data['phonenumber'], 'phonetypes_id' => $homeId);
 
          // if insert fails
-         if ($pn->insert($pnVals)) {
-            return true;
+         if (!$pn->insert($pnVals)) {
+            return false;
          }
       }
 
-      return false;
+      return true;
 
    }
 
@@ -514,9 +514,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
       foreach ($where as $key => $val) {
          $query = $query->where("$key = ?", $val);
-
       }
-              
               
       $row = $this->fetchRow($query);
 

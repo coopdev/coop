@@ -314,9 +314,25 @@ class AsyncController extends Zend_Controller_Action
        }
        
     }
+
+    public function viewLoginsAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST['data'];
+
+          $login = new My_Model_Logins();
+          $logins = $login->getLogins($data);
+
+          //var_dump($logins);
+
+          $this->view->logins = $logins;
+
+
+       } else {
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+    }
 }
-
-
-
-
-

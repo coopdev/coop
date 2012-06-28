@@ -309,6 +309,12 @@ class UserController extends Zend_Controller_Action
        $this->view->form = $form;
     }
 
+    public function viewLoginsAction()
+    {
+       $form = new Application_Form_ViewLogins();
 
+       $this->view->form = $form;
+
+    }
 }
 
