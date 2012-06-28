@@ -46,6 +46,12 @@ class PagesController extends Zend_Controller_Action
                       $this->_helper->redirector('disclaimer', 'pages');
                    }
 
+                   if ($coopSess->role == 'user') {
+                      $login = new My_Model_Logins();
+                      $login->recordLogin($coopSess->username);
+                      $this->_helper->redirector('view', 'syllabus');
+                   }
+
                    $this->_helper->redirector('home');
                    
                 } 
@@ -78,6 +84,12 @@ class PagesController extends Zend_Controller_Action
     public function disclaimerAction()
     {
        $form = new Application_Form_Disclaimer();
+
+       $db = new My_Db();
+       $res = $db->select()->from('coop_disclaimer_text');
+       $res = $db->fetchAll($res);
+
+       $this->view->text = $res[0]['text'];
 
        $this->view->form = $form;
 

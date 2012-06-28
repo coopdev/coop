@@ -134,6 +134,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user','index');
       $this->allow('user', 'syllabus','syllabus_view');
       $this->allow('user', 'form');
+      $this->deny('user', 'form', 'form_edit-disclaimer');
       $this->allow('user', 'class', 'class_change');
       $this->allow('user', 'assignment', 'assignment_list-all-for-student');
       $this->allow('user', 'assignment', 'assignment_midterm-report');
@@ -156,6 +157,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('coordinator', 'assignment', 'assignment_list-submitted');
       $this->deny('coordinator', 'assignment', 'assignment_list-all-for-student');
       $this->deny('coordinator', 'form');
+      $this->allow('coordinator', 'form', 'form_edit-disclaimer');
       //$this->allow('coordinator','user','user_new');
       //$this->allow('coordinator','user','user_create');
       //$this->allow('coordinator', 'user', 'user_searchstudent');
@@ -183,6 +185,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('notActive','pages', 'pages_disclaimer');
       $this->allow('notActive','auth','auth_logout');
       $this->allow('notActive','auth','auth_cas');
+      $this->allow('notActive', 'pages', 'pages_access-denied');
       $this->allow('notActive','error');
       //// delete bottom rule
       //$this->allow('notActive');

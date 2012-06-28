@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS coop_logins;
 DROP TABLE IF EXISTS coop_extended_duedates;
+DROP TABLE IF EXISTS coop_disclaimer_text;
 DROP TABLE IF EXISTS coop_disclaimers;
 DROP TABLE IF EXISTS coop_submittedassignments;
 DROP TABLE IF EXISTS coop_assignmentanswers;
@@ -278,6 +279,12 @@ create table coop_logins(
    login_date DATETIME,
    PRIMARY KEY(id),
    FOREIGN KEY(username) REFERENCES coop_users(username) ON DELETE CASCADE
+) ENGINE InnoDB;
+
+create table coop_disclaimer_text(
+   id INT NOT NULL AUTO_INCREMENT,
+   text text,
+   PRIMARY KEY(id)
 ) ENGINE InnoDB;
    
 

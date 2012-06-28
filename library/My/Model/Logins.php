@@ -19,9 +19,7 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
    {
       date_default_timezone_set('US/Hawaii');
 
-      $loginDate = date('Ymdhis');
-
-      //die($loginDate);
+      $loginDate = new Zend_Db_Expr("NOW()");
 
       $vals = array('username' => $username, 'login_date' => $loginDate);
 
@@ -62,6 +60,8 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
          $sel = $sel->order($order);
       }
 
+      $sel = $sel->limit(50);
+
       $sql = $sel->assemble();
       //return $sql;
 
@@ -75,6 +75,7 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
          $pieces = explode(' ', $date);
          $date = $pieces[0];
          $date = $funcs->formatDateOut($date);
+         $pieces[1] = date('g:i a', strtotime($pieces[1]));
          $r['login_date'] = $date . ' ' . $pieces[1];
          $temp[] = $r;
       }

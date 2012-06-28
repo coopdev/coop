@@ -80,3 +80,8 @@ INSERT INTO coop_assignmentquestions (assignments_id, question_number, question_
    VALUES (2, '1', 'First Question', 10),
           (2, '2', 'Second Question', 10),
           (2, '3', 'Third Question', 10);
+
+INSERT INTO coop_disclaimer_text (text) 
+   VALUES ('');
+   
+

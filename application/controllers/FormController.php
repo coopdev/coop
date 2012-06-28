@@ -139,15 +139,31 @@ class FormController extends Zend_Controller_Action
 
     public function editDisclaimerAction()
     {
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          unset($data['Submit']);
+          //die(var_dump($data));
+          $db = new My_Db();
+          $db->update('coop_disclaimer_text', $data);
+       }
+
        $form = new Zend_Form();
 
        $elems = new My_FormElement();
-       $tArea = $elems->getCommonTarea('disclaimer', 'Enter text for disclaimer page:');
+
+       $db = new My_Db();
+       $res = $db->select()->from('coop_disclaimer_text');
+       $res = $db->fetchAll($res);
+       $res = $res[0];
+
+       $tArea = $elems->getCommonTarea('text', 'Enter text for disclaimer page:');
+       $tArea->removeFilter('StripTags');
        $submit = $elems->getSubmit();
        $form->addElements(array($tArea, $submit));
+       $form->populate($res);
 
        $this->view->form = $form;
-
     }
 
 
