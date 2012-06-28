@@ -28,6 +28,7 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
 
    public function getLogins($where, $order = "")
    {
+      date_default_timezone_set('US/Hawaii');
       $user = new My_Model_User();
 
       $sel = $this->select()->setIntegrityCheck(false);
