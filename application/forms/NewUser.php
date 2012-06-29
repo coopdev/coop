@@ -18,22 +18,22 @@ class Application_Form_NewUser extends Zend_Form
        $semId = $sem->getCurrentSemId();
        $semester->setValue($semId);
 
-       $coord = new Zend_Form_Element_Select('coordinator');
-       $coord->setLabel('Choose coordinator:');
+       //$coord = new Zend_Form_Element_Select('coordinator');
+       //$coord->setLabel('Choose coordinator:');
 
-       $user = new My_Model_User();
-       $coords = $user->getAllCoords();
+       //$user = new My_Model_User();
+       //$coords = $user->getAllCoords();
 
-       foreach ($coords as $c) {
-          $fname = $c['fname'];
-          $lname = $c['lname'];
-          $uname = $c['username'];
-          $coord->addMultiOptions(array($uname => "$lname, $fname ($uname)"));
-       }
+       //foreach ($coords as $c) {
+       //   $fname = $c['fname'];
+       //   $lname = $c['lname'];
+       //   $uname = $c['username'];
+       //   $coord->addMultiOptions(array($uname => "$lname, $fname ($uname)"));
+       //}
 
        $submit = $elems->getSubmit();
 
-       $this->addElements(array($username, $class, $semester, $coord, $submit));
+       $this->addElements(array($username, $class, $semester, $submit));
     }
 
 

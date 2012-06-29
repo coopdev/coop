@@ -100,6 +100,7 @@ class AuthController extends Zend_Controller_Action
           // Set the user's initial session variables along with checking if the student
           // is enrolled.
           $funcs->setSessions($user, $coopSess);
+          //die('hi');
 
        // If not in the database
        } else {

@@ -1045,6 +1045,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        //}
        //die(var_dump($userVals));
        $userVals['username'] = $coopSess->username;
+       $userVals['uuid'] = $coopSess->uhinfo['uhuuid'];
 
        // get only the submited form data that matches table fields in coop_addresses
        $addrVals = $db->prepFormInserts($data, 'coop_addresses');
@@ -1110,6 +1111,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
           $tokens = explode('/',$empVals['end_date']);
           $empVals['end_date'] = $tokens[2] . $tokens[0] . $tokens[1];
        }
+
+       //die(var_dump($userVals));
 
        $db->update('coop_users', $userVals, "username = '".$coopSess->username."'");
 

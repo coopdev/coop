@@ -187,7 +187,7 @@ CREATE TABLE coop_users_semesters(
    PRIMARY KEY(id),
    FOREIGN KEY(student) REFERENCES coop_users(username) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY(semesters_id) REFERENCES coop_semesters(id) ON DELETE SET NULL,
-   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE SET NULL, 
+   FOREIGN KEY(classes_id) REFERENCES coop_classes(id) ON DELETE CASCADE,
    FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
       ON UPDATE CASCADE,
    FOREIGN KEY(supervisor) REFERENCES coop_users(username) ON UPDATE CASCADE
@@ -296,7 +296,8 @@ CREATE VIEW coop_users_semesters_view AS SELECT u.*, us.semesters_id, us.classes
    FROM coop_users AS u JOIN coop_users_semesters AS us 
    ON u.username = us.student JOIN coop_semesters AS s
    ON us.semesters_id = s.id LEFT JOIN coop_classes AS cl ON us.classes_id = cl.id
-   LEFT JOIN coop_users AS u2 ON us.coordinator = u2.username; 
+   LEFT JOIN coop_users AS u2 ON cl.coordinator = u2.username; 
+   -- LEFT JOIN coop_users AS u2 ON us.coordinator = u2.username; 
 
 -- View for student information. Having two different phone types will cause results 
 -- to double, and since there can be many employmentinfo recors, there will be as many

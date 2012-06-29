@@ -74,17 +74,20 @@ class UserController extends Zend_Controller_Action
           }
 
 
+          // query to check if student exists.
           $query = $db->select()->from('coop_users_semesters', 'id')
                           ->where('student = ?', $username)
                           ->where('semesters_id = ?', $data['semesters_id'])
-                          ->where('classes_id = ?', $data['classes_id'])
-                          ->where('coordinator = ?', $data['coordinator']);
+                          ->where('classes_id = ?', $data['classes_id']);
+                          //->where('coordinator = ?', $data['coordinator']);
 
           $userSemId = $db->fetchOne($query);
 
+          // if student does exists
           if (!empty($userSemId)) {
              $this->_helper->redirector('new', 'user', null, array('result' => 'fail'));
              //$this->view->result = "That student has already been added for this semester";
+          // if student doesn't exist yet.
           } else {
              $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
              $userSemVals['student'] = $username;

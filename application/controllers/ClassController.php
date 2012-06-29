@@ -158,9 +158,6 @@ class ClassController extends Zend_Controller_Action
           $this->view->roll = $roll;
           $this->view->className = $className;
 
-          foreach ($roll as $r) {
-             echo var_dump($r) . "<br />";
-          }
        }
 
     }

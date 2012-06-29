@@ -44,7 +44,8 @@ class My_Funcs
          $coopSess->classIds = $db->getCols('coop_users_semesters', 
                                    'classes_id',
                                    array('student'=>$user['username'], 
-                                   'semesters_id' => $coopSess->currentSemId));
+                                   'semesters_id' => $coopSess->currentSemId
+                                   ));
 
          if (empty($coopSess->classIds)) {
             $coopSess->classIds = array();
@@ -55,10 +56,13 @@ class My_Funcs
          $class = new My_Model_Class();
          $coopSess->classNames = array();
          foreach ($coopSess->classIds as $cid) {
-            $name = $class->getName($cid);
-            $coopSess->classNames[] = $name;
-            if ($cid == $coopSess->currentClassId) {
-               $coopSess->currentClassName = $name;
+            if ($cid !== Null) {
+               $name = $class->getName($cid);
+               $coopSess->classNames[] = $name;
+               if ($cid == $coopSess->currentClassId) {
+                  $coopSess->currentClassName = $name;
+               }
+
             }
 
          }

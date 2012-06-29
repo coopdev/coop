@@ -30,11 +30,16 @@ class Application_Form_StudentEval extends Zend_Form
              $elem->setLabel($q['question_text'])
                   ->setRequired(true)
                   ->setSeparator('')
-                  ->setMultiOptions(array('Strongly Disagree' => 'Strongly Disagree',
-                                          'Disagree' => 'Disagree',
-                                          'Neutral' => 'Neutral',
-                                          'Agree' => 'Agree',
-                                          'Strongly Agree' => 'Strongly Agree'));
+                  ->setMultiOptions(array('1' => '1',
+                                          '2' => '2',
+                                          '3' => '3',
+                                          '4' => '4',
+                                          '5' => '5'));
+                  //->setMultiOptions(array('Strongly Disagree' => 'Strongly Disagree',
+                  //                        'Disagree' => 'Disagree',
+                  //                        'Neutral' => 'Neutral',
+                  //                        'Agree' => 'Agree',
+                  //                        'Strongly Agree' => 'Strongly Agree'));
           } else {
              $elem = new Zend_Form_Element_Hidden($q['id']);
              $elem->setLabel($q['question_text']);

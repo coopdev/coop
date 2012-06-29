@@ -83,7 +83,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
          }
       }
 
-      $query = $query->order(array("class", "lname"));
+      $args = func_get_args();
+      if (count($args) > 1 ) {
+         $order = $args[1];
+         $query = $query->order($order);
+      } else {
+         $query = $query->order(array("class", "lname"));
+      }
+
 
       $rows = $this->fetchAll($query)->toArray();
 

@@ -28,7 +28,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       $sel = $this->select()->setIntegrityCheck(false);
 
       $res = $sel->from($this, array('name'))
-                  ->where("id = $id");
+                 ->where("id = $id");
 
       $row = $this->fetchRow($res)->toArray();
 
