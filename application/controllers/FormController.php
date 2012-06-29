@@ -145,7 +145,12 @@ class FormController extends Zend_Controller_Action
           unset($data['Submit']);
           //die(var_dump($data));
           $db = new My_Db();
-          $db->update('coop_disclaimer_text', $data);
+          try {
+             $db->update('coop_disclaimer_text', $data);
+             $this->view->message = "<p class=success> Updated successfully </p>";
+          } catch(Exception $e) {
+             $this->view->message = "<p class=error> Error occured </p>";
+          }
        }
 
        $form = new Zend_Form();

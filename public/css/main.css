@@ -19,6 +19,7 @@
    padding: 15px;
    margin: 0px;
    text-align: center;
+   /*background-color:*/
    /*border-style: solid;
    border-width: 1px; */
 }
@@ -229,4 +230,7 @@ table.padded td {
 .highlighted {
     outline:1px solid #F00; /* Firefox, Opera, Chrome, IE8+ */
     filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=-1, OffY=0,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=1, OffY=0,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=-1,color=#FF0000) progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=1,color=#FF0000); /* IE6, IE7 */
+}
+
+a {
 }

@@ -24,25 +24,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $FrontController->registerPlugin(new My_Plugin_PreviousUrl());
       
       // Register ACL plugin
-      $FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, $coopSess->role));
+      //$FrontController->registerPlugin(new My_Plugin_AccessCheck($acl, $coopSess->role));
       
       // Set the base URL for the application in a session.
-      $baseUrl = $FrontController->setBaseUrl("")->getBaseUrl();
-      //$baseUrl = $FrontController->getBaseUrl();
+      $baseUrl = $FrontController->setBaseUrl("")->getBaseUrl(); // for root of coop
+      //$baseUrl = $FrontController->setBaseUrl("/coop")->getBaseUrl(); // for root of localhost/coop
       $coopSess->baseUrl = $baseUrl;
 
 
       // Change some of the default validation messages
       $messages = array(
-
                       Zend_Validate_Digits::NOT_DIGITS => 'Must contain only digits',
                       Zend_Validate_Float::NOT_FLOAT => 'Must use decimal format'
-                  
                   );
       $translator = new Zend_Translate('array', $messages);
        
       Zend_Validate_Abstract::setDefaultTranslator($translator);
-      // end changing messages
+      // End changing messages
    }
       
    protected function _initRoutes()

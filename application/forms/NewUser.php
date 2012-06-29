@@ -14,6 +14,9 @@ class Application_Form_NewUser extends Zend_Form
 
        $semester = $elems->getEnrollDateSelect();
        $semester->setLabel("Choose semester:");
+       $sem = new My_Model_Semester();
+       $semId = $sem->getCurrentSemId();
+       $semester->setValue($semId);
 
        $coord = new Zend_Form_Element_Select('coordinator');
        $coord->setLabel('Choose coordinator:');
