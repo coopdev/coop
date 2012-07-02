@@ -988,10 +988,22 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
           $currentClass['wanted_class'] = $coopSess->currentClassName;
        }
 
+       $userSem = new My_Model_UsersSemester();
+       if (isset($opts['semesters_id'])) {
+          $semId = $opts['semesters_id'];
+       } else {
+          $semId = $coopSess->currentSemId;
+       }
+
+       $row = $userSem->fetchRow(array("student = '$username'", "semesters_id = $semId"));
+       if (!empty($row)) {
+          $userSemVals['credits'] = $row['credits'];
+       }
+
        //die(var_dump($userVals, $addrVals, $empVals, $homePhoneVals, $mobilePhoneVals));
 
        //$formVals = $userVals + $addrVals + $empVals + $homePhoneVals + $mobilePhoneVals + $stuVals;
-       $formVals = $userVals + $addrVals + $homePhoneVals + $mobilePhoneVals + $stuVals + $currentClass;
+       $formVals = $userVals + $addrVals + $homePhoneVals + $mobilePhoneVals + $stuVals + $currentClass + $userSemVals;
 
        if (!empty($formVals['start_date'])) {
           $dateTokens = explode("-", $formVals['start_date']);
@@ -1087,6 +1099,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $stuVals['username'] = $coopSess->username;
        //die(var_dump($stuVals));
 
+       $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
+       //die(var_dump($userSemVals));
+
        /* PUT DATES INTO PROPER FORMAT FOR DATABASE. */
 
        // Set date to null if it is a blank string so that it appears as null
@@ -1165,6 +1180,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        if (!$subAs->isSubmitted($assignVals)) {
           $subAs->insert($assignVals);
        }
+
+       $userSem = new My_Model_UsersSemester();
+       $curSem = $coopSess->currentSemId;
+       $username = $coopSess->username;
+       $where = array("semesters_id = $curSem", "student = '$username'");
+       $userSem->update($userSemVals, $where);
 
    }
 

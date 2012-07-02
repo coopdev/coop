@@ -1,5 +1,9 @@
 <?php
 
+   $coopSess = new Zend_Session_Namespace('coop');
+   $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
+   //echo $this->headLink();
+
 ?>
 
 <br /><br /><h4> <b> PERSONAL INFORMATION (Please complete this form) </b> </h4>
@@ -32,8 +36,10 @@
       <td> How many credits will you enroll this semester? <br />
          <?php echo $this->element->credits ?> </td>
 
-      <td> Grad date: <br />
-         <?php echo $this->element->grad_date ?> </td>
+      <td> Grad date (mm/dd/yyyy): <br />
+         <?php //$this->element->grad_date->setAttrib('class', 'hasDatepicker');
+               echo $this->element->grad_date 
+         ?>  <div id="calendar"></div> </td>
 
       <td> Major: <br />
          <?php echo $this->element->majors_id ?> </td>
@@ -145,3 +151,12 @@
 
 </form>
 
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script>
+<script type="text/javascript">
+   $('document').ready(function(){
+         $("#grad_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
+         $("#start_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
+         $("#end_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
+   });
+</script>

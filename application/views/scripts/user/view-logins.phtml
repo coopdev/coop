@@ -1,4 +1,7 @@
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
+
    echo $this->form;
 ?>
 
@@ -7,17 +10,15 @@
 
 </div>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script>
 <script type="text/javascript">
    $("document").ready(function() {
-
 
       $("#search").live('click', function() {
 
          search();
 
       });
-
-
 
 
       function search() {
@@ -43,6 +44,8 @@
          });
       }
 
+      $("#startDate").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
+      $("#endDate").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
    });
 
 </script>

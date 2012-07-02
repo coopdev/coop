@@ -85,7 +85,9 @@ class AsyncController extends Zend_Controller_Action
           $form = new Application_Form_StudentInfo();
 
           $as = new My_Model_Assignment();
-          $form = $as->populateStuInfoSheet($form, array('username' => $data['username']));
+          $form = $as->populateStuInfoSheet($form, array('username' => $data['username'],
+                                                'semesters_id' => $data['semesters_id']));
+          $form->removeElement('agreement');
 
           $empinfo = $user->getEmpInfo($data);
 

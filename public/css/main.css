@@ -233,3 +233,8 @@ table.padded td {
 
 a {
 }
+
+.ui-datepicker-trigger {
+   width: 25px;
+   height: 25px;
+}

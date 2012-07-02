@@ -146,7 +146,7 @@ class My_FormElement
    {
       $elem = new Zend_Form_Element_Text('grad_date');
       $elem->setRequired($this->requiredVal)
-           ->setLabel('Graduation date:')
+           ->setLabel('Graduation date (mm/dd/yyyy):')
            ->addFilter('StripTags')
            ->addFilter('StringTrim');
       return $elem;
