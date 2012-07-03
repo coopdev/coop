@@ -88,6 +88,9 @@ class AsyncController extends Zend_Controller_Action
           $form = $as->populateStuInfoSheet($form, array('username' => $data['username'],
                                                 'semesters_id' => $data['semesters_id']));
           $form->removeElement('agreement');
+          $elems = new My_FormElement();
+          $uhuuid = $elems->getUuidTbox();
+          $form->addElement($uhuuid, 'uhuuid', array('order' => 3));
 
           $empinfo = $user->getEmpInfo($data);
 

@@ -337,7 +337,7 @@ class My_FormElement
    
    private function getSemRange()
    {
-      $semester = new My_Semester();
+      $semester = new My_Model_Semester();
       
       // Get current semester.
       $curSem = $semester->getRealSem();

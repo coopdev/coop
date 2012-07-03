@@ -1,6 +1,9 @@
 <h2> Student Information Sheet </h2>
 
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   $this->headScript()->appendFile($coopSess->baseUrl.'/js/quickpager.jquery.js');
+   echo $this->headScript();
    $form = $this->form;
    $empForm = $form->getSubForm('empinfo[0]');
    $empinfo = $this->empinfo;

@@ -1,7 +1,7 @@
 <?php
 
-   $coopSess = new Zend_Session_Namespace('coop');
-   $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
+   //$coopSess = new Zend_Session_Namespace('coop');
+   //$this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
    //echo $this->headLink();
 
 ?>
@@ -9,7 +9,7 @@
 <br /><br /><h4> <b> PERSONAL INFORMATION (Please complete this form) </b> </h4>
 
 <form id="studentInfoSheet" name="studentInfoSheet" method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" >
-<table id="studentInfoSheet "class="tableform">
+<table id=" "class="tableform">
 
    <tr>
 
@@ -22,13 +22,15 @@
       <td> Address/City/State/ZIP: <br />
          <?php echo $this->element->address ?> </td>
 
-      <td> What job do you want for your co-op experience? <br />
-         <?php echo $this->element->wanted_job ?> </td>
+      <td> Uhuuid #: <br />
+         <?php echo $this->element->uuid ?> </td>
 
 
    </tr>
    
    <tr>
+      <td> What job do you want for your co-op experience? <br />
+         <?php echo $this->element->wanted_job ?> </td>
 
       <td> Which co-op class are you planning to enroll in <br />
          <?php echo $this->element->wanted_class ?> </td>
@@ -37,9 +39,7 @@
          <?php echo $this->element->credits ?> </td>
 
       <td> Grad date (mm/dd/yyyy): <br />
-         <?php //$this->element->grad_date->setAttrib('class', 'hasDatepicker');
-               echo $this->element->grad_date 
-         ?>  <div id="calendar"></div> </td>
+         <?php echo $this->element->grad_date ?>  </td>
 
       <td> Major: <br />
          <?php echo $this->element->majors_id ?> </td>
@@ -152,11 +152,11 @@
 </form>
 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script>
-<script type="text/javascript">
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script> 
+<script type="text/javascript"> 
    $('document').ready(function(){
          $("#grad_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
          $("#start_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
          $("#end_date").datepicker({ showOn: 'button', buttonText: "Calendar", buttonImageOnly: true, buttonImage: base + "/images/x_office_calendar.png", constrainInput: false });
    });
-</script>
+ </script> -->

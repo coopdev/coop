@@ -33,6 +33,7 @@ class FormController extends Zend_Controller_Action
        } else {
           $assignment = new My_Model_Assignment();
           $form = $assignment->populateStuInfoSheet($form);
+          $form->getElement('uuid')->setValue("");
           //die(var_dump($form));
        }
 
