@@ -63,6 +63,7 @@ class AsyncController extends Zend_Controller_Action
     
     public function viewStuInfoSheetAction()
     {
+       $this->_helper->getHelper('layout')->disableLayout();
        if ($this->getRequest()->isPost()) {
           $data = array();
           if (isset($_POST['data'][0])) {
@@ -85,6 +86,16 @@ class AsyncController extends Zend_Controller_Action
           $form = new Application_Form_StudentInfo();
 
           $as = new My_Model_Assignment();
+
+          $data['assignments_id'] = $as->getStuInfoId();
+          // check if student info sheet has been submitted first
+          $res = $as->isSubmitted($data);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
+
           $form = $as->populateStuInfoSheet($form, array('username' => $data['username'],
                                                 'semesters_id' => $data['semesters_id']));
           $form->removeElement('agreement');
@@ -101,7 +112,6 @@ class AsyncController extends Zend_Controller_Action
           $this->_helper->viewRenderer->setNoRender();
        }
 
-       $this->_helper->getHelper('layout')->disableLayout();
     }
 
 

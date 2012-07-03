@@ -4,9 +4,6 @@
    $coopSess = new Zend_Session_Namespace('coop');
    $this->headScript()->appendFile($coopSess->baseUrl.'/js/quickpager.jquery.js');
    echo $this->headScript();
-   $form = $this->form;
-   $empForm = $form->getSubForm('empinfo[0]');
-   $empinfo = $this->empinfo;
    $recText = $this->recText;
    //die(var_dump($recText));
    $funcs = new My_Funcs();
@@ -18,9 +15,14 @@
    }
 
    // If $empinfo is empty, it means the student hasn't submitted it yet
-   if (empty($empinfo)) {
+   //if (empty($empinfo) || $this->submitted === false) {
+   if ($this->submitted === false) {
       echo "<p class='error'> Form has not been submitted </p>";
    } else {
+
+      $form = $this->form;
+      $empForm = $form->getSubForm('empinfo[0]');
+      $empinfo = $this->empinfo;
 
       // For each record of empinfo that the student has, echo a separate form and populate
       // the empinfo section of the form with the empinfo record.
