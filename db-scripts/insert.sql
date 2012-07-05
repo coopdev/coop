@@ -54,7 +54,7 @@ INSERT INTO coop_coordinators (username)
 
 INSERT INTO coop_users_semesters (student, semesters_id, classes_id, 
                                  credits, coordinator)
-   VALUES ('kuukekoa', 14, 3, 12, 'dcaulfie'),
+   VALUES ('kuukekoa', 14, 3, 12, 'coord1'),
           ('johndoe', 14, 1, 12, 'coord3'),
           ('johndoe', 14, 4, 12, 'coord1'),
           ('johndoe', 14, 2, 12, 'coord2'),
