@@ -922,9 +922,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       
        $formVals = array();
        $db = new My_Db();
+       $dbExpr = new Zend_Db_Expr("AES_DECRYPT(uuid, 'alqpwoifjch') AS uuid");
        $query = $db->select()->from('coop_users', 
-                                       array('fname', 'lname', 'uuid', 'email'))
+                                       array('fname', 'lname', $dbExpr, 'email'))
                                 ->where("username = '" . $username . "'");
+       $sql = $query->assemble();
+       //return $sql;
        $userVals = $db->fetchRow($query);
        if (!is_array($userVals)) {
           $userVals = array();
@@ -1033,7 +1036,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
           $dateTokens[1] = $dateTokens[2];
           $dateTokens[2] = $temp;
           $formVals['grad_date'] = implode("/", $dateTokens);
-
        }
 
        //die(var_dump($formVals));
@@ -1057,7 +1059,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        //}
        //die(var_dump($userVals));
        $userVals['username'] = $coopSess->username;
-       $userVals['uuid'] = $coopSess->uhinfo['uhuuid'];
+       $uuid = $coopSess->uhinfo['uhuuid'];
+       $userVals['uuid'] = new Zend_Db_Expr("AES_ENCRYPT('$uuid', 'alqpwoifjch')");
 
        // get only the submited form data that matches table fields in coop_addresses
        $addrVals = $db->prepFormInserts($data, 'coop_addresses');
