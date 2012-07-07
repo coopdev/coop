@@ -175,6 +175,7 @@ class UserController extends Zend_Controller_Action
        $form = new Application_Form_AddCoord();
        $hidden = new Zend_Form_Element_Hidden('origUsername');
        $form->addElement($hidden);
+       $form->getElement('Add')->setLabel('Update');
 
        if ($this->getRequest()->isGet()) {
           $username = $_GET['username'];

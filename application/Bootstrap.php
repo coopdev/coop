@@ -15,6 +15,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       if (!isset($coopSess->role)) {
           $coopSess->role = 'none';
       }
+
+      
            
       $acl = new My_Acl_Coop();
       $auth = Zend_Auth::getInstance();
