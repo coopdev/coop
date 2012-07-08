@@ -1,7 +1,7 @@
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
 
-   echo    "<div id=headerUpperRight>";
+   echo    "<div id=headerUpperRight class='span-5 push-30 last'>";
    echo       $coopSess->fname." ".$coopSess->lname."<br />";
    //echo       $coopSess->uhinfo['name']."<br />";
    
@@ -13,14 +13,14 @@
 
    //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";
    echo    "</div>";
-   echo    "<div id=headerMain>";
+   echo    "<div id=headerMain class='span-36 last clear'>";
    echo       "<h1> HCC Cooperative Education Program </h1>";
    echo    "</div>";
 
    // Class tabs
    if (count($coopSess->classNames) > 1) {
       $classname = $coopSess->currentClassName;
-      echo    "<div id='classTabs'>";
+      echo    "<div id='classTabs' class='span-36 last'>";
       //echo       "<h3> Select Class </h3>";
       echo       "<h4 id='currentClass'> Current class: $classname</h4>";
       for ($i = 0; $i < count($coopSess->classNames); $i++) {
@@ -35,7 +35,7 @@
       echo    "</div>";
       // End class tabs
 
-      echo    "<div id='clearClassTabs'>";
+      echo    "<div class='clear'>";
 
       echo    "</div>";
    }
