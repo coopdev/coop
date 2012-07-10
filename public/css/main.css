@@ -241,6 +241,7 @@ a {
 
 
 .loginButton {
+   height: 30px;
    display: inline-block;
 	white-space: nowrap;
 	background-color: #ccc;
