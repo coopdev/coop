@@ -8,6 +8,22 @@ class TestController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+    public function jsonAction()
+    {
+       $array = array('fname' => 'hi', 'lname' => 'bye');
+       $user = new My_Model_User();
+       $newRow = $user->createRow();
+       $json = json_encode($array);
+
+       var_dump($json);
+
+       $array = json_decode($json);
+
+       foreach ($array as $a) {
+          echo "<br /> $a";
+       }
+    }
+
     public function loginAction()
     {
        $login = new My_Model_Logins();

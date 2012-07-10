@@ -3,6 +3,7 @@
    /*min-width: 500px;
    max-width: 1350px;*/
    /*width: 1350px;*/
+   overflow: hidden;
    margin-top: 50px;
    margin-bottom: 50px;
    width:90%; /* the width % combined with margin-left: auto and margin-right: auto allows
@@ -14,6 +15,7 @@
 }
 
 #header {
+   overflow: hidden;
    /*padding: 15px;
    margin: 0px;*/
    text-align: center;
@@ -23,12 +25,14 @@
 }
 
 #headerUpperRight {
+   overflow: hidden;
    /*float: right;*/
    font-size: 14px;
    /*border: thin solid #000000;*/
 }
 
 #headerMain {
+   overflow: hidden;
    /*clear: both;*/
    /*border: thin solid #000000;*/
 }
