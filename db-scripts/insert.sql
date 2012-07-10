@@ -69,7 +69,7 @@ INSERT INTO coop_assignments (assignment, due_date, assignment_num, online, ques
    VALUES ('Student Information Sheet', 20120811, 1, 1, 0),
           ('Midterm Report', 20120809, 2, 1, 1),
           ('Cooperative Education Agreement', 20120701, 3, 0, 0),
-          ('Learning Outcome Report', 20120701, 4, 1, 0),
+          ('Learning Outcome Report', 20120801, 4, 1, 0),
           ('Student Evaluation', 20120801, 5, 1, 1),
           ('Employer Evaluation', 20120801, 6, 0, 1),
           ('assignment2', 20120609, 20, 0, 0),

@@ -24,6 +24,8 @@ class Application_Form_ExtendDuedates extends Zend_Form
                 ->setRegisterInArrayValidator(false);
 
        $dueDate = $elems->getDateTbox('due_date', 'Enter due date');
+       $dueDate->setRequired(true);
+
 
        $class = new My_Model_Class();
        //$stuRecs = $class->getRollForCurrentSem($firstClass);
