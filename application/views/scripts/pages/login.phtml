@@ -1,7 +1,10 @@
 <?php
    //echo $this->message . "<br /><br />";
    //echo $this->form;
+   $loginUrl = $this->url(array('action' => 'cas', 'controller' => 'auth'));
 ?>
 
 <b> <?php echo $this->message; ?> </b> <br /><br />
 <?php echo $this->form; ?>
+
+<!-- <button class="loginButton span-3 last push-10" onclick="location.href='<?php echo $loginUrl ?>'"> <h2>Login</h2> </button> -->
