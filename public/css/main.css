@@ -1,23 +1,21 @@
-#main {
+.container {
    /*position:relative;*/
    /*min-width: 500px;
    max-width: 1350px;*/
    /*width: 1350px;*/
-   overflow: hidden;
-   width:90%;
-   background-color:#FFFFFF;
    margin-top: 50px;
    margin-bottom: 50px;
+   width:90%; /* the width % combined with margin-left: auto and margin-right: auto allows
+                 the div to be centered on the page */
    margin-left: auto;
    margin-right: auto;
    padding: 0px;
-   border: thin solid #000000;
-   /*overflow: hidden;*/
+   /*border: thin solid #000000;*/
 }
 
 #header {
-   padding: 15px;
-   margin: 0px;
+   /*padding: 15px;
+   margin: 0px;*/
    text-align: center;
    /*background: #336666;*/
    /*border-style: solid;
@@ -25,12 +23,14 @@
 }
 
 #headerUpperRight {
-   float: right;
+   /*float: right;*/
    font-size: 14px;
+   /*border: thin solid #000000;*/
 }
 
 #headerMain {
-   clear: both;
+   /*clear: both;*/
+   /*border: thin solid #000000;*/
 }
 
 /* Class Tabs */
@@ -53,19 +53,18 @@
 /* End Class Tabs */
 
 #clearClassTabs {
-   clear:both;
+   /*clear:both;*/
 }
-
 
 #leftNav ul {
    text-align: left;
-   width: 15%;
+   /*width: 15%;
    padding: 10px;
    margin-top: 1px;
-   float: left;
+   float: left;*/
    list-style-type: none;
-   border-right-style: groove;
-   border-right-width: 2px;
+   /*border-right-style: groove;
+   border-right-width: 2px;*/
    /*border: thin solid #000000;*/
    font-size: 14px;
 }
@@ -216,7 +215,7 @@ a.disabled, a.disabled:hover {
    padding: 15px;
    margin: 0px;
    margin-top: 1px;
-   border-top: thin solid #000000;
+   /*border-top: thin solid #000000;*/
    text-align: center;
    clear:both;
 }
@@ -238,4 +237,31 @@ a {
 .ui-datepicker-trigger {
    width: 25px;
    height: 25px;
+}
+
+
+.loginButton {
+   display: inline-block;
+	white-space: nowrap;
+	background-color: #ccc;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+	background-image: -webkit-linear-gradient(top, #eee, #ccc);
+	background-image: -moz-linear-gradient(top, #eee, #ccc);
+	background-image: -ms-linear-gradient(top, #eee, #ccc);
+	background-image: -o-linear-gradient(top, #eee, #ccc);
+	background-image: linear-gradient(top, #eee, #ccc);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='#cccccc');
+	border: 1px solid #777;
+	padding: 0 1.5em;
+	margin: 0.5em;
+	font: bold 1em/2em Arial, Helvetica;
+	text-decoration: none;
+	color: #333;
+	text-shadow: 0 1px 0 rgba(255,255,255,.8);
+	-moz-border-radius: .2em;
+	-webkit-border-radius: .2em;
+	border-radius: .2em;
+	-moz-box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3);
+	-webkit-box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3);
+	box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3); 
 }

@@ -31,18 +31,20 @@
 
 <body>
    <?php
-      echo "<div id=main>";
+      echo "<div class='container'>";
       
       // Start Header.
-      echo "<div id='header'>";
+      echo "<div id='header' class='span-36 last'>";
 
          echo $this->render('header.phtml');
 
       echo "</div>";
       // End Header.
+
+      echo "<hr />";
       
       // Start left nav
-      echo "<div id=leftNav>";
+      echo "<div id=leftNav class='span-6 colborder clear'>";
 
          echo $this->render('leftNav.phtml');
 
@@ -50,7 +52,7 @@
       // End left nav
       
       // Start content
-      echo "<div id='contentContainer'>";
+      echo "<div id='contentContainer' class='span-35 last'>";
       echo "<div id=content>";
 
          echo "<h2>$this->pageTitle</h2>";
@@ -60,6 +62,7 @@
       echo "</div>";
       // End content
       
+      echo "<hr />";
       // Start footer
       echo "<div id='footer'>";
 
