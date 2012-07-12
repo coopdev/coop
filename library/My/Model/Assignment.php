@@ -6,8 +6,8 @@
  */
 
 /**
- * Description of Assignment
- *
+ * Handles actions related to assignments
+ *  
  * @author joseph
  */
 class My_Model_Assignment extends Zend_Db_Table_Abstract
@@ -27,9 +27,12 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
 
-   /* Submits an assignment.
+   /**
+    *  Inserts an assignment into the coop_submittedassignments table.
     * 
-    * @param $data - assoc array containing: username, classes_id, assignments_id
+    * @param array $data  Associative array containing: username, classes_id, assignments_id
+    * @return string|boolean The string 'submitted' if the assignment is already submitted,
+    *                        True on success.
     */
    public function submit(array $data)
    {
@@ -64,6 +67,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   /**
+    * Populates the Midterm Report with answers for a specific student.
+    * 
+    * 
+    * @param Zend_Form $form The Midterm Report Zend_Form to be populated.
+    * @param array $data Criteria to get the Midterm Report's answers from coop_assignmentsanswers 
+    *                    (username, semesters_id, classes_id, assignments_id).
+    * @return Zend_Form The populated Midterm Report. 
+    */
    public function populateMidTermReport($form, $data)
    {
       unset($data['coordinator']);
@@ -88,6 +100,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Inserts a submitted Midterm Report's answer's into the database.
+    * 
+    * 
+    * @param array $data The Midterm Report's submitted answers.
+    * @return string|boolean The string 'submitted' if the assignment has already been submitted,
+    *                        True on success, False on failure.
+    */
    public function submitMidtermReport($data)
    {
       $coopSess = new Zend_Session_Namespace('coop');
@@ -127,13 +147,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //die(var_dump($submit));
    }
 
-   /*
-    * @param $form Zend_Form - The form to populate
+   /**
+    * Populates the Learning Outcome Report for a specific student.
     * 
-    * @param - optional parameter may be passed as the criteria to populate the form (use func_get_arg()).
-    *          if no optional parameter is passed, use session data as the criteria.
     * 
-    * @return The populated form.
+    * @param Zend_Form $form The Learning Outcome Zend_Form to be populated.
+    * @param array Optional parameter may be passed as the criteria to populate the form (use func_get_arg()).
+    *              if no optional parameter is passed, use session data as the criteria.
+    * @return Zend_Form The populated Learning Outcome Report. 
     */
    public function populateLearningOutcome($form)
    {
@@ -171,6 +192,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return $form;
    }
 
+   /**
+    * Populates the Student Evaluation Form with a student's answers based on the student's
+    * username, current class id, current semester id.
+    * 
+    * 
+    * @param Zend_Form $form The Student Evaluation Form to populate.
+    * @param array $data Associative array containing username, classes_id, semesters_id.
+    * @return \Zend_Form  The populated Student Eval Form.
+    */
    public function populateStudentEval(Zend_Form $form, $data)
    {
       unset($data['coordinator']);
@@ -202,6 +232,11 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //return $rows;
    }
 
+   /**
+    *
+    * @param array $data The Learning Outcome text written by the student.
+    * @return string|boolean 
+    */
    public function submitLearningOutcome($data)
    {
       date_default_timezone_set('US/Hawaii');
@@ -288,6 +323,11 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    *
+    * @param array $data The student's answers to the Student Evaluation.
+    * @return string|boolean 
+    */
    public function submitStudentEval($data)
    {
       unset($data['Submit']);
@@ -332,6 +372,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Updates due dates for assignments.
+    * 
+    * 
+    * @param array $data The updated due dates for each assignment.
+    * @return boolean 
+    */
    public function updateDuedates($data)
    {
       //$db = new My_Db();
@@ -364,6 +411,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   /**
+    * Extends a due date for a specific student and assignment.
+    * 
+    * 
+    * @param array $data Associative array containing the student's username, and assignment id.
+    * @return boolean 
+    */
    public function extendDuedate($data)
    {
       if (isset($data['Submit'])) {
@@ -417,6 +471,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
+   /**
+    * Updates questions to assignments.
+    * 
+    * 
+    * @param array $data The updated questions and the assignment id.
+    * @return boolean 
+    */
    public function updateQuestions($data)
    {
       unset($data['submit']);
@@ -437,6 +498,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Updates questions for the Student Evaluation.
+    * 
+    * 
+    * @param array $data The updated questions from the form.
+    * @return boolean 
+    */
    public function updateQuestionsStuEval($data)
    {
       unset($data['Submit']);
@@ -455,6 +523,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   /**
+    * Adds a single question to a specific assignment.
+    * 
+    * 
+    * @param array $data The question along with it's max answer length to add from the form.
+    * @return boolean 
+    */
    public function addQuestion($data)
    {
       unset($data['Add']); // unset the submit button.
@@ -483,6 +558,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Adds a header or child question to the student eval form.
+    * 
+    * 
+    * @param array $data The question to add from the form.
+    * @return boolean 
+    */
    public function addQuestionStudentEval($data)
    {
       if (isset($data['Add'])) {
@@ -544,8 +626,16 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
-   /*
-    * Tables referenced - coop_assignmentquestions
+   /**
+    * Deletes a question from an assignment.
+    * 
+    * 
+    * Uses $questions combined with $assignId to delete the specific assignment's questions.
+    * After deleting a question, re-order the questions so that they are in sequence 
+    * according to question num again.
+    * 
+    * @param array $questions The set of question numbers used to delete each question.
+    * @param string $assignId The assignment's id.
     */
    public function deleteQuestion($questions, $assignId)
    {
@@ -577,6 +667,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Deletes questions for the student eval.
+    * 
+    * 
+    * If one of the questions being deleted is a parent, first move all of it's child
+    * questions to the first parent question and assign them the appropriate question
+    * numbers. If not a parent, no special handling needed.
+    * 
+    * @param array $data The ID's of each question being deleted.
+    * @return boolean 
+    */
    public function deleteQuestionsStudentEval($data)
    {
       unset($data['Submit']);
@@ -586,39 +687,45 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $assignId = $stuEvalData['assignId'];
       $classId = $stuEvalData['classId'];
 
+      // array of question IDs.
       $questions = $data['questions'];
 
       $aq = new My_Model_AssignmentQuestions();
       foreach ($questions as $qid) {
          $question = $aq->fetchRow("id = $qid");
-         //die(var_dump($question->question_type));
          $qType = $question->question_type;
+
+         // if a parent is being deleted.
          if ($qType === 'parent') {
-            //die(var_dump($q['question_text']));
+
+            // get all of that parent's children.
             $children = $aq->fetchAll(array("assignments_id = $assignId", 
                                             "classes_id = $classId", 
                                             "question_type = 'child'", 
                                             "parent = '" . $question['question_number'] . "'"));
             $rows = $children->toArray();
-            //die(var_dump($rows));
 
             foreach ($children as $c) {
+
+               // assign each orphan child to the first parent before deleting the original parent.
                $c->parent = 1;
 
+               // get last question num of children under first parent so that the new child 
+               // can get the next number.
                $lastQNum = $aq->getLastQuestionNum($assignId, 
                                                    array("assignments_id" => $assignId, 
                                                          "classes_id" => $classId, 
                                                          "parent" => 1));
-               //die(var_dump($lastQNum));
 
+               // assign new child the next question num.
                $c->question_number = $lastQNum+1;
 
+               // insert the child question.
                $c->save();
-
-               //die(var_dump($c));
             }
          }
 
+         // delete the question.
          try {
             $aq->delete("id = $qid");
          } catch(Exceptionn $e) {
@@ -854,14 +961,25 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Checks if an assignment is due.
+    * 
+    * 
+    * If the due date for the assignment was extended for this student, use the extended
+    * due date for the check. Otherwise use the default due date for the assignment.
+    * 
+    * @param int|string $assignId
+    * @return boolean 
+    */
    public function isDue($assignId)
    {
       date_default_timezone_set('US/Hawaii');
       $coopSess = new Zend_Session_Namespace('coop');
       $ext = new My_Model_ExtendedDuedates();
+
       // uniqueness to get due_date from coop_extended_duedates.
       $extWhere = array( 'semesters_id' => $coopSess->currentSemId, 
-                         'classes_id' => $coopSess->currentClassId,
+                         //'classes_id' => $coopSess->currentClassId,
                          'assignments_id' => $assignId,
                          'username' => $coopSess->username);  
 

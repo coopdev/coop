@@ -15,6 +15,12 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
    protected $_name = 'coop_logins';
 
 
+   /**
+    * Inserts a login record for a specific student including the date and time of the login.
+    * 
+    * 
+    * @param string $username Username of student.
+    */
    public function recordLogin($username)
    {
       date_default_timezone_set('US/Hawaii');
@@ -26,6 +32,14 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
       $this->insert($vals);
    }
 
+   /**
+    * Retrieves all the login records based on the criteria from the form. Record limit
+    * is 50 if not filtered by user.
+    * 
+    * 
+    * @param array $where WHERE criteria.
+    * @param int|string $order Optional order criteria.
+    */
    public function getLogins($where, $order = "")
    {
       date_default_timezone_set('US/Hawaii');

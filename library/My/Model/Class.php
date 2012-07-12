@@ -17,12 +17,25 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
 
 
+   /** 
+    * Retrieves all class names.
+    * 
+    * 
+    * @return array All class names
+    */
    public function getAll()
    {
       return $this->fetchAll(null, "name")->toArray();
    }
 
-   // Returns the name of the class specified by the passed in id
+
+   /**
+    * Retrieves the class name given a specific ID.
+    * 
+    * 
+    * @param int|string $id
+    * @return string Class name 
+    */
    public function getName($id)
    {
       $sel = $this->select()->setIntegrityCheck(false);
@@ -35,7 +48,13 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $row['name'];
    }
 
-   // Returns full record for one class
+   /**
+    * Retrieves full record for one class
+    * 
+    * 
+    * @param int|string $id
+    * @return array Class record  
+    */
    public function getClass($id)
    {
 
@@ -51,7 +70,13 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    }
 
 
-   // Edits a classes information, i.e name, coordinator
+   /**
+    *  Edits a classes information, i.e name, coordinator
+    * 
+    * 
+    *  @param int|string $id ID of class to edit.
+    *  @param array $data Data to be updated.
+    */
    public function edit($id, $data)
    {
       $vals['name'] = $data['name'];
@@ -72,6 +97,14 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Adds a new class to the database.
+    * 
+    * 
+    * @param array $data Data for the class to be added.
+    * @return string|boolean The string 'exists' if the class already exists, True on 
+    *                        success, false on failure.
+    */
    public function create($data)
    {
       if (empty($data['coordinator'])) {
@@ -97,14 +130,13 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    }
 
 
-   /*
+   /**
     * Gets all the students enrolled in a specified class for the current semester
     * 
-    * @param $id - the class id
-    * @param Optional ORDER clause
     * 
+    * @param int|string $id  The class id
+    * @param Optional ORDER clause
     */
-
    public function getRollForCurrentSem($id)
    {
       $sel = $this->select()->setIntegrityCheck(false);
@@ -129,6 +161,14 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $recs;
    }
 
+   /**
+    * Deletes a student for a specific class for the current semester. Does not delete the
+    * student from the database.
+    * 
+    * 
+    * @param array $where WHERE criteria.
+    * @return boolean 
+    */
    public function dropStudent(array $where)
    {
       $us = new My_Model_UsersSemester();

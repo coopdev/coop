@@ -11,6 +11,13 @@ class My_Model_Syllabus extends Zend_Db_Table_Abstract
    protected $_name = "coop_syllabuses";
 
 
+   /**
+    * Inserts a syllabus and sets it as the final draft.
+    * 
+    * 
+    * @param int|string $classId The class id that this syllabus is for.
+    * @return string|boolean 
+    */
    public function addFinal($classId)
    {
       $vals = array('classes_id' => $classId, 'final' => true);
@@ -26,6 +33,12 @@ class My_Model_Syllabus extends Zend_Db_Table_Abstract
    }
 
    
+   /**
+    * Inserts a syllabus and sets it as a draft.
+    * 
+    * @param type $classId The class id that this syllabus is for.
+    * @return string|boolean 
+    */
    public function addDraft($classId)
    {
       $vals = array('classes_id' => $classId, 'final' => false);
@@ -40,6 +53,13 @@ class My_Model_Syllabus extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves the rough draft of the syllabus.
+    * 
+    * 
+    * @param type $classId The class id that this syllabus is for.
+    * @return boolean 
+    */
    public function getDraft($classId)
    {
       $res = $this->fetchRow("classes_id = $classId AND final = 0");
@@ -57,6 +77,13 @@ class My_Model_Syllabus extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves the final draft of the syllabus.
+    * 
+    * 
+    * @param type $classId The class id that this syllabus is for.
+    * @return boolean 
+    */
    public function getFinal($classId)
    {
       $res = $this->fetchRow("classes_id = $classId AND final = 1");

@@ -10,14 +10,20 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    protected $_name = "coop_semesters";
    private $curSem = null;
    
-   // Gets the real life current semester.
+   /**
+    * Gets the real life current semester by comparing the current date timestamp with 
+    * other specific timestamps that separate the semesters.
+    * 
+    * 
+    * @return string  The current real life semester
+    */
    public function getRealSem()
    {
       date_default_timezone_set('US/Hawaii');
       $curDate = date('Y-m-d');
       $dateParts = explode('-',$curDate);
       $curYear = $dateParts[0];
-      $curDate = strtotime(date('Ymd'));
+      $curDate = strtotime(date('Ymd')); // current date timestamp
       $curMonth = $dateParts[1];
 
 
@@ -46,7 +52,9 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
       return $this->curSem;
    }
 
-   // Sets the proper semester in the database to current when the real life semester changes.
+   /**
+    * Updates the database and sets the proper semester to the current one.
+    */
    public function setCurrentSem()
    {
       // Get currest semester.
@@ -76,12 +84,23 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves the current semesters id.
+    * 
+    * 
+    * @return int The current semesters id. 
+    */
    public function getCurrentSemId()
    {
       return $this->getId(array('current' => 1));
    }
 
-   // Gets semester in database from first to current
+   /**
+    * Gets semester in database from first to current
+    * 
+    * 
+    * @return type  
+    */
    public function getUpToCurrent()
    {
       $sems = $this->getAll();

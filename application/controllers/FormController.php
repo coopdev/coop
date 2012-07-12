@@ -10,6 +10,13 @@ class FormController extends Zend_Controller_Action
 
     public function studentInfoShowAction()
     {
+       $assignment = new My_Model_Assignment();
+       $assignId = $assignment->getStuInfoId();
+
+       if ($assignment->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
 
        // User $this->view->url() to refresh page when changing classes (it return the current url)
        //die(var_dump($this->view->url()));
@@ -59,6 +66,7 @@ class FormController extends Zend_Controller_Action
 
           $assignment = new My_Model_Assignment();
           $assignment->submitStuInfoSheet($data);
+          $this->view->message = "<p class=success> Success </p>";
           
        
        }

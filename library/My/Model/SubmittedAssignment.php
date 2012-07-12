@@ -17,8 +17,13 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
 
 
 
-   // Queries for assignment status for student, semester, class combination. If not submitted,
-   // the left joined table fields will show up as null.
+   /**
+    * Queries for assignment status for student, semester, class combination. If not submitted,
+    * the left joined table fields will show up as null.
+    * 
+    * 
+    * @param array $data WHERE criteria.
+    */
    public function getSubmissionRec(array $data)
    {
       //die(var_dump($data));
@@ -50,7 +55,13 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       
    }
 
-   // gets the assignment status for all students in a particular class.
+   /**
+    * Gets the assignment status for all students in a particular class.
+    * 
+    * 
+    * @param int|string $classId
+    * @return string  
+    */
    public function getAssignmentStatusByClass($classId)
    {
       $sem = new My_Model_Semester();
@@ -87,7 +98,13 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       //die(var_dump($rows));
    }
 
-   // Checks if an assignment is submitted
+   /**
+    * Checks if an assignment is submitted
+    * 
+    * 
+    * @param array $data
+    * @return boolean  
+    */
    public function isSubmitted(array $data)
    {
       $where['classes_id'] = $data['classes_id'];

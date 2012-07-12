@@ -10,7 +10,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
    protected $_name = 'coop_users';
 
    
-
+   /**
+    * Retrieves all students from the database
+    * 
+    * 
+    * @return array Associative array of student records.
+    */
    public function getAllStudents()
    {
       $role = new My_Model_Role();
@@ -30,6 +35,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
    }
 
 
+   /**
+    * Retrieves a particular student's employment information from the database.
+    * 
+    *
+    * @param array $data The criteria used in the where clause of the SQL query 
+    *             (username, classes_id, semesters_id).
+    * @return array Associative array of the student's employment records.
+    */
    public function getEmpInfo(array $data)
    {
       $username = $data['username'];
@@ -59,8 +72,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
-   // Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
-   // based on submitted criteria from the search form.
+   /** 
+    * Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
+    * based on submitted criteria from the search form.
+    * 
+    *
+    * @param array $criteria Criteria to use in the WHERE clause of the SQL
+    * @return array Associative array of semester related records.
+    */
    public function searchStudentRecs($criteria)
    {
       $data = $criteria['data'];
@@ -104,7 +123,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
-   // Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
+   /** 
+    * Queries for semester related information (i.e. Student, Semester, Class, Coordinator etc.)
+    * based on submitted criteria from the search form.
+    * 
+    *
+    * @param array $criteria Criteria to use in the WHERE clause of the SQL
+    * @return array Associative array of semester related records.
+    */
    public function getSemesterInfo(array $data)
    {
       $sel = $this->select()->setIntegrityCheck(false);
@@ -125,6 +151,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves all coordinators from the database
+    * 
+    * 
+    * @return array Associative array of coordinator records.
+    */
    public function getAllCoords()
    {
       $role = new My_Model_Role();
@@ -143,6 +175,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves all student aids from the database
+    * 
+    * 
+    * @return array Associative array of student aids records.
+    */
    public function getAllStuAids()
    {
       $role = new My_Model_Role();
@@ -161,6 +199,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Retrieves information related to one or more coordinators (e.g. phonenumber, email etc).
+    * 
+    * 
+    * @param array $where Optional criteria for WHERE clause. If none given, then information
+    *                     for all coordinators is returned.
+    * @return array  Coordinator information.
+    */
    public function getCoordInfo(array $where = array())
    {
       $pnType = new My_Model_PhoneTypes();
@@ -198,6 +244,13 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
 
 
+   /**
+    * Deletes one coordinator.
+    * 
+    * 
+    * @param string $coord The username of the coordinator to delete.
+    * @return boolean True on success, False on failure.
+    */
    public function deleteCoord($coord)
    {
       //die(var_dump($coord));
@@ -209,6 +262,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Adds a coordinator to the database.
+    *
+    * 
+    * @param array $data The data entered in to the form used to add the coordinator.
+    * @return string|boolean The string 'exists' if the coordinator already exists (based on username).
+    *                        True on success, False on failure.
+    */
    public function addCoord($data)
    {
       $db = new My_Db();
@@ -254,6 +315,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Updates a coordinator's information in the database.
+    * 
+    * 
+    * @param string $username The coordinator's username.
+    * @param array $data The coordinator's updated information passed in from the form.
+    * @return boolean True on success, False on failure.
+    */
    public function editCoord($username, $data)
    {
       $db = new My_Db();
@@ -298,6 +367,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   /**
+    * Adds a student aid to the database.
+    * 
+    * 
+    * @param array $data Associative array of the student aid's information.
+    * @return string|boolean  The string 'exists' if the user already exists, True on success, 
+    *                         False on failure.
+    */
    public function addStudentAid($data)
    {
       $db = new My_Db();

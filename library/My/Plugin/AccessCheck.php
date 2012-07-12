@@ -15,16 +15,13 @@
       {
          $resource = $request->getControllerName();   
          $action = $request->getActionName();   
-         //die("$resource,$action");
 
          $role = $this->_role;
          $coopSess = new Zend_Session_Namespace('coop');
-         //die($resource.' : '.$action);
 
          $contStat = $coopSess->contractStatus;
          $prevCont = $coopSess->prevController;
          $prevAct = $coopSess->prevAction;
-         //die("$prevCont: $prevAct");
          $redirector = new Zend_Controller_Action_Helper_Redirector();
 
          // need this when executing wkhtmltopdf since it has a role of none and gets sent to 
@@ -37,28 +34,14 @@
          
          if (!$this->_acl->isAllowed($role, $resource, $resource."_".$action)) {
             if ($role == 'none') {
-               //$request->setControllerName('auth')
-               //        ->setActionName('cas');
                $redirector->direct('cas','auth');
                
             } else {
                $redirector->direct('access-denied', 'pages');
-               //$redirector->direct($prevAct, $prevCont);
-               //$request->setControllerName('error');
-               //$request->setActionName('error');
             }
             
-            //die("hello");
          }
          
-      }
-      
-      public function postDispatch(Zend_Controller_Request_Abstract $request) 
-      {
-         //$prevUrl = $request->getRequestUrl();
-         //$coopSess = new Zend_Session_Namespace('coop');
-         //$coopSess->prevUrl = $prevUrl;
-         //die($coopSess->prevUrl);
       }
    }
 ?>

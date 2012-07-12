@@ -15,10 +15,15 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
    protected $_name = "coop_assignmentquestions";
 
 
-   /*
-    * @param $assignId - The assignments id
-    * @param $opts - Additional data to specifiy a questions (e.g. class id)
+   /**
+    * Retrieves the last question number for a specific assignment and additional optional WHERE criteria.
     * 
+    * 
+    * Mostly used when adding a question so that it gets the last question number.
+    * 
+    * @param string $assignId The assignment's id.
+    * @param array $where The WHERE criteria.
+    * @return string The last question number.
     */
    public function getLastQuestionNum($assignId, $where = array())
    {
@@ -49,6 +54,13 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
       return $num;
    }
 
+   /**
+    * Retrieves parent/header questions for an assignment that has parent/child questions.
+    * 
+    * 
+    * @param array $where WHERE criteria.
+    * @return type Parent questions.
+    */
    public function getParentQuestions($where = array())
    {
       $sel = $this->select()->where("question_type = 'parent'");
@@ -66,12 +78,13 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
 
    }
 
-   /*
+   /**
     * Returns a single array of parent child questions in the order of 1st parent followed by
     * it's children, 2nd parent followed by it's children, etc.
     * Uses the stuEvalManagementData session values to specify the WHERE and ORDER criteria.
     * 
-    * @param Optional associative array to use in WHERE clause. If not passes, then this function
+    * 
+    * @param Optional associative array to use in WHERE clause. If not, then this function
     *        uses the session values.
     */
    public function getChildParentQuestions()
@@ -115,6 +128,13 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
        return $combined;
    }
 
+   /**
+    * Checks if a parent question exists for an assignment.
+    * 
+    * 
+    * @param array $where WHERE criteria.
+    * @return boolean 
+    */
    public function chkParentExistence($where = array())
    {
       $sel = $this->select()->where("question_type = 'parent'");

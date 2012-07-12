@@ -8,6 +8,11 @@ class AsyncController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+    /**
+     * Results of a student record search.
+     * 
+     * 
+     */
     public function studentRecSearchResultAction()
     {
        if ($this->_request->isPost()) {
@@ -27,8 +32,10 @@ class AsyncController extends Zend_Controller_Action
     }
 
 
-    // displays a table of a student's assignment status (whether or not assignments have
-    // been submitted)
+    /**
+     *  Displays a table of a specific student's assignment status (whether or not assignments have
+     *  been submitted)
+     */
     public function submissionRecsAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -61,6 +68,9 @@ class AsyncController extends Zend_Controller_Action
     }
 
     
+    /**
+     * Displays a student's student info sheet for the coordinator to view.
+     */
     public function viewStuInfoSheetAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -116,8 +126,9 @@ class AsyncController extends Zend_Controller_Action
     }
 
 
-    // Gets all students for a specific class (used to populate student dropdown based
-    // on selected class in the assignment submit view)
+    /**
+     *  Displays all students for a specific class in JSON 
+     */
     public function classRollJsonAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -145,6 +156,12 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
     }
 
+    /**
+     * Displays a particular student's midterm report for a coordinator.
+     * 
+     * 
+     * @return type 
+     */
     public function midtermReportAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -192,6 +209,12 @@ class AsyncController extends Zend_Controller_Action
        } 
     }
 
+    /**
+     * Displays a particular student's learning outcome report for a coordinator.
+     * 
+     * 
+     * @return type 
+     */
     public function learningOutcomeAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -245,6 +268,12 @@ class AsyncController extends Zend_Controller_Action
        } 
     }
 
+    /** 
+     * Displays a particular student's student eval report for a coordinator.
+     *
+     * 
+     * @return type 
+     */
     public function studentEvalAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -301,6 +330,12 @@ class AsyncController extends Zend_Controller_Action
 
     }
 
+    /**
+     * Displays the assignment status for all students in a particular class.
+     * 
+     * 
+     * @return type 
+     */
     public function assignmentStatusByClassAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -331,6 +366,9 @@ class AsyncController extends Zend_Controller_Action
        
     }
 
+    /**
+     * Displays student login records based on filter from form. 
+     */
     public function viewLoginsAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -344,7 +382,6 @@ class AsyncController extends Zend_Controller_Action
           //var_dump($logins);
 
           $this->view->logins = $logins;
-
 
        } else {
           $this->_helper->viewRenderer->setNoRender();

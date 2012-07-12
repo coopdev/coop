@@ -17,9 +17,13 @@ class My_FormElement
    /* Personal Information Fields below */
    
    
-   /*
-    * @param $name - name of element
-    * @param $label - label ob element
+   /**
+    * Creates a text box with common filters added.
+    * 
+    * 
+    * @param string $name Name of element
+    * @param string $label Label of element
+    * @return Zend_Form_Element_Text
     * 
     */
    public function getCommonTbox($name,$label)
@@ -32,6 +36,15 @@ class My_FormElement
       return $elem;
    }
    
+   /**
+    * Creates a text area with common filters added.
+    * 
+    * 
+    * @param string $name Name of element
+    * @param string $label Label of element
+    * @return Zend_Form_Element_Textarea
+    * 
+    */
    public function getCommonTarea($name,$label)
    {
       $elem = new Zend_Form_Element_Textarea($name);
@@ -42,6 +55,13 @@ class My_FormElement
       return $elem;
    }
     
+   /**
+    * Creates textbox used to enter a student's uuid.
+    * 
+    * 
+    * Sets validators for the min and max string length to 8 which is the length of a uuid
+    * @return \Zend_Form_Element_Text 
+    */
    public function getUuidTbox()
    {
       $elem = new Zend_Form_Element_Text('uuid');
@@ -59,6 +79,13 @@ class My_FormElement
       return $elem;
    }
    
+   /**
+    * Creates textbox used to enter a zipcode.
+    * 
+    * 
+    * Sets validators for the min and max string length to 5 which is the length of a zipcode
+    * @return \Zend_Form_Element_Text 
+    */
    public function getZipcodeTbox()
    {
       $elem = new Zend_Form_Element_Text('zipcode');
@@ -96,6 +123,12 @@ class My_FormElement
    }
    
       
+   /**
+    * Creates a drop down populated with all coop classes.
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getClassChoiceSelect()
    {  
       //$classes = $this->getClasses();
@@ -114,6 +147,12 @@ class My_FormElement
       return $elem;
    }
    
+   /**
+    * Creates a drop down populated with all assignments.
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getAssignmentSelect()
    {  
       $assign = new My_Model_Assignment();
@@ -128,6 +167,14 @@ class My_FormElement
                       
       return $elem;
    }
+
+
+   /**
+    * Creates a text box with an INT validator.
+    * 
+    * 
+    * @return \Zend_Form_Element_Text 
+    */
    public function getCreditAmtTbox()
    {
       $elem = new Zend_Form_Element_Text('credits');
@@ -152,8 +199,11 @@ class My_FormElement
       return $elem;
    }
    
-   /*
+   /**
+    * Creates a drop down populated with majors
     * 
+    * 
+    * @return \Zend_Form_Element_Select 
     */
    public function getMajorSelect()
    {  
@@ -172,6 +222,12 @@ class My_FormElement
       return $elem;
    }
 
+   /**
+    * Creates drop down populated with all coordinator's
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getCoordsSelect()
    {
 
@@ -190,6 +246,13 @@ class My_FormElement
    }
 
    
+   /**
+    * Creates a drop down with all coordinator's and a blank option at the top 
+    * (indicating not to filter on a specific coordinator).
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getCoordsSelectOptional()
    {
 
@@ -208,6 +271,12 @@ class My_FormElement
        return $coord;
    }
 
+   /**
+    * Creates a drop down populated with all student aids.
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getStuAidsSelect()
    {
 
@@ -226,6 +295,13 @@ class My_FormElement
    }
 
 
+   /**
+    * Creates a drop down with all student aids and a blank option at the top 
+    * (indicating not to filter on a specific student aid).
+    * 
+    * 
+    * @return \Zend_Form_Element_Select 
+    */
    public function getStuAidsSelectOptional()
    {
 
@@ -245,6 +321,12 @@ class My_FormElement
    }
 
 
+   /**
+    * Creates a radio with a range of semesters.
+    * 
+    * 
+    * @return \Zend_Form_Element_Radio 
+    */
    public function getSemesterInMajorRadio()
    {
       $elem = new Zend_Form_Element_Radio('semester_in_major');
@@ -261,6 +343,14 @@ class My_FormElement
    }
       
    
+   /**
+    * Creates a text box with a email validator.
+    * 
+    * 
+    * @param string $name Name of element
+    * @param string $label Name of element
+    * @return \Zend_Form_Element_Text 
+    */
    public function getEmailTbox($name,$label)
    {
       $elem = new Zend_Form_Element_Text($name);
@@ -277,6 +367,14 @@ class My_FormElement
    /* Employment information fields below */
    
       
+   /**
+    * Creates a text box with a date validator
+    * 
+    * 
+    * @param string $name Name of element
+    * @param string $label Label of element
+    * @return \Zend_Form_Element_Text 
+    */
    public function getDateTbox($name,$label)
    {  
       $dateValidator = new Zend_Validate_Date();
@@ -292,6 +390,12 @@ class My_FormElement
    }
    
       
+   /**
+    * Creates a text box with a Float validator.
+    * 
+    * 
+    * @return \Zend_Form_Element_Text 
+    */
    public function getPayRateTbox()
    {  
       
@@ -312,6 +416,14 @@ class My_FormElement
     * * * * * * * * * * * * * * * * * * * * */
    
       
+   /**
+    * Creates a radio used to agree to things.
+    * 
+    * 
+    * @param string $label Label of element
+    * @param string $name Name of element
+    * @return \Zend_Form_Element_Radio 
+    */
    public function getAgreementRadio($label, $name = 'agreement')
    {
       $elem = new Zend_Form_Element_Radio($name);
@@ -326,6 +438,11 @@ class My_FormElement
       return $elem;
    }
    
+   /**
+    * Creates a submit button
+    * @param type $text
+    * @return \Zend_Form_Element_Submit 
+    */
    public function getSubmit($text = 'Submit')
    {
       $elem = new Zend_Form_Element_Submit($text);
@@ -335,6 +452,12 @@ class My_FormElement
    
    /** HELPERS **/
    
+   /**
+    * Retrieves a certain range of semesters
+    * 
+    * 
+    * @return array A range of semesters 
+    */
    private function getSemRange()
    {
       $semester = new My_Model_Semester();

@@ -12,6 +12,13 @@
  */
 class My_Funcs 
 {
+   /**
+    * Sets initial user session.
+    * 
+    * 
+    * @param array $user
+    * @param Zend_Session_Namespace $coopSess 
+    */
    public function setSessions(array $user, Zend_Session_Namespace $coopSess)
    {
       $db = new My_Db();
@@ -75,6 +82,13 @@ class My_Funcs
       }
    }
 
+   /**
+    * Checks if a student is enrolled for the current semester. 
+    * 
+    * 
+    * @param array $user User information.
+    * @return boolean 
+    */
    public function isEnrolled($user)
    {
       $db = new My_Db();

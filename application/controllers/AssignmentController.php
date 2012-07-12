@@ -27,6 +27,14 @@ class AssignmentController extends Zend_Controller_Action
 
     public function midtermReportAction()
     {
+       $assignment = new My_Model_Assignment();
+       $assignId = $assignment->getStuInfoId();
+
+       if ($assignment->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
+
        $form = new Application_Form_MidtermReport();
 
        $this->view->form = $form;
@@ -56,6 +64,14 @@ class AssignmentController extends Zend_Controller_Action
 
     public function studentEvalAction()
     {
+       $assignment = new My_Model_Assignment();
+       $assignId = $assignment->getStuInfoId();
+
+       if ($assignment->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
+
        $coopSess = new Zend_Session_Namespace('coop');
        $classId = $coopSess->currentClassId;
 
