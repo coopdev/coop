@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS coop_users;
 DROP TABLE IF EXISTS coop_roles;
 DROP TABLE IF EXISTS coop_phonetypes;
 DROP TABLE IF EXISTS coop_majors;
+DROP TABLE IF EXISTS coop_backups;
 
 
 
@@ -284,6 +285,13 @@ create table coop_logins(
 create table coop_disclaimer_text(
    id INT NOT NULL AUTO_INCREMENT,
    text text,
+   PRIMARY KEY(id)
+) ENGINE InnoDB;
+
+create table coop_backups(
+   id INT NOT NULL AUTO_INCREMENT,
+   name text,
+   date DATETIME,
    PRIMARY KEY(id)
 ) ENGINE InnoDB;
    

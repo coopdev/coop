@@ -72,6 +72,9 @@
           <actionMethod actionName="delete"/>
           <actionMethod actionName="create"/>
         </controllerFile>
+        <controllerFile controllerName="Backup">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -104,6 +107,7 @@
         <formFile formName="StudentEval"/>
         <formFile formName="ClassRoll"/>
         <formFile formName="ViewLogins"/>
+        <formFile formName="DeleteBackups"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -246,6 +250,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Form">
             <viewScriptFile forActionName="stuinfoFormTemplate"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Backup">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

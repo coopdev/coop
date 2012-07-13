@@ -1014,14 +1014,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
 
-   /*
+   /**
     * Populates a Zend_Form Student Information Sheet with either the current users 
     * information based on their username, or uses the passed in username in the $opts 
     * associative array (using the 'username' key).
     * 
-    * @param $form - The Zend_Form to populate
-    * @param $opts - Option to use the passed in username in the where clause. If no
-    *                 username is passed, the current user's username is used.
+    * @param Zend_Form $form The Zend_Form to populate
+    * @param array $opts Option to use the passed in username in the where clause. If no
+    *                    username is passed, the current user's username is used.
     * @return A populated Zend_Form Student Information Sheet 
     */
    public function populateStuInfoSheet($form, array $opts = array())

@@ -1,0 +1,26 @@
+<?php
+   $form = $this->element;
+   $coopSess = new Zend_Session_Namespace('coop');
+
+?>
+
+<form action="<?php echo $form->getAction() ?>" method="<?php echo $form->getMethod() ?>" >
+
+   <?php $opts = $form->backups->options; ?>
+
+   <?php foreach ($opts as $key => $val) { ?>
+
+      <?php $url = $this->url(array('action' => 'index', 'controller' => 'backup', 'Restore' => $key)); ?>
+
+      <input type="checkbox" name="backups[]" value="<?php echo $key ?>" /> 
+         <?php echo $val ?> <a href="<?php echo $url ?>" > Restore </a> <br />
+      
+      <?php //var_dump($opts); ?> 
+
+
+
+   <?php } ?>
+
+   <?php echo $form->Delete ?>
+
+</form>
