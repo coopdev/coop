@@ -15,6 +15,8 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
    protected $_name = 'coop_backups';
 
    protected $backupPath = '';
+   protected $backupList = '';
+
    protected $dbParams = '';
    protected $dbPass = '';
    protected $dbUser = '';
@@ -31,6 +33,7 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       $this->dbName = $this->dbParams->dbname;
 
       $this->backupPath = APPLICATION_PATH . "/../backups";
+      $this->backupList = "$this->backupPath/list.json";
    }
 
    //public function __construct() 
@@ -52,18 +55,29 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       // If there are 10 or more backups, then delete the last one to keep a max of 10.
       if ($count >= 10) {
          $all = $this->getAll();
-         $lastBackup = $all->getRow($all->count()-1);
-         //die(var_dump($lastBackup));
 
-         $this->destroy(array($lastBackup->id));
+         $lastBackup = $all[count($all)-1];
+
+         $this->destroy(array($lastBackup->name));
       }
 
-      //die(var_dump($backupPath, $backupName));
+      $backups = (array)$this->getAll();
+      //die(var_dump($backups));
 
-      $this->insert(array('name' => $backupName,
-                          'date' => new Zend_Db_Expr("NOW()")));
+      if (empty($backups)) {
+         $backups = array();
+      }
 
-      //exec("mysqldump coop | gzip > $backupPath/$backupName.gz");
+      array_unshift($backups, array('name' => $backupName, 'date' => date('Y-m-d h:i:s')));
+      //die(var_dump($backups));
+
+      $json = json_encode($backups);
+      //die(var_dump($json));
+
+      file_put_contents($this->backupList, $json);
+
+      // The --routines and --add-drop-table options for mysqldump ensures preserving routines and views respectively.
+      // Without --add-drop-tables, views will be restored as tables.
       exec("mysqldump -u $this->dbUser -p$this->dbPass $this->dbName | gzip > $backupPath/$backupName.gz");
 
    }
@@ -74,65 +88,68 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       $backupPath = $this->backupPath;
 
       exec("gunzip < $backupPath/$backupName.gz | mysql -u $this->dbUser -p$this->dbPass $this->dbName");
-      
+      //exec("mysql -u $this->dbUser -p$this->dbPass $this->dbName < $backupPath/$backupName");
          
-
    }
 
    /**
     *
-    * @param array $ids Indexed array with the IDs of the backups.
+    * @param array $names Indexed array with the names of the backups.
     */
-   public function destroy($ids)
+   public function destroy($names)
    {
       $backupPath = $this->backupPath;
-       
-      // string to hold all the IDs used in the SQL IN() function.
-      $in = 'IN(';
 
-      // populate IN() function with IDs
-      for ($i = 0; $i < count($ids); $i++) {
-         $id = $ids[$i];
-         $in .= "$id";
-         if ($i !== count($ids)-1) {
-            $in .= ",";
-         } else {
-            $in .= ")";
-         }
-      }
+      $backups = $this->getAll();
 
-
-      // get backups so we can use the name to delete the actual backup file
-      // from the filesystem.
-      $backups = $this->fetchAll("id $in");
+      $i = 0;
       foreach ($backups as $b) {
-         $backupName = $b->name;
-         exec("rm $backupPath/$backupName.gz");
+
+         if (in_array($b->name, $names)) {
+
+            unset($backups[$i]);
+
+            exec("rm $backupPath/$b->name.gz");
+
+            // array_splice doesn't work because it re-orders the indices and $i becomes unaligned
+            //array_splice($backups, $i, 1);
+         }
+
+         $i++;
       }
 
-      // delete from database
-      $this->delete("id $in");
+      //die(var_dump($backups));
+
+      // In order to get the json format that I want (which is a json array, not a json object),
+      // the indices of the array must be sequential. But after using unset() on one or more
+      // elements, the indices may be out of order, so using array_values() will reorder them.
+      $json = json_encode(array_values($backups));
+
+      //die(var_dump($json));
+      file_put_contents($this->backupList, $json);
+
+
    }
 
 
    public function getAll($opts = array())
    {
-      $order = "date DESC";
-      if (isset($opts['order'])) {
-         $order = $opts['order'];
+      $json = file_get_contents("$this->backupList");
+
+      if (empty($json)) {
+         $json = "{}";
       }
 
-      return $this->fetchAll(null, $order);
+      $backups = json_decode($json);
+      return (array)$backups;
    }
 
    public function getCount()
    {
-      $sel = $this->select()->setIntegrityCheck(false);
-      $sel = $sel->from($this, array('count' => "COUNT(*)"));
-      $row = $this->fetchRow($sel);
+      $backups = $this->getAll();
+      //die(var_dump(count($backups)));
 
-      return $row->count;
-
+      return count($backups);
    }
 
 }

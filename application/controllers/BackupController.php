@@ -25,6 +25,7 @@ class BackupController extends Zend_Controller_Action
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          //die(var_dump($data));
 
           // $data['backups'] holds the backup IDs
           if (isset($data['backups'])) {

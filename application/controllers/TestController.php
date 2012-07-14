@@ -10,18 +10,9 @@ class TestController extends Zend_Controller_Action
 
     public function jsonAction()
     {
-       $array = array('fname' => 'hi', 'lname' => 'bye');
-       $user = new My_Model_User();
-       $newRow = $user->createRow();
-       $json = json_encode($array);
-
-       var_dump($json);
-
-       $array = json_decode($json);
-
-       foreach ($array as $a) {
-          echo "<br /> $a";
-       }
+       $backup = new My_Model_Backups();
+       $backup->getCount();
+       $backup->destroy(array('name' => '2012-07-13_01:51:24'));
     }
 
     public function loginAction()

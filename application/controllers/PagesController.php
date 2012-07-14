@@ -29,6 +29,7 @@ class PagesController extends Zend_Controller_Action
              $sem = new My_Model_Semester();
              $sem->setCurrentSem();
 
+
              $db = new My_Db();
              $coopSess = new Zend_Session_Namespace('coop');
              $funcs = new My_Funcs();
