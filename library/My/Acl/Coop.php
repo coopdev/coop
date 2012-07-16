@@ -93,6 +93,10 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('async_view-stu-info-sheet'), 'async');
       $this->add(new Zend_Acl_Resource('async_class-roll-json'), 'async');
 
+      /* Backup Controller */
+      $this->add(new Zend_Acl_Resource('backup'));
+      $this->add(new Zend_Acl_Resource('backup_index'), 'backup');
+
       /* Roles */
 
       $this->addRole(new Zend_Acl_Role('none'));
@@ -158,6 +162,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('coordinator', 'assignment', 'assignment_list-all-for-student');
       $this->deny('coordinator', 'form');
       $this->allow('coordinator', 'form', 'form_edit-disclaimer');
+      $this->allow('coordinator', 'backup');
       //$this->allow('coordinator','user','user_new');
       //$this->allow('coordinator','user','user_create');
       //$this->allow('coordinator', 'user', 'user_searchstudent');

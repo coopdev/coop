@@ -48,27 +48,33 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       $backupPath = $this->backupPath;
       $backupName = date('Y-m-d_h:i:s');
 
+      $backups = $this->getAll();
+
+      if (empty($backups)) {
+         $backups = array();
+      }
+
       // Get count of total backups
       $count = $this->getCount();
 
       // Check the amount of backups before adding a new one. 
       // If there are 10 or more backups, then delete the last one to keep a max of 10.
       if ($count >= 10) {
-         $all = $this->getAll();
+         //$all = $this->getAll();
 
-         $lastBackup = $all[count($all)-1];
+         $lastBackup = $backups[count($all)-1];
 
          $this->destroy(array($lastBackup->name));
       }
 
-      $backups = (array)$this->getAll();
+      $backups = $this->unsetCurrent($backups);
+
       //die(var_dump($backups));
 
-      if (empty($backups)) {
-         $backups = array();
-      }
 
-      array_unshift($backups, array('name' => $backupName, 'date' => date('Y-m-d h:i:s')));
+      array_unshift($backups, array('name' => $backupName, 
+                                    'date' => date('Y-m-d h:i:s'), 
+                                    'current' => true));
       //die(var_dump($backups));
 
       $json = json_encode($backups);
@@ -76,8 +82,6 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
 
       file_put_contents($this->backupList, $json);
 
-      // The --routines and --add-drop-table options for mysqldump ensures preserving routines and views respectively.
-      // Without --add-drop-tables, views will be restored as tables.
       exec("mysqldump -u $this->dbUser -p$this->dbPass $this->dbName | gzip > $backupPath/$backupName.gz");
 
    }
@@ -89,7 +93,14 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
 
       exec("gunzip < $backupPath/$backupName.gz | mysql -u $this->dbUser -p$this->dbPass $this->dbName");
       //exec("mysql -u $this->dbUser -p$this->dbPass $this->dbName < $backupPath/$backupName");
+
+
+      $backups = $this->getAll();
+      $backups = $this->unsetCurrent($backups);
+      $backups = $this->setCurrent($backups, $backupName);
          
+      $json = json_encode($backups);
+      file_put_contents($this->backupList, $json);
    }
 
    /**
@@ -101,6 +112,7 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       $backupPath = $this->backupPath;
 
       $backups = $this->getAll();
+      //die(var_dump($backups));
 
       $i = 0;
       foreach ($backups as $b) {
@@ -131,6 +143,35 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
 
    }
 
+   public function setCurrent($backups, $current)
+   {
+      foreach ($backups as $b) {
+         if ($b->name === $current) {
+            $b->current = true;
+         }
+      }
+
+      return $backups;
+   }
+
+
+   /**
+    * Unsets the previous current backup so it is not flagged as current.
+    * 
+    * 
+    * @param array $backups 
+    */
+   public function unsetCurrent($backups)
+   {
+      foreach ($backups as $b) {
+         if ($b->current === true) {
+            $b->current = false;
+         }
+      }
+
+      return $backups;
+   }
+
 
    public function getAll($opts = array())
    {
@@ -141,7 +182,7 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       }
 
       $backups = json_decode($json);
-      return (array)$backups;
+      return $backups;
    }
 
    public function getCount()

@@ -5,14 +5,18 @@ class TestController extends Zend_Controller_Action
 
     public function init()
     {
+       $this->_helper->contextSwitch()
+             ->addActionContext('json', 'json')->initContext();
         /* Initialize action controller here */
     }
 
     public function jsonAction()
     {
-       $backup = new My_Model_Backups();
-       $backup->getCount();
-       $backup->destroy(array('name' => '2012-07-13_01:51:24'));
+
+       $array = array( array("fname" => "joseph", "lname" => "workman"), 
+                       array("fname" => "foo", "lname" => "bar"));
+
+       echo json_encode($array);
     }
 
     public function loginAction()

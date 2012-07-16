@@ -15,7 +15,13 @@ class Application_Form_DeleteBackups extends Zend_Form
        //die(var_dump($backups));
 
        foreach ($backups as $b) {
-          $backupList->addMultiOptions(array($b->name => $b->name));
+          if ($b->current) {
+             $text = "$b->name (most current)";
+          } else {
+             $text= $b->name;
+          }
+
+          $backupList->addMultiOptions(array($b->name => $text));
        }
 
        $delSubmit = new Zend_Form_Element_Submit('Delete');
