@@ -34,6 +34,8 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
 
       $this->backupPath = APPLICATION_PATH . "/../backups";
       $this->backupList = "$this->backupPath/list.json";
+
+      date_default_timezone_set('US/Hawaii');
    }
 
    //public function __construct() 

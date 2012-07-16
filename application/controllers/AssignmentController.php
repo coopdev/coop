@@ -105,28 +105,28 @@ class AssignmentController extends Zend_Controller_Action
        }
     }
 
-    public function supervisorEvalAction()
-    {
-       $as = new My_Model_Assignment();
-       $coopSess = new Zend_Session_Namespace('coop');
+    //public function supervisorEvalAction()
+    //{
+    //   $as = new My_Model_Assignment();
+    //   $coopSess = new Zend_Session_Namespace('coop');
 
-       // if get request is coming from the pdf action
-       if ($this->getRequest()->isGet() && isset($_GET['classId'])) {
-          $classId = $_GET['classId'];
-       } else {
-          $classId = $coopSess->currentClassId;
-       }
+    //   // if get request is coming from the pdf action
+    //   if ($this->getRequest()->isGet() && isset($_GET['classId'])) {
+    //      $classId = $_GET['classId'];
+    //   } else {
+    //      $classId = $coopSess->currentClassId;
+    //   }
 
-       //die($classId);
+    //   //die($classId);
 
-       $assignId = $as->getSupervisorEvalId();
-       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
-                                                 'classId' => $classId));
+    //   $assignId = $as->getSupervisorEvalId();
+    //   $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+    //                                             'classId' => $classId));
 
-       $form->setAction('/assignment/supervisor-eval-pdf');
-       $this->view->form = $form;
+    //   $form->setAction('/assignment/supervisor-eval-pdf');
+    //   $this->view->form = $form;
 
-    }
+    //}
 
     public function supervisorEvalPdfAction()
     {
