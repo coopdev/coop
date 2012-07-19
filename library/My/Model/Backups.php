@@ -22,11 +22,14 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
    protected $dbUser = '';
    protected $dbName = '';
 
+
+
    public function init() 
    {
       // config used to connect to database using mysqldump.
       $config = new Zend_Config_Ini(APPLICATION_PATH.
                                    '/configs/application.ini','production');
+
       $this->dbParams = $config->resources->db->params;
       $this->dbPass = $this->dbParams->password;
       $this->dbUser = $this->dbParams->username;
@@ -38,11 +41,6 @@ class My_Model_Backups extends Zend_Db_Table_Abstract
       date_default_timezone_set('US/Hawaii');
    }
 
-   //public function __construct() 
-   //{
-   //   $this->backupPath = APPLICATION_PATH . "/../backups";
-
-   //}
 
    public function backup()
    {
