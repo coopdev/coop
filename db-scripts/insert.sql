@@ -33,8 +33,7 @@ INSERT INTO coop_users (fname, lname, username, password, roles_id)
           ('Diane', 'Caulfield', 'dcaulfie', 'pass', 3),
           ('coord1', 'coord1', 'coord1', 'pass', 3),
           ('coord2', 'coord2', 'coord2', 'pass', 3),
-          ('coord3', 'coord3', 'coord3', 'pass', 3),
-          ('Travis', 'Toka', 'toka', 'pass', 3);
+          ('coord3', 'coord3', 'coord3', 'pass', 3);
 
 
 INSERT INTO coop_students (username)
@@ -71,9 +70,8 @@ INSERT INTO coop_assignments (assignment, due_date, assignment_num, online, ques
           ('Cooperative Education Agreement', 20120701, 3, 0, 0),
           ('Learning Outcome Report', 20120801, 4, 1, 0),
           ('Student Evaluation', 20120801, 5, 1, 1),
-          ('Employer Evaluation', 20120801, 6, 0, 1),
-          ('assignment2', 20120609, 20, 0, 0),
-          ('assignment3', 20120519, 21, 0, 0);
+          ('Supervisor Evaluation', 20120801, 6, 0, 1),
+          ('Student Time Sheet', 20120609, 20, 0, 0);
 
 INSERT INTO coop_assignmentquestions (assignments_id, question_number, question_text, 
                                       answer_minlength)
