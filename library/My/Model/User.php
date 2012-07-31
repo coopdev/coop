@@ -227,6 +227,9 @@ class My_Model_User extends Zend_Db_Table_Abstract
                    ->where('roles_id = ?', $coordId);
 
       foreach ($where as $key =>$val) {
+         if ($key === 'username') {
+            //$query = $query->where("u.$key = ?", '$val');
+         }
          $query = $query->where("u.$key = ?", $val);
       }
 
@@ -509,6 +512,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
       //die(var_dump($rows));
 
       return $rows;
+   }
+
+   public function getStudentInfo($data = array())
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+      $username = $coopSess->username;
+      $stuInfo = new My_Model_StudentInfo();
+
+      $row = $stuInfo->fetchRow("username = '$username'")->toArray();
+      return $row;
    }
 
 

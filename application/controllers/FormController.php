@@ -87,8 +87,21 @@ class FormController extends Zend_Controller_Action
        $user = new My_Model_User();
 
        $data = $user->fetchRow("username = '$username'")->toArray();
-
        $form->populate($data);
+
+       $data = $user->getStudentInfo();
+       $stuInfo['grad_date'] = $data['grad_date'];
+       $form->populate($stuInfo);
+
+       $data = $user->getSemesterInfo(array('username' => $coopSess->username,
+                                            'classes_id' => $coopSess->currentClassId,
+                                            'semesters_id' => $coopSess->currentSemId));
+       $data = $data[0];
+       $data = $user->getCoordInfo(array('username' => $data['coordinator']));
+       $coordInfo['coord_phone'] = $data[0]['phonenumber'];
+       $form->populate($coordInfo);
+
+       //die(var_dump($coordInfo));
 
        $this->view->form = $form;
 
@@ -123,6 +136,8 @@ class FormController extends Zend_Controller_Action
           $this->_helper->layout->disableLayout();
           $this->_helper->viewRenderer->setNoRender(true);
 
+
+       // For the wkhtmltopdf GET request
        } else if ($this->getRequest()->isGet()) {
 
           if (isset($_GET['data'])) {
