@@ -70,18 +70,51 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
        // If the current semester is not set as current in the database, it means the semester 
        // has changed and the database needs to update the current semester.
        if ($curSemester != $sem) {
-          //die('hi');
+
           $db->update('coop_semesters', array('current'=>0), 'current = 1');
 
           $db->update('coop_semesters', array('current'=>1), "semester = '$curSemester'");
-          //$sem = $db->getCol('coop_semesters', 'semester', array('current'=>1));
-          //die($sem);
 
           // Because it is a new semester, deactivate users so they have to accept the 
           // disclaimer again.
           $db->update('coop_users', array('active'=>0));
        }
 
+   }
+
+   /**
+    * Increments the current semester. 
+    */
+   public function nextSem()
+   {
+      $db = $this->getAdapter();
+
+      try {
+         $db->query("CALL next_sem()");
+         $coopSess = new Zend_Session_Namespace('coop');
+         $coopSess->currentSemId = $this->getCurrentSemId();
+         return true;
+      } catch(Exception $e) {
+         return false;
+      }
+
+   }
+
+   /**
+    * Decrements the current semester. 
+    */
+   public function prevSem()
+   {
+      $db = $this->getAdapter();
+
+      try {
+         $db->query("CALL prev_sem()");
+         $coopSess = new Zend_Session_Namespace('coop');
+         $coopSess->currentSemId = $this->getCurrentSemId();
+         return true;
+      } catch(Exception $e) {
+         return false;
+      }
    }
 
    /**

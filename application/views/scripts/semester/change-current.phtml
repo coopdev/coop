@@ -1,0 +1,14 @@
+<?php 
+   $url = $this->url(array('action' => 'change-current', 'controller' => 'semester')) ;
+   $curSem = $this->curSem->semester;
+?>
+<h2> Change Current Semester </h2>
+
+<h3> Current Semester: <?php echo $curSem ?> </h3>
+
+<form action="<?php echo $url ?>" method="POST">
+
+   <input type="submit" name="Previous" value="Previous" />
+   <input type="submit" name="Next" value="Next" />
+
+</form>

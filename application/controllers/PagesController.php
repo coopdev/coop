@@ -27,7 +27,7 @@ class PagesController extends Zend_Controller_Action
              $password = $data['password'];
 
              $sem = new My_Model_Semester();
-             $sem->setCurrentSem();
+             //$sem->setCurrentSem();
 
 
              $db = new My_Db();

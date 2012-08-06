@@ -463,7 +463,8 @@ class My_FormElement
       $semester = new My_Model_Semester();
       
       // Get current semester.
-      $curSem = $semester->getRealSem();
+      //$curSem = $semester->getRealSem();
+      $curSem = $semester->fetchRow("current = 1")->semester;
       //$curSem = "Summer 2012";
 
       $semPieces = explode(' ',$curSem);

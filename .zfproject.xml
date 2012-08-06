@@ -75,6 +75,10 @@
         <controllerFile controllerName="Backup">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Semester">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="changeCurrent"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -253,6 +257,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Backup">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Semester">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Semester">
+            <viewScriptFile forActionName="changeCurrent"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

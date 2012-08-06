@@ -347,3 +347,12 @@ CREATE VIEW coop_coordinfo_view AS
    LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
    LEFT JOIN coop_phonetypes AS pt ON pn.phonetypes_id = pt.id and pt.type = 'home';
 
+-- Create procedure to fetch the next semester after the current one
+DROP PROCEDURE IF EXISTS next_sem;
+DELIMITER //
+CREATE PROCEDURE next_sem()
+BEGIN
+   SELECT id into @sem_id FROM coop_semesters WHERE current = 1;
+   SELECT * FROM coop_semesters WHERE id = @sem_id + 1;
+END//
+DELIMITER ;

@@ -87,7 +87,7 @@ class AuthController extends Zend_Controller_Action
 
        $sem = new My_Model_Semester();
        // Sets the current semester in the database.
-       $sem->setCurrentSem();
+       //$sem->setCurrentSem();
        
        $db = new My_Db();
        $roles = new Application_Model_DbTable_Role();
