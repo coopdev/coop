@@ -97,6 +97,10 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('backup'));
       $this->add(new Zend_Acl_Resource('backup_index'), 'backup');
 
+
+      /* Semester Controller */
+      $this->add(new Zend_Acl_Resource('semester'));
+
       /* Roles */
 
       $this->addRole(new Zend_Acl_Role('none'));
@@ -163,6 +167,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('coordinator', 'form');
       $this->allow('coordinator', 'form', 'form_edit-disclaimer');
       $this->allow('coordinator', 'backup');
+      $this->allow('coordinator', 'semester');
       //$this->allow('coordinator','user','user_new');
       //$this->allow('coordinator','user','user_create');
       //$this->allow('coordinator', 'user', 'user_searchstudent');
