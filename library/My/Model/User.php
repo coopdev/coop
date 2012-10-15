@@ -90,10 +90,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
       $where['classes_id'] = trim($data['classes_id']);
       $where['semesters_id'] = trim($data['semesters_id']);
       $where['coordinator'] = trim($data['coordinator']);
+      //die($where['coordinator']);
 
       $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username', 'classes_id', 'semesters_id', 'coordinator');
       $sel = $this->select()->setIntegrityCheck(false);
       $query = $sel->from('coop_users_semesters_view', $cols);
+
 
       foreach ($where as $key => $val) {
          trim($where[$key]);
@@ -110,7 +112,9 @@ class My_Model_User extends Zend_Db_Table_Abstract
          $query = $query->order(array("class", "lname"));
       }
 
+      //die(var_dump($query->__toString()));
 
+      //die($query);
       $rows = $this->fetchAll($query)->toArray();
 
       //die(var_dump($rows));

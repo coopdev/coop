@@ -299,7 +299,7 @@ create table coop_backups(
 -- View for a specific semester for a specific student
 DROP VIEW IF EXISTS coop_users_semesters_view;
 CREATE VIEW coop_users_semesters_view AS SELECT u.*, us.semesters_id, us.classes_id, 
-   us.credits, us.student, us.coordinator, s.semester, s.current, cl.name AS class,
+   us.credits, us.student, s.semester, s.current, cl.name AS class, cl.coordinator,
    u2.fname AS coordfname, u2.lname AS coordlname
    FROM coop_users AS u JOIN coop_users_semesters AS us 
    ON u.username = us.student JOIN coop_semesters AS s
