@@ -7,6 +7,9 @@ class Application_Form_NewUser extends Zend_Form
     {
        $elems = new My_FormElement();
 
+       $fname = $elems->getCommonTbox("fname", "Enter student's first name:");
+       $lname = $elems->getCommonTbox("lname", "Enter student's last name:");
+
        $username = $elems->getCommonTbox("username", "Enter student's username:");
 
        $class = $elems->getClassChoiceSelect();
@@ -33,7 +36,7 @@ class Application_Form_NewUser extends Zend_Form
 
        $submit = $elems->getSubmit();
 
-       $this->addElements(array($username, $class, $semester, $submit));
+       $this->addElements(array($fname, $lname, $username, $class, $semester, $submit));
     }
 
 

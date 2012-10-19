@@ -61,6 +61,7 @@ class UserController extends Zend_Controller_Action
           $roleId = $db->fetchOne("SELECT id FROM coop_roles WHERE role = 'user'");
           $userVals['roles_id'] = $roleId;
 
+
           $usersId = $db->getId('coop_users', array('username'=>$username));
           //$studentsId = $db->getId('coop_students', array('users_id'=>$usersId));
 
@@ -74,7 +75,7 @@ class UserController extends Zend_Controller_Action
           }
 
 
-          // query to check if student exists.
+          // query to check if student is already enrolled for the specific class and semester.
           $query = $db->select()->from('coop_users_semesters', 'id')
                           ->where('student = ?', $username)
                           ->where('semesters_id = ?', $data['semesters_id'])
@@ -83,11 +84,11 @@ class UserController extends Zend_Controller_Action
 
           $userSemId = $db->fetchOne($query);
 
-          // if student does exists
+          // if student is enrolled.
           if (!empty($userSemId)) {
              $this->_helper->redirector('new', 'user', null, array('result' => 'fail'));
              //$this->view->result = "That student has already been added for this semester";
-          // if student doesn't exist yet.
+          // if student isn't enrolled yet.
           } else {
              $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
              $userSemVals['student'] = $username;
