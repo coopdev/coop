@@ -1,3 +1,94 @@
+<button class='addOption'> Add Option </button> <button class='close'>&#10006;</button>
+
+<br /> <br />
+
+<p> <b>Student Evaluation options for all classes (Can be over-ridden for individual classes):</b> </p>
+
+<div class='options'>  </div>
+
+<!-- <div class='addedOptions'> </div> -->
+<form class="addedOptions">
+   <!-- <input type="submit" class="submitOptions" value="Submit Options" /> -->
+
+   <button class="submitOptions"> Submit Options </button>
+</form>
+
+<!-- <button class='submitOptions'>Submit</button> -->
+
+<hr> <br />
+
+<b>Select class to edit a specific class's Student Evaluation Form. </b>
 <?php
    echo $this->form;
 ?>
+
+
+<script type="text/javascript">
+   $(document).ready(function(){
+      //$('button.submitOptions').hide();
+      $('button.close').hide();
+      $('form.addedOptions').hide();
+
+      $('button.addOption').live('click', function(){
+         $('form.addedOptions').show();
+         formLength = optionsFormLength();
+         $('button.submitOptions').before("<input type='text' name='options["+ --formLength +"]' />");
+         $('button.close').show();
+      });
+
+      $('button.close').live('click', function() {
+
+         lastOptionTbox().remove();
+         formLength = optionsFormLength();
+         if (formLength < 2) {
+            $('form.addedOptions').hide();
+         }
+
+         //alert(""+count);
+      });
+
+
+      $("button.submitOptions").live('click', function(e) {
+         e.preventDefault();
+         data = $('form.addedOptions').toJSON();
+
+         $.post(base + "/async/add-stueval-options", {'data' : data}, function(resp) {
+            $('div.options').empty();
+            $('div.options').append(resp);
+
+
+         });
+      });
+
+
+
+
+      /* FUNCTIONS */
+
+      // returns the length of the form for adding options.
+      function optionsFormLength() {
+         formLength = $('form.addedOptions').children().length;
+         return formLength;
+      }
+
+      // returns the last text box in the options form when adding options.
+      function lastOptionTbox() {
+         formLength = optionsFormLength();
+         lastTbox = formLength - 1;
+         return $('form.addedOptions input[type=text]:nth-child('+lastTbox+')');
+      }
+
+
+
+
+
+   });
+
+
+
+
+
+
+
+
+</script>

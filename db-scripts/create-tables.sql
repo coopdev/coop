@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS coop_disclaimers;
 DROP TABLE IF EXISTS coop_submittedassignments;
 DROP TABLE IF EXISTS coop_assignmentanswers;
 DROP TABLE IF EXISTS coop_assignmentquestions;
+DROP TABLE IF EXISTS coop_survey_specifics;
 DROP TABLE IF EXISTS coop_assignments;
 DROP TABLE IF EXISTS coop_syllabuses;
 DROP TABLE IF EXISTS coop_users_semesters;
@@ -46,6 +47,7 @@ CREATE TABLE coop_assignments(
    assignment VARCHAR(100),
    due_date DATE NULL,
    assignment_num INT,
+   option_amount INT,
    online BOOLEAN,
    questions_editable BOOLEAN DEFAULT 0,
    PRIMARY KEY(id)
@@ -98,6 +100,17 @@ CREATE TABLE coop_classes(
    PRIMARY KEY(id),
    FOREIGN KEY(coordinator) REFERENCES coop_users(username) ON DELETE SET NULL 
       ON UPDATE CASCADE
+) ENGINE InnoDB;
+
+-- Stuff related specifically to the survey type assignments, like option amount.
+CREATE TABLE coop_survey_specifics(
+    id INT NOT NULL AUTO_INCREMENT,
+    option_amount INT,
+    assignments_id INT,
+    classes_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(assignments_id) REFERENCES coop_assignments(id),
+    FOREIGN KEY(classes_id) REFERENCES coop_classes(id)
 ) ENGINE InnoDB;
 
 CREATE TABLE coop_assignmentquestions(

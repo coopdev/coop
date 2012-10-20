@@ -4,6 +4,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
    protected function _initAutoload()
    {  
+
       //Zend_Session::start();
       // Allows me to use contents of files within the library/My/
       // directory without having to include() the files.
@@ -16,7 +17,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
           $coopSess->role = 'none';
       }
 
-      
            
       $acl = new My_Acl_Coop();
       $auth = Zend_Auth::getInstance();

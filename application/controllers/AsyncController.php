@@ -388,4 +388,16 @@ class AsyncController extends Zend_Controller_Action
        }
 
     }
+
+    public function addStuevalOptionsAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+       $data = $_POST['data']['options'];
+
+       var_dump($data);
+
+       // Insert options.
+
+    }
 }
