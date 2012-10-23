@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS coop_survey_specifics;
 CREATE TABLE coop_survey_specifics(
     id INT NOT NULL AUTO_INCREMENT,
     option_amount INT,
+    use_global BOOLEAN,
     assignments_id INT,
     classes_id INT,
     PRIMARY KEY(id),

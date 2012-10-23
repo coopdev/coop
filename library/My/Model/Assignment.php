@@ -813,9 +813,11 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function getAssignment($id)
    {
-      $row = $this->fetchRow("id = $id")->toArray();
+      $row = $this->fetchRow("id = $id");
 
-      if (empty($row)) {
+      if (!empty($row)) {
+         $row = $row->toArray();
+      } else {
          $row = array();
       }
 
@@ -1012,7 +1014,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //die(var_dump($curDate));
    }
 
-
+/********************* STUDENT INFO SHEET METHODS ***************************************/
 
    /**
     * Populates a Zend_Form Student Information Sheet with either the current users 
@@ -1309,9 +1311,127 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $userSem->update($userSemVals, $where);
 
    }
+/********************* END STUDENT INFO SHEET METHODS ***********************************/
 
 
+/******************************* SURVEY METHODS *****************************************/
 
+   /* Sets the amount of options for one of the survey 
+    * type assignments such as Student Eval Form
+    * 
+    * @param $data array Array containing the assignment id and option amount.
+    * 
+    */
+   public function setSurveyGlobalOptionAmount(array $data)
+   {
+      if (!isset($data['assignments_id'])) {
+         return "Assignment ID not set.";
+      }
+      if (!isset($data['option_amount'])) {
+         return "Options amount not set.";
+      }
+      if (isset($data['Submit'])) {
+         unset($data['Submit']);
+      }
+
+      $assignId = $data['assignments_id'];
+      $optionAmount = $data['option_amount'];
+
+      //$assignment = new My_Model_Assignment();
+
+      //die(var_dump($assignId, $optionAmount));
+
+      $this->update(array('option_amount' => $optionAmount), "id = $assignId");
+
+      return true;
+   }
+
+
+   public function getSurveySpecs($opts = array())
+   {
+      $where = array();
+      if (isset($opts['where'])) {
+         $where = $opts['where'];
+      }
+
+      $survSpec = new My_Model_SurveySpecifics();
+      $select = $survSpec->select();
+      foreach ($where as $key => $val) {
+         $select->where("$key = ?", $val);
+      }
+
+      $rows = $survSpec->fetchAll($select);
+
+      return $rows;
+
+   }
+
+
+   /*
+    * Sets the amount of options for a specific class's survey type assignment.
+    */
+   public function setSurveyClassOptionAmount(array $data)
+   {
+      $assignId = $data['assignments_id'];
+      $classId = $data['classes_id'];
+      $optionAmount = $data['option_amount'];
+      $useGlobal = $data['use_global'];
+      
+
+      $survSpecs = new My_Model_SurveySpecifics();
+
+      $sel = $survSpecs->select()->where("assignments_id = $assignId")
+                                 ->where("classes_id = $classId");
+
+      $row = $survSpecs->fetchRow($sel);
+
+      try {
+         // if empty, insert.
+         if (empty($row)) {
+            $insertRow = $survSpecs->fetchNew();
+            $insertRow->setFromArray($data)
+                      ->save();
+         // else update.
+         } else {
+            $row->option_amount = $optionAmount;
+            $row->use_global = $useGlobal;
+            $row->save();
+         }
+
+      } catch(Exception $e) {
+         return false;
+      }
+
+      return true;
+
+   }
+
+   public function getSurveyOptionAmount($data = array())
+   {
+      $classId = $data['classes_id'];
+      $assignId = $data['assignments_id'];
+
+      $select = $this->select()->setIntegrityCheck(false);
+
+      $select = $select->from('coop_survey_option_amount_view')
+                       ->where("classes_id = ?", $classId)
+                       ->where("assignments_id = ?", $assignId);
+
+      $row = $this->fetchAll($select)->current();
+
+      if (empty($row)) {
+         return 0;
+      }
+
+      if ($row->use_global === '0') {
+         return $row->specific_amount;
+      } else if ($row->use_global === '1') {
+         return $row->global_amount;
+      }
+
+   }
+
+/*************************** END SURVEY METHODS *****************************************/
 
 
 

@@ -65,7 +65,7 @@ class AssignmentController extends Zend_Controller_Action
     public function studentEvalAction()
     {
        $assignment = new My_Model_Assignment();
-       $assignId = $assignment->getStuInfoId();
+       $assignId = $assignment->getStudentEvalId();
 
        if ($assignment->isDue($assignId)) {
           $this->view->message = "<p class=error> This assignment is past it's due date </p>";
@@ -75,7 +75,7 @@ class AssignmentController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
        $classId = $coopSess->currentClassId;
 
-       $form = new Application_Form_StudentEval(array('classId' => $classId));
+       $form = new Application_Form_StudentEval(array('classId' => $classId, 'assignId' => $assignId));
 
        $this->view->form = $form;
 
@@ -105,28 +105,27 @@ class AssignmentController extends Zend_Controller_Action
        }
     }
 
-    //public function supervisorEvalAction()
-    //{
-    //   $as = new My_Model_Assignment();
-    //   $coopSess = new Zend_Session_Namespace('coop');
+    public function supervisorEvalAction()
+    {
+       $as = new My_Model_Assignment();
+       $coopSess = new Zend_Session_Namespace('coop');
 
-    //   // if get request is coming from the pdf action
-    //   if ($this->getRequest()->isGet() && isset($_GET['classId'])) {
-    //      $classId = $_GET['classId'];
-    //   } else {
-    //      $classId = $coopSess->currentClassId;
-    //   }
+       // if get request is coming from the pdf action
+       if ($this->getRequest()->isGet()) {
+          $request = $this->getRequest();
+          $classId = $request->getParam('classId');
+          $assignId = $request->getParam('assignId');
+       }
 
-    //   //die($classId);
+       //die($classId);
 
-    //   $assignId = $as->getSupervisorEvalId();
-    //   $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
-    //                                             'classId' => $classId));
+       $assignId = $as->getSupervisorEvalId();
+       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+                                                 'classId' => $classId));
 
-    //   $form->setAction('/assignment/supervisor-eval-pdf');
-    //   $this->view->form = $form;
+       $this->view->form = $form;
 
-    //}
+    }
 
     public function supervisorEvalPdfAction()
     {
@@ -224,6 +223,20 @@ class AssignmentController extends Zend_Controller_Action
 
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
+             $classId = $data['classes_id'];
+             $assignId = $data['assignments_id'];
+             $assignRow = $as->getAssignment($assignId);
+             $assignNum = $assignRow['assignment_num'];
+             if ($assignNum === '6') {
+                $this->_helper->redirector('supervisor-eval', 'assignment', null, array('assignId' => $assignId, 'classId' => $classId));
+             }
+             //die(var_dump($assignNum));
+
+
+
+
+             /* OLD WAY OF SUBMITTING OFFLINE ASSIGNMENT
+              * 
              $result = $as->submit($data);
 
              if ($result === "submitted") {
@@ -233,6 +246,7 @@ class AssignmentController extends Zend_Controller_Action
                 //$this->view->submitted = false;
                 $this->view->message = "<p class='success'> Assignment has successfully been submitted </p>";
              }
+              */
 
           }
 
@@ -285,7 +299,8 @@ class AssignmentController extends Zend_Controller_Action
           $classId = $_POST['classes_id'];
           $coopSess->stuEvalManagementData['classId'] = $classId;
           $id = $coopSess->stuEvalManagementData['assignId'];
-
+          $class = new My_Model_Class();
+          $this->view->class = $class->getClass($classId);
        }
        $as = new My_Model_Assignment();
 
@@ -515,21 +530,45 @@ class AssignmentController extends Zend_Controller_Action
 
     public function studentEvalChooseClassAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       $form = new Zend_Form;
+       $form->setAction('properties');
+       $elems = new My_FormElement();
+       $classes = $elems->getClassChoiceSelect();
+       $classes->setLabel("Choose class:");
+       $submit = $elems->getSubmit();
+       $form->addElements(array($classes, $submit));
+
+       $this->view->form = $form;
+
+       $assign = new My_Model_Assignment();
+
        if ($this->getRequest()->isGet()) {
           $id = $_GET['id'];
 
-          $coopSess = new Zend_Session_Namespace('coop');
           $coopSess->stuEvalManagementData['assignId'] = $id;
+          $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
+          $this->view->optionForm = $optionForm;
 
-          $form = new Zend_Form;
-          $form->setAction('properties');
-          $elems = new My_FormElement();
-          $classes = $elems->getClassChoiceSelect();
-          $classes->setLabel("Choose class:");
-          $submit = $elems->getSubmit();
-          $form->addElements(array($classes, $submit));
+          $this->view->assign = $assign->getAssignment($id);
 
-          $this->view->form = $form;
+
+       } else if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          $data['assignments_id'] = $coopSess->stuEvalManagementData['assignId'];
+          //die(var_dump($data));
+          if ($optionForm->isValid($data)) {
+             $result = $assign->setSurveyGlobalOptionAmount($data);
+
+             if ($result === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+          } 
+
+
        }
        
     }
@@ -622,6 +661,48 @@ class AssignmentController extends Zend_Controller_Action
           }
        }
 
+    }
+
+
+    /*
+     * Form to set options amount for a specific classes survey type form.
+     * Supervisor eval also uses this action.
+     */
+    public function setStuEvalOptionAmountAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $classId = $coopSess->stuEvalManagementData['classId'];
+       $assignId = $coopSess->stuEvalManagementData['assignId'];
+
+       $form = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval', 'isClass' => true));
+
+       $class = new My_Model_Class();
+       // used to display class name in page header.
+       $this->view->class = $class->getClass($classId);
+       $assign = new My_Model_Assignment();
+       // used to display assignment name in page header.
+       $this->view->assign = $assign->getAssignment($assignId);
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $data['classes_id'] = $classId;
+             $data['assignments_id'] = $assignId;
+
+             $result = $assign->setSurveyClassOptionAmount($data);
+
+             if ($result === true) {
+                $this->view->resultMessage = "<p class=success> Success </p>";
+             } else if ($result === false) {
+                $this->view->resultMessage = "<p class=error> Error </p>";
+             }
+
+          }
+
+       }
 
     }
 

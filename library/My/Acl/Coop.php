@@ -84,6 +84,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_midterm-report'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_list-submitted'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_learning-outcome'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_set-stu-eval-option-amount'), 'assignment');
 
 
       /* Async Controller */

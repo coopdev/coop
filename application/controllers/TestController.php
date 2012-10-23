@@ -30,6 +30,19 @@ class TestController extends Zend_Controller_Action
     public function dbRowAction()
     {
        $aq = new My_Model_User();
+       $assign = new My_Model_Assignment();
+
+       //$assign->getSurveySpecs( array('where' => array('assignments_id' => 5, 'classes_id' => 4)) );
+       $amount = $assign->getSurveyOptionAmount(array('classes_id' => 1, 'assignments_id' => 5));
+       die(var_dump($amount));
+
+       $id = '1';
+       $sel = $aq->select()->where('id = ?', $id);
+       //die(var_dump($sel->assemble()));
+       $row = $aq->fetchAll($sel);
+
+
+       die(var_dump($row));
 
        $newRow = $aq->fetchNew();
 

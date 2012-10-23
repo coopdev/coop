@@ -1,0 +1,14 @@
+<?php
+$assignName = $this->assign['assignment'];
+$className = $this->class['name'];
+echo "<h2> $assignName Options for $className </h2>";
+
+$url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
+
+// Link back to assignment properties
+$coopSess = new Zend_Session_Namespace('coop');
+$assignId = $coopSess->stuEvalManagementData['assignId'];
+echo "<p> <a class=regText href=$url?id=$assignId> Back to properties </a> </p>";
+
+echo $this->form;
+?>

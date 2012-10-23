@@ -27,6 +27,7 @@
       echo $this->headScript();
       //echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/changeClass.js');
    ?>
+   <!-- Used to get stripes on Internet Explorer earlier versions -->
    <!--[if lt IE 9]>
    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
    <![endif]--> 
@@ -59,6 +60,7 @@
       echo "<div id=content>";
 
          echo "<h2>$this->pageTitle</h2>";
+         echo "$this->resultMessage";
          echo $this->layout()->content;
       
       echo "</div>";

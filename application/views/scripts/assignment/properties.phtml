@@ -23,15 +23,23 @@
 
 ?>
 
-<h2> <?php echo $assign['assignment'] ?> </h2>
+<h2> <?php echo $this->class['name'] . ' ' . $assign['assignment'] . ' Properties' ?> </h2>
 
-<!-- <a href='<?php echo "$dueDateUrl?id=".$assign['id'] ?>'> Edit Due Date </a> <br /> <br /> -->
 
+<!-- LINKS FOR EDITABLE TYPE ASSIGNMENTS -->
 <?php if ($assign['questions_editable']) { ?>
 
     <a class="regText" href='<?php echo "$editQuestsUrl?id=" . $assign['id'] ?> '> Edit Questions </a><br /><br />
     <a class="regText" href='<?php echo "$addQuestUrl?id=" . $assign['id'] ?> '> Add a Question </a><br /><br />
     <a class="regText" href='<?php echo "$delQuestUrl?id=" . $assign['id'] ?> '> Delete a Question </a><br /><br />
+    
+
+    <!-- LINK FOR SURVEY TYPE ASSIGNMENTS -->
+    <?php if ($assign['assignment_num'] === '5' or $assign['assignment_num'] === '6') { ?>
+       <?php $url = $this->url( array('controller' => 'assignment', 'action' => 'set-stu-eval-option-amount') ); ?>
+
+       <a class="regText" href='<?php echo $url ?> '> Set Option Amount </a><br /><br />
+    <?php } ?>
 
 <?php } ?>
 

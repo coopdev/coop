@@ -1,3 +1,4 @@
+<!--
 <button class='addOption'> Add Option </button> <button class='close'>&#10006;</button>
 
 <br /> <br />
@@ -6,18 +7,21 @@
 
 <div class='options'>  </div>
 
-<!-- <div class='addedOptions'> </div> -->
 <form class="addedOptions">
-   <!-- <input type="submit" class="submitOptions" value="Submit Options" /> -->
 
    <button class="submitOptions"> Submit Options </button>
 </form>
+-->
+<?php $assignName = $this->assign['assignment'] ?>
 
-<!-- <button class='submitOptions'>Submit</button> -->
+<h2> <?php echo $assignName ?> </h2> 
+
+<?php echo $this->optionForm ?>
+
 
 <hr> <br />
 
-<b>Select class to edit a specific class's Student Evaluation Form. </b>
+<b>Select class to edit a specific Evaluation Form. </b>
 <?php
    echo $this->form;
 ?>

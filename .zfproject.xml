@@ -112,6 +112,7 @@
         <formFile formName="ClassRoll"/>
         <formFile formName="ViewLogins"/>
         <formFile formName="DeleteBackups"/>
+        <formFile formName="SurveyGlobalOptions"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

@@ -24,17 +24,20 @@ class Application_Form_StudentEval extends Zend_Form
       $this->setDecorators(array(array('ViewScript', 
                                    array('viewScript' => '/assignment/student-eval-template.phtml'))));
 
+      $options = $this->generateOptions();
+
        foreach ($questions as $q) {
           if ($q['question_type'] !== 'parent') {
              $elem = new Zend_Form_Element_Radio($q['id']);
              $elem->setLabel($q['question_text'])
                   ->setRequired(true)
                   ->setSeparator('')
-                  ->setMultiOptions(array('1' => '1',
-                                          '2' => '2',
-                                          '3' => '3',
-                                          '4' => '4',
-                                          '5' => '5'));
+                  ->setMultiOptions($options);
+                  //->setMultiOptions(array('1' => '1',
+                  //                        '2' => '2',
+                  //                        '3' => '3',
+                  //                        '4' => '4',
+                  //                        '5' => '5'));
                   //->setMultiOptions(array('Strongly Disagree' => 'Strongly Disagree',
                   //                        'Disagree' => 'Disagree',
                   //                        'Neutral' => 'Neutral',
@@ -56,6 +59,24 @@ class Application_Form_StudentEval extends Zend_Form
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'
                                   ));
+    }
+
+    public function generateOptions()
+    {
+       $assign = new My_Model_Assignment();
+       $data['assignments_id'] = $this->assignId;
+       $data['classes_id'] = $this->classId;
+
+       $amount = $assign->getSurveyOptionAmount($data);
+
+       $options = array();
+       for ($i = 1; $i <= $amount; $i++) {
+          $options[$i] = $i;
+       }
+       //die(var_dump($options));
+
+       return $options;
+       
     }
 
     public function setClassId($classId)
