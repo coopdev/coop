@@ -563,12 +563,12 @@ class AssignmentController extends Zend_Controller_Action
        $this->view->form = $form;
 
        $assign = new My_Model_Assignment();
+       $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
 
        if ($this->getRequest()->isGet()) {
           $id = $_GET['id'];
 
           $coopSess->stuEvalManagementData['assignId'] = $id;
-          $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
           $this->view->optionForm = $optionForm;
 
           $this->view->assign = $assign->getAssignment($id);
