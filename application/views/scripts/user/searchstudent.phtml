@@ -58,6 +58,7 @@
    <button type="button" class="midtermReport"> Midterm Report </button>
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
    <button type="button" class="studentEval"> Student Evaluation </button>
+   <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button>
 
    <input type="hidden" id="stored-rec" data-rec="" />
 
@@ -133,6 +134,22 @@
             return;
          }
          $.post(base + "/async/student-eval", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+            //$(".highlighted").css('background-color', 'green');
+
+         });
+
+      });
+
+      $(".supervisorEval").live('click', function() {
+         data = getRec();
+         if (data == "") {
+            return;
+         }
+         data.supervisorEvalFlag = $(this).attr('value');
+         $.post(base + "/async/student-eval", {'data' : data, 'supervisorEval' : true}, function(resp) {
 
             $("#asyncContainer").empty();
             $("#asyncContainer").append(resp);

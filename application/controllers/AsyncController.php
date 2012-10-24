@@ -293,9 +293,14 @@ class AsyncController extends Zend_Controller_Action
           }
           $this->view->recText = $recText;
 
+
+          // Set assignment id to student eval or supervisor eval depending on which button was clicked.
           $as = new My_Model_Assignment();
-          // Student eval id
-          $data['assignments_id'] = $as->getStudentEvalId();
+          if (isset($_POST['supervisorEval'])) {
+             $data['assignments_id'] = $as->getSupervisorEvalId();
+          } else {
+             $data['assignments_id'] = $as->getStudentEvalId();
+          }
 
           // check if student eval has been submitted first
           $res = $as->isSubmitted($data);
@@ -305,20 +310,24 @@ class AsyncController extends Zend_Controller_Action
              return;
           }
 
-          $form = new Application_Form_StudentEval(array('classId' => $data['classes_id']));
 
-          $as = new My_Model_Assignment();
 
-          //die(var_dump($data));
+          $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 'assignId' => $data['assignments_id']));
+
+
 
           $form = $as->populateStudentEval($form, $data);
           //$rows = $as->populateStudentEval($form, $data);
 
+          // Remove submit button.
           $form->removeElement('Submit');
 
+          // Disable form elements.
           foreach ($form as $f) {
              $f->setAttrib('disabled', true);
           }
+
+          $this->view->assign = $as->getAssignment($data['assignments_id']);
 
           $this->view->form = $form;
           //die(var_dump($rows));

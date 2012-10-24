@@ -13,7 +13,8 @@ class Application_Form_StudentEval extends Zend_Form
        if (isset($this->assignId)) {
           $asId = $this->assignId;
        } else {
-          $asId = $as->getStudentEvalId();
+          $this->assignId = $as->getStudentEvalId();
+          $asId = $this->assignId;
        }
 
        $questions = $aq->getChildParentQuestions(array('classId' => $this->classId, 'assignId' => $asId));

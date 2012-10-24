@@ -196,7 +196,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Populates the Student Evaluation Form with a student's answers based on the student's
     * username, current class id, current semester id.
     * 
-    * 
     * @param Zend_Form $form The Student Evaluation Form to populate.
     * @param array $data Associative array containing username, classes_id, semesters_id.
     * @return \Zend_Form  The populated Student Eval Form.
