@@ -110,20 +110,33 @@ class AssignmentController extends Zend_Controller_Action
        $as = new My_Model_Assignment();
        $coopSess = new Zend_Session_Namespace('coop');
 
-       // if get request is coming from the pdf action
-       if ($this->getRequest()->isGet()) {
-          $request = $this->getRequest();
-          $classId = $request->getParam('classId');
-          $assignId = $request->getParam('assignId');
+       $subForStudentData = $coopSess->submitForStudentData;
+       $classId = $subForStudentData['classes_id'];
+       $assignId = $subForStudentData['assignments_id'];
+
+       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+                                                      'classId' => $classId));
+       $this->view->form = $form;
+
+       // submitAction redirects to here if supervisor eval is being submitted.
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->submitStudentEval($data);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else if ($res === 'submitted') {
+                $this->view->resultMessage = "<p class='error'> Assignment has already been submitted </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+          }
        }
 
        //die($classId);
-
-       $assignId = $as->getSupervisorEvalId();
-       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
-                                                 'classId' => $classId));
-
-       $this->view->form = $form;
 
     }
 
@@ -222,13 +235,20 @@ class AssignmentController extends Zend_Controller_Action
           $data = $_POST;
 
           if ($form->isValid($data)) {
+
+             $coopSess = new Zend_Session_Namespace('coop');
+             // Set session data for assignment submissions on other pages.
+             $coopSess->submitForStudentData['classes_id'] = $data['classes_id'];
+             $coopSess->submitForStudentData['assignments_id'] = $data['assignments_id'];
+             $coopSess->submitForStudentData['username'] = $data['username'];
+
              $as = new My_Model_Assignment();
-             $classId = $data['classes_id'];
-             $assignId = $data['assignments_id'];
-             $assignRow = $as->getAssignment($assignId);
+             $assignRow = $as->getAssignment($data['assignments_id']);
              $assignNum = $assignRow['assignment_num'];
+             // if submitting supervisor eval, redirect to supervisorEval action.
              if ($assignNum === '6') {
-                $this->_helper->redirector('supervisor-eval', 'assignment', null, array('assignId' => $assignId, 'classId' => $classId));
+                //$this->_helper->redirector('supervisor-eval', 'assignment', null, array('assignId' => $assignId, 'classId' => $classId));
+                $this->_helper->redirector('supervisor-eval', 'assignment');
              }
              //die(var_dump($assignNum));
 

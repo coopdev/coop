@@ -11,6 +11,8 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    private $curSem = null;
    
    /**
+    * NOT BEING USED ANYMORE.
+    * 
     * Gets the real life current semester by comparing the current date timestamp with 
     * other specific timestamps that separate the semesters.
     * 
@@ -53,6 +55,8 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    }
 
    /**
+    * NOT BEING USED ANYMORE
+    * 
     * Updates the database and sets the proper semester to the current one.
     */
    public function setCurrentSem()

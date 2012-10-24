@@ -324,6 +324,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
    /**
+    * THIS IS ALSO BEING USED FOR SUBMITTING SUPERVISOR EVALUATION BY A COORDINATOR.
     *
     * @param array $data The student's answers to the Student Evaluation.
     * @return string|boolean 
@@ -335,14 +336,24 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $db = new My_Db();
       $aa = new My_Model_AssignmentAnswers();
       $as = new My_Model_Assignment();
-      $assignId = $as->getStudentEvalId();
-
       $coopSess = new Zend_Session_Namespace('coop');
 
-      $insertVals = array('classes_id' => $coopSess->currentClassId, 
-                          'semesters_id' => $coopSess->currentSemId, 
-                          'username' => $coopSess->username, 
-                          'assignments_id' => $assignId);
+      // If submission is coming from a coordinator.
+      if ($coopSess->role === 'coordinator') {
+         $subForStudentData = $coopSess->submitForStudentData;
+         $insertVals = array('classes_id' => $subForStudentData['classes_id'],
+                             'semesters_id' => $coopSess->currentSemId,
+                             'username' => $subForStudentData['username'],
+                             'assignments_id' => $subForStudentData['assignments_id']);
+
+      } else {
+         $assignId = $as->getStudentEvalId();
+         $insertVals = array('classes_id' => $coopSess->currentClassId, 
+                             'semesters_id' => $coopSess->currentSemId, 
+                             'username' => $coopSess->username, 
+                             'assignments_id' => $assignId);
+      }
+
 
       // BEGIN TRANSACTION
       $as->getAdapter()->beginTransaction();

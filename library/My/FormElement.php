@@ -341,6 +341,21 @@ class My_FormElement
            
       return $elem;
    }
+
+
+   public function getSemesterDropdown()
+   {
+      $elem = new Zend_Form_Element_Select('semesters_id');
+      $semesters = $this->getSemRange();
+      $elem->setLabel("Select semester:");
+
+      foreach ($semesters as $s) {
+         $elem->addMultiOptions(array($s['id'] => $s['semester']));
+      }
+
+      return $elem;
+
+   }
       
    
    /**

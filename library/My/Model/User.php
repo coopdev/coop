@@ -35,6 +35,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
    }
 
 
+   /* Returns role of current user.
+    * 
+    */
+   public function getCurrentRole()
+   {
+      $coopSess = new Zend_Session_Namespace('coop');
+
+   }
+
+
    /**
     * Retrieves a particular student's employment information from the database.
     * 
