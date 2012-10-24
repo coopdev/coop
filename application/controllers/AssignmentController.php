@@ -563,18 +563,17 @@ class AssignmentController extends Zend_Controller_Action
        $this->view->form = $form;
 
        $assign = new My_Model_Assignment();
-       $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
-       $this->view->optionForm = $optionForm;
 
 
        if ($this->getRequest()->isGet()) {
           $id = $_GET['id'];
 
+
           $coopSess->stuEvalManagementData['assignId'] = $id;
-
-
+          $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
 
        } else if ($this->getRequest()->isPost()) {
+          $optionForm = new Application_Form_SurveyOptions(array('surveyName' => 'Student Eval'));
           $data = $_POST;
           $data['assignments_id'] = $coopSess->stuEvalManagementData['assignId'];
           //die(var_dump($data));
@@ -591,6 +590,7 @@ class AssignmentController extends Zend_Controller_Action
 
        }
 
+       $this->view->optionForm = $optionForm;
        $this->view->assign = $assign->getAssignment($coopSess->stuEvalManagementData['assignId']);
        
     }
@@ -702,7 +702,7 @@ class AssignmentController extends Zend_Controller_Action
        // used to display class name in page header.
        $this->view->class = $class->getClass($classId);
        $assign = new My_Model_Assignment();
-       // used to display assignment name in page header.
+       // used to display assignment name in page.
        $this->view->assign = $assign->getAssignment($assignId);
 
        $this->view->form = $form;

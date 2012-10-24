@@ -3,7 +3,6 @@
    
    $assigns = $this->assignments;
 
-   $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
 
    $editUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
    $extendUrl = $this->url(array('controller' => 'assignment', 'action' => 'extend-duedate'));
@@ -22,6 +21,7 @@
          <td>  <?php echo $as['assignment'] ?> </td>
 
          <?php
+            $url = $this->url(array('controller' => 'assignment', 'action' => 'properties'));
             //echo $as['assignment_num'];
             // Student and Employer evaluations need to have a class chosen before going to 
             // properties, so change the url for those assignments.
