@@ -51,8 +51,8 @@
       $('a.undoSubmit').live('click', function(e) {
          e.preventDefault();
          data = getRec();
+         //alert(JSON.stringify(data, null, 4));
          assignments_id = $(this).attr('value');
-         //alert(data.assignId);
 
          $.post(base + "/async/undo-submit", {'data' : data, 'assignments_id' : assignments_id}, function(resp) {
             $('#assignment-hist').click();
