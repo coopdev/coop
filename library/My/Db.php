@@ -150,6 +150,21 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
    }
 
 
+
+   /*
+    * Builds the Where clause portion for a select statement.
+    */
+   public function buildWhereClause($select, $where)
+   {
+      foreach ($where as $key => $val) {
+         $select = $select->where("$key = ?", $val);
+      }
+
+      return $select;
+
+   }
+
+
       
 }
 

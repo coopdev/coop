@@ -13,7 +13,8 @@
 
    <?php foreach ($recs as $r) { 
       if (!is_null($r['classes_id']) && $r['is_final']) {
-         $subed = "<font color='green'> Yes </font>";
+         $assignId = $r['assignments_id'];
+         $subed = "<font color='green'> Yes </font> <a href='#' class='undoSubmit' value='$assignId'> undo </a>";
          $dateSubed = $r['date_submitted'];
       } else {
          $subed = "<font color='red'> No </font>";
@@ -42,3 +43,43 @@
 
    <?php } // End foreach ?>
 </table>
+
+
+<script type="text/javascript"> 
+   $(document).ready(function() {
+
+      $('a.undoSubmit').live('click', function(e) {
+         e.preventDefault();
+         data = getRec();
+         assignments_id = $(this).attr('value');
+         //alert(data.assignId);
+
+         $.post(base + "/async/undo-submit", {'data' : data, 'assignments_id' : assignments_id}, function(resp) {
+            $('#assignment-hist').click();
+            //$('#asyncContainer').empty(resp);
+            //$('#asyncContainer').append(resp);
+         });
+
+      });
+
+   });
+
+
+   /* FUNCTIONS */
+
+   // Gets the record information of the selected record (username, class, semester) to
+   // use in queries for different assignment information.
+   function getRec() {
+      // If the search results table (the table with student's name, class, semester, 
+      // coordinator, etc.) is present, then the record information should be coming from
+      // the selected record, so reset the stored record (#stored-rec) to that. 
+      if ( $("#searchresults-table").length > 0 ) {
+         $("#stored-rec").data("rec", "");
+         rec = $("input[name=rec-choice]:checked").data('rec');
+         $("#stored-rec").data("rec", rec);
+      } 
+      data = $("#stored-rec").data("rec");
+      return data;
+   }
+
+</script>

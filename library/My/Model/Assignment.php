@@ -26,6 +26,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     */
 
 
+/*********************************** SUBMISSION TYPE METHODS ****************************/
 
    /**
     *  Inserts an assignment into the coop_submittedassignments table.
@@ -66,6 +67,38 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       return true;
    }
+
+
+   public function undoSubmit($where)
+   {
+      $subAssign = new My_Model_SubmittedAssignment();
+      $adapter = $this->getAdapter();
+
+      // Build where clauses for delete.
+      $whereArray = array();
+      foreach ($where as $key => $val) {
+         $whereArray[] .= "$key = " . $adapter->quote($val);
+      }
+
+      $adapter->beginTransaction();
+
+      $assignAnswers = new My_Model_AssignmentAnswers();
+
+      try {
+         $subAssign->delete($whereArray); // First delete from submitted assignments table.
+         $assignAnswers->delete($whereArray); // Then delete the answers.
+      } catch (Exception $e) {
+         $adapter->rollBack(); // If exception then roll back.
+         return false;
+      }
+
+      $adapter->commit();
+      
+      return true;
+
+   }
+
+/*************************** END SUBMISSION TYPE METHODS ********************************/
 
    /**
     * Populates the Midterm Report with answers for a specific student.
@@ -359,7 +392,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       // submit the assignment
       $res = $this->submit($insertVals);
-
       if ($res === 'submitted') {
          return 'submitted';
       }

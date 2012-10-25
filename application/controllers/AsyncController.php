@@ -5,7 +5,6 @@ class AsyncController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
     }
 
     /**
@@ -398,6 +397,9 @@ class AsyncController extends Zend_Controller_Action
 
     }
 
+    /*
+     * NOT BEING USED.
+     */
     public function addStuevalOptionsAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
@@ -408,5 +410,19 @@ class AsyncController extends Zend_Controller_Action
 
        // Insert options.
 
+    }
+
+
+    public function undoSubmitAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+       $data = $_POST['data'][0];
+       $assignId = $_POST['assignments_id'];
+
+       $data['assignments_id'] = $assignId;
+
+       $assign = new My_Model_Assignment();
+       $assign->undoSubmit($data);
     }
 }

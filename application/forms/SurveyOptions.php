@@ -1,5 +1,8 @@
 <?php
-
+/*
+ * Used in AssignmentController->studentEvalChooseClassAction(), 
+ *         AssignmentController->setStuEvalOptionAmountAction()
+ */
 class Application_Form_SurveyOptions extends Zend_Form
 {
     protected $surveyName;

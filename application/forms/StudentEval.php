@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * Used in AssignmentController->studentEvalAction()
+ *         AssignmentController->supervisorEvalAction()
+ *         AssignmentController->supervisorEvalPdfAction()
+ *         AsyncController->studentEvalAction()
+ */
 class Application_Form_StudentEval extends Zend_Form
 {
     protected $classId;
