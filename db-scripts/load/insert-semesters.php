@@ -1,5 +1,5 @@
 <?php
-   require_once('dbconn.php');
+   require_once('../dbconn.php');
    
    $query = $link->prepare('INSERT INTO coop_semesters (semester) 
                   VALUES (?)');
