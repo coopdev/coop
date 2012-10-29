@@ -152,15 +152,30 @@ class My_Db extends Zend_Db_Adapter_Pdo_Mysql
 
 
    /*
-    * Builds the Where clause portion for a select statement.
+    * Builds the Where clause portion for a select statement object.
     */
-   public function buildWhereClause($select, $where)
+   public function buildSelectWhereClause($select, $where)
    {
       foreach ($where as $key => $val) {
          $select = $select->where("$key = ?", $val);
       }
 
       return $select;
+
+   }
+
+   /*
+    * Builds an array of where clause strings used in update and delete methods.
+    */
+   public function buildArrayWhereClause(array $where)
+   {
+      $whereArray = array();
+      foreach ($where as $key => $val) {
+         $whereArray[] = "$key = '$val'";
+      }
+      //die(var_dump($whereArray));
+
+      return $whereArray;
 
    }
 

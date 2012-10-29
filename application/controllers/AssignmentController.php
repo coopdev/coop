@@ -97,7 +97,7 @@ class AssignmentController extends Zend_Controller_Action
                 $message = "<p class=error> Error occured </p>";
              }
 
-             $this->view->form->reset();
+             //$this->view->form->reset();
 
              $this->view->message = $message;
 
@@ -118,7 +118,6 @@ class AssignmentController extends Zend_Controller_Action
                                                       'classId' => $classId));
        $this->view->form = $form;
 
-       // submitAction redirects to here if supervisor eval is being submitted.
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
 

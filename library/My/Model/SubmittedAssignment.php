@@ -230,7 +230,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       //die($sql);
       $row = $this->fetchRow($query);
 
-      //die(var_dump($where));
+
       if (empty($row)) {
          return false;
       }

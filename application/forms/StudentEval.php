@@ -11,6 +11,11 @@ class Application_Form_StudentEval extends Zend_Form
     protected $classId;
     protected $assignId;
 
+    // Determines whether the form should be populated through this class or not.
+    // Form may still be populated from somewhere else.  Setting this to true just tells
+    // it to do it from this class.
+    protected $populateForm = true; 
+
     public function init()
     {
        $aq = new My_Model_AssignmentQuestions();
@@ -59,14 +64,50 @@ class Application_Form_StudentEval extends Zend_Form
        }
 
        $elems = new My_FormElement();
-       $submit = $elems->getSubmit();
+       $saveSubmit = $elems->getSubmit('saveOnly');
+       $saveSubmit->setLabel('Save Only')
+                  ->setAttrib('class', 'resubmit');
+       $finalSubmit = $elems->getSubmit('finalSubmit');
+       $finalSubmit->setLabel('Submit as Final')
+                   ->setAttrib('class', 'resubmit');
 
-       $this->addElements(array($submit));
+       // Checks if there are submitted answers in order to populate the form with them.
+       if ($this->populateForm === true) {
+          $this->checkSubmittedAnswers(); 
+       }
+
+
+       $this->addElements(array($saveSubmit,$finalSubmit));
 
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'
                                   ));
     }
+
+
+
+
+
+    public function checkSubmittedAnswers()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       // If 
+       if ($coopSess->role === 'user') {
+          $where['username'] = $coopSess->username;
+       } else if ($coopSess->role === 'coordinator') {
+          $where['username'] = $coopSess->submitForStudentData['username'];
+       }
+
+       $where['classes_id'] = $this->classId;
+       $where['assignments_id'] = $this->assignId;
+       $where['semesters_id'] = $coopSess->currentSemId;
+
+       $assign = new My_Model_Assignment();
+       if ($assign->isSubmitted($where) || $assign->isSaveOnly($where)) {
+          $assign->populateStudentEval($this, $where);
+       }
+    }
+
 
     public function generateOptions()
     {
@@ -96,6 +137,11 @@ class Application_Form_StudentEval extends Zend_Form
     {
        $this->assignId = $assignId;
 
+    }
+
+    public function setPopulateForm($flag)
+    {
+       $this->populateForm = $flag;
     }
 
 

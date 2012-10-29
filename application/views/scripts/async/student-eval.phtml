@@ -2,8 +2,9 @@
 
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
-   $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
-   echo $this->headLink();
+   //$this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
+   $this->headScript()->prependFile($coopSess->baseUrl.'/js/views/async/funcs.js');
+   echo $this->headScript();
 
    $recText = $this->recText;
 
@@ -25,6 +26,43 @@
    $('document').ready(function() {
       $("input:checked").addClass('highlighted');
       //$("input:checked").css('background-color', 'green');
+
+      $('.resubmit').live('click', function(e) {
+         e.preventDefault();
+         data = getRec();
+
+         // Identify which assignment this is (student or supervisor eval).
+         // The forms 'value' attribute holds that info.
+         assignment = $("#studentEvalForm").attr("value");
+
+         // Get all of the forms checket input elements.
+         formInputs = $("#studentEvalForm  :input:checked");
+
+         // Create object to hold the names (assignment id) and values (the checked value).
+         // The variable i passed into the function refers to the key. $(this) refers to 
+         // the current element in the loop, in this case the checked input elements.
+         formData = {};
+         formInputs.each(function(i) {
+            //alert(i + ":" + $(this).attr('name'));
+            name = $(this).attr('name');
+            val = $(this).val();
+            formData[name] = val;
+         });
+         //alert(JSON.stringify(data, null, 4));
+
+         $.post(base + "/async/resubmit-assignment", {'formData' : formData, 'data' : data, 'assignment' : assignment}, function(resp) {
+            //$('#asyncContainer').empty();
+            //$('#asyncContainer').append(resp);
+            if (assignment == 'studentEval') {
+               $('button.studentEval').click();
+            } 
+            else if (assignment == 'supervisorEval') {
+               $('button.supervisorEval').click();
+            }
+
+         });
+      });
+      
    });
 
 </script>

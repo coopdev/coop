@@ -23,6 +23,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Coop Agreement = 3,
     * Learning Outcome = 4,
     * Student eval = 5,
+    * Supervisor eval = 6,
+    * Student Time Sheet = 7
     */
 
 
@@ -35,16 +37,21 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * @return string|boolean The string 'submitted' if the assignment is already submitted,
     *                        True on success.
     */
-   public function submit(array $data)
+   public function submit(array $data, $submitType="")
    {
       date_default_timezone_set('US/Hawaii');
       $db = new My_Db();
       $sa = new My_Model_SubmittedAssignment();
       $sem = new My_Model_Semester();
+
+      // Filter out array keys which are not column names in submitted_assignments table.
       $data = $db->prepFormInserts($data, $sa);
+
+      // Add other required data.
       $data['semesters_id'] = $sem->getCurrentSemId();
       $data['date_submitted'] = date('Ymd');
 
+      // Create data to check if assignment is already submitted.
       $chk['username'] = $data['username'];
       $chk['classes_id'] = $data['classes_id'];
       $chk['semesters_id'] = $data['semesters_id'];
@@ -52,17 +59,36 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       //die(var_dump($chk));
 
+      // If the assignment has already been submitted as final.
       if ($this->isSubmitted($chk)) {
          return "submitted";
+      } 
+
+      // If the assignment has already been submitted as save only. 
+      if ($this->isSaveOnly($chk)) {
+
+         // If assignment is currently being submitted as final.
+         if ($submitType === 'Submit as Final') {
+            $where = $db->buildArrayWhereClause($chk);
+            $saRow = $sa->fetchRow($where);
+            $saRow->is_final = 1;
+            $saRow->date_submitted = date('Ymd');
+            $saRow->save();
+         } 
+
+         return "saveOnly";
       }
 
-      //$inserts['username'] = $data['username'];
-      //$inserts['classes_id'] = $data['classes_id'];
-      //$inserts['assignments_id'] = $data['assignments_id'];
-      //$inserts['semesters_id'] = $sem->getCurrentSemId();
-      //$inserts['date_submitted'] = date('Ymd');
 
+      // If the assignment is currently being submitted as save only.
+      if ($submitType === 'Save Only') {
+         // The is_final column defaults to zero, so do not need to explicitly set it.
+         $sa->insert($data);
+         return true;
+      }
 
+      // Since $submitType is not 'Save Only', set is_final to 1 when inserting.
+      $data['is_final'] = 1;
       $sa->insert($data);
 
       return true;
@@ -355,6 +381,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+/********************************STUDENT EVAL METHODS************************************/
+
    /**
     * THIS IS ALSO BEING USED FOR SUBMITTING SUPERVISOR EVALUATION BY A COORDINATOR.
     *
@@ -363,45 +391,69 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     */
    public function submitStudentEval($data)
    {
-      unset($data['Submit']);
-
       $db = new My_Db();
       $aa = new My_Model_AssignmentAnswers();
       $as = new My_Model_Assignment();
       $coopSess = new Zend_Session_Namespace('coop');
 
+      //die(var_dump($submitVals['submitType']));
+      
+
       // If submission is coming from a coordinator.
       if ($coopSess->role === 'coordinator') {
          $subForStudentData = $coopSess->submitForStudentData;
-         $insertVals = array('classes_id' => $subForStudentData['classes_id'],
+         $submitVals = array('classes_id' => $subForStudentData['classes_id'],
                              'semesters_id' => $coopSess->currentSemId,
                              'username' => $subForStudentData['username'],
                              'assignments_id' => $subForStudentData['assignments_id']);
 
       } else {
          $assignId = $as->getStudentEvalId();
-         $insertVals = array('classes_id' => $coopSess->currentClassId, 
+         $submitVals = array('classes_id' => $coopSess->currentClassId, 
                              'semesters_id' => $coopSess->currentSemId, 
                              'username' => $coopSess->username, 
                              'assignments_id' => $assignId);
+      }
+
+      // Check what type of submit it is; save only or final.
+      if (array_key_exists('saveOnly', $data)) {
+         $submitType = $data['saveOnly'];
+         unset($data['saveOnly']);
+      } else if (array_key_exists('finalSubmit', $data)) {
+         $submitType = $data['finalSubmit'];
+         unset($data['finalSubmit']);
       }
 
 
       // BEGIN TRANSACTION
       $as->getAdapter()->beginTransaction();
 
-      // submit the assignment
-      $res = $this->submit($insertVals);
-      if ($res === 'submitted') {
+      // Attempt to submit the assignment
+      $submitResult = $this->submit($submitVals, $submitType);
+
+      // If assignment has already been submitted as final.
+      if ($submitResult === 'submitted') {
          return 'submitted';
       }
 
+
+      // Iterate through data to insert or update answers.
       foreach ($data as $key => $val) {
-         $insertVals['assignmentquestions_id'] = $key;
-         $insertVals['answer_text'] = $val;
+         $submitVals['assignmentquestions_id'] = $key;
+         //var_dump($submitVals);
          
          try {
-            $aa->insert($insertVals);
+            // If assignment has already been submitted as save only.
+            if ($submitResult === 'saveOnly') {
+               $where = $db->buildArrayWhereClause($submitVals);
+               $aa->update(array('answer_text' => $val), $where);
+            // Else if it is newly submitted.
+            } elseif ($submitResult === true) {
+               $submitVals['answer_text'] = $val;
+               // Insert new row.
+               $res = $aa->fetchNew()->setFromArray($submitVals)->save();
+               //echo "$res <br />";
+            }
          } catch(Exception $e) {
             $as->getAdapter()->rollBack(); // ROLL BACK IF ERROR OCCURED
             return false;
@@ -413,6 +465,42 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
 
    }
+
+
+   public function updateStudentEval($answers, $where)
+   {
+      $aa = new My_Model_AssignmentAnswers();
+      $db = new My_Db();
+
+
+      $adapter = $aa->getAdapter();
+
+      $adapter->beginTransaction();
+      $where = $db->buildArrayWhereClause($where);
+
+      foreach ($answers as $key => $val) {
+         // Need the question id as part of the where clause.
+         $where[] = "assignmentquestions_id = '$key'";
+         $row = $aa->fetchRow($where);
+
+         // After using $where, get rid of the question id so a new one can be added on 
+         // the next loop.
+         array_pop($where);
+
+         $row->answer_text = $val;
+         try {
+            $row->save();
+         } catch(Exception $e) {
+            $adapter->rollBack();
+         }
+      }
+      $adapter->commit();
+
+      return true;
+
+   }
+
+/********************************END STUDENT EVAL METHODS************************************/
 
    /**
     * Updates due dates for assignments.
@@ -964,7 +1052,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $sel->order($order);
       }
 
-      $sql = $sel->assemble();
+      //$sql = $sel->assemble();
       //die($sql);
       
       $rows = $aq->fetchAll($sel)->toArray();
@@ -980,6 +1068,20 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
    /*
+   public function getAnswers($where)
+   {
+      $aa = new My_Model_AssignmentAnswers();
+
+      $select = $aa->select();
+
+      foreach ($where as $key => $val) {
+         //$select->
+      }
+   }
+    */
+
+
+   /*
     * Checks if a specific assignment has already been submitted based on username, class,
     * semester, assignment.
     * 
@@ -992,14 +1094,31 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $sa = new My_Model_SubmittedAssignment();
 
       $db = new My_Db();
-      $data['is_final'] = true;
+      $data['is_final'] = 1;
       $data = $db->prepFormInserts($data, $sa);
 
       if ($sa->rowExists($data)) {
          //die(var_dump($data));
          return true;
       }
-      //die('hi');
+      
+      return false;
+
+   }
+
+   public function isSaveOnly(array $data)
+   {
+      $sa = new My_Model_SubmittedAssignment();
+
+      $db = new My_Db();
+      $data['is_final'] = 0;
+      $data = $db->prepFormInserts($data, $sa);
+
+
+      //die(var_dump($data));
+      if ($sa->rowExists($data)) {
+         return true;
+      }
       
       return false;
 
@@ -1569,6 +1688,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $query = $query->where("$key = ?", $val);
 
       }
+      die(var_dump($query->assemble()));
       $row = $this->fetchRow($query);
 
       if (empty($row)) {

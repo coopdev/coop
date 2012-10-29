@@ -20,10 +20,10 @@
       $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); 
       echo $this->headLink();
 
+      $this->headScript()->prependFile($coopSess->baseUrl.'/js/quickpager.jquery.js');
+      $this->headScript()->prependFile($coopSess->baseUrl.'/js/jquery.to_json.js');
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/global.js');
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/jquery.js');
-      $this->headScript()->appendFile($coopSess->baseUrl.'/js/jquery.to_json.js');
-      $this->headScript()->appendFile($coopSess->baseUrl.'/js/quickpager.jquery.js');
       echo $this->headScript();
       //echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/changeClass.js');
    ?>

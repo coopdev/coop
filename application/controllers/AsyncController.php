@@ -39,8 +39,8 @@ class AsyncController extends Zend_Controller_Action
     {
        if ($this->getRequest()->isPost()) {
           $data = array();
-          if (isset($_POST['data'][0])) {
-             $data = $_POST['data'][0];
+          if (isset($_POST['data'])) {
+             $data = $_POST['data'];
           }
           //die(var_dump($data));
 
@@ -75,8 +75,8 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
        if ($this->getRequest()->isPost()) {
           $data = array();
-          if (isset($_POST['data'][0])) {
-             $data = $_POST['data'][0];
+          if (isset($_POST['data'])) {
+             $data = $_POST['data'];
           }
 
           
@@ -169,8 +169,8 @@ class AsyncController extends Zend_Controller_Action
           $form = new Application_Form_MidtermReport();
 
           $data = array();
-          if (isset($_POST['data'][0])) {
-             $data = $_POST['data'][0];
+          if (isset($_POST['data'])) {
+             $data = $_POST['data'];
           }
 
           //die(var_dump($data));
@@ -222,8 +222,8 @@ class AsyncController extends Zend_Controller_Action
           $form = new Application_Form_LearningOutcomeReport();
 
           $data = array();
-          if (isset($_POST['data'][0])) {
-             $data = $_POST['data'][0];
+          if (isset($_POST['data'])) {
+             $data = $_POST['data'];
           }
 
           //die(var_dump($data));
@@ -278,8 +278,8 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
        if ($this->getRequest()->isPost()) {
           $data = array();
-          if (isset($_POST['data'][0])) {
-             $data = $_POST['data'][0];
+          if (isset($_POST['data'])) {
+             $data = $_POST['data'];
           }
 
           //die(var_dump($data));
@@ -311,20 +311,24 @@ class AsyncController extends Zend_Controller_Action
 
 
 
-          $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 'assignId' => $data['assignments_id']));
+          $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 
+                                                         'assignId' => $data['assignments_id'],
+                                                         'populateForm' => false));
 
 
 
           $form = $as->populateStudentEval($form, $data);
           //$rows = $as->populateStudentEval($form, $data);
 
-          // Remove submit button.
-          $form->removeElement('Submit');
+          // Remove one of the submit buttons.
+          $form->removeElement('saveOnly');
+          $form->getElement('finalSubmit')
+                ->setLabel("Submit");
 
           // Disable form elements.
-          foreach ($form as $f) {
-             $f->setAttrib('disabled', true);
-          }
+          //foreach ($form as $f) {
+          //   $f->setAttrib('disabled', true);
+          //}
 
           $this->view->assign = $as->getAssignment($data['assignments_id']);
 
@@ -417,12 +421,35 @@ class AsyncController extends Zend_Controller_Action
     {
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
-       $data = $_POST['data'][0];
+       $data = $_POST['data'];
        $assignId = $_POST['assignments_id'];
 
        $data['assignments_id'] = $assignId;
 
        $assign = new My_Model_Assignment();
        $assign->undoSubmit($data);
+    }
+
+
+    public function resubmitAssignmentAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+       $formData = $_POST['formData'];
+       $data = $_POST['data'];
+       $assignment = $_POST['assignment'];
+
+       $assign = new My_Model_Assignment();
+
+       if ($assignment === 'studentEval') {
+          $data['assignments_id'] = $assign->getStudentEvalId();
+       } else if ($assignment === 'supervisorEval') {
+          $data['assignments_id'] = $assign->getSupervisorEvalId();
+       }
+
+       $assign->updateStudentEval($formData, $data);
+       
+
+
     }
 }
