@@ -302,3 +302,7 @@ a {
    color: &#10006;
 }
 
+tbody tr.stripedRow td {
+    background-color: #e5ecf9;
+}
+/*tbody tr:nth-child(even) td, tbody tr.even td {background:#e5ecf9;}*/
