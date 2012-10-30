@@ -78,6 +78,7 @@
 
 
       $("#search").live('click', function() {
+         $(".buttonpanel").show();
 
          search();
 
@@ -87,7 +88,7 @@
 
          data = getRec();
 
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          //temp = {'foo' : 'bar'};
@@ -102,7 +103,7 @@
 
       $("#stuInfoSheet").live('click', function() {
          data = getRec();
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          //alert(data);
@@ -117,7 +118,7 @@
 
       $(".midtermReport").live('click', function() {
          data = getRec();
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          //alert(JSON.stringify(data,null,4));
@@ -132,7 +133,7 @@
 
       $(".studentEval").live('click', function() {
          data = getRec();
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          $.post(base + "/async/student-eval", {'data' : data}, function(resp) {
@@ -148,7 +149,7 @@
 
       $(".supervisorEval").live('click', function() {
          data = getRec();
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          $.post(base + "/async/student-eval", {'data' : data, 'supervisorEval' : true}, function(resp) {
@@ -164,7 +165,7 @@
 
       $(".learningOutcome").live('click', function() {
          data = getRec();
-         if (data == "") {
+         if (data == "" || data == null) {
             return;
          }
          $.post(base + "/async/learning-outcome", {'data' : data}, function(resp) {
@@ -221,11 +222,11 @@
 
             // If there are results, show the button panel
             if ( $("#searchresults-table").length > 0) {
-               $(".buttonpanel").show();
+               //$(".buttonpanel").show();
                //$("#resultFlag").val("success");
             // If no results, hide the button panel.
             } else {
-               $(".buttonpanel").hide();
+               //$(".buttonpanel").hide();
                //$("#resultFlag").val("");
             }
 

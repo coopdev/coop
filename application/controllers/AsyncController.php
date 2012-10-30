@@ -20,6 +20,7 @@ class AsyncController extends Zend_Controller_Action
 
           $user = new My_Model_User();
           $results = $user->searchStudentRecs($data);
+          //die(var_dump($results));
 
           $this->view->results = $results;
 
