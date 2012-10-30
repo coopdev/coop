@@ -120,7 +120,7 @@
          if (data == "") {
             return;
          }
-         alert(JSON.stringify(data,null,4));
+         //alert(JSON.stringify(data,null,4));
          $.post(base + "/async/midterm-report", {'data' : data}, function(resp) {
 
             $("#asyncContainer").empty();
