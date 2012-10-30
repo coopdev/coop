@@ -1,13 +1,13 @@
 <!--[if lt IE 9]>
 <?php 
    $coopSess = new Zend_Session_Namespace('coop');
-   //$this->headScript()->appendFile($coopSess->baseUrl.'/js/stripes-for-IE/IE9.js');
+   $this->headScript()->appendFile($coopSess->baseUrl.'/js/stripes-for-IE/IE9.js');
    echo $this->headScript();
 ?>
 <![endif]--> 
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
-   $this->headScript()->appendFile($coopSess->baseUrl.'/js/funcs.js');
+   //$this->headScript()->appendFile($coopSess->baseUrl.'/js/funcs.js');
    $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/async/funcs.js');
    echo $this->headScript();
 
@@ -60,7 +60,7 @@
 <script type="text/javascript"> 
    $(document).ready(function() {
 
-      stripeTable();
+      //stripeTable();
 
       $('a.undoSubmit').live('click', function(e) {
          e.preventDefault();
