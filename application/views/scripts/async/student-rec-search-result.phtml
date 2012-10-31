@@ -1,9 +1,9 @@
 <?php
 $coopSess = new Zend_Session_Namespace('coop');
 // append this js script if IE version is less than 9.
-$this->headScript()->appendFile($coopSess->baseUrl.'/js/stripes-for-IE/IE9.js', 
-                                'text/javascript', 
-                                array('conditional' => 'lt IE 9'));
+echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/stripes-for-IE/IE9.js', 
+                                     'text/javascript', 
+                                     array('conditional' => 'lt IE 9'));
 $results = $this->results;
 
 if (empty($results)) { ?>
