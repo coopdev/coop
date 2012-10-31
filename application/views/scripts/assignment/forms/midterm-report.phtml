@@ -1,0 +1,28 @@
+<?php
+$form = $this->element;
+?>
+
+<form class="midtermReport" method="<?php echo $form->getMethod(); ?>" action="<?php echo $form->getAction(); ?>" >
+
+   <!-- Loop through form -->
+   <?php foreach ($form as $f) { ?>
+      
+      <?php 
+      if ($f instanceof Zend_Form_Element_Textarea) {
+         echo $f->getLabel() . "<br />";
+      }
+
+      echo $f . "<br />"; 
+
+      if ($f instanceof Zend_Form_Element_Textarea) {
+         $minLen = $f->getValidator('StringLength')->getMin();
+         echo "Answer much be $minLen characters long. <br />";
+         $elemId = $f->getId();
+         echo "Remaining characters: <span id='charsLeft-$elemId'> </span> <br /><br /><br /><br />";
+      }
+      ?>
+
+   <?php } ?>
+   <!-- End Loop -->
+
+</form>

@@ -11,6 +11,10 @@ class Application_Form_MidtermReport extends Zend_Form
 
        $questions = $as->getQuestions($id);
 
+       // TEMPLATE
+       $this->setDecorators( array( 
+           array('ViewScript', array('viewScript' => '/assignment/forms/midterm-report.phtml'))));
+
        foreach ($questions as $q) {
 
           //$elem = "elem".$q['id'];
@@ -25,7 +29,13 @@ class Application_Form_MidtermReport extends Zend_Form
 
           $elem->setLabel($q['question_text'])
                ->setRequired(true)
-               ->addValidator($strLength);
+               ->addValidator($strLength)
+               ->setAttrib('class', 'answerText');
+
+          $validator = $elem->getValidator('StringLength');
+          $min = $validator->getMin();
+          //die(var_dump($min));
+
 
           $this->addElement($elem);
        }
@@ -33,6 +43,11 @@ class Application_Form_MidtermReport extends Zend_Form
        $submit = new Zend_Form_Element_Submit("Submit");
 
        $this->addElement($submit);
+
+
+       // CLEAR DECORATORS FOR TEMPLATE
+       $this->setElementDecorators(array('ViewHelper',
+                                         "Errors"));
     }
 
 

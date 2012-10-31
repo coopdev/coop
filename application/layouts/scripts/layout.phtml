@@ -24,13 +24,15 @@
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/jquery.to_json.js');
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/global.js');
       $this->headScript()->prependFile($coopSess->baseUrl.'/js/jquery.js');
-      echo $this->headScript();
       //echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/changeClass.js');
    ?>
    <!-- Used to get stripes on Internet Explorer earlier versions -->
    <!--[if lt IE 9]>
-   <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+      <script type='text/javascript' src='/js/stripes-for-IE/IE9.js'> </script>
    <![endif]--> 
+
+   <?php echo $this->headScript(); ?>
+
 </head>
 
 <body>

@@ -1,10 +1,8 @@
-<!--[if lt IE 9]>
-<?php 
-   $coopSess = new Zend_Session_Namespace('coop');
-   $this->headScript()->appendFile($coopSess->baseUrl.'/js/stripes-for-IE/IE9.js');
-   echo $this->headScript();
-?>
-<![endif]--> 
+<head>
+   <!--[if lt IE 9]>
+      <script type='text/javascript' src='/js/stripes-for-IE/IE9.js'> </script>
+   <![endif]--> 
+</head>
 <?php
 $results = $this->results;
 
