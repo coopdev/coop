@@ -1,6 +1,8 @@
 <h2> Midterm Report </h2>
 
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   echo $this->headScript()->appendFile($coopSess->baseUrl . "/js/views/assignment/midterm-report.js");
    $recText = $this->recText;
 
    if (!empty($recText)) {
@@ -16,3 +18,7 @@
    }
 
 ?>
+
+<script type="text/javascript">
+
+</script>

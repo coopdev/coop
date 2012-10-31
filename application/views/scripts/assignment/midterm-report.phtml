@@ -1,42 +1,17 @@
 <h2> Midterm Report </h2>
 
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
+   echo $this->headScript()->appendFile($coopSess->baseUrl . '/js/views/assignment/midterm-report.js');
 
    $form = $this->form;
 
    echo $this->message;
 
    echo $form;
-   echo "<button class='clickme'> click me </button>";
 
 ?>
 
 <script type="text/javascript">
-
-   $(document).ready(function(){
-
-      $("button.clickme").live("click", function() {
-         //debugger;
-         alert('hi');
-      });
-
-   //   $('.answerText').live('keyup paste drop', function(e) { 
-   //       alert('hi');
-   //       
-   //       chars = $(this).val();
-   //       totalChars = chars.length;
-   //       newLines = chars.match(/\r|\n/g); // searches for "\r" and "\n" chars.
-   //       newLines = newLines ? newLines.length : 0;
-   //          
-   //       totalChars = totalChars - newLines;
-   //
-   //       id = $(this).attr('id');
-   //       
-   //       $('#charsLeft-' + id).text(totalChars);
-   //               
-   //   });
-   ​
-
-   });
 
 </script>

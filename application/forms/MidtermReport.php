@@ -14,6 +14,7 @@ class Application_Form_MidtermReport extends Zend_Form
        // TEMPLATE
        $this->setDecorators( array( 
            array('ViewScript', array('viewScript' => '/assignment/forms/midterm-report.phtml'))));
+           //array('ViewScript', array('viewScript' => '/assignment/midterm-report-form.phtml'))));
 
        foreach ($questions as $q) {
 

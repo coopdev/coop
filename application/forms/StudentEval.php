@@ -77,7 +77,10 @@ class Application_Form_StudentEval extends Zend_Form
        }
 
 
-       $this->addElements(array($saveSubmit,$finalSubmit));
+       // Only add submit buttons if there are questions and options.
+       if (!empty($questions) && !empty($options)) {
+          $this->addElements(array($saveSubmit,$finalSubmit));
+       }
 
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'

@@ -16,9 +16,12 @@ $form = $this->element;
 
       if ($f instanceof Zend_Form_Element_Textarea) {
          $minLen = $f->getValidator('StringLength')->getMin();
-         echo "Answer much be $minLen characters long. <br />";
+
+         // The <span> in this string holds the minimum length so it can be retrieved in
+         // the JavaScript.
          $elemId = $f->getId();
-         echo "Remaining characters: <span id='charsLeft-$elemId'> </span> <br /><br /><br /><br />";
+         echo "Answer much be at least <span id='minLen-$elemId'> $minLen </span> characters long. <br />";
+         echo "Remaining characters: <span id='charsLeft-$elemId'> $minLen </span> <br /><br /><br /><br />";
       }
       ?>
 
