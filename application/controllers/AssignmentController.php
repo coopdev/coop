@@ -27,6 +27,7 @@ class AssignmentController extends Zend_Controller_Action
 
     public function midtermReportAction()
     {
+
        $assignment = new My_Model_Assignment();
        $assignId = $assignment->getMidtermId();
 

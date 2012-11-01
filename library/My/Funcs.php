@@ -37,14 +37,19 @@ class My_Funcs
       //$coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
       $coopSess->currentSemId = $semester->getCurrentSemId();
 
-      if ($coopSess->role == 'user') {
+      if ($coopSess->role === 'user') {
 
           $funcs = new My_Funcs();
 
-          // If user is not enrolled for the current semester, deny access
-          if (!$funcs->isEnrolled($user)) {
+          // Check if this user has an Incomplete status.
+          $incompleteData = $semester->incompleteData(array('student' => $user['username']));
+          //die(var_dump(empty($incompleteData)));
+
+          // If user is not enrolled for the current semester AND does NOT have an Incomplete status, deny access.
+          if (!$funcs->isEnrolled($user) && empty($incompleteData)) {
              $coopSess->role = "notEnrolled";
              $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+             //die('hi');
              $redirector->gotoSimple('access-denied', 'pages');
           }
 
@@ -53,6 +58,11 @@ class My_Funcs
                                    array('student'=>$user['username'], 
                                    'semesters_id' => $coopSess->currentSemId
                                    ));
+
+         if (!empty($incompleteData)) {
+            $coopSess->currentSemId = $incompleteData['semId'];
+            $coopSess->classIds = $incompleteData['classIds'];
+         }
 
          if (empty($coopSess->classIds)) {
             $coopSess->classIds = array();

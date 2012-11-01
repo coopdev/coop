@@ -458,17 +458,14 @@ class TestController extends Zend_Controller_Action
 		 $this->_helper->getHelper('layout')->disableLayout();
     }
 
-    public function blahAction()
-    {
-       $user = new My_Model_User();
 
-       $rows = $user->getEmpInfo(array('username' => 'kuukekoa', 'classes_id' => 4, 'semesters_id' => 9));
-       die(var_dump($rows));
-    }
-
-    public function simplePagerAction()
+    public function isIncompleteAction()
     {
-       
+       $sem = new My_Model_Semester();
+
+       $res = $sem->incompleteData(array('student' => 'johndoe'));
+
+       die(var_dump($res));
     }
 
 

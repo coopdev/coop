@@ -39,9 +39,9 @@ class PagesController extends Zend_Controller_Action
 
                    $funcs->setSessions($user, $coopSess);
 
-                   if ($coopSess->role == 'user' && !$funcs->isEnrolled($user)) {
-                      $this->_helper->redirector('access-denied', 'pages');
-                   }
+                   //if ($coopSess->role == 'user' && !$funcs->isEnrolled($user)) {
+                   //   $this->_helper->redirector('access-denied', 'pages');
+                   //}
 
                    if ($coopSess->role == 'notActive') {
                       $this->_helper->redirector('disclaimer', 'pages');

@@ -197,8 +197,39 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
 
    }
 
-   public function isIncomplete($data)
+   /*
+    * Determines if a student has an incomplete status for a semester.
+    *
+    * If the student does have incompletes, this returns the semester
+    * ID and class ID(s) which are incomplete.
+    * 
+    * USED IN: My_Funcs->setSessions()
+    * 
+    */
+   public function incompleteData($where = array())
    {
+      $usersSem = new My_Model_UsersSemester();
+
+      $select = $usersSem->select();
+      $db = new My_Db();
+      //die(var_dump($where));
+      $select = $db->buildSelectWhereClause($select, $where);
+      $select->where("status = ?", "Incomplete");
+
+      $rows = $usersSem->fetchAll($select)->toArray();
+
+      if (empty($rows)) {
+         return false;
+      }
+
+      $data['semId'] = $rows[0]['semesters_id'];
+      $data['classIds'] = array();
+      foreach ($rows as $r) {
+         $data['classIds'][] = $r['classes_id'];
+      }
+
+
+      return $data;
 
    }
 
