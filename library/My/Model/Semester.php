@@ -178,6 +178,30 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
       return $rows;
    }
 
+
+   public function setStudentStatus($status, $where)
+   {
+      $usersSem = new My_Model_UsersSemester();
+
+      $db = new My_Db();
+
+      $where['student'] = $where['username'];
+      unset($where['username']);
+      $where = $db->buildArrayWhereClause($where);
+      //die(var_dump($status, $where));
+      try {
+         $usersSem->update(array('status' => $status), $where);
+      } catch (Exception $e) {
+         die(var_dump('error'));
+      }
+
+   }
+
+   public function isIncomplete($data)
+   {
+
+   }
+
    public function getAll()
    {
       return $this->fetchAll()->toArray();

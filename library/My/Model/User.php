@@ -102,7 +102,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
       $where['coordinator'] = trim($data['coordinator']);
       //die($where['coordinator']);
 
-      $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username', 'classes_id', 'semesters_id', 'coordinator');
+      $cols = array('fname', 'lname', 'semester', 'class', 'coordfname', 'coordlname', 'username', 'classes_id', 'semesters_id', 'coordinator', 'sem_status');
       $sel = $this->select()->setIntegrityCheck(false);
       $query = $sel->from('coop_users_semesters_view', $cols);
 

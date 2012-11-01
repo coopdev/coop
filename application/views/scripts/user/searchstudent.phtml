@@ -53,12 +53,21 @@
 
 <div class="buttonpanel">
 
+   <hr>
+
    <button type="button" id="assignment-hist"> Assignment Record </button>
    <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
    <button type="button" class="midtermReport"> Midterm Report </button>
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
    <button type="button" class="studentEval"> Student Evaluation </button>
-   <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button>
+   <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button> <br /><br />
+
+   <!-- Change a students status -->
+   <select class="selectStatus" name="status"> 
+      <option value="Incomplete">Incomplete</option>
+      <option value="Complete">Complete</option>
+   </select> <br />
+   <button class='setStatus'>Set Status </button>
 
    <input type="hidden" id="stored-rec" data-rec="" />
 
@@ -185,6 +194,23 @@
                  theme_advanced_resizing : true
             });
 
+         });
+
+      });
+
+      $('.setStatus').live('click', function() {
+
+         data = getRec();
+         if (data == "" || data == null) {
+            return;
+         }
+
+         status = $('.selectStatus').val();
+         //alert(val);
+         $.post(base + "/async/set-student-status", {'status' : status, 'data' : data}, function(resp) {
+            //$("#asyncContainer").empty();
+            //$("#asyncContainer").append(resp);
+            $("#search").click();
          });
 
       });

@@ -16,8 +16,13 @@ if (empty($results)) { ?>
 
    <table id="searchresults-table">
       <tr>
-         <th></th> <th> Name </th> <th> Class </th> 
-         <th> Semester </th> <th> Coordinator </th>
+         <!-- First column left blank for radio button -->
+         <th></th> 
+         <th> Name </th> 
+         <th> Class </th> 
+         <th> Semester </th> 
+         <th> Coordinator </th>
+         <th> Status </th>
       </tr>
 
    <?php foreach ($results as $r) { 
@@ -42,6 +47,7 @@ if (empty($results)) { ?>
          <td> <?php echo $r['semester'] ?> </td>
 
          <td> <?php echo $r['coordfname'].' '.$r['coordlname'] ?> </td>
+         <td> <?php echo $r['sem_status'] ?> </td>
       </tr>
 
 

@@ -453,4 +453,26 @@ class AsyncController extends Zend_Controller_Action
 
 
     }
+
+    // To set a students semester status, such as Incomplete.
+    public function setStudentStatusAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+
+       if ($this->getRequest()->isPost()) {
+          $status = $_POST['status'];
+          $data = $_POST['data'];
+          //die(var_dump($data));
+
+          if ($status === 'Complete') {
+             $status = "";
+          }
+
+          $semester = new My_Model_Semester();
+          $semester->setStudentStatus($status, $data);
+       }
+
+
+    }
 }
