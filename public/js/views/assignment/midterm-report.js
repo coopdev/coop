@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    // To show the user how many chars left each time they
+    // enter text into the text area.
     $('.answerText').live('keyup paste drop', function(e) { 
         chars = $(this).val();
         totalChars = chars.length;
@@ -19,7 +21,7 @@ $(document).ready(function(){
                 
     });
 
-    // When page loads, trigger the key up event so that chars left will show up
+    // When page loads, trigger the key up event on .answerText so that chars left will show up
     // accurately after page loads from validation errors.
     $('.answerText').keyup();
 });
