@@ -174,6 +174,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $submit['username'] = $coopSess->username;
       $submit['classes_id'] = $coopSess->currentClassId;
       $submit['assignments_id'] = $this->getMidtermId();
+      $submit['semesters_id'] = $coopSess->currentSemId;
+
 
       // Submit assignment into coop_submittedassignments
       $res = $this->submit($submit);
@@ -182,9 +184,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       if ($res === 'submitted') {
          return "submitted";
       }
-
-      // current semester
-      $submit['semesters_id'] = $coopSess->currentSemId;
 
       $aa = new My_Model_AssignmentAnswers();
 

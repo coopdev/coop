@@ -62,11 +62,32 @@ class My_Funcs
 
           // Otherwise, the user is enrolled for the current semester so set the class ids.
           } else {
-            $coopSess->classIds = $db->getCols('coop_users_semesters', 
-                                      'classes_id',
-                                      array('student'=>$user['username'], 
-                                      'semesters_id' => $coopSess->currentSemId
-                                      ));
+
+              // store enrolled class ids.
+              $coopSess->classIds = $db->getCols('coop_users_semesters', 
+                                       'classes_id',
+                                       array('student'=>$user['username'], 
+                                       'semesters_id' => $coopSess->currentSemId
+                                       ));
+
+              // If student also has incomplete status for other classes/semester.
+              if (!empty($incompleteData)) {
+
+                 // store incomplete class ids so we know which ones are incomplete status.
+                 // This will be used when a student switches classes to check if they are
+                 // switching to an incomplete class so the appropriate semester id can be set.
+                 $coopSess->incompleteClassIds = $incompleteData['classIds'];
+
+                 // append the incomplete class ids onto the classIds array.
+                 $coopSess->classIds = array_merge($coopSess->classIds, $incompleteData['classIds']);
+
+                 // store incomplete semester id. This will be used if a student is switching
+                 // to an incomplete class. In that case, this id will overwrite the currentSemId 
+                 // session variable.
+                 $coopSess->incompleteSemId = $incompleteData['semId'];
+
+              }
+             
           }
 
 
