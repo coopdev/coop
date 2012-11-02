@@ -475,4 +475,28 @@ class AsyncController extends Zend_Controller_Action
 
 
     }
+
+
+    public function getIncompletesAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+
+       if ($this->getRequest()->isPost()) {
+          $classId = $_POST['classes_id'];
+          //die(var_dump($classId));
+
+          $user = new My_Model_User();
+          $rows = $user->getIncompletes($classId);
+
+          $json = Zend_Json_Encoder::encode($rows);
+
+          echo $json;
+       }
+
+
+       //$json = json_encode($rows);
+
+
+    }
 }

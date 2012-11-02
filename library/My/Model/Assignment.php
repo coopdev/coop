@@ -48,7 +48,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $data = $db->prepFormInserts($data, $sa);
 
       // Add other required data.
-      $data['semesters_id'] = $sem->getCurrentSemId();
+      //$data['semesters_id'] = $sem->getCurrentSemId();
       $data['date_submitted'] = date('Ymd');
 
       // Create data to check if assignment is already submitted.
@@ -403,9 +403,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       if ($coopSess->role === 'coordinator') {
          $subForStudentData = $coopSess->submitForStudentData;
          $submitVals = array('classes_id' => $subForStudentData['classes_id'],
-                             'semesters_id' => $coopSess->currentSemId,
+                             //'semesters_id' => $coopSess->currentSemId,
                              'username' => $subForStudentData['username'],
                              'assignments_id' => $subForStudentData['assignments_id']);
+
+         // Semester id will come from the session if an assignment is being submitted
+         // for an incomplete. Otherwise, it will be set to the current semester.
+         if (array_key_exists('semesters_id', $subForStudentData)) {
+            $submitVals['semesters_id'] = $subForStudentData['semesters_id'];
+         } else {
+            $submitVals['semesters_id'] = $coopSess->currentSemId;
+         }
 
       } else {
          $assignId = $as->getStudentEvalId();
@@ -414,6 +422,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
                              'username' => $coopSess->username, 
                              'assignments_id' => $assignId);
       }
+
+      //die(var_dump($submitVals));
 
       // Check what type of submit it is; save only or final.
       if (array_key_exists('saveOnly', $data)) {

@@ -233,6 +233,7 @@ class AssignmentController extends Zend_Controller_Action
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          //die(var_dump($data['semesters_id']));
 
           if ($form->isValid($data)) {
 
@@ -241,6 +242,9 @@ class AssignmentController extends Zend_Controller_Action
              $coopSess->submitForStudentData['classes_id'] = $data['classes_id'];
              $coopSess->submitForStudentData['assignments_id'] = $data['assignments_id'];
              $coopSess->submitForStudentData['username'] = $data['username'];
+             if (!empty($data['semesters_id'])) {
+                $coopSess->submitForStudentData['semesters_id'] = $data['semesters_id'];
+             }
 
              $as = new My_Model_Assignment();
              $assignRow = $as->getAssignment($data['assignments_id']);

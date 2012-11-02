@@ -260,6 +260,26 @@ class My_Model_User extends Zend_Db_Table_Abstract
    }
 
 
+   /*
+    * Fetches all incomplete students for a given class.
+    */
+   public function getIncompletes($classId)
+   {
+      $select = $this->select()->setIntegrityCheck(false);
+
+      $select->from('coop_incompletes_view');
+
+      if (!empty($classId)) {
+         $select->where('classes_id = ?', $classId);
+      }
+
+      $rows = $this->fetchAll($select)->toArray();
+
+      return $rows;
+
+   }
+
+
 
    /**
     * Deletes one coordinator.

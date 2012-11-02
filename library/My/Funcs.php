@@ -33,8 +33,6 @@ class My_Funcs
 
        
       $semester = new My_Model_Semester();
-      //$currentSem = $semester->getRealSem();
-      //$coopSess->currentSemId = $db->getId('coop_semesters', array('semester' => $currentSem));
       $coopSess->currentSemId = $semester->getCurrentSemId();
 
       if ($coopSess->role === 'user') {
@@ -45,24 +43,32 @@ class My_Funcs
           $incompleteData = $semester->incompleteData(array('student' => $user['username']));
           //die(var_dump(empty($incompleteData)));
 
-          // If user is not enrolled for the current semester AND does NOT have an Incomplete status, deny access.
-          if (!$funcs->isEnrolled($user) && empty($incompleteData)) {
-             $coopSess->role = "notEnrolled";
-             $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
-             //die('hi');
-             $redirector->gotoSimple('access-denied', 'pages');
+          // If user is not enrolled for the current semester. 
+          if (!$funcs->isEnrolled($user)) {
+
+             // If user does NOT have incomplete status, deny access.
+             if (empty($incompleteData)) {
+                $coopSess->role = "notEnrolled";
+                $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                //die('hi');
+                $redirector->gotoSimple('access-denied', 'pages');
+
+             // If user DOES have incomplete status, set the semester ID to the incomplete
+             // semester and set the class ids to the incomplete ones.
+             } else {
+               $coopSess->currentSemId = $incompleteData['semId'];
+               $coopSess->classIds = $incompleteData['classIds'];
+             }
+
+          // Otherwise, the user is enrolled for the current semester so set the class ids.
+          } else {
+            $coopSess->classIds = $db->getCols('coop_users_semesters', 
+                                      'classes_id',
+                                      array('student'=>$user['username'], 
+                                      'semesters_id' => $coopSess->currentSemId
+                                      ));
           }
 
-         $coopSess->classIds = $db->getCols('coop_users_semesters', 
-                                   'classes_id',
-                                   array('student'=>$user['username'], 
-                                   'semesters_id' => $coopSess->currentSemId
-                                   ));
-
-         if (!empty($incompleteData)) {
-            $coopSess->currentSemId = $incompleteData['semId'];
-            $coopSess->classIds = $incompleteData['classIds'];
-         }
 
          if (empty($coopSess->classIds)) {
             $coopSess->classIds = array();

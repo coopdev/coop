@@ -135,10 +135,11 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    /**
     * Gets semester in database from first to current
     * 
+    * @param $limit Optional limit.
     * 
     * @return type  
     */
-   public function getUpToCurrent()
+   public function getUpToCurrent($limit = null)
    {
       $sems = $this->getAll();
 
@@ -153,10 +154,16 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
       }
       $db = new My_Db();
 
-      $rows = $db->fetchAll("SELECT s.semester, s.id, s.current FROM 
+      $select = "SELECT s.semester, s.id, s.current FROM 
                             (SELECT * FROM coop_semesters LIMIT $c) AS s 
                             ORDER BY SUBSTRING_INDEX(semester, ' ', -1) DESC, 
-                            SUBSTRING_INDEX(semester, ' ', 1)");
+                            SUBSTRING_INDEX(semester, ' ', 1)";
+
+      if (!is_null($limit)) {
+         $select .= " LIMIT $limit ";
+      }
+
+      $rows = $db->fetchAll($select);
 
       $temp = array(); // hold record to be swapped.
       $tempPos = ""; // hold position for swapping.

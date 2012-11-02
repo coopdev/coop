@@ -15,38 +15,96 @@
 
 <script type="text/javascript">
    $("document").ready(function() {
+      $("#semesters_id-label").hide();
+      $("#semesters_id").hide();
 
       fillStudents();
 
       $("[name=classes_id]").change(function() {
-         fillStudents();
+         if ( $('#showIncompletes').is(":checked") ) {
+            populateIncompletes();
+         } else {
+            fillStudents();
+         }
       });
 
-      function fillStudents() {
+      $("#showIncompletes").live('click', function() {
+         $this = $(this);
+
+         if ($this.is(':checked')) {
+            $("#semesters_id-label").show();
+            $("#semesters_id").show();
+            populateIncompletes();
+            //alert('checked');
+         } else {
+            $("#semesters_id-label").hide();
+            $("#semesters_id").hide();
+            $("#semesters_id").val("");
+            fillStudents();
+         }
+
+      });
+
+
+      function fillStudents() 
+      {
          val = $("[name=classes_id]").val();
 
          $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
 
+            // 
             opts = resp;
 
-            $("[name=username]").empty();
-
-            optString = "";
-
-            for (i = 0; i < opts.length; i++) {
-               fname = opts[i].fname;
-               lname = opts[i].lname;
-               username = opts[i].username;
-
-               optString += "<option value='" + username + "'>" +
-                                lname + ", " + fname + " (" + username + ")" +
-                            "</option>";
-            }
-
-            $("[name=username]").html(optString);
+            dropdown = $("[name=username]"); 
+            populateDropdown(dropdown, opts);
 
          }, 'json');
       }
+
+      /* 
+       * Populates the student dropdown with incomplete students from
+       * specific class.
+       * 
+       */ 
+      
+      function populateIncompletes() 
+      {
+         classes_id = $("[name=classes_id]").val();
+         $.post(base + "/async/get-incompletes", {'classes_id' : classes_id} , function(resp) {
+            //$('form').append(resp);
+            opts = resp;
+
+            dropdown = $("[name=username]"); 
+            populateDropdown(dropdown, opts);
+
+         }, 'json');
+
+
+      }
+
+      // Populates the passed in dropdown element with the passed in options.
+      function populateDropdown(dropdown, opts)
+      {
+
+         dropdown.empty();
+
+         optString = "";
+
+         for (i = 0; i < opts.length; i++) {
+            fname = opts[i].fname;
+            lname = opts[i].lname;
+            username = opts[i].username;
+
+            optString += "<option value='" + username + "'>" +
+                             lname + ", " + fname + " (" + username + ")" +
+                         "</option>";
+         }
+
+         dropdown.html(optString);
+
+      }
+
+
 
    });
 

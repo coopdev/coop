@@ -38,10 +38,24 @@ class Application_Form_SubmitAssignment extends Zend_Form
                 ->setRequired($req)
                 ->setRegisterInArrayValidator(false); 
 
+       $showIncompletes = new Zend_Form_Element_Checkbox('showIncompletes');
+       $showIncompletes->setLabel("Check to only show students with incomplete status.");
+
 
        // Semester dropdown if needed.
        //$elems = new My_FormElement();
        //$semesters = $elems->getSemesterDropdown();
+
+       $sem = new My_Model_Semester();
+       $sems = $sem->getUpToCurrent(10);
+       $semesters = new Zend_Form_Element_Select('semesters_id');
+       $semesters->setLabel("Select semester");
+
+       $semesters->addMultiOptions(array('' => "--------------"));
+
+       foreach ($sems as $s) {
+          $semesters->addMultiOptions(array($s['id'] => $s['semester']));
+       }
 
 
        $submit = new Zend_Form_Element_Submit('submit');
@@ -52,7 +66,7 @@ class Application_Form_SubmitAssignment extends Zend_Form
        // elements are added to the form.
        //$this->setDecorators(array( array( 'ViewScript', array( 'viewScript' => 'assignment/submit.phtml'))));
 
-       $this->addElements(array($classes, $assignments, $students, $submit));
+       $this->addElements(array($classes, $assignments, $students, $showIncompletes, $semesters, $submit));
 
        // Use this when specifying a template to get rid of default decorators. Must come
        // after adding elements to form

@@ -66,3 +66,9 @@ CREATE VIEW coop_coordinfo_view AS
    FROM coop_users AS u 
    LEFT JOIN coop_phonenumbers AS pn ON u.username = pn.username 
    LEFT JOIN coop_phonetypes AS pt ON pn.phonetypes_id = pt.id and pt.type = 'home';
+
+DROP VIEW IF EXISTS coop_incompletes_view;
+CREATE VIEW coop_incompletes_view AS
+   SELECT u.username, u.fname, u.lname, us.classes_id FROM coop_users u
+   JOIN coop_users_semesters us ON u.username = us.student
+   WHERE us.status = 'Incomplete';
