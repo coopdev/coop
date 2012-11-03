@@ -113,6 +113,7 @@
         <formFile formName="ViewLogins"/>
         <formFile formName="DeleteBackups"/>
         <formFile formName="SurveyGlobalOptions"/>
+        <formFile formName="LearningOutcomeMgmt"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

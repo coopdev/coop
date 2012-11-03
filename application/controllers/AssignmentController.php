@@ -5,7 +5,6 @@ class AssignmentController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
     }
 
     // form to choose class to see assignment status for each of the classe's student's
@@ -24,6 +23,8 @@ class AssignmentController extends Zend_Controller_Action
 
        $this->view->form = $form;
     }
+
+/***********************************MAIN ASSIGNMENTS*************************************/
 
     public function midtermReportAction()
     {
@@ -224,6 +225,8 @@ class AssignmentController extends Zend_Controller_Action
 
        }
     }
+/***********************************END MAIN ASSIGNMENTS*********************************/
+
 
     // for submitting an offline assignment
     public function submitAction()
@@ -278,6 +281,7 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+/**********************************ASSIGNMENT LISTS**************************************/
     public function listAllAction()
     {
        $as = new My_Model_Assignment();
@@ -306,6 +310,7 @@ class AssignmentController extends Zend_Controller_Action
        $this->view->assignments = $assignments;
 
     }
+/**********************************END ASSIGNMENT LISTS**********************************/
 
     public function propertiesAction()
     {
@@ -330,12 +335,21 @@ class AssignmentController extends Zend_Controller_Action
 
        $assign = $as->getAssignment($id);
        //die(var_dump($assign));
+       if ($assign['assignment_num'] === '4') {
+          $this->_helper->redirector('manage-learning-outcome');
+       }
+
+       
 
        $funcs = new My_Funcs();
        $assign['due_date'] = $funcs->formatDateOut($assign['due_date']);
 
        $this->view->assign = $assign;
     }
+    
+
+
+/**********************************ASSIGNMENT MANAGEMENT*********************************/
 
     public function editDuedateAction()
     {
@@ -551,6 +565,35 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    public function manageLearningOutcomeAction()
+    {
+       $assign = new My_Model_Assignment();
+       //$assignId = $assign->getLearningOutcomeId();
+       //$learnOutcome = $assign->getAssignment($assignId);
+       $learnOutcome = $assign->fetchRow("assignment_num = '4'");
+       $this->view->assign = $learnOutcome;
+
+       $form = new Application_Form_LearningOutcomeMgmt();
+       $form->populate($learnOutcome->toArray());
+       $this->view->form = $form;
+
+       $request = $this->getRequest();
+       if ($request->isPost()) {
+          $data = $_POST;
+          if ($form->isValid($data)) {
+             $learnOutcome->answer_minlength = $data['answer_minlength'];
+             try {
+                $learnOutcome->save();
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } catch (Exception $e) {
+                $this->view->resultMessage = "<p class='error'> Error Occured </p>";
+             }
+             //var_dump($data);
+          }
+       }
+
+    }
+
 
     public function studentEvalChooseClassAction()
     {
@@ -731,6 +774,7 @@ class AssignmentController extends Zend_Controller_Action
        }
 
     }
+/*************************************END ASSIGNMENT MANAGEMENT**************************/
 
     public function midtermReportCoordAction()
     {
