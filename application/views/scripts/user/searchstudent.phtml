@@ -205,9 +205,9 @@
             return;
          }
 
-         status = $('.selectStatus').val();
-         //alert(val);
-         $.post(base + "/async/set-student-status", {'status' : status, 'data' : data}, function(resp) {
+         opt = $('.selectStatus').find(':selected').attr('value');
+         //alert(opt);
+         $.post(base + "/async/set-student-status", {'status' : opt, 'data' : data}, function(resp) {
             //$("#asyncContainer").empty();
             //$("#asyncContainer").append(resp);
             $("#search").click();
