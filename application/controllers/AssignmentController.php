@@ -568,8 +568,6 @@ class AssignmentController extends Zend_Controller_Action
     public function manageLearningOutcomeAction()
     {
        $assign = new My_Model_Assignment();
-       //$assignId = $assign->getLearningOutcomeId();
-       //$learnOutcome = $assign->getAssignment($assignId);
        $learnOutcome = $assign->fetchRow("assignment_num = '4'");
        $this->view->assign = $learnOutcome;
 

@@ -5,6 +5,9 @@ class Application_Form_LearningOutcomeReport extends Zend_Form
 
     public function init()
     {
+       $this->setDecorators(array(array('ViewScript', 
+                                   array('viewScript' => '/assignment/forms/learning-outcome.phtml'))));
+
        $elems = new My_FormElement();
 
        $this->setAttrib('id','learningOutcomeReport'); 
@@ -18,11 +21,18 @@ class Application_Form_LearningOutcomeReport extends Zend_Form
               ->setAttrib('cols', '100');
 
 
+
        $save = $elems->getSubmit('Save Only');
 
        $submit = $elems->getSubmit();
 
+
        $this->addElements(array($report, $save, $submit));
+
+       $this->setElementDecorators(array('ViewHelper',
+                                        'Errors'
+                                  ));
+
     }
 
 

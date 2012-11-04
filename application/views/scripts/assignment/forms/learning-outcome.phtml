@@ -1,0 +1,19 @@
+<?php
+$form = $this->element;
+
+?>
+
+<form action="<?php echo $form->getAction() ?>" method="<?php echo $form->getMethod() ?>">
+   <?php echo $form->report ?>
+   <br />
+
+   <p> Report must have a minimum of <span id="minLen"> 100 </span> characters </p>
+   <p> Characters remaining: <span id="charsLeft"> 100 </span>  </p>
+
+   <?php echo $form->SaveOnly ?>
+   <?php echo $form->Submit ?>
+
+
+
+
+</form>

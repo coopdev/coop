@@ -3,3 +3,13 @@
    echo $this->form;
    echo "<b>Add confirm to submit as final button</b>";
 ?>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#finalSubmit").live('click', function() {
+         if (!confirm("Really submit?")) {
+            return false;
+         }
+      });
+   });
+</script>

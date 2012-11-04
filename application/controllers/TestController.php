@@ -468,6 +468,24 @@ class TestController extends Zend_Controller_Action
        die(var_dump($res));
     }
 
+    // test zend form element
+    public function elemAction()
+    {
+       $elem = new Zend_Form_Element('foo');
+       $elem->setDescription("Hello");
+
+       echo $elem;
+
+       $dec = $elem->getDecorators();
+       //$elem->setDecorators(array(
+       //    'ViewHelper',
+       //    
+
+       //));
+       //die(var_dump($elem));
+
+    }
+
 
 }
 
