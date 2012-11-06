@@ -209,7 +209,13 @@ class AssignmentController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
 
-          if ($form->isValid($data)) {
+          // Use this data to validate form because the HTML tags in the rich text area
+          // count as character, but we don't want them to.
+          $dataNoHTML = $data;
+          $dataNoHTML['report'] = trim(strip_tags($dataNoHTML['report']));
+          //die(var_dump($data));
+
+          if ($form->isValid($dataNoHTML)) {
              $res = $as->submitLearningOutcome($data);
 
              if ($res === 'submitted') {

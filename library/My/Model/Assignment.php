@@ -964,6 +964,18 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function getAssignmentByNum($num)
+   {
+      $row = $this->fetchRow("assignment_num = $num");
+
+      if (!empty($row)) {
+         return $row;
+      } else {
+         return array();
+      }
+
+   }
+
    public function getStuInfoId()
    {
       $id = $this->getId(array('assignment_num' => 1));
