@@ -2,7 +2,7 @@
 $form = $this->element;
 ?>
 
-<form class="midtermReport" method="<?php echo $form->getMethod(); ?>" action="<?php echo $form->getAction(); ?>" >
+<form class="midtermReport" id='midtermReportForm' method="<?php echo $form->getMethod(); ?>" >
 
    <!-- Loop through form -->
    <?php foreach ($form as $f) { ?>
@@ -10,11 +10,9 @@ $form = $this->element;
       <?php 
       if ($f instanceof Zend_Form_Element_Textarea) {
          echo $f->getLabel() . "<br />";
-      }
 
-      echo $f . "<br />"; 
+         echo $f . "<br />"; 
 
-      if ($f instanceof Zend_Form_Element_Textarea) {
          $minLen = $f->getValidator('StringLength')->getMin();
 
          // The <span> in this string holds the minimum length so it can be retrieved in
@@ -27,5 +25,8 @@ $form = $this->element;
 
    <?php } ?>
    <!-- End Loop -->
+
+   <?php echo $form->saveOnly ?>
+   <?php echo $form->finalSubmit ?>
 
 </form>

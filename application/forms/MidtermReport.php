@@ -5,7 +5,7 @@ class Application_Form_MidtermReport extends Zend_Form
 
     public function init()
     {
-       $this->setAttrib('class', 'midtermReport');
+
        $as = new My_Model_Assignment();
        $id = $as->getMidtermId(); // Midterm Report's id.
 
@@ -41,9 +41,13 @@ class Application_Form_MidtermReport extends Zend_Form
           $this->addElement($elem);
        }
 
-       $submit = new Zend_Form_Element_Submit("Submit");
+       $finalSubmit = new Zend_Form_Element_Submit("finalSubmit");
+       $finalSubmit->setLabel("Submit as Final");
 
-       $this->addElement($submit);
+       $saveOnly = new Zend_Form_Element_Submit("saveOnly");
+       $saveOnly->setLabel("Save Only");
+
+       $this->addElements(array($saveOnly, $finalSubmit));
 
 
        // CLEAR DECORATORS FOR TEMPLATE

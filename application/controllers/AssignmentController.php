@@ -44,7 +44,7 @@ class AssignmentController extends Zend_Controller_Action
        $req = $this->getRequest();
        if ($req->isPost()) {
           $data = $_POST;
-          unset($data['Submit']);
+          //unset($data['Submit']);
 
           if ($form->isValid($data)) {
 

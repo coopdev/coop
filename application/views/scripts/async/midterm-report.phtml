@@ -3,6 +3,8 @@
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
    echo $this->headScript()->appendFile($coopSess->baseUrl . "/js/views/assignment/midterm-report.js");
+   echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/async/funcs.js');
+
    $recText = $this->recText;
 
    if (!empty($recText)) {
@@ -20,5 +22,45 @@
 ?>
 
 <script type="text/javascript">
+   $(document).ready(function() {
+
+
+      $("#finalSubmit").live('click', function(e) {
+         e.preventDefault();
+         answers = $('#midtermReportForm textarea');
+
+         formData = {};
+         answers.each(function(key, val) {
+            name = $(this).attr('name');
+            answer = $(this).val();
+            formData[name] = answer;
+         });
+         //alert(formData);
+
+         userData = getRec();
+
+         //$.post(base + '/async/resubmit-assignment', {'data' : userData, 'formData' : formData, 'assignment' : 'midtermReport'}, function(resp) {
+         $.post(base + '/async/midterm-report', {'userData' : userData, 'formData' : formData, 'resubmit' : true}, function(resp) {
+               //alert('invalid');
+            $('#asyncContainer').empty();
+            $('#asyncContainer').append(resp);
+
+            // If it was not invalid, click the midterm button to regenerate form.
+            if ($('#isInvalid').length < 1 ) {
+               //alert('not invalid');
+               //alert($("#isInvalid").length);
+               $('button.midtermReport').click();
+            }
+
+
+         });
+
+
+
+
+      });
+
+
+   });
 
 </script>

@@ -16,7 +16,6 @@ class AsyncController extends Zend_Controller_Action
     {
        if ($this->_request->isPost()) {
           $data = $_POST;
-          //die(var_dump($data));
 
           $user = new My_Model_User();
           $results = $user->searchStudentRecs($data);
@@ -167,42 +166,66 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
 
        if ($this->getRequest()->isPost()) {
+
           $form = new Application_Form_MidtermReport();
+          $form->removeElement('saveOnly');
+          $form->getElement('finalSubmit')->setLabel('Submit') ;
 
-          $data = array();
-          if (isset($_POST['data'])) {
-             $data = $_POST['data'];
+          if (!isset($_POST['resubmit'])) {
+
+             $data = array();
+             if (isset($_POST['data'])) {
+                $data = $_POST['data'];
+             }
+
+             //die(var_dump($data));
+
+             // To get text for the record being viewed (student's name, semester, class)
+             $user = new My_Model_User();
+             $recText = $user->getSemesterInfo($data);
+             if (!empty($recText)) {
+                $recText = $recText[0];
+             }
+             $this->view->recText = $recText;
+
+             $as = new My_Model_Assignment();
+             // Midterm Report's id
+             $data['assignments_id'] = $as->getMidtermId();
+
+             // check if midterm report has been submitted first
+             $res = $as->isSubmitted($data);
+             // if not submitted
+             if ($res === false) {
+                $this->view->submitted = false;
+                return;
+             }
+
+             // Populate the form based on data
+             $form = $as->populateMidTermReport($form, $data);
+
+             // Take out submit button since it's for coordinator view
+             //$form->removeElement("Submit");
+             $this->view->form = $form;
+
+          // If Post is coming from a re-submission by the coordinator.
+          } else {
+             $formData = $_POST['formData'];
+             $userData = $_POST['userData'];
+             //die(var_dump($formData, $userData));
+
+             if ($form->isValid($formData)) {
+                $assign = new My_Model_Assignment();
+
+                $assign->updateAnswers($formData, $userData);
+
+             } else {
+                echo "<input type=hidden id='isInvalid' />";
+
+                $this->view->form = $form;
+             }
+
           }
-
-          //die(var_dump($data));
-
-          // To get text for the record being viewed (student's name, semester, class)
-          $user = new My_Model_User();
-          $recText = $user->getSemesterInfo($data);
-          if (!empty($recText)) {
-             $recText = $recText[0];
-          }
-          $this->view->recText = $recText;
-
-          $as = new My_Model_Assignment();
-          // Midterm Report's id
-          $data['assignments_id'] = $as->getMidtermId();
-
-          // check if midterm report has been submitted first
-          $res = $as->isSubmitted($data);
-          // if not submitted
-          if ($res === false) {
-             $this->view->submitted = false;
-             return;
-          }
-
-          // Populate the form based on data
-          $form = $as->populateMidTermReport($form, $data);
-
-          // Take out submit button since it's for coordinator view
-          $form->removeElement("Submit");
-          $this->view->form = $form;
-          
+             
        } else {
           // If not a POST request, don't render the view
           $this->_helper->viewRenderer->setNoRender();
@@ -343,6 +366,30 @@ class AsyncController extends Zend_Controller_Action
 
     }
 
+    // Resubmits student or supervisor eval.
+    public function resubmitAssignmentAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $this->_helper->viewRenderer->setNoRender();
+       $formData = $_POST['formData'];
+       $data = $_POST['data'];
+       $assignment = $_POST['assignment'];
+
+       //die(var_dump($formData, $data, $assignment));
+
+       $assign = new My_Model_Assignment();
+
+       if ($assignment === 'studentEval') {
+          $data['assignments_id'] = $assign->getStudentEvalId();
+       } else if ($assignment === 'supervisorEval') {
+          $data['assignments_id'] = $assign->getSupervisorEvalId();
+       } 
+
+       $assign->updateAnswers($formData, $data);
+
+
+    }
+
     /**
      * Displays the assignment status for all students in a particular class.
      * 
@@ -432,27 +479,6 @@ class AsyncController extends Zend_Controller_Action
     }
 
 
-    public function resubmitAssignmentAction()
-    {
-       $this->_helper->getHelper('layout')->disableLayout();
-       $this->_helper->viewRenderer->setNoRender();
-       $formData = $_POST['formData'];
-       $data = $_POST['data'];
-       $assignment = $_POST['assignment'];
-
-       $assign = new My_Model_Assignment();
-
-       if ($assignment === 'studentEval') {
-          $data['assignments_id'] = $assign->getStudentEvalId();
-       } else if ($assignment === 'supervisorEval') {
-          $data['assignments_id'] = $assign->getSupervisorEvalId();
-       }
-
-       $assign->updateStudentEval($formData, $data);
-       
-
-
-    }
 
     // To set a students semester status, such as Incomplete.
     public function setStudentStatusAction()

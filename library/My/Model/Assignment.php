@@ -163,46 +163,83 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Inserts a submitted Midterm Report's answer's into the database.
     * 
     * 
-    * @param array $data The Midterm Report's submitted answers.
+    * @param array $answers The Midterm Report's submitted answers.
     * @return string|boolean The string 'submitted' if the assignment has already been submitted,
     *                        True on success, False on failure.
     */
-   public function submitMidtermReport($data)
+   public function submitMidtermReport($answers, $opts=array())
    {
       $coopSess = new Zend_Session_Namespace('coop');
 
-      $submit['username'] = $coopSess->username;
-      $submit['classes_id'] = $coopSess->currentClassId;
-      $submit['assignments_id'] = $this->getMidtermId();
-      $submit['semesters_id'] = $coopSess->currentSemId;
+      // userData represents the students semesters_id, classes_id, username, etc.
+      if (isset($opts['userData'])) {
+         $submitVals = $opts['userData'];
 
+      // If $opts['userData'] isn't set, default to the currently logged in user data.
+      } else {
+         $submitVals['username'] = $coopSess->username;
+         $submitVals['classes_id'] = $coopSess->currentClassId;
+         $submitVals['semesters_id'] = $coopSess->currentSemId;
+      }
+      $submitVals['assignments_id'] = $this->getMidtermId();
+
+
+
+      // Check what type of submit it is; save only or final.
+      if (array_key_exists('saveOnly', $answers)) {
+         $submitType = $answers['saveOnly'];
+         unset($answers['saveOnly']);
+      } else if (array_key_exists('finalSubmit', $answers)) {
+         $submitType = $answers['finalSubmit'];
+         unset($answers['finalSubmit']);
+      }
+
+
+      
+      // BEGIN TRANSACTION
+      $this->getAdapter()->beginTransaction();
 
       // Submit assignment into coop_submittedassignments
-      $res = $this->submit($submit);
+      $submitResult = $this->submit($submitVals, $submitType);
 
       // If already submitted.
-      if ($res === 'submitted') {
+      if ($submitResult === 'submitted') {
          return "submitted";
       }
 
       $aa = new My_Model_AssignmentAnswers();
 
-      foreach ($data as $key => $val) {
-         $submit['assignmentquestions_id'] = $key;
-         $submit['answer_text'] = $val;
+      foreach ($answers as $key => $val) {
+         $submitVals['assignmentquestions_id'] = $key;
 
          try {
-            // insert into coop_assignmentanswers
-            $aa->insert($submit);
+            // 'saveOnly' means the assignment has previously been submitted as save only
+            // so we should do an update on the answers.
+            if ($submitResult === 'saveOnly') {
+               $db = new My_Db();
+               $where = $db->buildArrayWhereClause($submitVals);
+               $aa->update(array('answer_text' => $val), $where);
+
+            // true means the assignment has been newly submitted (no previously saved one)
+            // so we will insert.
+            } else if ($submitResult === true) {
+               // insert into coop_assignmentanswers
+               $submitVals['answer_text'] = $val;
+               $aa->insert($submitVals);
+            }
+
          } catch(Exception $e) {
+            $this->getAdapter()->rollBack(); // ROLL BACK IF ERROR OCCURED
             return false;
          }
 
       }
 
+      // COMMIT TRANSACTION
+      $this->getAdapter()->commit();
+
       return true;
 
-      //die(var_dump($submit));
    }
 
    /**
@@ -476,7 +513,11 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
-   public function updateStudentEval($answers, $where)
+   /*
+    * Updates answers for certain assignments (the ones that have questions and answers).
+    * Used to update eval type assignments and midterm report.
+    */
+   public function updateAnswers($answers, $where)
    {
       $aa = new My_Model_AssignmentAnswers();
       $db = new My_Db();
@@ -501,6 +542,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             $row->save();
          } catch(Exception $e) {
             $adapter->rollBack();
+            return false;
          }
       }
       $adapter->commit();

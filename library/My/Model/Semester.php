@@ -186,6 +186,9 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
    }
 
 
+   /*
+    * Sets a student status such as incomplete.
+    */
    public function setStudentStatus($status, $where)
    {
       $usersSem = new My_Model_UsersSemester();

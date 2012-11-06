@@ -124,7 +124,7 @@
 
       });
 
-      $(".midtermReport").live('click', function() {
+      $("button.midtermReport").live('click', function() {
          data = getRec();
          if (data == "" || data == null) {
             return;
@@ -139,7 +139,7 @@
 
       });
 
-      $(".studentEval").live('click', function() {
+      $("button.studentEval").live('click', function() {
          data = getRec();
          if (data == "" || data == null) {
             return;
@@ -155,7 +155,7 @@
 
       });
 
-      $(".supervisorEval").live('click', function() {
+      $("button.supervisorEval").live('click', function() {
          data = getRec();
          if (data == "" || data == null) {
             return;
@@ -171,7 +171,7 @@
 
       });
 
-      $(".learningOutcome").live('click', function() {
+      $("button.learningOutcome").live('click', function() {
          data = getRec();
          if (data == "" || data == null) {
             return;
@@ -198,7 +198,7 @@
 
       });
 
-      $('.setStatus').live('click', function() {
+      $('button.setStatus').live('click', function() {
 
          data = getRec();
          if (data == "" || data == null) {
@@ -239,6 +239,7 @@
 
       function search() {
          data = $("#searchform").toJSON();
+         //alert(data);
 
          $.post(base + "/async/student-rec-search-result", {'data' : data}, function(resp) {
 
