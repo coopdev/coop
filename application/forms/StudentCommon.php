@@ -50,7 +50,8 @@ class Application_Form_StudentCommon extends Zend_Form
        $this->payRate = $elems->getPayRateTbox();
        $this->address = $elems->getCommonTbox('address', 'Address/City/ZIP:');
        $this->jobAddr = $elems->getCommonTbox('job_address', 'Address/City/ZIP:');
-       $this->grad = $elems->getDateTbox('grad_date', 'Graduation date');
+       //$this->grad = $elems->getDateTbox('grad_date', 'Graduation date');
+       $this->grad = $elems->getSemesterDropdown('grad_date', 'Graduation date');
        $this->major = $elems->getMajorSelect();
        $this->semInMaj = $elems->getSemesterInMajorRadio();
        $this->phone = $elems->getCommonTbox('phone', 'Telephone:');

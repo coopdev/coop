@@ -343,11 +343,11 @@ class My_FormElement
    }
 
 
-   public function getSemesterDropdown()
+   public function getSemesterDropdown($name, $label)
    {
-      $elem = new Zend_Form_Element_Select('semesters_id');
+      $elem = new Zend_Form_Element_Select($name);
       $semesters = $this->getSemRange();
-      $elem->setLabel("Select semester:");
+      $elem->setLabel($label);
 
       foreach ($semesters as $s) {
          $elem->addMultiOptions(array($s['id'] => $s['semester']));

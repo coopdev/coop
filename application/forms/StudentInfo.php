@@ -70,7 +70,7 @@ class Application_Form_StudentInfo extends Application_Form_StudentCommon
         //$this->addElements(array($partAgreement, $this->agree, $this->submit ));
 
         $this->addElements(array($this->fname, $this->lname, $this->uuid, $this->address,
-                           $wantedJob, $coopClass, $creds, $this->grad, $this->major, 
+                           $coopClass, $creds, $this->grad, $this->major, 
                            $this->semInMaj, $this->phone, $mobile, $this->email, 
                            $this->curJob, $this->sdate, $this->edate, $this->payRate, 
                            $this->employer, $this->department, $this->jobAddr, $this->supervEmail,
