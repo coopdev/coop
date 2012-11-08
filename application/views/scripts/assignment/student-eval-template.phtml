@@ -1,9 +1,31 @@
 <form id="studentEvalForm" method="POST" action="<?php echo $this->element->getAction() ?>" >
+
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      RATE YOUR EXPERIENCE OF COOPERATIVE EDUCATION THIS SEMESTER <br /> 
+      4=Always meets Standard  3=Meets Standard 2=Approaches Standard 1=Below Standard NA=Not Applicable
+   </h4> 
+</div> <br />
+
 <?php
    $elems = $this->element;
 
-   //die(var_dump($elems));
+   echo $elems->static_tasks->static_task1 . "<br />"; 
+   echo $elems->static_tasks->static_task2 . "<br />"; 
+   echo $elems->static_tasks->static_task3 . "<br />"; 
+   echo $elems->static_tasks->static_task4 . "<br />"; 
+?>
 
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      RATE YOUR SELF ACCORDING TO HOW YOU PERFORMED AT WORK DURING YOUR CO-OP EXPERIENCE USING THE SCALE BELOW: <br />
+      4=Always meets Standard 3=Usually meets Standard 2=Approaches Standard 1=Below Standard NA=Not Applicable
+   </h4> 
+</div> <br />
+
+
+
+<?php
    foreach ($elems as $e) {
       //var_dump($e);
       //echo $e->getLabel();
@@ -13,10 +35,11 @@
       } else if ($e->helper === 'formSubmit') {
          echo $e;
       } else {
-         echo $e->getLabel() . "<br />";
-         echo $e . "<br /><br />";
+         //echo $e->getLabel() . "<br />";
+         //echo $e . "<br /><br />";
       }
    }
+
 
 
 ?>

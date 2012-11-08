@@ -28,6 +28,10 @@ class Application_Form_StudentEval extends Zend_Form
           $asId = $this->assignId;
        }
 
+
+       $this->makeStaticTasks();
+
+
        $questions = $aq->getChildParentQuestions(array('classId' => $this->classId, 'assignId' => $asId));
 
        //die(var_dump($questions));
@@ -82,12 +86,63 @@ class Application_Form_StudentEval extends Zend_Form
           $this->addElements(array($saveSubmit,$finalSubmit));
        }
 
+
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'
                                   ));
     }
 
 
+
+    /*
+     * Creates the tasks and their ratings on the form which are static.
+     */
+    private function makeStaticTasks()
+    {
+       $staticTasks = new Zend_Form_SubForm('static_tasks');
+
+       $staticTasks->setDecorators(array('FormElements',
+                                         array('HtmlTag', array('tag' => 'div'))
+                                   ));
+
+       $staticTasks->setElementsBelongTo("static_tasks");
+       $options = array('4' => '4', 
+                        '3' => '3',
+                        '2' => '2',
+                        '1' => '1',
+                        'NA' => 'NA');
+
+       $task1 = new Zend_Form_Element_Radio('static_task1');
+       $task1->setLabel("Relationship with Coop Coordinator");
+       $task1->setMultiOptions($options);
+       $task1->setSeparator("");
+
+
+
+       $task2 = new Zend_Form_Element_Radio('static_task2');
+       $task2->setLabel("Quality of Work Assignments");
+       $task2->setMultiOptions($options);
+       $task2->setSeparator("");
+
+       $task3 = new Zend_Form_Element_Radio('static_task3');
+       $task3->setLabel("Supervisor's Orientation to Job");
+       $task3->setMultiOptions($options);
+       $task3->setSeparator("");
+
+       $task4 = new Zend_Form_Element_Radio('static_task4');
+       $task4->setLabel("Overall Value of Work Experience");
+       $task4->setMultiOptions($options);
+       $task4->setSeparator("");
+
+       
+       $staticTasks->addElements(array($task1,$task2,$task3,$task4));
+
+       //die(var_dump($staticTasks));
+
+       $this->addSubForm($staticTasks, 'static_tasks');
+
+
+    }
 
 
 
