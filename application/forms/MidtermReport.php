@@ -2,6 +2,9 @@
 
 class Application_Form_MidtermReport extends Zend_Form
 {
+    protected $classId;
+    protected $semId;
+    protected $username;
 
     public function init()
     {
@@ -49,12 +52,57 @@ class Application_Form_MidtermReport extends Zend_Form
 
        $this->addElements(array($saveOnly, $finalSubmit));
 
+       //$this->checkSubmittedAnswers();
+
 
        // CLEAR DECORATORS FOR TEMPLATE
        $this->setElementDecorators(array('ViewHelper',
                                          "Errors"));
     }
 
+
+    /*
+     * Populates the midterm report if it has been previously submitted or saved.
+     */
+    public function checkSubmittedAnswers()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $assign = new My_Model_Assignment();
+
+       if ($coopSess->role === 'user') {
+          $where['username'] = $coopSess->username;
+          $where['classes_id'] = $coopSess->currentClassId;
+          $where['semesters_id'] = $coopSess->currentSemId;
+       } else if ($coopSess->role === 'coordinator') {
+          $where['username'] = $this->username;
+          $where['classes_id'] = $this->classId;
+          $where['semesters_id'] = $this->semId;
+       }
+       $where['assignments_id'] = $assign->getMidtermId();
+
+
+       if ($assign->isSubmitted($where) || $assign->isSaveOnly($where)) {
+          $assign->populateMidTermReport($this, $where);
+       }
+    }
+
+    public function setClassId($classId)
+    {
+       //die($classId);
+       $this->classId = $classId;
+    }
+
+    public function setSemId($semId)
+    {
+       $this->semId = $semId;
+
+    }
+
+    public function setUsername($username)
+    {
+       $this->username = $username;
+
+    }
 
 }
 

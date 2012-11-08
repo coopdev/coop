@@ -180,6 +180,7 @@ class AsyncController extends Zend_Controller_Action
 
              //die(var_dump($data));
 
+
              // To get text for the record being viewed (student's name, semester, class)
              $user = new My_Model_User();
              $recText = $user->getSemesterInfo($data);
@@ -187,6 +188,8 @@ class AsyncController extends Zend_Controller_Action
                 $recText = $recText[0];
              }
              $this->view->recText = $recText;
+
+
 
              $as = new My_Model_Assignment();
              // Midterm Report's id
@@ -199,12 +202,17 @@ class AsyncController extends Zend_Controller_Action
                 $this->view->submitted = false;
                 return;
              }
+             //die(var_dump($data));
+
+
 
              // Populate the form based on data
-             $form = $as->populateMidTermReport($form, $data);
+             $form->setClassId($data['classes_id']);
+             $form->setSemId($data['semesters_id']);
+             $form->setUsername($data['username']);
+             $form->checkSubmittedAnswers();
+             //$form = $as->populateMidTermReport($form, $data);
 
-             // Take out submit button since it's for coordinator view
-             //$form->removeElement("Submit");
              $this->view->form = $form;
 
           // If Post is coming from a re-submission by the coordinator.

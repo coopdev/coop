@@ -38,6 +38,7 @@ class AssignmentController extends Zend_Controller_Action
        }
 
        $form = new Application_Form_MidtermReport();
+       $form->checkSubmittedAnswers();
 
        $this->view->form = $form;
 
