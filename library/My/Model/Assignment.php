@@ -314,10 +314,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       $answers = array();
       foreach ($rows as $r) {
-         // assignmentquestions_id is required to populate the form, since the form uses the question id as it's name.
-         $aqid = $r['assignmentquestions_id']; 
+
+         // Field to identify the question (either assignmentquestions_id or static_question) 
+         // which the answer belongs to is required to populate the form, since the form uses 
+         // the field value as it's name.
+         if (!is_null($r['static_question'])) {
+            $question = $r['static_question']; 
+         } else {
+            $question = $r['assignmentquestions_id']; 
+         }
          $atext = $r['answer_text'];
-         $answers[$aqid] = $atext;
+         $answers[$question] = $atext;
       }
 
       $form->populate($answers);
@@ -432,8 +439,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $as = new My_Model_Assignment();
       $coopSess = new Zend_Session_Namespace('coop');
 
-      //die(var_dump($submitVals['submitType']));
-      
 
       // If submission is coming from a coordinator.
       if ($coopSess->role === 'coordinator') {
@@ -482,30 +487,30 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          return 'submitted';
       }
 
+      // Answers to static questions.
+      $statics = $data['static_tasks'];
 
-      // Iterate through data to insert or update answers.
-      foreach ($data as $key => $val) {
-         $submitVals['assignmentquestions_id'] = $key;
-         //var_dump($submitVals);
-         
-         try {
-            // If assignment has already been submitted as save only.
-            if ($submitResult === 'saveOnly') {
-               $where = $db->buildArrayWhereClause($submitVals);
-               $aa->update(array('answer_text' => $val), $where);
-            // Else if it is newly submitted.
-            } elseif ($submitResult === true) {
-               $submitVals['answer_text'] = $val;
-               // Insert new row.
-               $res = $aa->fetchNew()->setFromArray($submitVals)->save();
-               //echo "$res <br />";
-            }
-         } catch(Exception $e) {
-            $as->getAdapter()->rollBack(); // ROLL BACK IF ERROR OCCURED
-            return false;
-         }
+      // Answers to dynamic questions.
+      $dynamics = $data['dynamic_tasks'];
+
+      // If this assignment has already been submitted as save only.
+      if ($submitResult === 'saveOnly') {
+         $res1 = $this->updateAnswers($statics, $submitVals, array('static' => true));
+         $res2 = $this->updateAnswers($dynamics, $submitVals);
+
+      // If this assignment has never been submitted yet, even as save only.
+      } else if ($submitResult === true) {
+         $res1 = $this->insertAnswers($statics, $submitVals, array('static' => true));
+         $res2 = $this->insertAnswers($dynamics, $submitVals);
       }
-      // COMMIT TRANSACTION
+
+      // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
+      // being caught.
+      if ($res1 === 'exception' || $res2 === 'exception' ) {
+         $as->getAdapter()->rollBack();
+         return false;
+      }
+
       $as->getAdapter()->commit();
 
       return true;
@@ -517,20 +522,23 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Updates answers for certain assignments (the ones that have questions and answers).
     * Used to update eval type assignments and midterm report.
     */
-   public function updateAnswers($answers, $where)
+   public function updateAnswers($answers, $where, $opts=array())
    {
       $aa = new My_Model_AssignmentAnswers();
       $db = new My_Db();
 
-
-      $adapter = $aa->getAdapter();
-
-      $adapter->beginTransaction();
       $where = $db->buildArrayWhereClause($where);
 
       foreach ($answers as $key => $val) {
-         // Need the question id as part of the where clause.
-         $where[] = "assignmentquestions_id = '$key'";
+
+         // If updating answers to static questions.
+         if (isset($opts['static']) && $opts['static'] === true) {
+            $where[] = "static_question = '$key'";
+         // If updating answers to dynamic questions.
+         } else {
+            $where[] = "assignmentquestions_id = '$key'";
+         }
+
          $row = $aa->fetchRow($where);
 
          // After using $where, get rid of the question id so a new one can be added on 
@@ -541,11 +549,49 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          try {
             $row->save();
          } catch(Exception $e) {
-            $adapter->rollBack();
-            return false;
+            return 'exception';
          }
       }
-      $adapter->commit();
+
+      return true;
+
+   }
+
+   /*
+    * Inserts answers for certain assignments (the ones that have questions and answers).
+    * Used to insert eval type assignments and midterm report.
+    */
+   public function insertAnswers($answers, $submitVals, $opts=array())
+   {
+      $aa = new My_Model_AssignmentAnswers();
+      $db = new My_Db();
+
+
+      foreach ($answers as $key => $val) {
+
+         // If updating answers to static questions.
+         if (isset($opts['static']) && $opts['static'] === true) {
+            $submitVals['static_question'] = $key;
+
+         // If updating answers to dynamic questions.
+         } else {
+            $submitVals['assignmentquestions_id'] = $key;
+         }
+
+         $submitVals['answer_text'] = $val;
+
+
+         try {
+            $aa->insert($submitVals);
+         } catch(Exception $e) {
+            return 'exception';
+         }
+
+         // After using $where, get rid of the question id so a new one can be added on 
+         // the next loop.
+         array_pop($submitVals);
+
+      }
 
       return true;
 

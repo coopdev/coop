@@ -15,6 +15,22 @@ class My_Model_AssignmentQuestions extends Zend_Db_Table_Abstract
    protected $_name = "coop_assignmentquestions";
 
 
+
+   public function getQuestions($where)
+   {
+
+      $select = $this->select();
+      $db = new My_Db();
+
+      $select = $db->buildSelectWhereClause($select, $where);
+
+      $questions = $this->fetchAll($select);
+
+      return $questions;
+
+   }
+
+
    /**
     * Retrieves the last question number for a specific assignment and additional optional WHERE criteria.
     * 

@@ -7,6 +7,7 @@
    </h4> 
 </div> <br />
 
+            <!-- STATIC TASKS -->
 <?php
    $elems = $this->element;
 
@@ -23,7 +24,25 @@
    </h4> 
 </div> <br />
 
-<?php echo $elems->dynamic_tasks; ?>
+
+            <!-- DYNAMIC TASKS -->
+<?php 
+
+   foreach ($elems->dynamic_tasks as $t) {
+      echo "$t <br />";
+   }
+
+?> 
+
+<?php echo $elems->saveOnly; ?>
+<?php echo $elems->finalSubmit; ?>
+
+
+
+
+
+
+
 
 
 

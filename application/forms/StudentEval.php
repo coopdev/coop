@@ -32,7 +32,8 @@ class Application_Form_StudentEval extends Zend_Form
        $this->makeStaticTasks();
 
 
-       $questions = $aq->getChildParentQuestions(array('classId' => $this->classId, 'assignId' => $asId));
+       //$questions = $aq->getChildParentQuestions(array('classId' => $this->classId, 'assignId' => $asId));
+      $questions = $aq->getQuestions(array('classes_id' => $this->classId, 'assignments_id' => $asId));
 
        //die(var_dump($questions));
 
@@ -48,32 +49,40 @@ class Application_Form_StudentEval extends Zend_Form
                                ));
       $dynamicTasks->setElementsBelongTo('dynamic_tasks');
 
-       foreach ($questions as $q) {
-          if ($q['question_type'] !== 'parent') {
-             $elem = new Zend_Form_Element_Radio($q['id']);
-             $elem->setLabel($q['question_text'])
-                  ->setRequired(true)
-                  ->setSeparator('')
-                  ->setMultiOptions($options);
-                  //->setMultiOptions(array('1' => '1',
-                  //                        '2' => '2',
-                  //                        '3' => '3',
-                  //                        '4' => '4',
-                  //                        '5' => '5'));
-                  //->setMultiOptions(array('Strongly Disagree' => 'Strongly Disagree',
-                  //                        'Disagree' => 'Disagree',
-                  //                        'Neutral' => 'Neutral',
-                  //                        'Agree' => 'Agree',
-                  //                        'Strongly Agree' => 'Strongly Agree'));
-             $dynamicTasks->addElement($elem);
-          // Parent questions are not being used anymore since thsoe are static now.
-          } else {
-             //$elem = new Zend_Form_Element_Hidden($q['id']);
-             //$elem->setLabel($q['question_text']);
-          }
+      $qnum = 0;
+      foreach ($questions as $q) {
 
-          //$this->addElements(array($elem));
-       }
+         // Only include non parent type questions.
+         if ($q['question_type'] !== 'parent') {
+            $elem = new Zend_Form_Element_Radio($q['id']);
+            $elem->setLabel(++$qnum . '. ' . $q['question_text'])
+                 ->setRequired(true)
+                 ->setAttrib('class', 'dynamic')
+                 ->setSeparator('')
+                 //->setMultiOptions($options);
+                 ->setMultiOptions(array('4' => '4',
+                                         '3' => '3',
+                                         '2' => '2',
+                                         '1' => '1',
+                                         'NA' => 'NA'));
+            
+            $dynamicTasks->addElement($elem);
+         }
+
+         // Parent questions are not being used anymore since thsoe are static now.
+         //} else {
+            //$elem = new Zend_Form_Element_Hidden($q['id']);
+            //$elem->setLabel($q['question_text']);
+         //}
+
+         //$this->addElements(array($elem));
+      }
+
+       //$dynamicTasks->setElementDecorators(array('ViewHelper',
+       //                                          'Label',
+       //                                          'Errors',
+       //                                          array('HtmlTag', array('tag' => 'br', 'position' => 'after'))
+       //    ));
 
        $this->addSubForm($dynamicTasks, 'dynamic_tasks');
 
@@ -127,26 +136,33 @@ class Application_Form_StudentEval extends Zend_Form
        $task1->setLabel("Relationship with Coop Coordinator");
        $task1->setMultiOptions($options);
        $task1->setSeparator("");
-
-
+       $task1->setRequired(true);
 
        $task2 = new Zend_Form_Element_Radio('static_task2');
        $task2->setLabel("Quality of Work Assignments");
        $task2->setMultiOptions($options);
        $task2->setSeparator("");
+       $task2->setRequired(true);
 
        $task3 = new Zend_Form_Element_Radio('static_task3');
        $task3->setLabel("Supervisor's Orientation to Job");
        $task3->setMultiOptions($options);
        $task3->setSeparator("");
+       $task3->setRequired(true);
 
        $task4 = new Zend_Form_Element_Radio('static_task4');
        $task4->setLabel("Overall Value of Work Experience");
        $task4->setMultiOptions($options);
        $task4->setSeparator("");
+       $task4->setRequired(true);
 
        
        $staticTasks->addElements(array($task1,$task2,$task3,$task4));
+
+       $elems = $staticTasks->getElements();
+       foreach ($elems as $e) {
+          $e->setAttrib('class', 'static');
+       }
 
        //die(var_dump($staticTasks));
 

@@ -379,7 +379,10 @@ class AsyncController extends Zend_Controller_Action
     {
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
-       $formData = $_POST['formData'];
+       $formData = $_POST['formDynamics'];
+       die(var_dump($formData));
+       $statics = $_POST['formData']['static_tasks'];
+       $dynamics = $_POST['formData']['dynamic_tasks'];
        $data = $_POST['data'];
        $assignment = $_POST['assignment'];
 
@@ -393,7 +396,10 @@ class AsyncController extends Zend_Controller_Action
           $data['assignments_id'] = $assign->getSupervisorEvalId();
        } 
 
-       $assign->updateAnswers($formData, $data);
+
+       //$assign->updateAnswers($formData, $data);
+       $assign->updateAnswers($statics, $data, array('static' => true));
+       $assign->updateAnswers($dynamics, $data);
 
 
     }

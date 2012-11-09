@@ -31,34 +31,36 @@
          e.preventDefault();
          data = getRec();
 
-         // Identify which assignment this is (student or supervisor eval).
-         // The forms 'value' attribute holds that info.
-         assignment = $("#studentEvalForm").attr("value");
 
-         // Get all of the form's checked input elements.
-         formInputs = $("#studentEvalForm  :input:checked");
-
-         // Create object to hold the names (assignment id) and values (the checked value).
-         // The variable i passed into the function refers to the key. $(this) refers to 
-         // the current element in the loop, in this case the checked input elements.
-         formData = {};
-         formInputs.each(function(i) {
-            //alert(i + ":" + $(this).attr('name'));
+         // Answers to dynamic questions.
+         temp = $("#studentEvalForm .dynamic:checked");
+         formDynas = {};
+         temp.each(function(k, v) {
+            //alert($(this).val());
             name = $(this).attr('name');
-            val = $(this).val();
-            formData[name] = val;
+            name = name.split('[')[1].split(']')[0].trim();
+            formDynas[name] = $(this).val();
          });
-         //alert(JSON.stringify(data, null, 4));
 
-         $.post(base + "/async/resubmit-assignment", {'formData' : formData, 'data' : data, 'assignment' : assignment}, function(resp) {
-            //$('#asyncContainer').empty();
-            //$('#asyncContainer').append(resp);
-            if (assignment == 'studentEval') {
-               $('button.studentEval').click();
-            } 
-            else if (assignment == 'supervisorEval') {
-               $('button.supervisorEval').click();
-            }
+
+         // Answers to static questions.
+         formStatics = $("#studentEvalForm .static:checked");
+         jsonstring = JSON.stringify(formStatics, null, 4);
+         formStatics = JSON.parse(jsonstring);
+         formStatics = formStatics.static_tasks;
+
+
+
+         //$.post(base + "/async/resubmit-assignment", {'formData' : formData, 'data' : data, 'assignment' : assignment}, function(resp) {
+         $.post(base + "/async/resubmit-assignment", { 'formStatics' : formStatics, 'formDynamics' : formDynas, 'data' : data, 'assignment' : assignment }, function(resp) {
+            $('#asyncContainer').empty();
+            $('#asyncContainer').append(resp);
+            //if (assignment == 'studentEval') {
+            //   $('button.studentEval').click();
+            //} 
+            //else if (assignment == 'supervisorEval') {
+            //   $('button.supervisorEval').click();
+            //}
 
          });
       });
