@@ -42,6 +42,12 @@ class Application_Form_StudentEval extends Zend_Form
 
       $options = $this->generateOptions();
 
+      $dynamicTasks = new Zend_Form_SubForm('dynamic_tasks');
+      $dynamicTasks->setDecorators(array('FormElements',
+                                     array('HtmlTag', array('tag' => 'div'))
+                               ));
+      $dynamicTasks->setElementsBelongTo('dynamic_tasks');
+
        foreach ($questions as $q) {
           if ($q['question_type'] !== 'parent') {
              $elem = new Zend_Form_Element_Radio($q['id']);
@@ -59,13 +65,18 @@ class Application_Form_StudentEval extends Zend_Form
                   //                        'Neutral' => 'Neutral',
                   //                        'Agree' => 'Agree',
                   //                        'Strongly Agree' => 'Strongly Agree'));
+             $dynamicTasks->addElement($elem);
+          // Parent questions are not being used anymore since thsoe are static now.
           } else {
-             $elem = new Zend_Form_Element_Hidden($q['id']);
-             $elem->setLabel($q['question_text']);
+             //$elem = new Zend_Form_Element_Hidden($q['id']);
+             //$elem->setLabel($q['question_text']);
           }
 
-          $this->addElements(array($elem));
+          //$this->addElements(array($elem));
        }
+
+       $this->addSubForm($dynamicTasks, 'dynamic_tasks');
+
 
        $elems = new My_FormElement();
        $saveSubmit = $elems->getSubmit('saveOnly');

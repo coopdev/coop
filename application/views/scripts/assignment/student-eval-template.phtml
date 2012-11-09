@@ -23,22 +23,24 @@
    </h4> 
 </div> <br />
 
+<?php echo $elems->dynamic_tasks; ?>
+
 
 
 <?php
-   foreach ($elems as $e) {
-      //var_dump($e);
-      //echo $e->getLabel();
+   //foreach ($elems as $e) {
+   //   //var_dump($e);
+   //   //echo $e->getLabel();
 
-      if ($e->helper === 'formHidden') {
-         echo "<h4><b>" . $e->getLabel() . "</b></h4>";
-      } else if ($e->helper === 'formSubmit') {
-         echo $e;
-      } else {
-         //echo $e->getLabel() . "<br />";
-         //echo $e . "<br /><br />";
-      }
-   }
+   //   if ($e->helper === 'formHidden') {
+   //      echo "<h4><b>" . $e->getLabel() . "</b></h4>";
+   //   } else if ($e->helper === 'formSubmit') {
+   //      echo $e;
+   //   } else {
+   //      //echo $e->getLabel() . "<br />";
+   //      //echo $e . "<br /><br />";
+   //   }
+   //}
 
 
 
