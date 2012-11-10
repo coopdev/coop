@@ -34,6 +34,17 @@
 
 ?> 
 
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h3> 
+      <b> SPECIFIC LEARNING OUTCOMES </b>
+   </h3> 
+</div> <br />
+
+<?php
+echo $elems->static_tasks->lrnOutcome1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $elems->static_tasks->lrnOutcomeRating1 . "<br /> <br />";
+echo $elems->static_tasks->lrnOutcome2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $elems->static_tasks->lrnOutcomeRating2 . "<br /> <br />";
+?>
+
 <?php echo $elems->saveOnly; ?>
 <?php echo $elems->finalSubmit; ?>
 

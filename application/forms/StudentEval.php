@@ -10,6 +10,11 @@ class Application_Form_StudentEval extends Zend_Form
 {
     protected $classId;
     protected $assignId;
+    protected $options = array('4' => '4',
+                               '3' => '3',
+                               '2' => '2',
+                               '1' => '1',
+                               'NA' => 'NA');
 
     // Determines whether the form should be populated through this class or not.
     // Form may still be populated from somewhere else.  Setting this to true just tells
@@ -60,11 +65,7 @@ class Application_Form_StudentEval extends Zend_Form
                  ->setAttrib('class', 'dynamic')
                  ->setSeparator('')
                  //->setMultiOptions($options);
-                 ->setMultiOptions(array('4' => '4',
-                                         '3' => '3',
-                                         '2' => '2',
-                                         '1' => '1',
-                                         'NA' => 'NA'));
+                 ->setMultiOptions($this->options);
             
             $dynamicTasks->addElement($elem);
          }
@@ -77,12 +78,6 @@ class Application_Form_StudentEval extends Zend_Form
 
          //$this->addElements(array($elem));
       }
-
-       //$dynamicTasks->setElementDecorators(array('ViewHelper',
-       //                                          'Label',
-       //                                          'Errors',
-       //                                          array('HtmlTag', array('tag' => 'br', 'position' => 'after'))
-       //    ));
 
        $this->addSubForm($dynamicTasks, 'dynamic_tasks');
 
@@ -102,9 +97,7 @@ class Application_Form_StudentEval extends Zend_Form
 
 
        // Only add submit buttons if there are questions and options.
-       if (!empty($questions) && !empty($options)) {
-          $this->addElements(array($saveSubmit,$finalSubmit));
-       }
+       $this->addElements(array($saveSubmit,$finalSubmit));
 
 
        $this->setElementDecorators(array('ViewHelper',
@@ -159,15 +152,68 @@ class Application_Form_StudentEval extends Zend_Form
        
        $staticTasks->addElements(array($task1,$task2,$task3,$task4));
 
+
+       //die(var_dump($staticTasks));
+
+       // Add learning outcomes.
+       $lrnOutcomes = $this->makeLearningOutcomes();
+       $staticTasks->addElements($lrnOutcomes);
+
        $elems = $staticTasks->getElements();
        foreach ($elems as $e) {
           $e->setAttrib('class', 'static');
        }
 
-       //die(var_dump($staticTasks));
+       //$staticTasks->setElementDecorators(array('ViewHelper',
+       //                                 'Errors'
+       //                           ));
 
        $this->addSubForm($staticTasks, 'static_tasks');
 
+
+    }
+
+
+    public function makeLearningOutcomes()
+    {
+       $outcome1 = new Zend_Form_Element_Text('lrnOutcome1');
+       $outcome1->setRequired(true)
+                ->setLabel('1.')
+                ->addFilter('StringTrim')
+                ->addFilter('StripTags')
+                ->setAttrib('placeholder', 'Enter Learning Outcome')
+                ->setAttrib('size', 85);
+
+       $outcome2 = new Zend_Form_Element_Text('lrnOutcome2');
+       $outcome2->setRequired(true)
+                ->setLabel('2.')
+                ->addFilter('StringTrim')
+                ->addFilter('StripTags')
+                ->setAttrib('placeholder', 'Enter Learning Outcome')
+                ->setAttrib('size', 85);
+
+       $rating1 = new Zend_Form_Element_Radio('lrnOutcomeRating1');
+       $rating1->setRequired(true)
+               ->setLabel("Rate yourself on this learning outcome")
+               ->setMultiOptions($this->options)
+               ->setSeparator("");
+
+       $rating2 = new Zend_Form_Element_Radio('lrnOutcomeRating2');
+       $rating2->setRequired(true)
+               ->setLabel("Rate yourself on this learning outcome")
+               ->setMultiOptions($this->options)
+               ->setSeparator("");
+
+       $elems =  array($outcome1, $outcome2, $rating1, $rating2);
+
+       foreach ($elems as $t) {
+          $t->setDecorators( array('ViewHelper',
+                                   'Errors',
+                                   'Label'
+                          ));
+       }
+
+       return $elems;
 
     }
 

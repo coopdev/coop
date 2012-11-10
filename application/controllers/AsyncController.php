@@ -379,10 +379,10 @@ class AsyncController extends Zend_Controller_Action
     {
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
-       $formData = $_POST['formDynamics'];
-       die(var_dump($formData));
-       $statics = $_POST['formData']['static_tasks'];
-       $dynamics = $_POST['formData']['dynamic_tasks'];
+       //$formData = $_POST['formDynamics'];
+       $statics = $_POST['formStatics'];
+       //die(var_dump($statics));
+       $dynamics = $_POST['formDynamics'];
        $data = $_POST['data'];
        $assignment = $_POST['assignment'];
 

@@ -31,6 +31,10 @@
          e.preventDefault();
          data = getRec();
 
+         // Identify which assignment this is (student or supervisor eval).
+         // The forms 'value' attribute holds that info.
+         assignment = $("#studentEvalForm").attr("value");
+
 
          // Answers to dynamic questions.
          temp = $("#studentEvalForm .dynamic:checked");
@@ -45,6 +49,15 @@
 
          // Answers to static questions.
          formStatics = $("#studentEvalForm .static:checked");
+
+         // Learning outcome text boxes.
+         staticTexts = $("#studentEvalForm input[type=text].static");
+
+         $.each(staticTexts, function(i) {
+            //alert($(this));
+            formStatics = formStatics.add($(this));
+         });
+
          jsonstring = JSON.stringify(formStatics, null, 4);
          formStatics = JSON.parse(jsonstring);
          formStatics = formStatics.static_tasks;
@@ -53,14 +66,14 @@
 
          //$.post(base + "/async/resubmit-assignment", {'formData' : formData, 'data' : data, 'assignment' : assignment}, function(resp) {
          $.post(base + "/async/resubmit-assignment", { 'formStatics' : formStatics, 'formDynamics' : formDynas, 'data' : data, 'assignment' : assignment }, function(resp) {
-            $('#asyncContainer').empty();
-            $('#asyncContainer').append(resp);
-            //if (assignment == 'studentEval') {
-            //   $('button.studentEval').click();
-            //} 
-            //else if (assignment == 'supervisorEval') {
-            //   $('button.supervisorEval').click();
-            //}
+            //$('#asyncContainer').empty();
+            //$('#asyncContainer').append(resp);
+            if (assignment == 'studentEval') {
+               $('button.studentEval').click();
+            } 
+            else if (assignment == 'supervisorEval') {
+               $('button.supervisorEval').click();
+            }
 
          });
       });
