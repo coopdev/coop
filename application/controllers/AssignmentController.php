@@ -415,6 +415,22 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    /*
+     * View that displays links to Add, Edit, Delete the questions that are rated 
+     * (i.e. the questions that are rated from 1-4 or NA). These questions appear on the
+     * Student Eval, Supervisor Eval, Coop Agreement forms.
+     */
+    public function manageRatedQuestionsAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       $elems = new My_FormElement();
+
+       $this->view->classes = $elems->getClassChoiceSelect()->setLabel("Select Class");
+
+
+    }
+
     public function addQuestionAction()
     {
        $form = new Application_Form_AddQuestion();

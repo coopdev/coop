@@ -158,6 +158,7 @@ class Application_Form_StudentEval extends Zend_Form
        // Add learning outcomes.
        $lrnOutcomes = $this->makeLearningOutcomes();
        $staticTasks->addElements($lrnOutcomes);
+       $staticTasks->addElement($this->makeComment());
 
        $elems = $staticTasks->getElements();
        foreach ($elems as $e) {
@@ -215,6 +216,17 @@ class Application_Form_StudentEval extends Zend_Form
 
        return $elems;
 
+    }
+
+    public function makeComment()
+    {
+       $comment = new Zend_Form_Element_Textarea('comment');
+
+       $comment->addFilter('StringTrim')
+               ->addFilter('StripTags')
+               ->setLabel('Comments:');
+
+       return $comment;
     }
 
 

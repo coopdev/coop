@@ -7,12 +7,13 @@
    $editUrl = $this->url(array('controller' => 'assignment', 'action' => 'edit-duedate'));
    $extendUrl = $this->url(array('controller' => 'assignment', 'action' => 'extend-duedate'));
    $chooseClassUrl = $this->url(array('controller' => 'assignment', 'action' => 'student-eval-choose-class'));
+   $ratedQuestionsUrl = $this->url(array('controller' => 'assignment', 'action' => 'manage-rated-questions'));
 
 ?>
 
 <a class="regText" href="<?php echo $editUrl ?>"> Edit due dates </a><br /><br />
 <a class="regText" href="<?php echo $extendUrl ?>"> Extend due date </a><br /><br />
-<a class="regText" href="<?php echo $chooseClassUrl ?>"> Edit Survey Questions </a><br /><br /><br />
+<a class="regText" href="<?php echo $ratedQuestionsUrl ?>"> Manage Rated Questions </a><br /><br /><br />
 
 <table class="assignmentList">
 

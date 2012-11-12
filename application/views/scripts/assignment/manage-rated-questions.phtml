@@ -1,0 +1,50 @@
+<?php
+$this->pageTitle = "Manage Rated Questions";
+
+$backUrl = $this->url( array('action' => 'list-all', 
+                             'controller' => 'assignment') );
+
+$addUrl = $this->url( array('action' => 'add-rated-question', 
+                             'controller' => 'assignment') );
+
+$editUrl = $this->url( array('action' => 'edit-rated-question', 
+                             'controller' => 'assignment') );
+
+$delUrl = $this->url( array('action' => 'delete-rated-question', 
+                             'controller' => 'assignment') );
+?>
+
+
+<a class="regText questionMgmt" href='<?php echo $addUrl ?>'> Add Question </a> <br /> <br />
+<a class="regText questionMgmt" href='<?php echo $editUrl ?>'> Edit Question </a> <br /> <br />
+<a class="regText questionMgmt" href='<?php echo $delUrl ?>'> Delete Question </a> <br /> <br />
+<a class="regText" href='<?php echo $backUrl ?>'> Back </a> <br /> <br />
+
+<?php echo $this->classes ?>
+
+
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+
+   $("a.questionMgmt").live('click', function(e) {
+      //e.preventDefault();
+
+      url = $(this).attr('href');
+
+      classId = $("#classes_id").val();
+
+      // Add the id of the selected class to the end of the url of the link which was clicked.
+      url += "?classId=" + classId;
+
+      $(this).attr('href', url);
+
+   });
+
+
+});
+
+
+
+</script>
+
