@@ -114,6 +114,8 @@
         <formFile formName="DeleteBackups"/>
         <formFile formName="SurveyGlobalOptions"/>
         <formFile formName="LearningOutcomeMgmt"/>
+        <formFile formName="AddRatedQuestion"/>
+        <formFile formName="EditRatedQuestions"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

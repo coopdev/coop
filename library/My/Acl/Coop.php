@@ -86,6 +86,8 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_learning-outcome'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_set-stu-eval-option-amount'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_manage-rated-questions'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_add-rated-question'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_edit-rated-question'), 'assignment');
 
 
       /* Async Controller */

@@ -1,0 +1,14 @@
+<?php $url =  $this->url(array('controller' => 'assignment', 'action' => 'manage-rated-questions')); ?>
+
+<a class="regText" href="<?php echo $url ?>"> Back to menu </a> <br /> <br />
+
+<?php
+$this->pageTitle = "Add Question";
+
+$form = $this->form;
+
+echo $form;
+
+$url =  $this->url(array('controller' => 'assignment', 'action' => 'manage-rated-questions'));
+
+?>

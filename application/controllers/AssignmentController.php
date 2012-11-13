@@ -431,6 +431,78 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+
+    public function addRatedQuestionAction()
+    {
+       $form = new Application_Form_AddRatedQuestion();
+       $this->view->form = $form;
+       $coopSess = new Zend_Session_Namespace('coop');
+       
+       // If request is a GET, must set the classId to what was chosen from previous view.
+       if ($this->getRequest()->isGet()) {
+          $coopSess->addRatedQuestionClassId = $_GET['classId'];
+
+       } else if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $Assign = new My_Model_Assignment();
+             $data['classes_id'] = $coopSess->addRatedQuestionClassId;
+             $data['assignments_id'] = $Assign->getStudentEvalId();
+
+             $res = $Assign->addRatedQuestion($data);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+
+          }
+       }
+    }
+
+
+    public function editRatedQuestionAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       if ($this->getRequest()->isGet()) {
+          $coopSess->editRatedQuestionClassId = $_GET['classId'];
+       }
+
+       $form = new Application_Form_EditRatedQuestions(array(
+                                'classId' => $coopSess->editRatedQuestionClassId));
+
+       $this->view->form = $form;
+
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+          unset($data['Submit']);
+
+          if ($form->isValid($data)) {
+             $Assign = new My_Model_Assignment();
+             $where['classes_id'] = $coopSess->editRatedQuestionClassId;
+             $where['assignments_id'] = $Assign->getStudentEvalId();
+
+             $res = $Assign->updateRatedQuestions($data, $where);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+             
+          }
+
+
+       }
+
+    }
+    
+
     public function addQuestionAction()
     {
        $form = new Application_Form_AddQuestion();

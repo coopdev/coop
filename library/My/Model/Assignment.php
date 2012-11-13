@@ -698,6 +698,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
+/*********************** Methods For Managing Assignment Questions **********************/
+
+   
    /**
     * Updates questions to assignments.
     * 
@@ -779,6 +782,51 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $aq->insert($data);
       } catch(Exception $e) {
          return false;
+      }
+
+      return true;
+
+   }
+
+   public function addRatedQuestion($data)
+   {
+      if (isset($data['Submit'])) {
+         unset($data['Submit']);
+      }
+
+      //die(var_dump($data));
+      $aq = new My_Model_AssignmentQuestions();
+
+      try {
+         $aq->insert($data);
+      } catch (Exception $e) {
+         return false;
+      }
+
+      return true;
+
+   }
+   
+   public function updateRatedQuestions($data, $where)
+   {
+      $db = new My_Db();
+
+      $where = $db->buildArrayWhereClause($where);
+
+      $aq = new My_Model_AssignmentQuestions();
+
+      foreach ($data as $qid => $val) {
+
+         try {
+            $where[] = "id = $qid";
+            $res = $aq->update( array('question_text' => $val), $where);
+            array_pop($where);
+
+         } catch(Exception $e) {
+
+            return false;
+
+         }
       }
 
       return true;
@@ -963,6 +1011,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
 
    }
+
+/********************** End Methods For Managing Assignment Questions *******************/
 
 
    public function getAll()
