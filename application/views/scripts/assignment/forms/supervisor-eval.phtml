@@ -1,32 +1,35 @@
 <?php
+$coopSess = new Zend_Session_Namespace('coop');
+echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
+
 $elems = $this->element;
 
 ?>
-<form id="supervisor-eval-form" method="<?php echo $elems->getMethod() ?>" action="<?php echo $elems->getAction() ?>">
+<form id="studentEvalForm" method="<?php echo $elems->getMethod() ?>" action="<?php echo $elems->getAction() ?>">
 
    <div id="col1-fields">
       
-      <?php echo $elems->statics->position ?> <br />
+      <?php echo $elems->static_tasks->position ?> <br />
 
-      <?php echo $elems->statics->semester_dates ?>
+      <?php echo $elems->static_tasks->semester_dates ?>
       
    </div>
 
    
    <div id="col2-fields">
       
-      <?php echo $elems->statics->company ?> <br />
+      <?php echo $elems->static_tasks->company ?> <br />
 
-      <?php echo $elems->statics->superv ?>
+      <?php echo $elems->static_tasks->superv ?>
       
    </div>
 
    
    <div id="col3-fields">
 
-      <?php echo $elems->statics->hrs_per_week ?> <br />
+      <?php echo $elems->static_tasks->hrs_per_week ?> <br />
 
-      <?php echo $elems->statics->phone ?>
+      <?php echo $elems->static_tasks->phone ?>
 
    </div>
 
@@ -44,7 +47,7 @@ $elems = $this->element;
             <!-- DYNAMIC TASKS -->
 <?php 
 
-   foreach ($elems->dynamics as $t) {
+   foreach ($elems->dynamic_tasks as $t) {
       echo "$t <br />";
    }
 
@@ -52,7 +55,7 @@ $elems = $this->element;
 
 
      <!-- ONLY SHOW THIS DIV IF THERE SHOULD BE A LEARNING OUTCOME SECTION -->
-<?php if (!empty($elems->statics->lrnObjective1)) { ?>
+<?php if (!empty($elems->static_tasks->lrnObjective1)) { ?>
    <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
       <h3> 
          <b> SPECIFIC LEARNING OBJECTIVE </b>
@@ -62,11 +65,11 @@ $elems = $this->element;
 
 
 <?php
-echo $elems->statics->lrnObjective1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
-        $elems->statics->lrnObjectiveRating1 . "<br /> <br />";
+echo $elems->static_tasks->lrnObjective1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+        $elems->static_tasks->lrnObjectiveRating1 . "<br /> <br />";
 
-echo $elems->statics->lrnObjective2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
-        $elems->statics->lrnObjectiveRating2 . "<br /> <br />";
+echo $elems->static_tasks->lrnObjective2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+        $elems->static_tasks->lrnObjectiveRating2 . "<br /> <br />";
 
 
 echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
@@ -74,11 +77,25 @@ echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
 
 
 //echo "<b> Average hours student worked per week during evaluation period: </b> <br />";
-echo $elems->statics->avg_hrs . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
-echo $elems->statics->hrly_wage . "<br /><br />";
+echo $elems->static_tasks->avg_hrs . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+echo $elems->static_tasks->hrly_wage . "<br /><br />";
 
 echo "<b> Comments: </b><br />";
-echo $elems->statics->comments;
+echo $elems->static_tasks->comments . "<br /> <br />";
+
+//echo "<b> OVERALL EVALUATION: </b>" . $elems->static_tasks->overall_eval;
 ?>
+
+<div style="border-top: 1px solid;"> </div> <br />
+<h3>
+   <b> OVERALL EVALUATION: </b> <?php echo $elems->static_tasks->overall_eval ?>
+</h3> <br /> <br />
+
+<?php
+echo $elems->saveOnly;
+echo $elems->finalSubmit;
+
+?>
+
 
 </form>
