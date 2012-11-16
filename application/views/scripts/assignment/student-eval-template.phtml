@@ -7,6 +7,8 @@
    </h4> 
 </div> <br />
 
+
+
             <!-- STATIC TASKS -->
 <?php
    $elems = $this->element;
@@ -16,6 +18,8 @@
    echo $elems->static_tasks->static_task3 . "<br />"; 
    echo $elems->static_tasks->static_task4 . "<br />"; 
 ?>
+            
+            
 
 <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
    <h4> 
@@ -23,6 +27,7 @@
       4=Always meets Standard 3=Usually meets Standard 2=Approaches Standard 1=Below Standard NA=Not Applicable
    </h4> 
 </div> <br />
+
 
 
             <!-- DYNAMIC TASKS -->
@@ -34,15 +39,22 @@
 
 ?> 
 
-<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
-   <h3> 
-      <b> SPECIFIC LEARNING OUTCOMES </b>
-   </h3> 
-</div> <br />
+     <!-- ONLY SHOW THIS DIV IF THERE SHOULD BE A LEARNING OUTCOME SECTION -->
+<?php if (!empty($elems->static_tasks->lrnOutcome1)) { ?>
+   <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+      <h3> 
+         <b> SPECIFIC LEARNING OUTCOMES </b>
+      </h3> 
+   </div> <br />
+<?php } ?>
+
+
 
 <?php
 echo $elems->static_tasks->lrnOutcome1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $elems->static_tasks->lrnOutcomeRating1 . "<br /> <br />";
 echo $elems->static_tasks->lrnOutcome2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $elems->static_tasks->lrnOutcomeRating2 . "<br /> <br />";
+
+echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
 
 echo $elems->static_tasks->comment . "<br /> <br />";
 ?>

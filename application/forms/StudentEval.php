@@ -153,11 +153,16 @@ class Application_Form_StudentEval extends Zend_Form
        $staticTasks->addElements(array($task1,$task2,$task3,$task4));
 
 
-       //die(var_dump($staticTasks));
-
+       // Only Add learning outcomes if class is upper level.
+       $Class = new My_Model_Class();
+       $classRow = $Class->getClass($this->classId);
        // Add learning outcomes.
-       $lrnOutcomes = $this->makeLearningOutcomes();
-       $staticTasks->addElements($lrnOutcomes);
+       if ($classRow['level'] === 'upper') {
+          $lrnOutcomes = $this->makeLearningOutcomes();
+          $staticTasks->addElements($lrnOutcomes);
+       }
+
+
        $staticTasks->addElement($this->makeComment());
 
        $elems = $staticTasks->getElements();

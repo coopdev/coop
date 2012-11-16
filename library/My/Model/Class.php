@@ -81,6 +81,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    {
       $vals['name'] = $data['name'];
       $vals['coordinator'] = $data['coordinator'];
+      $vals['level'] = $data['level'];
       if (empty($vals['coordinator'])) {
          $vals['coordinator'] = null;
       }

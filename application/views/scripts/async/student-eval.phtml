@@ -58,21 +58,10 @@
             formStatics = formStatics.add($(this));
          });
 
-         // test
-         formStatics.each(function(k,v) {
-            temp = {};
-            name = $(this).attr('name');
-            name = name.split('[')[1].split(']')[0].trim();
-            temp[name] = $(this).val();
-         });
 
-         formStatics = temp;
-
-         // end test
-
-         //jsonstring = JSON.stringify(formStatics, null, 4);
-         //formStatics = JSON.parse(jsonstring);
-         //formStatics = formStatics.static_tasks;
+         jsonstring = JSON.stringify(formStatics, null, 4);
+         formStatics = JSON.parse(jsonstring);
+         formStatics = formStatics.static_tasks;
 
 
 

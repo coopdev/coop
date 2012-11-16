@@ -87,7 +87,6 @@ class ClassController extends Zend_Controller_Action
                 $this->_helper->redirector('listall');
              }
 
-
           }
 
        }
@@ -126,6 +125,7 @@ class ClassController extends Zend_Controller_Action
           //$form = new Application_Form_AddClass();
           $data['name'] = $_POST['name'];
           $data['coordinator'] = $_POST['coordinator'];
+          $data['level'] = $_POST['level'];
 
           if ($form->isValid($data)) {
              $class = new My_Model_Class();
