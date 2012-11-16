@@ -116,6 +116,7 @@
         <formFile formName="LearningOutcomeMgmt"/>
         <formFile formName="AddRatedQuestion"/>
         <formFile formName="EditRatedQuestions"/>
+        <formFile formName="SupervisorEval"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

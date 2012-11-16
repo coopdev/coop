@@ -117,8 +117,12 @@ class AssignmentController extends Zend_Controller_Action
        $classId = $subForStudentData['classes_id'];
        $assignId = $subForStudentData['assignments_id'];
 
-       $form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+       //$form = new Application_Form_StudentEval(array('assignId' => $assignId, 
+       //                                               'classId' => $classId));
+                                                      
+       $form = new Application_Form_SupervisorEval(array('assignId' => $assignId, 
                                                       'classId' => $classId));
+
        $this->view->form = $form;
 
        if ($this->getRequest()->isPost()) {

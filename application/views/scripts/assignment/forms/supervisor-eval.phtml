@@ -1,0 +1,84 @@
+<?php
+$elems = $this->element;
+
+?>
+<form id="supervisor-eval-form" method="<?php echo $elems->getMethod() ?>" action="<?php echo $elems->getAction() ?>">
+
+   <div id="col1-fields">
+      
+      <?php echo $elems->statics->position ?> <br />
+
+      <?php echo $elems->statics->semester_dates ?>
+      
+   </div>
+
+   
+   <div id="col2-fields">
+      
+      <?php echo $elems->statics->company ?> <br />
+
+      <?php echo $elems->statics->superv ?>
+      
+   </div>
+
+   
+   <div id="col3-fields">
+
+      <?php echo $elems->statics->hrs_per_week ?> <br />
+
+      <?php echo $elems->statics->phone ?>
+
+   </div>
+
+   <br />
+
+
+   <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+      <h4> 
+         PLEASE RATE THE STUDENT'S PERFORMANCE FOR EACH TASK LISTED BELOW: <br /> 
+         4=Always meets Standard  3=Usually Meets Standard 2=Approaches Standard 1=Below Standard NA=Not Applicable
+      </h4> 
+   </div> <br />
+
+
+            <!-- DYNAMIC TASKS -->
+<?php 
+
+   foreach ($elems->dynamics as $t) {
+      echo "$t <br />";
+   }
+
+?> 
+
+
+     <!-- ONLY SHOW THIS DIV IF THERE SHOULD BE A LEARNING OUTCOME SECTION -->
+<?php if (!empty($elems->statics->lrnObjective1)) { ?>
+   <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+      <h3> 
+         <b> SPECIFIC LEARNING OBJECTIVE </b>
+      </h3> 
+   </div> <br />
+<?php } ?>
+
+
+<?php
+echo $elems->statics->lrnObjective1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+        $elems->statics->lrnObjectiveRating1 . "<br /> <br />";
+
+echo $elems->statics->lrnObjective2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+        $elems->statics->lrnObjectiveRating2 . "<br /> <br />";
+
+
+echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
+
+
+
+//echo "<b> Average hours student worked per week during evaluation period: </b> <br />";
+echo $elems->statics->avg_hrs . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+echo $elems->statics->hrly_wage . "<br /><br />";
+
+echo "<b> Comments: </b><br />";
+echo $elems->statics->comments;
+?>
+
+</form>
