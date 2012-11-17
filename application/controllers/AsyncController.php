@@ -351,18 +351,17 @@ class AsyncController extends Zend_Controller_Action
                                                         ));
           } else {
              $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 
-                                                            'assignId' => $data['assignments_id'],
-                                                            'populateForm' => false));
-             $form = $as->populateStudentEval($form, $data);
+                                                            'semId' => $data['semesters_id'],
+                                                            'username' => $data['username']
+                                                            ));
           }
-
-
 
 
           // Remove one of the submit buttons.
           $form->removeElement('saveOnly');
           $form->getElement('finalSubmit')
                 ->setLabel("Submit");
+          
 
           // Disable form elements.
           //foreach ($form as $f) {
@@ -372,8 +371,6 @@ class AsyncController extends Zend_Controller_Action
           $this->view->assign = $as->getAssignment($data['assignments_id']);
 
           $this->view->form = $form;
-          //die(var_dump($rows));
-          //var_dump($rows);
        } else {
           // If not a POST request, don't render the view
           $this->_helper->viewRenderer->setNoRender();

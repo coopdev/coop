@@ -77,8 +77,12 @@ class AssignmentController extends Zend_Controller_Action
 
        $coopSess = new Zend_Session_Namespace('coop');
        $classId = $coopSess->currentClassId;
+       $semId = $coopSess->currentSemId;
+       $username = $coopSess->username;
 
-       $form = new Application_Form_StudentEval(array('classId' => $classId, 'assignId' => $assignId));
+       $form = new Application_Form_StudentEval(array('classId' => $classId, 
+                                                      'semId' => $semId,
+                                                      'username' => $username));
 
        $this->view->form = $form;
 
