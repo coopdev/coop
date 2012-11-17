@@ -273,6 +273,8 @@ class AssignmentController extends Zend_Controller_Action
              if ($assignNum === '6') {
                 //$this->_helper->redirector('supervisor-eval', 'assignment', null, array('assignId' => $assignId, 'classId' => $classId));
                 $this->_helper->redirector('supervisor-eval', 'assignment');
+             } else if ($assignNum === '3') {
+                $this->_helper->redirector('coop-agreement', 'form');
              }
              //die(var_dump($assignNum));
 

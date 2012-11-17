@@ -39,7 +39,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('form'));
       $this->add(new Zend_Acl_Resource('form_student-info-show'), 'form');
       $this->add(new Zend_Acl_Resource('form_student-info-submit'), 'form');
-      $this->add(new Zend_Acl_Resource('form_coop-agreement-show'), 'form');
+      $this->add(new Zend_Acl_Resource('form_coop-agreement'), 'form');
       $this->add(new Zend_Acl_Resource('form_coop-agreement-pdf'), 'form');
       
       /* User Controller */

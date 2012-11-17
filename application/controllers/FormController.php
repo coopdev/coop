@@ -72,36 +72,24 @@ class FormController extends Zend_Controller_Action
        }
     }
 
-    public function coopAgreementShowAction()
+    // Old name coopAgreementShow.
+    public function coopAgreementAction()
     {
-       $form = new Application_Form_Contract();
 
        $coopSess = new Zend_Session_Namespace('coop');
 
-       $form->setAction($coopSess->baseUrl . '/form/coop-agreement-pdf');
+       $subForStudentData = $coopSess->submitForStudentData;
+       //die(var_dump($subForStudentData));
+       $classId = $subForStudentData['classes_id'];
+       //$assignId = $subForStudentData['assignments_id'];
+       $username = $subForStudentData['username'];
+       $semId = $subForStudentData['semesters_id'];
 
-       $username = $coopSess->username;
+       $form = new Application_Form_Agreement(array('username' => $username, 
+                                                    'classId' => $classId,
+                                                    'semId' => $semId));
 
-       //die($username);
 
-       $user = new My_Model_User();
-
-       $data = $user->fetchRow("username = '$username'")->toArray();
-       $form->populate($data);
-
-       $data = $user->getStudentInfo();
-       $stuInfo['grad_date'] = $data['grad_date'];
-       $form->populate($stuInfo);
-
-       $data = $user->getSemesterInfo(array('username' => $coopSess->username,
-                                            'classes_id' => $coopSess->currentClassId,
-                                            'semesters_id' => $coopSess->currentSemId));
-       $data = $data[0];
-       $data = $user->getCoordInfo(array('username' => $data['coordinator']));
-       $coordInfo['coord_phone'] = $data[0]['phonenumber'];
-       $form->populate($coordInfo);
-
-       //die(var_dump($coordInfo));
 
        $this->view->form = $form;
 
