@@ -11,7 +11,6 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
     public function init()
     {
        $as = new My_Model_Assignment();
-
        $this->assignId = $as->getStudentEvalId();
 
        $this->setDecorators(array(array('ViewScript', 
@@ -32,18 +31,16 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        $finalSubmit->setLabel('Submit as Final')
                    ->setAttrib('class', 'resubmit');
 
+       $this->addElements(array($saveSubmit,$finalSubmit));
+       
+       
        // Checks if there are submitted answers in order to populate the form with them.
        if ($this->populateForm === true) {
           $this->checkSubmittedAnswers(); 
        }
 
-
-       // Only add submit buttons if there are questions and options.
-       $this->addElements(array($saveSubmit,$finalSubmit));
-
-
        $this->setElementDecorators(array('ViewHelper',
-                                        'Errors'
+                                         'Errors'
                                   ));
     }
 
