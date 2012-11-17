@@ -346,18 +346,18 @@ class AsyncController extends Zend_Controller_Action
           // Instantiate correct form.
           if (isset($_POST['supervisorEval'])) {
              $form = new Application_Form_SupervisorEval(array('classId' => $data['classes_id'], 
-                                                               'assignId' => $data['assignments_id'],
+                                                               'semId' => $data['semesters_id'],
+                                                               'username' => $data['username']
                                                         ));
           } else {
              $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 
                                                             'assignId' => $data['assignments_id'],
                                                             'populateForm' => false));
+             $form = $as->populateStudentEval($form, $data);
           }
 
 
 
-          $form = $as->populateStudentEval($form, $data);
-          //$rows = $as->populateStudentEval($form, $data);
 
           // Remove one of the submit buttons.
           $form->removeElement('saveOnly');

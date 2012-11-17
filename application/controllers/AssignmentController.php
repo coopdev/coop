@@ -114,14 +114,18 @@ class AssignmentController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
 
        $subForStudentData = $coopSess->submitForStudentData;
+       //die(var_dump($subForStudentData));
        $classId = $subForStudentData['classes_id'];
-       $assignId = $subForStudentData['assignments_id'];
+       //$assignId = $subForStudentData['assignments_id'];
+       $username = $subForStudentData['username'];
+       $semId = $subForStudentData['semesters_id'];
 
        //$form = new Application_Form_StudentEval(array('assignId' => $assignId, 
        //                                               'classId' => $classId));
                                                       
-       $form = new Application_Form_SupervisorEval(array('assignId' => $assignId, 
-                                                      'classId' => $classId));
+       $form = new Application_Form_SupervisorEval(array('username' => $username, 
+                                                         'classId' => $classId,
+                                                         'semId' => $semId));
 
        $this->view->form = $form;
 
@@ -256,9 +260,7 @@ class AssignmentController extends Zend_Controller_Action
              $coopSess->submitForStudentData['classes_id'] = $data['classes_id'];
              $coopSess->submitForStudentData['assignments_id'] = $data['assignments_id'];
              $coopSess->submitForStudentData['username'] = $data['username'];
-             if (!empty($data['semesters_id'])) {
-                $coopSess->submitForStudentData['semesters_id'] = $data['semesters_id'];
-             }
+             $coopSess->submitForStudentData['semesters_id'] = $data['semesters_id'];
 
              $as = new My_Model_Assignment();
              $assignRow = $as->getAssignment($data['assignments_id']);

@@ -6,7 +6,7 @@
  *         AssignmentController->supervisorEvalPdfAction()
  *         AsyncController->studentEvalAction()
  */
-class Application_Form_StudentEval extends Zend_Form
+class Application_Form_StudentEval extends Application_Form_CommonForm
 {
     protected $classId;
     protected $assignId;
@@ -20,6 +20,8 @@ class Application_Form_StudentEval extends Zend_Form
     // Form may still be populated from somewhere else.  Setting this to true just tells
     // it to do it from this class.
     protected $populateForm = true; 
+    
+    
 
     public function init()
     {

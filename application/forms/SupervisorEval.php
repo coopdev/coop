@@ -1,19 +1,14 @@
 <?php
 
-class Application_Form_SupervisorEval extends Zend_Form
+class Application_Form_SupervisorEval extends Application_Form_CommonForm
 {
-    protected $classId;
-    protected $assignId;
-    protected $options = array('4' => '4',
-                               '3' => '3',
-                               '2' => '2',
-                               '1' => '1',
-                               'NA' => 'NA');
-
-    protected $populateForm = true;
 
     public function init()
     {
+       $Assign = new My_Model_Assignment();
+       $this->assignId = $Assign->getSupervisorEvalId();
+       
+       
        $this->setDecorators(array(array('ViewScript', 
                                   array('viewScript' => '/assignment/forms/supervisor-eval.phtml'))));
 
@@ -119,45 +114,7 @@ class Application_Form_SupervisorEval extends Zend_Form
 
     }
 
-    private function makeDynamics()
-    {
-       $aq = new My_Model_AssignmentQuestions();
-       $Assignment = new My_Model_Assignment();
-       $stuEvalId = $Assignment->getStudentEvalId();
-       
-       
-       $questions = $aq->getQuestions(array('classes_id' => $this->classId, 'assignments_id' => $stuEvalId));
-       //die(var_dump($questions));
-       
-       $dynamic_tasks = new Zend_Form_SubForm('dynamic_tasks');
-       $dynamic_tasks->setDecorators(array('FormElements',
-                                      array('HtmlTag', array('tag' => 'div'))
-                                ));
-       $dynamic_tasks->setElementsBelongTo('dynamic_tasks');
-
-       $qnum = 0;
-       foreach ($questions as $q) {
-
-          // Only include non parent type questions.
-          if ($q['question_type'] !== 'parent') {
-             $elem = new Zend_Form_Element_Radio($q['id']);
-             $elem->setLabel(++$qnum . '. ' . $q['question_text'])
-                  ->setRequired(true)
-                  ->setAttrib('class', 'dynamic')
-                  ->setSeparator('')
-                  //->setMultiOptions($options);
-                  ->setMultiOptions($this->options);
-             
-             $dynamic_tasks->addElement($elem);
-          }
-
-       }
-
-       $this->addSubForm($dynamic_tasks, 'dynamic_tasks');
-       
-
-
-    }
+    
 
     public function makeLearningObjectives()
     {
@@ -202,40 +159,5 @@ class Application_Form_SupervisorEval extends Zend_Form
 
     }
 
-    public function checkSubmittedAnswers()
-    {
-       $coopSess = new Zend_Session_Namespace('coop');
-       // If 
-       if ($coopSess->role === 'user') {
-          $where['username'] = $coopSess->username;
-       } else if ($coopSess->role === 'coordinator') {
-          $where['username'] = $coopSess->submitForStudentData['username'];
-       }
-
-       $where['classes_id'] = $this->classId;
-       $where['assignments_id'] = $this->assignId;
-       $where['semesters_id'] = $coopSess->currentSemId;
-
-       //die(var_dump($this->assignId));
-       $assign = new My_Model_Assignment();
-       if ($assign->isSubmitted($where) || $assign->isSaveOnly($where)) {
-          $assign->populateStudentEval($this, $where);
-       }
-    }
-    
-
-    public function setClassId($classId)
-    {
-       $this->classId = $classId;
-
-    }
-
-
-    public function setAssignId($assignId)
-    {
-       //die($assignId);
-       $this->assignId = $assignId;
-
-    }
 }
 

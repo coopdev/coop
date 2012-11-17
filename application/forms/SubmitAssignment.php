@@ -51,8 +51,6 @@ class Application_Form_SubmitAssignment extends Zend_Form
        $semesters = new Zend_Form_Element_Select('semesters_id');
        $semesters->setLabel("Select semester");
 
-       $semesters->addMultiOptions(array('' => "--------------"));
-
        foreach ($sems as $s) {
           $semesters->addMultiOptions(array($s['id'] => $s['semester']));
        }
