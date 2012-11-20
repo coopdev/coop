@@ -19,6 +19,31 @@ class Application_Form_CommonForm extends Zend_Form
     }
 
 
+    // Supervisor Eval and Agreement form have some fields which are the same (at the top
+    // of form). This method creates those and returns them.
+    public function makeCommonFormFields()
+    {
+       $elems = new My_FormElement();
+
+       $position = $elems->getCommonTbox('position', 'Position:');
+       //die(var_dump($position->getId()));
+       //die(var_dump($position));
+
+       $company = $elems->getCommonTbox('company', 'Company:');
+
+       $hours = $elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
+       
+       $semesters = $elems->getCommonTbox('semester_dates', 'Semester Dates:');
+       
+       $superv = $elems->getCommonTbox('superv', 'Supervisor:');
+       
+       $phone = $elems->getCommonTbox('phone', 'Telephone:');
+
+       return array($position, $company, $hours, $semesters, $superv, $phone);
+
+    }
+
+
     public function checkSubmittedAnswers()
     {
        $coopSess = new Zend_Session_Namespace('coop');

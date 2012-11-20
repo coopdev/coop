@@ -89,9 +89,25 @@ class FormController extends Zend_Controller_Action
                                                     'classId' => $classId,
                                                     'semId' => $semId));
 
-
-
        $this->view->form = $form;
+
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->submitStudentEval($data);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else if ($res === 'submitted') {
+                $this->view->resultMessage = "<p class='error'> Assignment has already been submitted </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+          }
+       }
 
     }
 

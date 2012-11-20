@@ -44,23 +44,26 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
     private function makeStatics()
     {
-       $static_tasks = new Zend_Form_SubForm();
+       $staticTasks = new Zend_Form_SubForm();
        $elems = new My_FormElement();
 
-       $position = $elems->getCommonTbox('position', 'Position:');
-       //die(var_dump($position->getId()));
-       //die(var_dump($position));
+       //$position = $elems->getCommonTbox('position', 'Position:');
+       ////die(var_dump($position->getId()));
+       ////die(var_dump($position));
 
-       $company = $elems->getCommonTbox('company', 'Company:');
+       //$company = $elems->getCommonTbox('company', 'Company:');
 
-       $hours = $elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
+       //$hours = $elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
+       //
+       //$semesters = $elems->getCommonTbox('semester_dates', 'Semester Dates:');
+       //
+       //$superv = $elems->getCommonTbox('superv', 'Supervisor:');
+       //
+       //$phone = $elems->getCommonTbox('phone', 'Telephone:');
        
-       $semesters = $elems->getCommonTbox('semester_dates', 'Semester Dates:');
-       
-       $superv = $elems->getCommonTbox('superv', 'Supervisor:');
-       
-       $phone = $elems->getCommonTbox('phone', 'Telephone:');
-       
+       $commonFields = $this->makeCommonFormFields();
+
+       $staticTasks->addElements($commonFields);
        
 
        // Only Add learning outcomes if class is upper level.
@@ -69,7 +72,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        // Add learning outcomes.
        if ($classRow['level'] === 'upper') {
           $lrnObjectives = $this->makeLearningObjectives();
-          $static_tasks->addElements($lrnObjectives);
+          $staticTasks->addElements($lrnObjectives);
        }
 
 
@@ -90,13 +93,14 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        
        
        
-       $static_tasks->addElements(array($position, $company, $hours, $semesters, $superv, 
-                    $phone, $avgHrs, $hrlyWage, $comments, $overallEval));
+       //$static_tasks->addElements(array($position, $company, $hours, $semesters, $superv, 
+       //             $phone, $avgHrs, $hrlyWage, $comments, $overallEval));
        
-       $static_tasks->setElementsBelongTo('static_tasks');
+       $staticTasks->addElements(array($avgHrs, $hrlyWage, $comments, $overallEval));
+       $staticTasks->setElementsBelongTo('static_tasks');
 
        // Make all elements required except 'comments'.
-       $temp = $static_tasks->getElements();
+       $temp = $staticTasks->getElements();
        foreach ($temp as $k => $v) {
           $v->setAttrib('class', 'static');
           if ($k !== 'comments') {
@@ -105,12 +109,12 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        }
 
        //$static_tasks = array($position, $company, $hours, $semesters, $superv, $phone);
-       $static_tasks->setElementDecorators(array('ViewHelper',
+       $staticTasks->setElementDecorators(array('ViewHelper',
                                            'Errors',
                                            'Label'
                                      ));
 
-       $this->addSubForm($static_tasks, 'static_tasks');
+       $this->addSubForm($staticTasks, 'static_tasks');
 
     }
 

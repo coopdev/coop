@@ -130,6 +130,21 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
    }
 
+   /* 
+    * Determines if a class is 193 or above or not.
+    */
+   public function isTransferable($classId)
+   {
+       $classRow = $this->getClass($classId);
+       // Add learning outcomes.
+       if ($classRow['level'] === 'upper') {
+          return true;
+       }
+
+       return false;
+      
+   }
+
 
    /**
     * Gets all the students enrolled in a specified class for the current semester
