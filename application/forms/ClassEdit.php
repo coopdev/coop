@@ -26,9 +26,9 @@ class Application_Form_ClassEdit extends Zend_Form
     {
        $elem = new Zend_Form_Element_Select('level');
 
-       $elem->setLabel("Level")
-            ->addMultiOptions(array('lower' => 'lower',
-                                    'upper' => 'upper'));
+       $elem->setLabel("Type")
+            ->addMultiOptions(array('lower' => 'Non-Transferable',
+                                    'upper' => 'Transferable'));
 
        return $elem;
 
