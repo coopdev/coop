@@ -327,6 +327,18 @@ class AsyncController extends Zend_Controller_Action
 
           $Assignment = new My_Model_Assignment();
 
+          //die(var_dump($data));
+          
+          
+          
+          if (isset($_POST['supervisorEval'])) {
+             $data['assignments_id'] = $Assignment->getSupervisorEvalId();
+          } else if (isset($_POST['coopAgreement'])) { 
+             $data['assignments_id'] = $Assignment->getCoopAgreementId();
+          } else {
+             $data['assignments_id'] = $Assignment->getStudentEvalId();
+          }
+             
           // check if student eval has been submitted first
           $res = $Assignment->isSubmitted($data);
           // if not submitted
@@ -343,21 +355,17 @@ class AsyncController extends Zend_Controller_Action
                                                                'username' => $data['username']
                                                         ));
              
-             $data['assignments_id'] = $Assignment->getSupervisorEvalId();
           }  else if (isset($_POST['coopAgreement'])) { 
              $form = new Application_Form_Agreement(array('classId' => $data['classes_id'], 
                                                           'semId' => $data['semesters_id'],
                                                           'username' => $data['username']
                                                    ));
              
-             $data['assignments_id'] = $Assignment->getCoopAgreementId();
           } else {
              $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 
                                                             'semId' => $data['semesters_id'],
                                                             'username' => $data['username']
                                                      ));
-             
-             $data['assignments_id'] = $Assignment->getStudentEvalId();
           }
 
 

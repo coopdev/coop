@@ -118,6 +118,7 @@
         <formFile formName="EditRatedQuestions"/>
         <formFile formName="SupervisorEval"/>
         <formFile formName="CommonForm"/>
+        <formFile formName="DeleteRatedQuestions"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

@@ -488,7 +488,7 @@ class AssignmentController extends Zend_Controller_Action
                                 'classId' => $coopSess->editRatedQuestionClassId));
 
        $this->view->form = $form;
-
+       $this->view->formName = $form->formName;
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
@@ -506,9 +506,41 @@ class AssignmentController extends Zend_Controller_Action
              } else {
                 $this->view->resultMessage = "<p class='error'> Error </p>";
              }
-             
           }
+       }
+    }
 
+    public function deleteRatedQuestionAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       if ($this->getRequest()->isGet()) {
+          $coopSess->deleteRatedQuestionClassId = $_GET['classId'];
+       }
+
+       $form = new Application_Form_DeleteRatedQuestions(array(
+                                'classId' => $coopSess->deleteRatedQuestionClassId));
+
+       $this->view->form = $form;
+
+       $Class = new My_Model_Class();
+
+       if ($this->getRequest()->isPost()) {
+          $questionIds = $_POST['questions'];
+          $Assign = new My_Model_Assignment();
+
+          $res = $Assign->deleteRatedQuestions($questionIds);
+
+          if ($res === true) {
+             $this->view->resultMessage = "<p class='success'> Success </p>";
+             
+             $form = new Application_Form_DeleteRatedQuestions(array(
+                                      'classId' => $coopSess->deleteRatedQuestionClassId));
+
+             $this->view->form = $form;
+          } else {
+             $this->view->resultMessage = "<p class='error'> Error </p>";
+          }
 
        }
 

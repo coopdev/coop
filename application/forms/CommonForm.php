@@ -2,6 +2,8 @@
 
 class Application_Form_CommonForm extends Zend_Form
 {
+    // $assignId is only used to get answers to submitted forms, not the actual questions
+    // since all three forms using this Class share the same questions.
     protected $assignId;
     protected $classId;
     protected $username;
@@ -17,6 +19,7 @@ class Application_Form_CommonForm extends Zend_Form
     public function init()
     {
     }
+
 
 
     // Supervisor Eval and Agreement form have some fields which are the same (at the top

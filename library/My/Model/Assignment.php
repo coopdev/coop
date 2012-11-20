@@ -833,6 +833,28 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function deleteRatedQuestions($questionIds)
+   {
+      $where = "id IN (";
+      foreach ($questionIds as $qid) {
+         $where .=  "$qid,";
+      }
+      $where = substr_replace($where, '', strlen($where) - 1); 
+      
+      $where .= ")";
+
+      $AssignQuestion = new My_Model_AssignmentQuestions();
+
+      try {
+         $AssignQuestion->delete($where);
+         return true;
+      } catch (Exception $e) {
+         return false;
+      }
+
+
+   }
+
    /**
     * Adds a header or child question to the student eval form.
     * 

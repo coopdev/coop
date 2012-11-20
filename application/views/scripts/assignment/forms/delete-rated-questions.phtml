@@ -1,0 +1,16 @@
+<form method="POST" actions="">
+   
+   
+<?php
+$questions = $this->element->questions->getMultiOptions();
+
+foreach ($questions as $q) {
+   echo $q . "<br /> <br />";
+
+
+}
+?>
+
+
+
+</form>
