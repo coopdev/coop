@@ -19,6 +19,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
           $this->setDecorators(array(array('ViewScript', 
                                       array('viewScript' => '/form/coop-agreement-template.phtml'))));
 
+          $this->makeJobsiteSubform();
 
           $this->makeStatics();
 
@@ -50,6 +51,8 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
 
 
+
+
       public function makeStatics()
       {
          $staticTasks = new Zend_Form_SubForm();
@@ -58,12 +61,6 @@ class Application_Form_Agreement extends Application_Form_CommonForm
                                            array('HtmlTag', array('tag' => 'div'))
                                      ));
 
-         $formFields = $this->makeCommonFormFields();
-
-         //die(var_dump($formFields));
-
-
-         $staticTasks->addElements($formFields);
 
          $Elems = new My_FormElement();
 

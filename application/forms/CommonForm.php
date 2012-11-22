@@ -24,9 +24,14 @@ class Application_Form_CommonForm extends Zend_Form
 
     // Supervisor Eval and Agreement form have some fields which are the same (at the top
     // of form). This method creates those and returns them.
-    public function makeCommonFormFields()
+    private function makeJobsiteFields()
     {
        $elems = new My_FormElement();
+
+       $id = new Zend_Form_Element_Hidden('id');
+       //$id = new Zend_Form_Element_Text('id');
+
+       //die(var_dump($id));
 
        $position = $elems->getCommonTbox('position', 'Position:');
        //die(var_dump($position->getId()));
@@ -38,11 +43,50 @@ class Application_Form_CommonForm extends Zend_Form
        
        $semesters = $elems->getCommonTbox('semester_dates', 'Semester Dates:');
        
-       $superv = $elems->getCommonTbox('superv', 'Supervisor:');
+       $superv = $elems->getCommonTbox('supervisor', 'Supervisor:');
        
        $phone = $elems->getCommonTbox('phone', 'Telephone:');
 
-       return array($position, $company, $hours, $semesters, $superv, $phone);
+       return array($id, $position, $company, $hours, $semesters, $superv, $phone);
+
+    }
+    
+    public function makeJobsiteSubform()
+    {
+       $formFields = $this->makeJobsiteFields();
+
+       $jobSiteSubform = new Zend_Form_SubForm('jobsite');
+       $jobSiteSubform->setElementsBelongTo('jobsite');
+
+       $jobSiteSubform->addElements($formFields);
+       foreach ($jobSiteSubform as $j) {
+          $j->setAttrib('class','jobsite');
+       }
+
+
+       $this->populateJobsiteFields($jobSiteSubform);
+       
+       
+       $jobSiteSubform->setElementDecorators(array('ViewHelper',
+                                           'Errors',
+                                           'Label'
+                                     ));
+       
+
+       $this->addSubForm($jobSiteSubform, 'jobsite');
+
+       
+    }
+    
+    private function populateJobsiteFields($jobSiteSubForm)
+    {
+       $Jobsite = new My_Model_Jobsites();
+
+       $record = $Jobsite->fetchLast( array('username' => $this->username,
+                          'classes_id' => $this->classId, 
+                          'semesters_id' => $this->semId) );
+
+       $jobSiteSubForm->populate($record->toArray());
 
     }
 
@@ -100,8 +144,13 @@ class Application_Form_CommonForm extends Zend_Form
        $this->addSubForm($dynamic_tasks, 'dynamic_tasks');
 
     }
+
+
     
 
+    
+    
+    /* SETTERS */
     public function setClassId($classId)
     {
        $this->classId = $classId;
@@ -122,6 +171,31 @@ class Application_Form_CommonForm extends Zend_Form
     public function setSemId($semId)
     {
        $this->semId = $semId;
+    }
+    
+
+    
+    /* GETTERS */
+    public function getClassId()
+    {
+       return $this->classId;
+
+    }
+
+    public function getUsername()
+    {
+       return $this->username;
+
+    }
+
+    public function getAssignId()
+    {
+       return $this->assignId;
+    }
+
+    public function getSemId()
+    {
+       return $this->semId;
     }
 }
 

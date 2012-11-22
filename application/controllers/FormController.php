@@ -72,7 +72,6 @@ class FormController extends Zend_Controller_Action
        }
     }
 
-    // Old name coopAgreementShow.
     public function coopAgreementAction()
     {
 
@@ -89,15 +88,18 @@ class FormController extends Zend_Controller_Action
                                                     'classId' => $classId,
                                                     'semId' => $semId));
 
+       //$form->
        $this->view->form = $form;
-
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          //die(var_dump($data));
 
           if ($form->isValid($data)) {
+             //die(var_dump($form));
              $as = new My_Model_Assignment();
-             $res = $as->submitStudentEval($data);
+             //$Jobsite = new My_Model_Jobsites();
+             $res = $as->submitStudentEval($form);
 
              if ($res === true) {
                 $this->view->resultMessage = "<p class='success'> Success </p>";

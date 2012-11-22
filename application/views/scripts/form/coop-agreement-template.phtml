@@ -3,13 +3,16 @@ $elems = $this->element;
 ?>
 
 <form method="POST" id="studentEvalForm" action="" >
-   <?php echo $elems->static_tasks->position ?>
-   <?php echo $elems->static_tasks->company ?>
-   <?php echo $elems->static_tasks->hrs_per_week ?> <br />
+   
+   <?php echo $elems->jobsite->id ?>
+   
+   <?php echo $elems->jobsite->position ?>
+   <?php echo $elems->jobsite->company ?>
+   <?php echo $elems->jobsite->hrs_per_week ?> <br />
 
-   <?php echo $elems->static_tasks->semester_dates ?>
-   <?php echo $elems->static_tasks->superv ?>
-   <?php echo $elems->static_tasks->phone ?> <br /><br /><br /><br />
+   <?php echo $elems->jobsite->semester_dates ?>
+   <?php echo $elems->jobsite->supervisor ?>
+   <?php echo $elems->jobsite->phone ?> <br /><br /><br /><br />
    
    
    <h4> <b> The Student Agrees To: </b> </h4>

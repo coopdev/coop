@@ -61,7 +61,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        //
        //$phone = $elems->getCommonTbox('phone', 'Telephone:');
        
-       $commonFields = $this->makeCommonFormFields();
+       $commonFields = $this->makeJobsiteFields();
 
        $staticTasks->addElements($commonFields);
        
