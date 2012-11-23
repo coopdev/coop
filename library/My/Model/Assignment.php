@@ -141,23 +141,32 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    {
       unset($data['coordinator']);
 
-      $aa = new My_Model_AssignmentAnswers();
+      $db = new My_Db();
+      
+      $select = $this->select()->setIntegrityCheck(false);
+      $select = $select->from('submittedassignment_answers_view');
+      $select = $db->buildSelectWhereClause($select, $data);
+      
+      $answers = $this->fetchAll($select);
 
-      $answers = $aa->getRows($data);
-
-      //die(var_dump($answers));
-
-      $formVals = array();
+      $formData = array();
 
       foreach ($answers as $a) {
-         $formVals[$a['assignmentquestions_id']] = $a['answer_text'];
+         
+         // Field to identify the question (either assignmentquestions_id or static_question) 
+         // which the answer belongs to is required to populate the form, since the form uses 
+         // the field value as it's name.
+         if (!is_null($a['static_question'])) {
+            $question = $a->static_question; 
+         } else {
+            $question = $a->assignmentquestions_id; 
+         }
+         $formData[$question] = $a->answer_text;
+         
       }
 
-      $form->populate($formVals);
-
+      $form->populate($formData);
       return $form;
-
-      //die(var_dump($formVals));
 
    }
 
@@ -172,6 +181,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function submitMidtermReport($answers, $opts=array())
    {
       $coopSess = new Zend_Session_Namespace('coop');
+      $sa = new My_Model_SubmittedAssignment();
+      $db = new My_Db();
 
       // userData represents the students semesters_id, classes_id, username, etc.
       if (isset($opts['userData'])) {
@@ -189,10 +200,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       // Check what type of submit it is; save only or final.
       if (array_key_exists('saveOnly', $answers)) {
-         $submitType = $answers['saveOnly'];
+         $submitType = 'saveOnly';
          unset($answers['saveOnly']);
       } else if (array_key_exists('finalSubmit', $answers)) {
-         $submitType = $answers['finalSubmit'];
+         $submitType = 'finalSubmit';
          unset($answers['finalSubmit']);
       }
 
@@ -205,39 +216,33 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $submitResult = $this->submit($submitVals, $submitType);
 
       // If already submitted.
-      if ($submitResult === 'submitted') {
+      if ($submitResult === 'submittedFinal') {
          return "submitted";
       }
 
-      $aa = new My_Model_AssignmentAnswers();
+      // Fetch the submitted assignment.
+      $submittedAssign = $sa->fetchRow($db->buildArrayWhereClause($submitVals));
+      
+      // If this assignment has already been submitted as save only.
+      if ($submitResult === 'submittedSaveOnly') {
+         $where['submittedassignments_id'] = $submittedAssign->id;
+         $res = $this->updateAnswers($answers, $where);
 
-      foreach ($answers as $key => $val) {
-         $submitVals['assignmentquestions_id'] = $key;
 
-         try {
-            // 'saveOnly' means the assignment has previously been submitted as save only
-            // so we should do an update on the answers.
-            if ($submitResult === 'saveOnly') {
-               $db = new My_Db();
-               $where = $db->buildArrayWhereClause($submitVals);
-               $aa->update(array('answer_text' => $val), $where);
-
-            // true means the assignment has been newly submitted (no previously saved one)
-            // so we will insert.
-            } else if ($submitResult === true) {
-               // insert into coop_assignmentanswers
-               $submitVals['answer_text'] = $val;
-               $aa->insert($submitVals);
-            }
-
-         } catch(Exception $e) {
-            $this->getAdapter()->rollBack(); // ROLL BACK IF ERROR OCCURED
-            return false;
-         }
-
+      // If this assignment has never been submitted yet, even as save only.
+      } else if ($submitResult === true) {
+         $foreignKeys['submittedassignments_id'] = $submittedAssign->id;
+         $res = $this->insertAnswers($answers, $foreignKeys);
+         
       }
 
-      // COMMIT TRANSACTION
+      // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
+      // being caught.
+      if ($res === 'exception') {
+         $this->getAdapter()->rollBack();
+         return false;
+      }
+
       $this->getAdapter()->commit();
 
       return true;
