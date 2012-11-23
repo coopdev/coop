@@ -30,12 +30,15 @@ class Application_Form_LearningOutcomeReport extends Zend_Form
 
 
 
-       $save = $elems->getSubmit('Save Only');
+       $saveSubmit = $elems->getSubmit('saveOnly');
+       $saveSubmit->setLabel('Save Only')
+                  ->setAttrib('class', 'resubmit');
+       $finalSubmit = $elems->getSubmit('finalSubmit');
+       $finalSubmit->setLabel('Submit as Final')
+                   ->setAttrib('class', 'resubmit');
 
-       $submit = $elems->getSubmit();
+       $this->addElements( array($report, $saveSubmit, $finalSubmit));
 
-
-       $this->addElements(array($report, $save, $submit));
 
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'

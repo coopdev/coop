@@ -13,8 +13,8 @@ $minLen = $form->report->getValidator('StringLength')->getMin();
    <p> Report must have a minimum of <span id="minLen"> <?php echo $minLen ?> </span> characters </p>
    <p> Characters remaining: <span id="charsLeft"> <?php echo $minLen ?> </span>  </p>
 
-   <?php echo $form->SaveOnly ?>
-   <?php echo $form->Submit ?>
+   <?php echo $form->saveOnly ?>
+   <?php echo $form->finalSubmit ?>
 
 
 

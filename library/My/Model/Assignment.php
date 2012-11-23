@@ -95,6 +95,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
+
    public function undoSubmit($id)
    {
       $subAssign = new My_Model_SubmittedAssignment();
@@ -102,75 +103,32 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       $subAssign->delete("id = $id");
 
-//      // Build where clauses for delete.
-//      $whereArray = array();
-//      foreach ($id as $key => $val) {
-//         $whereArray[] .= "$key = " . $adapter->quote($val);
-//      }
-//
-//      $adapter->beginTransaction();
-//
-//      $assignAnswers = new My_Model_AssignmentAnswers();
-//
-//      try {
-//         $subAssign->delete($whereArray); // First delete from submitted assignments table.
-//         $assignAnswers->delete($whereArray); // Then delete the answers.
-//      } catch (Exception $e) {
-//         $adapter->rollBack(); // If exception then roll back.
-//         return false;
-//      }
-//
-//      $adapter->commit();
-//      
-//      return true;
 
    }
 
-/*************************** END SUBMISSION TYPE METHODS ********************************/
-
-   /**
-    * Populates the Midterm Report with answers for a specific student.
-    * 
-    * 
-    * @param Zend_Form $form The Midterm Report Zend_Form to be populated.
-    * @param array $data Criteria to get the Midterm Report's answers from coop_assignmentsanswers 
-    *                    (username, semesters_id, classes_id, assignments_id).
-    * @return Zend_Form The populated Midterm Report. 
-    */
-   public function populateMidTermReport($form, $data)
+   public function fetchSubmittedAssignments($where)
    {
-      unset($data['coordinator']);
-
       $db = new My_Db();
-      
-      $select = $this->select()->setIntegrityCheck(false);
-      $select = $select->from('submittedassignment_answers_view');
-      $select = $db->buildSelectWhereClause($select, $data);
-      
-      $answers = $this->fetchAll($select);
+      $sa = new My_Model_SubmittedAssignment();
 
-      $formData = array();
+      $select = $sa->select();
+      $select = $db->buildSelectWhereClause($select, $where);
 
-      foreach ($answers as $a) {
-         
-         // Field to identify the question (either assignmentquestions_id or static_question) 
-         // which the answer belongs to is required to populate the form, since the form uses 
-         // the field value as it's name.
-         if (!is_null($a['static_question'])) {
-            $question = $a->static_question; 
-         } else {
-            $question = $a->assignmentquestions_id; 
-         }
-         $formData[$question] = $a->answer_text;
-         
-      }
+      $rows = $sa->fetchAll($select);
 
-      $form->populate($formData);
-      return $form;
-
+      return $rows;
    }
 
-   /**
+   public function fetchSubmittedAssignment($where)
+   {
+      $row = $this->fetchSubmittedAssignments($where);
+
+      return $row->current();
+
+   }
+   
+   
+   /*
     * Inserts a submitted Midterm Report's answer's into the database.
     * 
     * 
@@ -250,285 +208,81 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
    /**
-    * Populates the Learning Outcome Report for a specific student.
-    * 
-    * 
-    * @param Zend_Form $form The Learning Outcome Zend_Form to be populated.
-    * @param array Optional parameter may be passed as the criteria to populate the form (use func_get_arg()).
-    *              if no optional parameter is passed, use session data as the criteria.
-    * @return Zend_Form The populated Learning Outcome Report. 
-    */
-   public function populateLearningOutcome($form)
-   {
-      $coopSess = new Zend_Session_Namespace('coop');
-
-      // get number of arguments passed to this method
-      $argNum = func_num_args();
-      // if the second optional parameter was passed
-      if ($argNum > 1) {
-         // use the second parameter is the "where" criteria
-         $where = func_get_arg(1);
-         unset($where['coordinator']);
-         if (!is_array($where)) {
-            $where = array();
-         }
-      } else {
-         $where['username'] = $coopSess->username;
-         $where['classes_id'] = $coopSess->currentClassId;
-         $where['semesters_id'] = $coopSess->currentSemId;
-         $where['assignments_id'] = $this->getLearningOutcomeId();
-      }
-
-
-      $aa = new My_Model_AssignmentAnswers();
-
-      $report = $aa->getRows($where);
-      if (!empty($report)) {
-         $report = $report[0];
-         $form->populate(array('report' => $report['answer_text']));
-      }
-
-      //die(var_dump($report));
-
-
-      return $form;
-   }
-
-   /**
-    * Populates the Student Evaluation Form with a student's answers based on the student's
-    * username, current class id, current semester id.
-    * 
-    * @param Zend_Form $form The Student Evaluation Form to populate.
-    * @param array $data Associative array containing username, classes_id, semesters_id.
-    * @return \Zend_Form  The populated Student Eval Form.
-    */
-   public function populateStudentEval($form, $data)
-   {
-      unset($data['coordinator']);
-      
-      $db = new My_Db();
-      
-      $select = $this->select()->setIntegrityCheck(false);
-      $select = $select->from('submittedassignment_answers_view');
-      $select = $db->buildSelectWhereClause($select, $data);
-      
-      $answers = $this->fetchAll($select);
-
-      $formData = array();
-
-      foreach ($answers as $a) {
-         
-         // Field to identify the question (either assignmentquestions_id or static_question) 
-         // which the answer belongs to is required to populate the form, since the form uses 
-         // the field value as it's name.
-         if (!is_null($a['static_question'])) {
-            $question = $a->static_question; 
-         } else {
-            $question = $a->assignmentquestions_id; 
-         }
-         $formData[$question] = $a->answer_text;
-         
-      }
-
-      $form->populate($formData);
-      return $form;
-
-   }
-
-   /**
     *
     * @param array $data The Learning Outcome text written by the student.
     * @return string|boolean 
     */
-   public function submitLearningOutcome($data)
+   public function submitLearningOutcome($answers)
    {
-      date_default_timezone_set('US/Hawaii');
-      $isFinal = false;
-      if (isset($data['Submit'])) {
-         $isFinal = true;
-      }
-
-
       $coopSess = new Zend_Session_Namespace('coop');
-
-      $sub['username'] = $coopSess->username;
-      $sub['classes_id'] = $coopSess->currentClassId;
-      $sub['semesters_id'] = $coopSess->currentSemId;
-      $sub['assignments_id'] = $this->getLearningOutcomeId();
-      //$sub['is_final'] = $isFinal;
-
       $sa = new My_Model_SubmittedAssignment();
-      $aa = new My_Model_AssignmentAnswers();
-
-      // select the specified record
-      $sel = $sa->select();
-      foreach ($sub as $key => $val) {
-         if ($key === 'username') {
-            $val = $this->_db->quote($val);
-         }
-         $sel = $sel->where("$key = $val");
-      }
-
-      $res = $this->fetchRow($sel);
-
-      // if a record was found
-      if ($res) {
-         $row = $res->toArray();
-
-         // if this record has already been submitted as final.
-         if ($row['is_final']) {
-            return "submitted";
-
-         // else if it was submitted as save only, do updates
-         } else {
-            $where = array();
-            //unset($sub['is_final']);
-
-            foreach ($sub as $key => $val) {
-               if ($key === 'username') {
-                  $val = $this->_db->quote($val);
-               } 
-
-               $where[]= "$key = $val";
-            }
-
-            $sub['answer_text'] = $data['report'];
-
-            try {
-               $aa->update($sub, $where);
-
-               // if the current submission is final update the is_final field to true
-               if ($isFinal) {
-                  $sa->update(array('is_final' => 1, 'date_submitted' => date('Ymd')), $where);
-               }
-               return true;
-            } catch(Exception $e) {
-               return false;
-            }
-         }
-
-      // else if no record was found, submit the assignment
-      } else {
-         $funcs = new My_Funcs();
-         $sub['date_submitted'] = date('Ymd');
-         $sub['is_final'] = $isFinal;
-
-         $sa->insert($sub);
-
-         unset($sub['is_final']);
-         unset($sub['date_submitted']);
-
-         $sub['answer_text'] = $data['report'];
-         $aa->insert($sub);
-         return true;
-
-      }
-
-   }
-
-/********************************STUDENT EVAL METHODS************************************/
-
-   /**
-    * THIS IS ALSO BEING USED FOR SUBMITTING SUPERVISOR EVALUATION BY A COORDINATOR.
-    *
-    * @param array $data The student's answers to the Student Evaluation.
-    * @return string|boolean 
-    */
-   public function submitStudentEvalOrig($data)
-   {
       $db = new My_Db();
-      $aa = new My_Model_AssignmentAnswers();
-      $as = new My_Model_Assignment();
-      $coopSess = new Zend_Session_Namespace('coop');
 
+      // userData represents the students semesters_id, classes_id, username, etc.
+      if (isset($opts['userData'])) {
+         $submitVals = $opts['userData'];
 
-      // If submission is coming from a coordinator.
-      if ($coopSess->role === 'coordinator') {
-         $subForStudentData = $coopSess->submitForStudentData;
-         $userData = array('classes_id' => $subForStudentData['classes_id'],
-                             //'semesters_id' => $coopSess->currentSemId,
-                             'username' => $subForStudentData['username'],
-                             'assignments_id' => $subForStudentData['assignments_id']);
-
-         // Semester id will come from the session if an assignment is being submitted
-         // for an incomplete. Otherwise, it will be set to the current semester.
-         if (array_key_exists('semesters_id', $subForStudentData)) {
-            $userData['semesters_id'] = $subForStudentData['semesters_id'];
-         } else {
-            $userData['semesters_id'] = $coopSess->currentSemId;
-         }
-
+      // If $opts['userData'] isn't set, default to the currently logged in user data.
       } else {
-         $assignId = $as->getStudentEvalId();
-         $userData = array('classes_id' => $coopSess->currentClassId, 
-                             'semesters_id' => $coopSess->currentSemId, 
-                             'username' => $coopSess->username, 
-                             'assignments_id' => $assignId);
+         $submitVals['username'] = $coopSess->username;
+         $submitVals['classes_id'] = $coopSess->currentClassId;
+         $submitVals['semesters_id'] = $coopSess->currentSemId;
       }
+      $submitVals['assignments_id'] = $this->getLearningOutcomeId();
 
-      //die(var_dump($submitVals));
+
 
       // Check what type of submit it is; save only or final.
-      if (array_key_exists('saveOnly', $data)) {
-         $submitType = $data['saveOnly'];
-         unset($data['saveOnly']);
-      } else if (array_key_exists('finalSubmit', $data)) {
-         $submitType = $data['finalSubmit'];
-         unset($data['finalSubmit']);
+      if (array_key_exists('saveOnly', $answers)) {
+         $submitType = 'saveOnly';
+         unset($answers['saveOnly']);
+      } else if (array_key_exists('finalSubmit', $answers)) {
+         $submitType = 'finalSubmit';
+         unset($answers['finalSubmit']);
       }
 
-      
-      // Answers to static questions.
-      $statics = $data['static_tasks'];
 
-      // Answers to dynamic questions.
-      $dynamics = $data['dynamic_tasks'];
       
-
       // BEGIN TRANSACTION
-      $as->getAdapter()->beginTransaction();
+      $this->getAdapter()->beginTransaction();
 
-      // Attempt to submit the assignment
-      $submitResult = $this->submit($userData, $submitType);
+      // Submit assignment into coop_submittedassignments
+      $submitResult = $this->submit($submitVals, $submitType);
 
-      // If assignment has already been submitted as final.
-      if ($submitResult === 'submitted') {
-         return 'submitted';
+      // If already submitted.
+      if ($submitResult === 'submittedFinal') {
+         return "submitted";
       }
 
-
+      // Fetch the submitted assignment.
+      $submittedAssign = $sa->fetchRow($db->buildArrayWhereClause($submitVals));
+      
       // If this assignment has already been submitted as save only.
-      if ($submitResult === 'saveOnly') {
-         $res1 = $this->updateAnswers($statics, $userData, array('static' => true));
-         $res2 = $this->updateAnswers($dynamics, $userData);
-
+      if ($submitResult === 'submittedSaveOnly') {
+         $where['submittedassignments_id'] = $submittedAssign->id;
+         $res = $this->updateAnswers($answers, $where, array('static' => true));
 
 
       // If this assignment has never been submitted yet, even as save only.
       } else if ($submitResult === true) {
-         $res1 = $this->insertAnswers($statics, $userData, array('static' => true));
-         $res2 = $this->insertAnswers($dynamics, $userData);
+         $foreignKeys['submittedassignments_id'] = $submittedAssign->id;
+         $res = $this->insertAnswers($answers, $foreignKeys, array('static' => true));
          
-         // If the form has the jobsite fields.
-         if (isset($data['jobsite'])) {
-            $Jobsite = new My_Model_Jobsites();
-            $Jobsite->addSite($data['jobsite'], $userData);
-         }
       }
 
       // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
       // being caught.
-      if ($res1 === 'exception' || $res2 === 'exception' ) {
-         $as->getAdapter()->rollBack();
+      if ($res === 'exception') {
+         $this->getAdapter()->rollBack();
          return false;
       }
 
-      $as->getAdapter()->commit();
+      $this->getAdapter()->commit();
 
       return true;
 
    }
-
+   
    public function submitAgreementForm($form)
    {
       $db = new My_Db();
@@ -679,6 +433,244 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
 
    }
+   
+/*************************** END SUBMISSION TYPE METHODS ********************************/
+   
+   
+   
+/*************************** FORM POPULATION TYPE METHODS *******************************/
+
+   /**
+    * Populates the Midterm Report with answers for a specific student.
+    * 
+    * 
+    * @param Zend_Form $form The Midterm Report Zend_Form to be populated.
+    * @param array $data Criteria to get the Midterm Report's answers from coop_assignmentsanswers 
+    *                    (username, semesters_id, classes_id, assignments_id).
+    * @return Zend_Form The populated Midterm Report. 
+    */
+   public function populateMidTermReport($form, $data)
+   {
+      unset($data['coordinator']);
+
+      $db = new My_Db();
+      
+      $select = $this->select()->setIntegrityCheck(false);
+      $select = $select->from('submittedassignment_answers_view');
+      $select = $db->buildSelectWhereClause($select, $data);
+      
+      $answers = $this->fetchAll($select);
+
+      $formData = array();
+
+      foreach ($answers as $a) {
+         
+         // Field to identify the question (either assignmentquestions_id or static_question) 
+         // which the answer belongs to is required to populate the form, since the form uses 
+         // the field value as it's name.
+         if (!is_null($a['static_question'])) {
+            $question = $a->static_question; 
+         } else {
+            $question = $a->assignmentquestions_id; 
+         }
+         $formData[$question] = $a->answer_text;
+         
+      }
+
+      $form->populate($formData);
+      return $form;
+
+   }
+
+   /**
+    * Populates the Learning Outcome Report for a specific student.
+    * 
+    * 
+    * @param Zend_Form $form The Learning Outcome Zend_Form to be populated.
+    * @param array Optional parameter may be passed as the criteria to populate the form (use func_get_arg()).
+    *              if no optional parameter is passed, use session data as the criteria.
+    * @return Zend_Form The populated Learning Outcome Report. 
+    */
+   public function populateLearningOutcome($form, $where)
+   {
+
+      $db = new My_Db();
+
+      $where['assignments_id'] = $this->getLearningOutcomeId();
+      
+      $select = $this->select()->setIntegrityCheck(false);
+      $select = $select->from('submittedassignment_answers_view');
+      $select = $db->buildSelectWhereClause($select, $where);
+      
+      $answers = $this->fetchAll($select);
+
+      $formData = array();
+
+      foreach ($answers as $a) {
+         
+         // Field to identify the question (either assignmentquestions_id or static_question) 
+         // which the answer belongs to is required to populate the form, since the form uses 
+         // the field value as it's name.
+         if (!is_null($a['static_question'])) {
+            $question = $a->static_question; 
+         } else {
+            $question = $a->assignmentquestions_id; 
+         }
+         $formData[$question] = $a->answer_text;
+         
+      }
+
+      $form->populate($formData);
+      return $form;
+
+   }
+
+   /**
+    * Populates the Student Evaluation Form with a student's answers based on the student's
+    * username, current class id, current semester id.
+    * 
+    * @param Zend_Form $form The Student Evaluation Form to populate.
+    * @param array $data Associative array containing username, classes_id, semesters_id.
+    * @return \Zend_Form  The populated Student Eval Form.
+    */
+
+   public function populateStudentEval($form, $data)
+   {
+      unset($data['coordinator']);
+      
+      $db = new My_Db();
+      
+      $select = $this->select()->setIntegrityCheck(false);
+      $select = $select->from('submittedassignment_answers_view');
+      $select = $db->buildSelectWhereClause($select, $data);
+      
+      $answers = $this->fetchAll($select);
+
+      $formData = array();
+
+      foreach ($answers as $a) {
+         
+         // Field to identify the question (either assignmentquestions_id or static_question) 
+         // which the answer belongs to is required to populate the form, since the form uses 
+         // the field value as it's name.
+         if (!is_null($a['static_question'])) {
+            $question = $a->static_question; 
+         } else {
+            $question = $a->assignmentquestions_id; 
+         }
+         $formData[$question] = $a->answer_text;
+         
+      }
+
+      $form->populate($formData);
+      return $form;
+
+   }
+
+/*********************** END FORM POPULATION TYPE METHODS *******************************/
+
+
+   /**
+    * THIS IS ALSO BEING USED FOR SUBMITTING SUPERVISOR EVALUATION BY A COORDINATOR.
+    *
+    * @param array $data The student's answers to the Student Evaluation.
+    * @return string|boolean 
+    */
+   public function submitStudentEvalOrig($data)
+   {
+      $db = new My_Db();
+      $aa = new My_Model_AssignmentAnswers();
+      $as = new My_Model_Assignment();
+      $coopSess = new Zend_Session_Namespace('coop');
+
+
+      // If submission is coming from a coordinator.
+      if ($coopSess->role === 'coordinator') {
+         $subForStudentData = $coopSess->submitForStudentData;
+         $userData = array('classes_id' => $subForStudentData['classes_id'],
+                             //'semesters_id' => $coopSess->currentSemId,
+                             'username' => $subForStudentData['username'],
+                             'assignments_id' => $subForStudentData['assignments_id']);
+
+         // Semester id will come from the session if an assignment is being submitted
+         // for an incomplete. Otherwise, it will be set to the current semester.
+         if (array_key_exists('semesters_id', $subForStudentData)) {
+            $userData['semesters_id'] = $subForStudentData['semesters_id'];
+         } else {
+            $userData['semesters_id'] = $coopSess->currentSemId;
+         }
+
+      } else {
+         $assignId = $as->getStudentEvalId();
+         $userData = array('classes_id' => $coopSess->currentClassId, 
+                             'semesters_id' => $coopSess->currentSemId, 
+                             'username' => $coopSess->username, 
+                             'assignments_id' => $assignId);
+      }
+
+      //die(var_dump($submitVals));
+
+      // Check what type of submit it is; save only or final.
+      if (array_key_exists('saveOnly', $data)) {
+         $submitType = $data['saveOnly'];
+         unset($data['saveOnly']);
+      } else if (array_key_exists('finalSubmit', $data)) {
+         $submitType = $data['finalSubmit'];
+         unset($data['finalSubmit']);
+      }
+
+      
+      // Answers to static questions.
+      $statics = $data['static_tasks'];
+
+      // Answers to dynamic questions.
+      $dynamics = $data['dynamic_tasks'];
+      
+
+      // BEGIN TRANSACTION
+      $as->getAdapter()->beginTransaction();
+
+      // Attempt to submit the assignment
+      $submitResult = $this->submit($userData, $submitType);
+
+      // If assignment has already been submitted as final.
+      if ($submitResult === 'submitted') {
+         return 'submitted';
+      }
+
+
+      // If this assignment has already been submitted as save only.
+      if ($submitResult === 'saveOnly') {
+         $res1 = $this->updateAnswers($statics, $userData, array('static' => true));
+         $res2 = $this->updateAnswers($dynamics, $userData);
+
+
+
+      // If this assignment has never been submitted yet, even as save only.
+      } else if ($submitResult === true) {
+         $res1 = $this->insertAnswers($statics, $userData, array('static' => true));
+         $res2 = $this->insertAnswers($dynamics, $userData);
+         
+         // If the form has the jobsite fields.
+         if (isset($data['jobsite'])) {
+            $Jobsite = new My_Model_Jobsites();
+            $Jobsite->addSite($data['jobsite'], $userData);
+         }
+      }
+
+      // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
+      // being caught.
+      if ($res1 === 'exception' || $res2 === 'exception' ) {
+         $as->getAdapter()->rollBack();
+         return false;
+      }
+
+      $as->getAdapter()->commit();
+
+      return true;
+
+   }
+
 
 
    /*
@@ -763,7 +755,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
-/********************************END STUDENT EVAL METHODS************************************/
 
    /**
     * Updates due dates for assignments.

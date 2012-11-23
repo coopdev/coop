@@ -223,8 +223,11 @@ class AsyncController extends Zend_Controller_Action
 
              if ($form->isValid($formData)) {
                 $assign = new My_Model_Assignment();
-
-                $assign->updateAnswers($formData, $userData);
+                $userData['assignments_id'] = $assign->getMidtermId();
+                $submittedAssign = $assign->fetchSubmittedAssignment($userData);
+                
+                $where['submittedassignments_id'] = $submittedAssign->id;
+                $assign->updateAnswers($formData, $where);
 
              } else {
                 echo "<input type=hidden id='isInvalid' />";
@@ -414,10 +417,11 @@ class AsyncController extends Zend_Controller_Action
           $data['assignments_id'] = $assign->getCoopAgreementId();
        }
 
+       $subAssign = $assign->fetchSubmittedAssignment($data);
+       $where['submittedassignments_id'] = $subAssign->id;
 
-       //$assign->updateAnswers($formData, $data);
-       $assign->updateAnswers($statics, $data, array('static' => true));
-       $assign->updateAnswers($dynamics, $data);
+       $assign->updateAnswers($statics, $where, array('static' => true));
+       $assign->updateAnswers($dynamics, $where);
 
 
     }

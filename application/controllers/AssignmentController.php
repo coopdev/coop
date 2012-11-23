@@ -217,8 +217,11 @@ class AssignmentController extends Zend_Controller_Action
        $form = new Application_Form_LearningOutcomeReport();
 
        $as = new My_Model_Assignment();
+       $coopSess = new Zend_Session_Namespace('coop');
 
-       $form = $as->populateLearningOutcome($form);
+       $form = $as->populateLearningOutcome($form, array('classes_id' => $coopSess->currentClassId,
+                                'semesters_id' => $coopSess->currentSemId,
+                                'username' => $coopSess->username));
 
        $this->view->form = $form;
 
@@ -229,7 +232,7 @@ class AssignmentController extends Zend_Controller_Action
           // count as character, but we don't want them to.
           $dataNoHTML = $data;
           $dataNoHTML['report'] = trim(strip_tags($dataNoHTML['report']));
-          //die(var_dump($data));
+
 
           if ($form->isValid($dataNoHTML)) {
              $res = $as->submitLearningOutcome($data);
