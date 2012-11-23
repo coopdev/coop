@@ -300,39 +300,34 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function populateStudentEval($form, $data)
    {
       unset($data['coordinator']);
+      
+      $db = new My_Db();
+      
+      $select = $this->select()->setIntegrityCheck(false);
+      $select = $select->from('submittedassignment_answers_view');
+      $select = $db->buildSelectWhereClause($select, $data);
+      
+      $answers = $this->fetchAll($select);
 
-      $aa = new My_Model_AssignmentAnswers();
+      $formData = array();
 
-      $aaSel = $aa->select();
-      foreach ($data as $key => $val) {
-         if ($key === 'username') {
-            $aaSel->where("$key = '$val'");
-         } else {
-            $aaSel->where("$key = $val");
-         }
-      }
-
-      $rows = $aa->fetchAll($aaSel)->toArray(); 
-
-      $answers = array();
-      foreach ($rows as $r) {
-
+      foreach ($answers as $a) {
+         
          // Field to identify the question (either assignmentquestions_id or static_question) 
          // which the answer belongs to is required to populate the form, since the form uses 
          // the field value as it's name.
-         if (!is_null($r['static_question'])) {
-            $question = $r['static_question']; 
+         if (!is_null($a['static_question'])) {
+            $question = $a->static_question; 
          } else {
-            $question = $r['assignmentquestions_id']; 
+            $question = $a->assignmentquestions_id; 
          }
-         $atext = $r['answer_text'];
-         $answers[$question] = $atext;
+         $formData[$question] = $a->answer_text;
+         
       }
 
-      $form->populate($answers);
-
+      $form->populate($formData);
       return $form;
-      //return $rows;
+
    }
 
    /**
