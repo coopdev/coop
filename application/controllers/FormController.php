@@ -86,7 +86,8 @@ class FormController extends Zend_Controller_Action
 
        $form = new Application_Form_Agreement(array('username' => $username, 
                                                     'classId' => $classId,
-                                                    'semId' => $semId));
+                                                    'semId' => $semId,
+                                                    'populateForm' => false));
 
        //$form->
        $this->view->form = $form;
@@ -99,7 +100,8 @@ class FormController extends Zend_Controller_Action
              //die(var_dump($form));
              $as = new My_Model_Assignment();
              //$Jobsite = new My_Model_Jobsites();
-             $res = $as->submitStudentEval($form);
+             //$res = $as->submitStudentEval($form);
+             $res = $as->submitAgreementForm($form);
 
              if ($res === true) {
                 $this->view->resultMessage = "<p class='success'> Success </p>";

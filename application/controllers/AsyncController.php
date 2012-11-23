@@ -501,13 +501,13 @@ class AsyncController extends Zend_Controller_Action
     {
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
-       $data = $_POST['data'];
-       $assignId = $_POST['assignments_id'];
+       $subAssignId = $_POST['submittedassignments_id'];
+       //$assignId = $_POST['assignments_id'];
 
-       $data['assignments_id'] = $assignId;
+       //$data['assignments_id'] = $assignId;
 
        $assign = new My_Model_Assignment();
-       $assign->undoSubmit($data);
+       $assign->undoSubmit($subAssignId);
     }
 
 

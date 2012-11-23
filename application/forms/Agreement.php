@@ -5,6 +5,8 @@
  */
 class Application_Form_Agreement extends Application_Form_CommonForm
 {
+
+      public $assignNum = 3;
    
       public function init()
       {  
@@ -19,7 +21,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
           $this->setDecorators(array(array('ViewScript', 
                                       array('viewScript' => '/form/coop-agreement-template.phtml'))));
 
-          $this->makeJobsiteSubform();
+          //$this->makeJobsiteSubform();
 
           $this->makeStatics();
 
@@ -28,14 +30,14 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
 
           $elems = new My_FormElement();
-          $saveSubmit = $elems->getSubmit('saveOnly');
-          $saveSubmit->setLabel('Save Only')
-                     ->setAttrib('class', 'resubmit');
+          //$saveSubmit = $elems->getSubmit('saveOnly');
+          //$saveSubmit->setLabel('Save Only')
+          //           ->setAttrib('class', 'resubmit');
           $finalSubmit = $elems->getSubmit('finalSubmit');
           $finalSubmit->setLabel('Submit as Final')
                       ->setAttrib('class', 'resubmit');
 
-          $this->addElements(array($saveSubmit,$finalSubmit));
+          $this->addElements(array($finalSubmit));
           
           
           // Checks if there are submitted answers in order to populate the form with them.
@@ -60,9 +62,30 @@ class Application_Form_Agreement extends Application_Form_CommonForm
          $staticTasks->setDecorators(array('FormElements',
                                            array('HtmlTag', array('tag' => 'div'))
                                      ));
-
-
          $Elems = new My_FormElement();
+
+         $id = new Zend_Form_Element_Hidden('id');
+         //$id = new Zend_Form_Element_Text('id');
+
+         //die(var_dump($id));
+
+         $position = $Elems->getCommonTbox('position', 'Position:');
+         //die(var_dump($position->getId()));
+         //die(var_dump($position));
+
+         $company = $Elems->getCommonTbox('company', 'Company:');
+
+         $hours = $Elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
+         
+         $semesters = $Elems->getCommonTbox('semester_dates', 'Semester Dates:');
+         
+         $superv = $Elems->getCommonTbox('supervisor', 'Supervisor:');
+         
+         $phone = $Elems->getCommonTbox('phone', 'Telephone:');
+
+
+         $staticTasks->addElements(array($position, $company, $hours, $semesters, $superv, $phone));
+
 
          $Class = new My_Model_Class();
 
@@ -80,8 +103,8 @@ class Application_Form_Agreement extends Application_Form_CommonForm
             $staticTasks->addElement($duties);
          }
 
-         $elems = $staticTasks->getElements();
-         foreach ($elems as $e) {
+         $Elems = $staticTasks->getElements();
+         foreach ($Elems as $e) {
             $e->setAttrib('class', 'static');
          }
 

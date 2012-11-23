@@ -24,12 +24,11 @@ class Application_Form_CommonForm extends Zend_Form
 
     // Supervisor Eval and Agreement form have some fields which are the same (at the top
     // of form). This method creates those and returns them.
-    private function makeJobsiteFields()
+    public function makeJobsiteFields()
     {
        $elems = new My_FormElement();
 
-       $id = new Zend_Form_Element_Hidden('id');
-       //$id = new Zend_Form_Element_Text('id');
+       //$id = new Zend_Form_Element_Hidden('id');
 
        //die(var_dump($id));
 
@@ -47,7 +46,7 @@ class Application_Form_CommonForm extends Zend_Form
        
        $phone = $elems->getCommonTbox('phone', 'Telephone:');
 
-       return array($id, $position, $company, $hours, $semesters, $superv, $phone);
+       return array($position, $company, $hours, $semesters, $superv, $phone);
 
     }
     
@@ -78,7 +77,7 @@ class Application_Form_CommonForm extends Zend_Form
        
     }
     
-    private function populateJobsiteFields($jobSiteSubForm)
+    public function populateJobsiteFields($jobSiteSubForm)
     {
        $Jobsite = new My_Model_Jobsites();
 
@@ -140,6 +139,7 @@ class Application_Form_CommonForm extends Zend_Form
           }
 
        }
+       
 
        $this->addSubForm($dynamic_tasks, 'dynamic_tasks');
 
@@ -173,6 +173,10 @@ class Application_Form_CommonForm extends Zend_Form
        $this->semId = $semId;
     }
     
+    public function setPopulateForm($flag)
+    {
+       $this->populateForm = $flag;
+    }
 
     
     /* GETTERS */

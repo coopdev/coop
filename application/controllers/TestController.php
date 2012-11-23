@@ -10,6 +10,12 @@ class TestController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+
+    public function agreementAction()
+    {
+
+    }
+
     public function jsonAction()
     {
 

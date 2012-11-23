@@ -45,21 +45,9 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
     private function makeStatics()
     {
        $staticTasks = new Zend_Form_SubForm();
+       $staticTasks->setElementsBelongTo('static_tasks');
        $elems = new My_FormElement();
 
-       //$position = $elems->getCommonTbox('position', 'Position:');
-       ////die(var_dump($position->getId()));
-       ////die(var_dump($position));
-
-       //$company = $elems->getCommonTbox('company', 'Company:');
-
-       //$hours = $elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
-       //
-       //$semesters = $elems->getCommonTbox('semester_dates', 'Semester Dates:');
-       //
-       //$superv = $elems->getCommonTbox('superv', 'Supervisor:');
-       //
-       //$phone = $elems->getCommonTbox('phone', 'Telephone:');
        
        $commonFields = $this->makeJobsiteFields();
 
@@ -97,7 +85,6 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        //             $phone, $avgHrs, $hrlyWage, $comments, $overallEval));
        
        $staticTasks->addElements(array($avgHrs, $hrlyWage, $comments, $overallEval));
-       $staticTasks->setElementsBelongTo('static_tasks');
 
        // Make all elements required except 'comments'.
        $temp = $staticTasks->getElements();
@@ -152,12 +139,6 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
        $elems =  array($objective1, $objective2, $rating1, $rating2);
 
-       foreach ($elems as $t) {
-          $t->setDecorators( array('ViewHelper',
-                                   'Errors',
-                                   'Label'
-                          ));
-       }
 
        return $elems;
 

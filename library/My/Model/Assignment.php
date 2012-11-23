@@ -37,7 +37,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * @return string|boolean The string 'submitted' if the assignment is already submitted,
     *                        True on success.
     */
-   public function submit(array $data, $submitType="")
+   public function submit(array $data, $submitType="", $allowMultiSubmit=false)
    {
       date_default_timezone_set('US/Hawaii');
       $db = new My_Db();
@@ -60,7 +60,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       //die(var_dump($chk));
 
       // If the assignment has already been submitted as final.
-      if ($this->isSubmitted($chk)) {
+      if ($allowMultiSubmit === false && $this->isSubmitted($chk)) {
          return "submittedFinal";
       } 
 
@@ -95,32 +95,34 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
 
-   public function undoSubmit($where)
+   public function undoSubmit($id)
    {
       $subAssign = new My_Model_SubmittedAssignment();
       $adapter = $this->getAdapter();
 
-      // Build where clauses for delete.
-      $whereArray = array();
-      foreach ($where as $key => $val) {
-         $whereArray[] .= "$key = " . $adapter->quote($val);
-      }
+      $subAssign->delete("id = $id");
 
-      $adapter->beginTransaction();
-
-      $assignAnswers = new My_Model_AssignmentAnswers();
-
-      try {
-         $subAssign->delete($whereArray); // First delete from submitted assignments table.
-         $assignAnswers->delete($whereArray); // Then delete the answers.
-      } catch (Exception $e) {
-         $adapter->rollBack(); // If exception then roll back.
-         return false;
-      }
-
-      $adapter->commit();
-      
-      return true;
+//      // Build where clauses for delete.
+//      $whereArray = array();
+//      foreach ($id as $key => $val) {
+//         $whereArray[] .= "$key = " . $adapter->quote($val);
+//      }
+//
+//      $adapter->beginTransaction();
+//
+//      $assignAnswers = new My_Model_AssignmentAnswers();
+//
+//      try {
+//         $subAssign->delete($whereArray); // First delete from submitted assignments table.
+//         $assignAnswers->delete($whereArray); // Then delete the answers.
+//      } catch (Exception $e) {
+//         $adapter->rollBack(); // If exception then roll back.
+//         return false;
+//      }
+//
+//      $adapter->commit();
+//      
+//      return true;
 
    }
 
@@ -526,21 +528,71 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
 
    }
+
+   public function submitAgreementForm($form)
+   {
+      $db = new My_Db();
+      $sa = new My_Model_SubmittedAssignment();
+      
+      $coopSess = new Zend_Session_Namespace('coop');
+      
+      
+      $userData['username'] = $form->getUsername();
+      $userData['classes_id'] = $form->getClassId();
+      $userData['semesters_id'] = $form->getSemId();
+      
+      
+      $userData['assignments_id'] = $form->getAssignId();
+
+      $submitType = 'finalSubmit';
+
+
+      // Answers to static questions.
+      $statics = $form->static_tasks->getValues();
+      $statics = $statics['static_tasks'];
+
+      // Answers to dynamic questions.
+      $dynamics = $form->dynamic_tasks->getValues();
+      $dynamics = $dynamics['dynamic_tasks'];
+      //die(var_dump($dynamics));
+      
+      
+      // BEGIN TRANSACTION
+      $this->getAdapter()->beginTransaction();
+
+      // Attempt to submit the assignment
+      $submitResult = $this->submit($userData, $submitType, true);
+      $foreignKeys['submittedassignments_id'] = $sa->getAdapter()->lastInsertId();
+
+
+
+      // If this assignment has never been submitted yet, even as save only.
+      $res1 = $this->insertAnswers($statics, $foreignKeys, array('static' => true));
+      $res2 = $this->insertAnswers($dynamics, $foreignKeys);
+         
+
+      // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
+      // being caught.
+      if ($res1 === 'exception' || $res2 === 'exception' ) {
+         $this->getAdapter()->rollBack();
+         return false;
+      }
+
+      $this->getAdapter()->commit();
+
+      return true;
+
+
+   }
    
    
    public function submitStudentEval($form)
    {
       $db = new My_Db();
-      $aa = new My_Model_AssignmentAnswers();
-      $as = new My_Model_Assignment();
+      $sa = new My_Model_SubmittedAssignment();
+      
       $coopSess = new Zend_Session_Namespace('coop');
 
-
-      
-      
-      
-      
-      
       
       $userData['username'] = $form->getUsername();
       $userData['classes_id'] = $form->getClassId();
@@ -556,10 +608,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       }
 
 
-      //die(var_dump($form->jobsite->getValues()));
-
-
-      
       // Answers to static questions.
       $statics = $form->static_tasks->getValues();
       $statics = $statics['static_tasks'];
@@ -577,7 +625,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       }
 
       // BEGIN TRANSACTION
-      $as->getAdapter()->beginTransaction();
+      $this->getAdapter()->beginTransaction();
 
       // Attempt to submit the assignment
       $submitResult = $this->submit($userData, $submitType);
@@ -587,12 +635,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          return 'submitted';
       }
 
+
       $Jobsite = new My_Model_Jobsites();
+      
+      // Fetch the submitted assignment.
+      $submittedAssign = $sa->fetchRow($db->buildArrayWhereClause($userData));
       
       // If this assignment has already been submitted as save only.
       if ($submitResult === 'submittedSaveOnly') {
-         $res1 = $this->updateAnswers($statics, $userData, array('static' => true));
-         $res2 = $this->updateAnswers($dynamics, $userData);
+         $where['submittedassignments_id'] = $submittedAssign->id;
+         $res1 = $this->updateAnswers($statics, $where, array('static' => true));
+         $res2 = $this->updateAnswers($dynamics, $where);
 
          // If the form has the jobsite fields.
          if (isset($jobSite)) {
@@ -603,8 +656,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       // If this assignment has never been submitted yet, even as save only.
       } else if ($submitResult === true) {
-         $res1 = $this->insertAnswers($statics, $userData, array('static' => true));
-         $res2 = $this->insertAnswers($dynamics, $userData);
+         $foreignKeys['submittedassignments_id'] = $submittedAssign->id;
+         $res1 = $this->insertAnswers($statics, $foreignKeys, array('static' => true));
+         $res2 = $this->insertAnswers($dynamics, $foreignKeys);
          
          // If the form has the jobsite fields.
          if (isset($jobSite)) {
@@ -616,11 +670,11 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
       // being caught.
       if ($res1 === 'exception' || $res2 === 'exception' ) {
-         $as->getAdapter()->rollBack();
+         $this->getAdapter()->rollBack();
          return false;
       }
 
-      $as->getAdapter()->commit();
+      $this->getAdapter()->commit();
 
       return true;
 
@@ -670,35 +724,38 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Inserts answers for certain assignments (the ones that have questions and answers).
     * Used to insert eval type assignments and midterm report.
     */
-   public function insertAnswers($answers, $userData, $opts=array())
+   public function insertAnswers($answers, $foreignKeys, $opts=array())
    {
       $aa = new My_Model_AssignmentAnswers();
       $db = new My_Db();
+      
+      
+      $insertVals = $foreignKeys;
 
 
       foreach ($answers as $key => $val) {
 
-         // If updating answers to static questions.
+         // If inserting answers to static questions.
          if (isset($opts['static']) && $opts['static'] === true) {
-            $userData['static_question'] = $key;
+            $insertVals['static_question'] = $key;
 
-         // If updating answers to dynamic questions.
+         // If inserting answers to dynamic questions.
          } else {
-            $userData['assignmentquestions_id'] = $key;
+            $insertVals['assignmentquestions_id'] = $key;
          }
 
-         $userData['answer_text'] = $val;
+         $insertVals['answer_text'] = $val;
 
 
          try {
-            $aa->insert($userData);
+            $aa->insert($insertVals);
          } catch(Exception $e) {
             return 'exception';
          }
 
          // After using $where, get rid of the question id so a new one can be added on 
          // the next loop.
-         array_pop($userData);
+         array_pop($insertVals);
 
       }
 
