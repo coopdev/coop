@@ -147,21 +147,39 @@ class Application_Form_CommonForm extends Zend_Form
 
 
 
-    // Changes they way validation of the form is checks depending on whether the save only
+    // Changes they way validation of the form is checked depending on whether the save only
     // button was clicked or the final submit button.
-    public function isValidIncludeSaveonly($formData)
+    
+    public function isValid($formData)
     {
-       // if user clicked the save only button, then use isValidPartial();
+       //die(var_dump($formData));
+       
+       // for some reason, this is needed before using isChecked().
+       $this->isValidPartial($formData);
+       $data = $this->getValidValues($formData);
+       die(var_dump($data));
+       
+       // if user clicked the save only button, then use isValidPartial().
+       $names = array();
        if ($this->saveOnly->isChecked()) {
-          if ($this->isValidPartial($formData)) {
+          $elems = $this->getElements();
+          foreach ($elems as $e) {
+             $e->setRequired(false);
+             $names[] = $e->getName();
+          }
+          if (parent::isValid($formData)) {
              return true;
           }
-       // else if user clicked final submit button then use isValid();
+          //if ($this->isValidPartial($formData)) {
+          //   return true;
+          //}
+       // else if user clicked final submit button then use isValid() to fully validate.
        } else if ($this->finalSubmit->isChecked()) {
-          if ($this-isValid($formData)) {
+          if (parent::isValid($formData)) {
              return true;
           }
        }
+       die(var_dump($names));
        return false;
     }
 

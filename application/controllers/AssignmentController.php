@@ -89,7 +89,6 @@ class AssignmentController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
 
-          //die(var_dump($data));
 
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
@@ -97,7 +96,7 @@ class AssignmentController extends Zend_Controller_Action
              $res = $as->submitStudentEval($form);
 
              if ($res === true) {
-                $message = "<p class=success> Evaluation has been submitted </p>";
+                $message = "<p class=success> Success </p>";
              } else if ($res === 'submitted') {
                 $message = "<p class=error> Evaluation has already been submitted </p>";
              } else {
@@ -135,6 +134,7 @@ class AssignmentController extends Zend_Controller_Action
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          //$data = $form->getValidValues
           //die(var_dump($data));
 
           if ($form->isValid($data)) {

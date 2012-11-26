@@ -65,7 +65,11 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
 
        $avgHrs = $elems->getCommonTbox('avg_hrs', 'Average hours student worked per week during evaluation period:');
-       //$avgHrs = $elems->getCommonTbox('avg_hrs','');
+       //$avgHrs = new Zend_Form_Element_Text('avg_hrs');
+       //$avgHrs->setLabel('foo');
+              //->addFilter('StringTrim')
+              //->addFilter('StripTags');
+       
        $hrlyWage = $elems->getCommonTbox('hrly_wage', 'Hourly wage:');
 
        $comments = $elems->getCommonTarea('comments', '');
@@ -74,7 +78,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $overallEval = new Zend_Form_Element_Radio('overall_eval');
        $overallEval->setRequired(true)
                    ->setSeparator("")
-                   ->setMultiOptions( array('1' => 'Excelent',
+                   ->setMultiOptions( array('1' => 'Excellent',
                                             '2' => 'Above Average',
                                             '3' => 'Satisfactory',
                                             '4' => 'Unsatisfactory'));
@@ -96,10 +100,10 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        }
 
        //$static_tasks = array($position, $company, $hours, $semesters, $superv, $phone);
-       $staticTasks->setElementDecorators(array('ViewHelper',
-                                           'Errors',
-                                           'Label'
-                                     ));
+       //$staticTasks->setElementDecorators(array('ViewHelper',
+       //                                    'Errors',
+       //                                    'Label'
+       //                              ));
 
        $this->addSubForm($staticTasks, 'static_tasks');
 

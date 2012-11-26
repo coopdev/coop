@@ -14,7 +14,7 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        $this->assignId = $as->getStudentEvalId();
 
        $this->setDecorators(array(array('ViewScript', 
-                                   array('viewScript' => '/assignment/student-eval-template.phtml'))));
+                                 array('viewScript' => '/assignment/student-eval-template.phtml'))));
 
 
        $this->makeStatics();
@@ -100,8 +100,10 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        $staticTasks->addElement($this->makeComment());
 
        $elems = $staticTasks->getElements();
-       foreach ($elems as $e) {
-          $e->setAttrib('class', 'static');
+       //foreach ($elems as $e) {
+       foreach ($elems as $k => $v) {
+          $v->setAttrib('class', 'static');
+          //$v->setRequired(true);
        }
 
        //$staticTasks->setElementDecorators(array('ViewHelper',
@@ -163,6 +165,7 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
 
        $comment->addFilter('StringTrim')
                ->addFilter('StripTags')
+               ->setRequired(true)
                ->setLabel('Comments:');
 
        return $comment;
@@ -187,6 +190,31 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        return $options;
        
     }
+    
+    /*
+    // Changes they way validation of the form is checks depending on whether the save only
+    // button was clicked or the final submit button.
+    public function isValidIncludeSaveonly($formData)
+    {
+       // for some reason, isValid() is needed before using isChecked().
+       $this->isValid($formData);
+       
+       // if user clicked the save only button, then use isValidPartial();
+       if ($this->saveOnly->isChecked()) {
+          if ($this->isValidPartial($formData)) {
+             return true;
+          }
+       // else if user clicked final submit button then use isValid();
+       } else if ($this->finalSubmit->isChecked()) {
+          if ($this->isValid($formData)) {
+             die('foo');
+             return true;
+          }
+       }
+       return false;
+    }
+     * 
+     */
 
 
 }
