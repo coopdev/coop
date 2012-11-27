@@ -146,41 +146,47 @@ class Application_Form_CommonForm extends Zend_Form
     }
 
 
-
-    // Changes they way validation of the form is checked depending on whether the save only
-    // button was clicked or the final submit button.
-    
-    public function isValid($formData)
+    public function getAllElementsIncludingNested()
     {
-       //die(var_dump($formData));
-       
-       // for some reason, this is needed before using isChecked().
-       $this->isValidPartial($formData);
-       $data = $this->getValidValues($formData);
-       die(var_dump($data));
-       
-       // if user clicked the save only button, then use isValidPartial().
-       $names = array();
-       if ($this->saveOnly->isChecked()) {
-          $elems = $this->getElements();
-          foreach ($elems as $e) {
-             $e->setRequired(false);
-             $names[] = $e->getName();
-          }
-          if (parent::isValid($formData)) {
-             return true;
-          }
-          //if ($this->isValidPartial($formData)) {
-          //   return true;
-          //}
-       // else if user clicked final submit button then use isValid() to fully validate.
-       } else if ($this->finalSubmit->isChecked()) {
-          if (parent::isValid($formData)) {
-             return true;
+       $elems = array();
+
+       // using array_values because getElements returns named indexes but I want numerical
+       // indexes.
+       $elems = array_merge($elems, array_values($this->getElements()));
+
+       $subForms = $this->getSubForms();
+       if (is_array($subForms)) {
+          foreach($subForms as $sf) {
+             $elems = array_merge($elems, array_values($sf->getElements()));
           }
        }
-       die(var_dump($names));
-       return false;
+
+       return $elems;
+    }
+
+
+
+    // Same as the default isValid() method except it checks for saves and unsets the 
+    // "required" check on all elements if "Save Only" was clicked.
+    public function isValid($formData)
+    {
+       if (parent::isValid($formData)) {
+
+          return true;
+
+       } else {
+          
+          if (isset($formData['saveOnly']) && !is_null($formData['saveOnly'])) {
+             $elems = $this->getAllElementsIncludingNested();
+             foreach ($elems as $e) {
+                $e->removeDecorator('Errors');
+             }
+             return true;
+          }
+          
+          return false;
+       }
+
     }
 
 

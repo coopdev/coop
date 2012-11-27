@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_MidtermReport extends Zend_Form
+class Application_Form_MidtermReport extends Application_Form_CommonForm
 {
     protected $classId;
     protected $semId;

@@ -117,14 +117,10 @@ class AssignmentController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
 
        $subForStudentData = $coopSess->submitForStudentData;
-       //die(var_dump($subForStudentData));
        $classId = $subForStudentData['classes_id'];
-       //$assignId = $subForStudentData['assignments_id'];
        $username = $subForStudentData['username'];
        $semId = $subForStudentData['semesters_id'];
 
-       //$form = new Application_Form_StudentEval(array('assignId' => $assignId, 
-       //                                               'classId' => $classId));
                                                       
        $form = new Application_Form_SupervisorEval(array('username' => $username, 
                                                          'classId' => $classId,
@@ -133,8 +129,9 @@ class AssignmentController extends Zend_Controller_Action
        $this->view->form = $form;
 
        if ($this->getRequest()->isPost()) {
+
           $data = $_POST;
-          //$data = $form->getValidValues
+          //$data = $form->getAllElementsIncludingNested();
           //die(var_dump($data));
 
           if ($form->isValid($data)) {
