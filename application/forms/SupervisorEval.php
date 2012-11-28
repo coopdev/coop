@@ -29,6 +29,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        // Checks if there are submitted answers in order to populate the form with them.
        if ($this->populateForm === true) {
           $this->checkSubmittedAnswers(); 
+          $this->populateJobsiteFields();
        }
 
        $this->setElementDecorators(array('ViewHelper',
@@ -42,16 +43,19 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
 
 
-    private function makeStatics()
+    public function makeStatics()
     {
        $staticTasks = new Zend_Form_SubForm();
        $staticTasks->setElementsBelongTo('static_tasks');
        $elems = new My_FormElement();
 
        
-       $commonFields = $this->makeJobsiteFields();
+       //$jobSiteSubform = $this->makeJobsiteSubform();
+       //$staticTasks->addSubForm($jobSiteSubform, 'jobsite');
 
-       $staticTasks->addElements($commonFields);
+       $jobSiteFields = $this->makeJobsiteFields();
+
+       $staticTasks->addElements($jobSiteFields);
        
 
        // Only Add learning outcomes if class is upper level.

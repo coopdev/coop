@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_LearningOutcomeReport extends Zend_Form
+class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
 {
     protected $minLen;
 

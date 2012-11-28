@@ -6,7 +6,7 @@ alter table coop_assignmentanswers add foreign key (submittedassignments_id) ref
 
 drop view if exists submittedassignment_answers_view;
 create view submittedassignment_answers_view AS
-   SELECT sa.classes_id, sa.username, sa.assignments_id, 
+   SELECT sa.id as submitted_id, sa.classes_id, sa.username, sa.assignments_id, 
       sa.semesters_id, sa.is_final, aa.answer_text, aa.static_question, aa.assignmentquestions_id 
       FROM coop_submittedassignments sa JOIN coop_assignmentanswers aa
       ON sa.id = aa.submittedassignments_id;

@@ -570,6 +570,53 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 /*********************** END FORM POPULATION TYPE METHODS *******************************/
 
 
+/************************************ ANSWER TYPE METHODS *******************************/
+
+   public function fetchAnswers($where)
+   {
+      $AsnmtAnswers = new My_Model_AssignmentAnswers();
+      $db = new My_Db();
+
+      $select = $AsnmtAnswers->select();
+      $select = $db->buildSelectWhereClause($select, $where);
+
+
+      $answers = $this->fetchAll($select);
+
+      // If no results, return empty array.
+      if (count($answers) < 1) {
+         return array();
+      }
+
+      return $answers;
+   }
+
+   public function fetchAnswersForLastSubmitted($where)
+   {
+      $SubmittedAsnmt = new My_Model_SubmittedAssignment();
+      $db = new My_Db();
+
+      $select = $SubmittedAsnmt->select();
+
+      $select = $db->buildSelectWhereClause($select, $where);
+
+
+      $subAsnmts = $this->fetchAll($select);
+      //die(var_dump(count($subAsnmts)));
+
+      // get last subbmitted assignment.
+      $last = $subAsnmts->getRow(count($subAsnmts) - 1);
+      $subAsnmtId = $last->id;
+      //die(var_dump($subAsnmtId));
+
+      $answers = $this->fetchAnswers(array('submittedassignments_id' => $subAsnmtId));
+
+      return $answers;
+
+   }
+
+
+
    /*
     * Updates answers for certain assignments (the ones that have questions and answers).
     * Used to update eval type assignments and midterm report.
@@ -591,6 +638,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             $where[] = "assignmentquestions_id = '$key'";
          }
 
+         //die(var_dump($where));
          $row = $aa->fetchRow($where);
 
          // After using $where, get rid of the question id so a new one can be added on 
@@ -651,6 +699,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
 
    }
+/****************************** END ANSWER TYPE METHODS *********************************/
 
 
    /**

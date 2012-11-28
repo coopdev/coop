@@ -46,7 +46,13 @@ class Application_Form_CommonForm extends Zend_Form
        
        $phone = $elems->getCommonTbox('phone', 'Telephone:');
 
-       return array($position, $company, $hours, $semesters, $superv, $phone);
+       $fields = array($position, $company, $hours, $semesters, $superv, $phone); 
+
+       // Used elsewhere to get these fields.
+       foreach ($fields as $f) {
+          $f->setAttrib('fieldType', 'jobsite');
+       }
+       return $fields;
 
     }
     
@@ -59,11 +65,12 @@ class Application_Form_CommonForm extends Zend_Form
 
        $jobSiteSubform->addElements($formFields);
        foreach ($jobSiteSubform as $j) {
+          // DO NOT GET RID OF THIS. IT IS USED ELSEWHERE TO GET THESE JOBSITE FIELDS.
           $j->setAttrib('class','jobsite');
        }
 
 
-       $this->populateJobsiteFields($jobSiteSubform);
+       //$this->populateJobsiteFields($jobSiteSubform);
        
        
        $jobSiteSubform->setElementDecorators(array('ViewHelper',
@@ -72,21 +79,38 @@ class Application_Form_CommonForm extends Zend_Form
                                      ));
        
 
-       $this->addSubForm($jobSiteSubform, 'jobsite');
+       //$this->addSubForm($jobSiteSubform, 'jobsite');
+
+       return $jobSiteSubform;
 
        
     }
     
-    public function populateJobsiteFields($jobSiteSubForm)
+    
+    protected function populateJobsiteFields()
     {
-       $Jobsite = new My_Model_Jobsites();
+       $Asnmt = new My_Model_Assignment();
+       $agrmtFormId = $Asnmt->getCoopAgreementId();
 
-       $record = $Jobsite->fetchLast( array('username' => $this->username,
-                          'classes_id' => $this->classId, 
-                          'semesters_id' => $this->semId) );
+       $answers = $Asnmt->fetchAnswersForLastSubmitted( 
+              array('assignments_id' => $agrmtFormId,
+                    'classes_id' => $this->classId,
+                    'semesters_id' => $this->semId,
+                    'username' => $this->username));
 
-       $jobSiteSubForm->populate($record->toArray());
 
+       $elems = $this->static_tasks->getElements();
+       $jobSiteFields = array();
+       foreach ($elems as $e) {
+          //die(var_dump($e->getAttrib('class')));
+          if ($e->getAttrib('fieldType') === 'jobsite') {
+             foreach ($answers as $a) {
+                if ($e->getName() === $a->static_question) {
+                   $e->setValue($a->answer_text);
+                }
+             }
+          }
+       }
     }
 
 
