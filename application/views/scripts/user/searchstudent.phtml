@@ -61,6 +61,7 @@
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
    <button type="button" class="studentEval"> Student Evaluation </button>
    <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button>
+   <button type="button" class="timesheet" value="timesheet"> Time Sheet </button>
    <button type="button" class="coopAgreement" value="coopAgreement"> Coop Agreement </button> <br /><br />
 
    <!-- Change a students status -->
@@ -169,6 +170,22 @@
             $("#asyncContainer").empty();
             $("#asyncContainer").append(resp);
             $("#studentEvalForm").attr("value", "supervisorEval");
+            //$(".highlighted").css('background-color', 'green');
+
+         });
+
+      });
+      
+      $("button.timesheet").live('click', function() {
+         data = getRec();
+         if (data == "" || data == null) {
+            return;
+         }
+         $.post(base + "/async/student-eval", {'data' : data, 'timesheet' : true}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+            $("#studentEvalForm").attr("value", "timesheet");
             //$(".highlighted").css('background-color', 'green');
 
          });

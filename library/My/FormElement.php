@@ -7,7 +7,7 @@
  */
 class My_FormElement 
 {  
-   private $requiredVal = false;
+   private $requiredVal = true;
    
    /* * * * * * * * * * * * * * * * * * * * * 
     * STUDENT INFORMATION SHEET FORM FIELDS *

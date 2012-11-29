@@ -151,9 +151,52 @@ class AssignmentController extends Zend_Controller_Action
        }
 
        //die($classId);
-
     }
 
+    public function timesheetAction()
+    {
+       $as = new My_Model_Assignment();
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       $subForStudentData = $coopSess->submitForStudentData;
+       $classId = $subForStudentData['classes_id'];
+       $username = $subForStudentData['username'];
+       $semId = $subForStudentData['semesters_id'];
+
+                                                      
+       $form = new Application_Form_TimeSheet(array('username' => $username, 
+                                                   'classId' => $classId,
+                                                   'semId' => $semId));
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+          //$data = $form->getAllElementsIncludingNested();
+          //die(var_dump($data));
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->submitStudentEval($form);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else if ($res === 'submitted') {
+                $this->view->resultMessage = "<p class='error'> Assignment has already been submitted </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+          } else {
+             $this->view->resultMessage = "<p class='error'> One or more fields have errors </p>";
+          } 
+
+       }
+
+       //die($classId);
+    }
+    
+    
     public function supervisorEvalPdfAction()
     {
        if ($this->getRequest()->isPost()) {
@@ -250,7 +293,7 @@ class AssignmentController extends Zend_Controller_Action
 /***********************************END MAIN ASSIGNMENTS*********************************/
 
 
-    // for submitting an offline assignment
+    // for submitting offline assignments
     public function submitAction()
     {
        $form = new Application_Form_SubmitAssignment();
@@ -263,39 +306,27 @@ class AssignmentController extends Zend_Controller_Action
           if ($form->isValid($data)) {
 
              $coopSess = new Zend_Session_Namespace('coop');
+             
              // Set session data for assignment submissions on other pages.
              $coopSess->submitForStudentData['classes_id'] = $data['classes_id'];
              $coopSess->submitForStudentData['assignments_id'] = $data['assignments_id'];
              $coopSess->submitForStudentData['username'] = $data['username'];
              $coopSess->submitForStudentData['semesters_id'] = $data['semesters_id'];
 
+             // Get assignment number.
              $as = new My_Model_Assignment();
              $assignRow = $as->getAssignment($data['assignments_id']);
              $assignNum = $assignRow['assignment_num'];
-             // if submitting supervisor eval, redirect to supervisorEval action.
-             if ($assignNum === '6') {
-                //$this->_helper->redirector('supervisor-eval', 'assignment', null, array('assignId' => $assignId, 'classId' => $classId));
-                $this->_helper->redirector('supervisor-eval', 'assignment');
-             } else if ($assignNum === '3') {
+             
+             // Redirect to appropriate controller depending on assignment chosen.
+             if ($assignNum === '3') {
                 $this->_helper->redirector('coop-agreement', 'form');
+             } else if ($assignNum === '6') {
+                $this->_helper->redirector('supervisor-eval', 'assignment');
+             } else if ($assignNum === '7') {
+                $this->_helper->redirector('timesheet', 'assignment');
              }
              //die(var_dump($assignNum));
-
-
-
-
-             /* OLD WAY OF SUBMITTING OFFLINE ASSIGNMENT
-              * 
-             $result = $as->submit($data);
-
-             if ($result === "submitted") {
-                //$this->view->submitted = true;
-                $this->view->message = "<p class='error'> That assignment has already been submitted </p>";
-             } else {
-                //$this->view->submitted = false;
-                $this->view->message = "<p class='success'> Assignment has successfully been submitted </p>";
-             }
-              */
 
           }
 

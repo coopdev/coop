@@ -338,6 +338,8 @@ class AsyncController extends Zend_Controller_Action
              $data['assignments_id'] = $Assignment->getSupervisorEvalId();
           } else if (isset($_POST['coopAgreement'])) { 
              $data['assignments_id'] = $Assignment->getCoopAgreementId();
+          } else if (isset($_POST['timesheet'])) {
+             $data['assignments_id'] = $Assignment->getTimeSheetId();
           } else {
              $data['assignments_id'] = $Assignment->getStudentEvalId();
           }
@@ -352,30 +354,27 @@ class AsyncController extends Zend_Controller_Action
 
           
           // Instantiate correct form.
+          $formData = array('classId' => $data['classes_id'], 
+                            'semId' => $data['semesters_id'],
+                            'username' => $data['username']);
           if (isset($_POST['supervisorEval'])) {
-             $form = new Application_Form_SupervisorEval(array('classId' => $data['classes_id'], 
-                                                               'semId' => $data['semesters_id'],
-                                                               'username' => $data['username']
-                                                        ));
+             $form = new Application_Form_SupervisorEval($formData);
              
           }  else if (isset($_POST['coopAgreement'])) { 
-             $form = new Application_Form_Agreement(array('classId' => $data['classes_id'], 
-                                                          'semId' => $data['semesters_id'],
-                                                          'username' => $data['username']
-                                                   ));
+             $form = new Application_Form_Agreement($formData);
+             
+          }  else if (isset($_POST['timesheet'])) { 
+             $form = new Application_Form_TimeSheet($formData);
              
           } else {
-             $form = new Application_Form_StudentEval(array('classId' => $data['classes_id'], 
-                                                            'semId' => $data['semesters_id'],
-                                                            'username' => $data['username']
-                                                     ));
+             $form = new Application_Form_StudentEval($formData);
           }
 
 
           // Remove one of the submit buttons.
           $form->removeElement('saveOnly');
           $form->getElement('finalSubmit')
-                ->setLabel("Submit");
+                ->setLabel("Resubmit");
           
 
           // Disable form elements.
@@ -399,9 +398,18 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
        //$formData = $_POST['formDynamics'];
-       $statics = $_POST['formStatics'];
-       //die(var_dump($statics));
-       $dynamics = $_POST['formDynamics'];
+       if (isset($_POST['formStatics'])) {
+          $statics = $_POST['formStatics'];
+       } else {
+          $statics = array();
+       }
+
+       if (isset($_POST['formDynamics'])) {
+          $dynamics = $_POST['formDynamics'];
+       } else {
+          $dynamics = array();
+       }
+       
        $data = $_POST['data'];
        $assignment = $_POST['assignment'];
 
@@ -415,10 +423,13 @@ class AsyncController extends Zend_Controller_Action
           $data['assignments_id'] = $assign->getSupervisorEvalId();
        } else if ($assignment === 'coopAgreement') {
           $data['assignments_id'] = $assign->getCoopAgreementId();
+       } else if ($assignment === 'timesheet') {
+          $data['assignments_id'] = $assign->getTimeSheetId();
        }
 
        $subAssign = $assign->fetchSubmittedAssignment($data);
        $where['submittedassignments_id'] = $subAssign->id;
+
 
        $assign->updateAnswers($statics, $where, array('static' => true));
        $assign->updateAnswers($dynamics, $where);

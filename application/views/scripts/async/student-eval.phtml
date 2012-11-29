@@ -36,37 +36,50 @@
          assignment = $("#studentEvalForm").attr("value");
 
 
-         // Answers to dynamic questions.
-         temp = $("#studentEvalForm .dynamic:checked");
-         formDynas = {};
-         temp.each(function(k, v) {
-            //alert($(this).val());
-            name = $(this).attr('name');
-            name = name.split('[')[1].split(']')[0].trim();
-            formDynas[name] = $(this).val();
-         });
+         if (assignment != 'timesheet') {
+            // Answers to dynamic questions.
+            temp = $("#studentEvalForm .dynamic:checked");
+            formDynas = {};
+            temp.each(function(k, v) {
+               //alert($(this).val());
+               name = $(this).attr('name');
+               name = name.split('[')[1].split(']')[0].trim();
+               formDynas[name] = $(this).val();
+            });
 
 
-         // Answers to static questions.
-         formStatics = $("#studentEvalForm .static:checked");
+            // Answers to static questions.
+            formStatics = $("#studentEvalForm .static:checked");
 
-         // Learning outcome text boxes.
-         staticTexts = $("#studentEvalForm input[type=text].static, textarea.static");
+            // Learning outcome text boxes.
+            staticTexts = $("#studentEvalForm input[type=text].static, textarea.static");
 
-         $.each(staticTexts, function(i) {
-            //alert($(this));
-            formStatics = formStatics.add($(this));
-         });
+            $.each(staticTexts, function(i) {
+               //alert($(this));
+               formStatics = formStatics.add($(this));
+            });
 
 
-         jsonstring = JSON.stringify(formStatics, null, 4);
-         formStatics = JSON.parse(jsonstring);
-         formStatics = formStatics.static_tasks;
+            jsonstring = JSON.stringify(formStatics, null, 4);
+            formStatics = JSON.parse(jsonstring);
+            formStatics = formStatics.static_tasks;
+            
+            postData = { 'formStatics' : formStatics, 'formDynamics' : formDynas, 'data' : data, 'assignment' : assignment }
+         } else {
+            formStatics = $("#studentEvalForm .static");
+
+            jsonstring = JSON.stringify(formStatics, null, 4);
+            formStatics = JSON.parse(jsonstring);
+            formStatics = formStatics.static_tasks;
+
+            postData = { 'formStatics' : formStatics, 'data' : data, 'assignment' : assignment };
+         }
+
 
 
 
          //$.post(base + "/async/resubmit-assignment", {'formData' : formData, 'data' : data, 'assignment' : assignment}, function(resp) {
-         $.post(base + "/async/resubmit-assignment", { 'formStatics' : formStatics, 'formDynamics' : formDynas, 'data' : data, 'assignment' : assignment }, function(resp) {
+         $.post(base + "/async/resubmit-assignment", postData, function(resp) {
             //$('#asyncContainer').empty();
             //$('#asyncContainer').append(resp);
             if (assignment == 'studentEval') {
@@ -77,6 +90,9 @@
             }
             else if (assignment == 'coopAgreement') {
                $('button.coopAgreement').click();
+            } 
+            else if (assignment == 'timesheet') {
+               $('button.timesheet').click();
             }
 
          });

@@ -351,9 +351,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $userData['username'] = $form->getUsername();
       $userData['classes_id'] = $form->getClassId();
       $userData['semesters_id'] = $form->getSemId();
-      
-      
       $userData['assignments_id'] = $form->getAssignId();
+      
 
       if ($form->saveOnly->isChecked()) {
          $submitType = 'saveOnly';
@@ -363,20 +362,22 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
 
       // Answers to static questions.
-      $statics = $form->static_tasks->getValues();
-      $statics = $statics['static_tasks'];
+      if (isset($form->static_tasks)) {
+         $statics = $form->static_tasks->getValues();
+         $statics = $statics['static_tasks'];
+      } else {
+         $statics = array();
+      }
 
       // Answers to dynamic questions.
-      $dynamics = $form->dynamic_tasks->getValues();
-      $dynamics = $dynamics['dynamic_tasks'];
+      if (isset($form->dynamic_tasks)) {
+         $dynamics = $form->dynamic_tasks->getValues();
+         $dynamics = $dynamics['dynamic_tasks'];
+      } else {
+         $dynamics = array();
+      }
       //die(var_dump($dynamics));
       
-      // If the form has the jobsite fields.
-      if (isset($form->jobsite)) {
-         $jobSite = $form->jobsite->getValues();
-         $jobSite = $jobSite['jobsite'];
-         //die(var_dump($jobSite));
-      }
 
       // BEGIN TRANSACTION
       $this->getAdapter()->beginTransaction();
@@ -390,8 +391,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       }
 
 
-      $Jobsite = new My_Model_Jobsites();
-      
       // Fetch the submitted assignment.
       $submittedAssign = $sa->fetchRow($db->buildArrayWhereClause($userData));
       
@@ -401,12 +400,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $res1 = $this->updateAnswers($statics, $where, array('static' => true));
          $res2 = $this->updateAnswers($dynamics, $where);
 
-         // If the form has the jobsite fields.
-         if (isset($jobSite)) {
-            //die(var_dump($jobSite));
-            $Jobsite->edit($jobSite, $jobSite['id']);
-         }
-
 
       // If this assignment has never been submitted yet, even as save only.
       } else if ($submitResult === true) {
@@ -414,11 +407,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $res1 = $this->insertAnswers($statics, $foreignKeys, array('static' => true));
          $res2 = $this->insertAnswers($dynamics, $foreignKeys);
          
-         // If the form has the jobsite fields.
-         if (isset($jobSite)) {
-            //die(var_dump($jobSite));
-            $Jobsite->add(array_merge($jobSite, $userData));
-         }
       }
 
       // If either insertAnswers() or updateAnswers() returned 'exception' due to an Exception
@@ -1299,6 +1287,16 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    public function getSupervisorEvalId()
    {
       $id = $this->getId(array('assignment_num' => 6));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+
+   }
+   
+   public function getTimeSheetId()
+   {
+      $id = $this->getId(array('assignment_num' => 7));
       if (empty($id)) {
          $id = 0;
       }
