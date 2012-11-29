@@ -119,6 +119,7 @@
         <formFile formName="SupervisorEval"/>
         <formFile formName="CommonForm"/>
         <formFile formName="DeleteRatedQuestions"/>
+        <formFile formName="TimeSheet"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
