@@ -604,15 +604,20 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       $subAsnmts = $this->fetchAll($select);
       //die(var_dump(count($subAsnmts)));
 
-      // get last subbmitted assignment.
-      $last = $subAsnmts->getRow(count($subAsnmts) - 1);
-      $subAsnmtId = $last->id;
-      //die(var_dump($subAsnmtId));
+      if (count($subAsnmts) > 0) {
+         
+         // get last subbmitted assignment.
+         $last = $subAsnmts->getRow(count($subAsnmts) - 1);
+         $subAsnmtId = $last->id;
+         //die(var_dump($subAsnmtId));
 
-      $answers = $this->fetchAnswers(array('submittedassignments_id' => $subAsnmtId));
+         $answers = $this->fetchAnswers(array('submittedassignments_id' => $subAsnmtId));
 
-      return $answers;
+         return $answers;
 
+      }
+
+      return array();
    }
 
 
