@@ -1,0 +1,81 @@
+<?php
+   $this->pageTitle = "Cooperative Education Agreement";
+   
+   $coopSess = new Zend_Session_Namespace('coop');
+   //$this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
+   $this->headScript()->prependFile($coopSess->baseUrl.'/js/views/async/funcs.js');
+   echo $this->headScript();
+
+   $recText = $this->recText;
+
+   if (!empty($recText)) {
+      echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+      echo $recText['class'] . "<br /> ";
+      echo $recText['semester'] . "<br /><br /><br />";
+   }
+
+   if ($this->submitted === false) {
+      echo "<p class=error> Form has not been submitted </p>";
+   } else {
+      $form = $this->form;
+
+      foreach ($form->submissions as $s) {
+         echo $s;
+      }
+   }
+?>
+
+
+<script type="text/javascript" >
+   $(document).ready(function() {
+      $("input:checked").addClass('highlighted');
+
+
+      $('input.resubmit').live('click', function(e) {
+         e.preventDefault();
+
+         submissionId = $(this).attr('submissionid');
+         //alert(submissionId);
+         
+         // Answers to dynamic questions.
+         temp = $("form[submissionid=" + submissionId + "] .dynamic:checked");
+         formDynas = {};
+         temp.each(function(k, v) {
+            //alert($(this).val());
+            name = $(this).attr('name');
+            name = name.split('[')[1].split(']')[0].trim();
+            formDynas[name] = $(this).val();
+         });
+
+         statics = $("form[submissionid=" + submissionId + "] .static");
+
+         jsonstring = JSON.stringify(statics, null, 4);
+         statics = JSON.parse(jsonstring);
+         statics = statics.static_tasks;
+
+         postData = { 'formStatics': statics, 
+                      'formDynamics': formDynas, 
+                      'assignment': 'coopAgreement', 
+                      'data': {'submissionId': submissionId }
+                    };
+         
+         $.post(base + '/async/resubmit-assignment', postData, function(resp) {
+            //$('#asyncContainer').empty();
+            //$('#asyncContainer').append(resp);
+            $('button.coopAgreement').click();
+         });
+
+         //console.log(statics);
+        
+
+
+
+      });
+
+
+
+
+   });
+
+
+</script>

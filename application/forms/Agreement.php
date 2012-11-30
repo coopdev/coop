@@ -5,7 +5,9 @@
  */
 class Application_Form_Agreement extends Application_Form_CommonForm
 {
-
+      // array of forms that were submitted (since this form can be submitted multiple times).
+      public $submissions = array(); 
+      
       public $assignNum = 3;
    
       public function init()
@@ -20,14 +22,16 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
           $this->setDecorators(array(array('ViewScript', 
                                       array('viewScript' => '/form/coop-agreement-template.phtml'))));
+          
 
           //$this->makeJobsiteSubform();
 
           $this->makeStatics();
 
-
           $this->makeDynamics();
 
+          // Submitted assignment ID.
+          $id = new Zend_Form_Element_Hidden('id');
 
           $elems = new My_FormElement();
           //$saveSubmit = $elems->getSubmit('saveOnly');
@@ -37,7 +41,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
           $finalSubmit->setLabel('Submit as Final')
                       ->setAttrib('class', 'resubmit');
 
-          $this->addElements(array($finalSubmit));
+          $this->addElements(array($id, $finalSubmit));
           
           
           // Checks if there are submitted answers in order to populate the form with them.
@@ -48,6 +52,48 @@ class Application_Form_Agreement extends Application_Form_CommonForm
           $this->setElementDecorators(array('ViewHelper',
                                             'Errors'
                                      ));
+      }
+
+      public function checkSubmittedAnswers() {
+         $Assign = new My_Model_Assignment();
+
+         $where = array('classes_id' => $this->classId, 
+             'semesters_id' => $this->semId,
+             'username' => $this->username,
+             'assignments_id' => $this->assignId);
+         
+         $subAssigns = $Assign->fetchSubmittedAssignments($where);
+
+         if (!empty($subAssigns)) {
+            foreach ($subAssigns as $s) {
+               $answers = $Assign->fetchAnswers( array('submittedassignments_id' => $s->id ));
+
+               $formData = array();
+               $formData['id'] = $s->id;
+               foreach ($answers as $a) {
+                  if (!empty($a->static_question)) {
+                     $elemName = $a->static_question;
+                  } else {
+                     $elemName = $a->assignmentquestions_id;
+                  }
+                  $formData[$elemName] = $a->answer_text;
+               }
+
+               //$form = new Application_Form_Agreement(
+               //              array('classId' => $this->classId,
+               //                    'semId' => $this->semId,
+               //                    'username' => $this->username));
+               //$form->populate($formData);
+
+               $this->populate($formData);
+               $this->setAttrib('submissionid', $s->id);
+               $this->getElement('finalSubmit')->setAttrib('submissionid', $s->id);
+               $this->submissions[] = clone $this;
+
+
+            }
+         }
+
       }
 
 
@@ -64,7 +110,6 @@ class Application_Form_Agreement extends Application_Form_CommonForm
                                      ));
          $Elems = new My_FormElement();
 
-         $id = new Zend_Form_Element_Hidden('id');
          //$id = new Zend_Form_Element_Text('id');
 
          //die(var_dump($id));

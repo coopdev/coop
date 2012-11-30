@@ -87,9 +87,8 @@ class FormController extends Zend_Controller_Action
        $form = new Application_Form_Agreement(array('username' => $username, 
                                                     'classId' => $classId,
                                                     'semId' => $semId,
-                                                    'populateForm' => false));
+                                                    'populateForm' => false ));
 
-       //$form->
        $this->view->form = $form;
 
        if ($this->getRequest()->isPost()) {

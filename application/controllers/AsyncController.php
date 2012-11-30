@@ -336,8 +336,6 @@ class AsyncController extends Zend_Controller_Action
           
           if (isset($_POST['supervisorEval'])) {
              $data['assignments_id'] = $Assignment->getSupervisorEvalId();
-          } else if (isset($_POST['coopAgreement'])) { 
-             $data['assignments_id'] = $Assignment->getCoopAgreementId();
           } else if (isset($_POST['timesheet'])) {
              $data['assignments_id'] = $Assignment->getTimeSheetId();
           } else {
@@ -359,9 +357,6 @@ class AsyncController extends Zend_Controller_Action
                             'username' => $data['username']);
           if (isset($_POST['supervisorEval'])) {
              $form = new Application_Form_SupervisorEval($formData);
-             
-          }  else if (isset($_POST['coopAgreement'])) { 
-             $form = new Application_Form_Agreement($formData);
              
           }  else if (isset($_POST['timesheet'])) { 
              $form = new Application_Form_TimeSheet($formData);
@@ -392,12 +387,46 @@ class AsyncController extends Zend_Controller_Action
 
     }
 
+    public function coopAgreementAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST['data'];
+          
+          // To get text for the record being viewed (student's name, semester, class)
+          $user = new My_Model_User();
+          $recText = $user->getSemesterInfo($data);
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+          $this->view->recText = $recText;
+
+          
+          $formData['classId'] = $data['classes_id'];
+          $formData['semId'] = $data['semesters_id'];
+          $formData['username'] = $data['username'];
+
+          $this->view->form = new Application_Form_Agreement($formData);
+          
+
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+
+    }
+
     // Resubmits student or supervisor eval.
     public function resubmitAssignmentAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
        $this->_helper->viewRenderer->setNoRender();
        //$formData = $_POST['formDynamics'];
+
+       //die(var_dump($_POST));
        if (isset($_POST['formStatics'])) {
           $statics = $_POST['formStatics'];
        } else {
@@ -419,17 +448,22 @@ class AsyncController extends Zend_Controller_Action
 
        if ($assignment === 'studentEval') {
           $data['assignments_id'] = $assign->getStudentEvalId();
+          $subAssign = $assign->fetchSubmittedAssignment($data);
+          $where['submittedassignments_id'] = $subAssign->id;
        } else if ($assignment === 'supervisorEval') {
           $data['assignments_id'] = $assign->getSupervisorEvalId();
+          $subAssign = $assign->fetchSubmittedAssignment($data);
+          $where['submittedassignments_id'] = $subAssign->id;
        } else if ($assignment === 'coopAgreement') {
-          $data['assignments_id'] = $assign->getCoopAgreementId();
+          $where['submittedassignments_id'] = $data['submissionId'];
        } else if ($assignment === 'timesheet') {
           $data['assignments_id'] = $assign->getTimeSheetId();
+          $subAssign = $assign->fetchSubmittedAssignment($data);
+          $where['submittedassignments_id'] = $subAssign->id;
        }
 
-       $subAssign = $assign->fetchSubmittedAssignment($data);
-       $where['submittedassignments_id'] = $subAssign->id;
 
+       //die(var_dump($statics, $dynamics, $where));
 
        $assign->updateAnswers($statics, $where, array('static' => true));
        $assign->updateAnswers($dynamics, $where);

@@ -197,11 +197,11 @@
          if (data == "" || data == null) {
             return;
          }
-         $.post(base + "/async/student-eval", {'data' : data, 'coopAgreement' : true}, function(resp) {
+         $.post(base + "/async/coop-agreement", {'data' : data}, function(resp) {
 
             $("#asyncContainer").empty();
             $("#asyncContainer").append(resp);
-            $("#studentEvalForm").attr("value", "coopAgreement");
+            //$("#studentEvalForm").attr("value", "coopAgreement");
             //$(".highlighted").css('background-color', 'green');
 
          });
