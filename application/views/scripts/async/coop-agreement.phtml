@@ -17,11 +17,16 @@
    if ($this->submitted === false) {
       echo "<p class=error> Form has not been submitted </p>";
    } else {
+      
       $form = $this->form;
-
+      $page = 0;
+      echo "<ul class='paging'>";
       foreach ($form->submissions as $s) {
-         echo $s;
+         echo "<li class='simplePagerPage$page'>";
+         echo "<br /> <br /> $s";
+         echo "</li>";
       }
+      echo "</ul>";
    }
 ?>
 
@@ -73,6 +78,9 @@
       });
 
 
+      $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
+
+      $('.simplePagerNav').after('<br />');
 
 
    });
