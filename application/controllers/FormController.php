@@ -10,67 +10,18 @@ class FormController extends Zend_Controller_Action
 
     public function studentInfoShowAction()
     {
-       $assignment = new My_Model_Assignment();
-       $assignId = $assignment->getStuInfoId();
+       $session = new Zend_Session_Namespace('coop');
 
-       if ($assignment->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
-       }
 
-       // User $this->view->url() to refresh page when changing classes (it return the current url)
-       //die(var_dump($this->view->url()));
-       $form = new Application_Form_StudentInfo();
-       //$form->setIsArray(true);
-       
-       $coopSess = new Zend_Session_Namespace('coop');
-       $form->setAction($coopSess->baseUrl.'/form/student-info-show');
-
-       
-       if ($this->_request->isPost()) {
-          $data = $_POST;
-          //die(var_dump($data));
-
-          if ($form->isValid($data)) {
-             //die(var_dump($data));
-             $coopSess->validData = $data;
-             $this->_helper->redirector('student-info-submit');
-          }  
-
-       } else {
-          $assignment = new My_Model_Assignment();
-          $form = $assignment->populateStuInfoSheet($form);
-          $form->getElement('uuid')->setValue("");
-          //die(var_dump($form));
-       }
+       $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
+           'semId' => $session->currentSemId,
+           'username' => $session->username));
 
        $this->view->form = $form;
        
 
     }
 
-    public function studentInfoSubmitAction()
-    {
-       date_default_timezone_set('US/Hawaii');
-       $coopSess = new Zend_Session_Namespace('coop');
-       if ( isset($coopSess->validData) ) {
-          
-          $data = $coopSess->validData;
-          //die(var_dump($data));
-          //$subf1 = $data['subf1'];
-          //$subf2 = $data["empinfo"];
-          //$subf2 = $subf2[0];
-          //$data = $subf1 + $subf2;
-
-          unset($coopSess->validData);
-
-          $assignment = new My_Model_Assignment();
-          $assignment->submitStuInfoSheet($data);
-          $this->view->message = "<p class=success> Success </p>";
-          
-       
-       }
-    }
 
     public function coopAgreementAction()
     {

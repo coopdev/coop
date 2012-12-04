@@ -1,33 +1,111 @@
 <?php
+$elem = $this->element;
 
-   //$coopSess = new Zend_Session_Namespace('coop');
-   //$this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
-   //echo $this->headLink();
 
 ?>
 
-<br /><br /><h4> <b> PERSONAL INFORMATION (Please complete this form) </b> </h4>
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      <b> PERSONAL INFORMATION </b> <br /> 
+   </h4> 
+</div> <br />
 
-<form id="studentInfoSheet" name="studentInfoSheet" method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" >
+<form id="studentInfoSheetForm" name="studentInfoSheet" method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" >
 <table id=" "class="tableform">
 
    <tr>
 
-      <td> First name: <br />
-         <?php echo $this->element->fname ?> </td>
+      <td> 
+         <?php echo $elem->personalInfo->fname ?> 
+      </td>
 
-      <td> Last name: <br />
-         <?php echo $this->element->lname ?> </td>
+      <td>
+         <?php echo $elem->personalInfo->lname ?> 
+      </td>
 
-      <td> Address/City/State/ZIP: <br />
-         <?php echo $this->element->address ?> </td>
-
-      <td> Uhuuid #: <br />
-         <?php echo $this->element->uuid ?> </td>
-
+      <td>
+         <?php echo $elem->personalInfo->uuid ?> 
+      </td>
 
    </tr>
    
+   <tr>
+
+      <td>
+         <?php echo $elem->personalInfo->mobile ?> 
+      </td>
+      
+      <td>
+         <?php echo $elem->personalInfo->email ?> 
+      </td>
+      
+      <td>
+         <?php echo $elem->personalInfo->phone ?> 
+      </td>
+
+   </tr>
+   
+   
+   
+</table>
+   
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      <b> EDUCATION INFORMATION </b> <br /> 
+   </h4> 
+</div> <br />
+
+<table class="tableform">
+   <tr>
+      <td>
+         <?php echo $elem->eduInfo->majors_id ?>
+      </td>
+
+      <td>
+         <?php echo $elem->eduInfo->semester_in_major ?>
+      </td>
+      
+      <td>
+         <?php echo $elem->eduInfo->grad_date ?>
+      </td>
+
+      <td>
+         <?php echo $elem->eduInfo->classes_id ?>
+      </td>
+   </tr>
+
+   <tr>
+      <td>
+         <?php echo $elem->eduInfo->coop_credits ?>
+      </td>
+
+      <td>
+         <?php echo $elem->eduInfo->total_credits ?>
+      </td>
+      
+      <td>
+         <?php echo $elem->eduInfo->coop_sem_yr ?>
+      </td>
+
+      <td>
+         <?php echo $elem->eduInfo->coop_jobtitle ?>
+      </td>
+   </tr>
+
+</table>
+
+<?php echo $elem->eduInfo->other_courses ?> <br />
+
+
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      <b> EMPLOYMENT INFORMATION (Complete this section if you are currently working at a job related to your major) </b> <br /> 
+   </h4> 
+</div> <br />
+
+</form>
+   
+   <!--
    <tr>
 
       <td> Which co-op class are you planning to enroll in <br />
@@ -146,6 +224,9 @@
 
 <p> <?php echo $this->element->agreement ?> </p> 
 <p> <?php echo $this->element->Submit ?> </p>
+
+
+   -->
 
 </form>
 
