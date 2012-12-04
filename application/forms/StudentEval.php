@@ -22,6 +22,9 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
 
        $this->makeDynamics();
 
+       // Do this in order to get the right question number on th
+       $temp = $this->getSubForm('dynamic_tasks');
+       $this->getSubForm('static_tasks')->getElement('other')->setLabel(count($temp) + 1 . '. Other (please specify):');
 
        $elems = new My_FormElement();
        $saveSubmit = $elems->getSubmit('saveOnly');
@@ -83,6 +86,7 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        $task4->setSeparator("");
        $task4->setRequired(true);
 
+       $staticTasks->addElements($this->makeOther());
        
        $staticTasks->addElements(array($task1,$task2,$task3,$task4));
 
@@ -100,15 +104,9 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
        $staticTasks->addElement($this->makeComment());
 
        $elems = $staticTasks->getElements();
-       //foreach ($elems as $e) {
        foreach ($elems as $k => $v) {
           $v->setAttrib('class', 'static');
-          //$v->setRequired(true);
        }
-
-       //$staticTasks->setElementDecorators(array('ViewHelper',
-       //                                 'Errors'
-       //                           ));
 
        $this->addSubForm($staticTasks, 'static_tasks');
 

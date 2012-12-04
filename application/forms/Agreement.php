@@ -30,6 +30,10 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
           $this->makeDynamics();
 
+          // Do this in order to get the right question number on th
+          $temp = $this->getSubForm('dynamic_tasks');
+          $this->getSubForm('static_tasks')->getElement('other')->setLabel(count($temp) + 1 . '. Other (please specify):');
+       
           // Submitted assignment ID.
           $id = new Zend_Form_Element_Hidden('id');
 
@@ -128,6 +132,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
          
          $phone = $Elems->getCommonTbox('phone', 'Telephone:');
 
+         $staticTasks->addElements($this->makeOther());
 
          $staticTasks->addElements(array($position, $company, $hours, $semesters, $superv, $phone));
 

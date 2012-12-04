@@ -188,6 +188,23 @@ class Application_Form_CommonForm extends Zend_Form
        return $elems;
     }
 
+    public function makeOther() 
+    {
+       $elems = new My_FormElement();
+       $other = $elems->getCommonTbox('other', 'Other (please specify):');
+       $other->setRequired(false)
+             ->setAttrib('size', '80')
+             ->setDecorators( array('ViewHelper','Label'));
+
+
+       $otherRating = new Zend_Form_Element_Radio('other_rating');
+       $otherRating->setDecorators( array('ViewHelper', 'Label') )
+                   ->setLabel("")
+                   ->setSeparator("")
+                   ->setMultiOptions($this->options);
+
+       return array($other, $otherRating);
+    }
 
 
     // Same as the default isValid() method except it checks for saves and unsets the 

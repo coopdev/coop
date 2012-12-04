@@ -16,6 +16,10 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
        $this->makeDynamics();
 
+       // Do this in order to get the right question number on th
+       $temp = $this->getSubForm('dynamic_tasks');
+       $this->getSubForm('static_tasks')->getElement('other')->setLabel(count($temp) + 1 . '. Other (please specify):');
+
        $elems = new My_FormElement();
        $saveSubmit = $elems->getSubmit('saveOnly');
        $saveSubmit->setLabel('Save Only')
@@ -77,6 +81,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $hrlyWage = $elems->getCommonTbox('hrly_wage', 'Hourly wage:');
 
        $comments = $elems->getCommonTarea('comments', '');
+       $comments->setRequired(false);
        //$comments->get
 
        $overallEval = new Zend_Form_Element_Radio('overall_eval');
@@ -87,20 +92,23 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
                                             '3' => 'Satisfactory',
                                             '4' => 'Unsatisfactory'));
        
+       $coord = $elems->getCommonTbox('coordinator', 'Coordinator:');
+       $coordPhone = $elems->getCommonTbox('coord_phone', 'Telephone:');
+       $college = $elems->getCommonTbox('college', 'College:');
+       $coordEmail = $elems->getCommonTbox('coord_email', 'Email:');
+       $address = $elems->getCommonTbox('address', 'Address:');
+       $fax = $elems->getCommonTbox('fax', 'Fax:');
+
+       $staticTasks->addElements($this->makeOther());
        
        
-       //$static_tasks->addElements(array($position, $company, $hours, $semesters, $superv, 
-       //             $phone, $avgHrs, $hrlyWage, $comments, $overallEval));
-       
-       $staticTasks->addElements(array($avgHrs, $hrlyWage, $comments, $overallEval));
+       $staticTasks->addElements(array($coord, $coordPhone, $college, $coordEmail, $address, 
+           $fax, $avgHrs, $hrlyWage, $comments, $overallEval));
 
        // Make all elements required except 'comments'.
        $temp = $staticTasks->getElements();
        foreach ($temp as $k => $v) {
           $v->setAttrib('class', 'static');
-          if ($k !== 'comments') {
-             $v->setRequired(true);
-          }
        }
 
        //$static_tasks = array($position, $company, $hours, $semesters, $superv, $phone);
