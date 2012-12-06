@@ -88,7 +88,7 @@ $elem = $this->element;
       </td>
 
       <td>
-         <?php echo $elem->eduInfo->coop_jobtitle ?>
+         <?php echo $elem->empInfo->coop_jobtitle ?>
       </td>
    </tr>
 
@@ -103,94 +103,75 @@ $elem = $this->element;
    </h4> 
 </div> <br />
 
-</form>
-   
-   <!--
-   <tr>
-
-      <td> Which co-op class are you planning to enroll in <br />
-         <?php echo $this->element->wanted_class ?> </td>
-
-      <td> How many credits will you enroll this semester? <br />
-         <?php echo $this->element->credits ?> </td>
-
-      <td> Grad date (mm/dd/yyyy): <br />
-         <?php echo $this->element->grad_date ?>  </td>
-
-      <td> Major: <br />
-         <?php echo $this->element->majors_id ?> </td>
-
-   </tr>
-
-   <tr> 
-   
-      <td> Semester in major: <br />
-         <?php echo $this->element->semester_in_major ?> </td>
-   
-      <td> Telephone: <br />
-         <?php echo $this->element->phone ?> </td>
-   
-      <td> Mobile: <br />
-         <?php echo $this->element->mobile ?> </td>
-
-      <td> Email: <br />
-         <?php echo $this->element->email ?> </td>
-   </tr>
-
-</table>
-
-<br /><h4> <b> EMPLOYMENT INFORMATION (If you are currently working at a job related to your major, please describe below) </b> </h4>
-
 <table class="tableform">
    <tr>
+      <td>
+         <?php echo $elem->empInfo->job_title ?>
+      </td>
 
-      <td> Job title: <br />
-         <?php echo $this->element->current_job ?> </td>
+      <td>
+         <?php echo $elem->empInfo->start_date ?>
+      </td>
+      
+      <td>
+         <?php echo $elem->empInfo->end_date ?>
+      </td>
 
-      <td> Start date (mm/dd/yyyy): <br />
-         <?php echo $this->element->start_date ?> </td>
-
-      <td> End date (mm/dd/yyyy): <br />
-         <?php echo $this->element->end_date ?> </td>
-
-      <td> Rate of pay: <br />
-         <?php echo $this->element->rate_of_pay ?> </td>
+      <td>
+         <?php echo $elem->empInfo->rate_of_pay ?>
+      </td>
    </tr>
 
    <tr>
+      <td>
+         <?php echo $elem->empInfo->employer ?>
+      </td>
 
-      <td> Employer: <br />
-         <?php echo $this->element->employer ?> </td>
+      <td>
+         <?php echo $elem->empInfo->department ?>
+      </td>
+      
+      <td>
+         <?php echo $elem->empInfo->street_address ?>
+      </td>
 
-      <td> Address/City/State/ZIP: <br />
-         <?php echo $this->element->job_address ?> </td>
-
-      <td> Supervisor's name: <br />
-         <?php echo $this->element->superv_name ?> </td>
-
-      <td> Supervisor's title: <br />
-         <?php echo $this->element->superv_title ?> </td>
-
+      <td>
+         <?php echo $elem->empInfo->city_state_zip ?>
+      </td>
    </tr>
 
    <tr>
+      <td>
+         <?php echo $elem->empInfo->superv_name ?>
+      </td>
 
-      <td> Telephone: <br />
-         <?php echo $this->element->superv_phone ?> </td>
+      <td>
+         <?php echo $elem->empInfo->superv_title ?>
+      </td>
+      
+      <td>
+         <?php echo $elem->empInfo->superv_phone ?>
+      </td>
 
-      <td> E-mail: <br />
-         <?php echo $this->element->superv_email ?> </td>
-
+      <td>
+         <?php echo $elem->empInfo->superv_email ?>
+      </td>
    </tr>
 
-
-
-
-
-
+   <tr>
+      <td>
+         <?php echo $elem->empInfo->fax ?>
+      </td>
+   </tr>
 </table>
 
-<h4> <b> STUDENT PARTICIPATION AGREEMENT </b> </h4><br />
+
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+   <h4> 
+      <b> ******** STUDENT PARTICIPATION AGREEMENT ******** </b> <br /> 
+   </h4> 
+</div> <br />
+
 <p> Participation in Cooperative Education requires agreement with the terms and conditions below. By submitting this form, you agree to the following: </p> 
 
 <ol>
@@ -221,14 +202,15 @@ $elem = $this->element;
 
 </ol>
 
+<?php echo $elem->saveOnly ?>
+<?php echo $elem->finalSubmit ?>
 
-<p> <?php echo $this->element->agreement ?> </p> 
-<p> <?php echo $this->element->Submit ?> </p>
-
-
-   -->
 
 </form>
+   
+
+
+
 
 
 <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script> 

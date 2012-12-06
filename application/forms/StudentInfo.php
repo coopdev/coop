@@ -10,6 +10,17 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        
        $this->personalInfoFields();
        $this->eduInfoFields();
+       $this->empInfoFields();
+       
+       $elems = new My_FormElement();
+       $saveSubmit = $elems->getSubmit('saveOnly');
+       $saveSubmit->setLabel('Save Only')
+                  ->setAttrib('class', 'resubmit');
+       $finalSubmit = $elems->getSubmit('finalSubmit');
+       $finalSubmit->setLabel('Submit as Final')
+                   ->setAttrib('class', 'resubmit');
+
+       $this->addElements( array($saveSubmit, $finalSubmit));
        
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'
@@ -73,15 +84,45 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
     public function empInfoFields()
     {
+       $empInfoSubform = new Zend_Form_SubForm();
+       $empInfoSubform->setElementsBelongTo('empInfo');
+       
+       
        $elems = new My_FormElement();
 
        $jobTitle = $elems->getCommonTbox('job_title', "Job Title:");
+       
+       $coopJobTitle = $elems->getCommonTbox('coop_jobtitle', 'COOP. ED. JOBTITLE');
 
-       $startDate = $elems->getCommonTbox('start_date', 'Start Date (mm/dd/yyyy):');
+       $startDate = $elems->getDateTbox('start_date', 'Start Date');
 
-       $endDate = $elems->getCommonTbox('end_date', 'End Date (mm/dd/yyyy):');
+       $endDate = $elems->getDateTbox('end_date', 'End Date:');
 
+       $rateOfPay = $elems->getPayRateTbox();
 
+       $employer = $elems->getCommonTbox('employer', 'Employer:');
+
+       $department = $elems->getCommonTbox('department', 'Department:');
+       
+       $streetAddress = $elems->getCommonTbox('street_address', 'Street Address:');
+       
+       $cityStateZip = $elems->getCommonTbox('city_state_zip', 'City, State, Zip:');
+       
+       $supervName = $elems->getCommonTbox('superv_name', 'Supervisor Name:');
+
+       $supervTitle = $elems->getCommonTbox('superv_title', 'Supervisor Title:');
+
+       $supervPhone = $elems->getCommonTbox('superv_phone', 'Telephone:');
+       
+       $supervEmail = $elems->getEmailTbox('superv_email', 'E-Mail:');
+       
+       $fax = $elems->getCommonTbox('fax', 'Fax:');
+
+       $empInfoSubform->addElements( array($jobTitle, $coopJobTitle, $startDate, $endDate,
+           $rateOfPay, $employer, $department, $streetAddress, $cityStateZip, $supervName,
+           $supervTitle, $supervPhone, $supervEmail, $fax) );
+
+       $this->addSubForm($empInfoSubform, 'empInfo');
     }
 
 
