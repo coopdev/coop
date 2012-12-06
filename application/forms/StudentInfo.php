@@ -71,5 +71,19 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
     }
 
 
+    public function empInfoFields()
+    {
+       $elems = new My_FormElement();
+
+       $jobTitle = $elems->getCommonTbox('job_title', "Job Title:");
+
+       $startDate = $elems->getCommonTbox('start_date', 'Start Date (mm/dd/yyyy):');
+
+       $endDate = $elems->getCommonTbox('end_date', 'End Date (mm/dd/yyyy):');
+
+
+    }
+
+
 }
 
