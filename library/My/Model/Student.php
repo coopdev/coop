@@ -10,8 +10,9 @@
  *
  * @author joseph
  */
-class Student extends Zend_Db_Table_Abstract
+class My_Model_Student extends Zend_Db_Table_Abstract
 {
+   protected $_name = 'coop_students';
 }
 
 ?>

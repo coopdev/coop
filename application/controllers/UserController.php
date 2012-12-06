@@ -70,7 +70,7 @@ class UserController extends Zend_Controller_Action
           if (empty($usersId)) {
              $db->insert('coop_users', $userVals);
              //$usersId = $db->lastInsertId('coop_users');
-             $db->insert('coop_students', array('username' => $username));
+             $db->insert('coop_students', array('username' => $username, 'semesters_id' => $coopSess->currentSemId));
              //$studentsId = $db->lastInsertId('coop_students');
           }
 

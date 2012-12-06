@@ -344,7 +344,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    {
       $db = new My_Db();
       $sa = new My_Model_SubmittedAssignment();
-      
       $coopSess = new Zend_Session_Namespace('coop');
 
       
@@ -1411,6 +1410,19 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function isSubmittedOrSaved(array $where)
+   {
+      $sa = new My_Model_SubmittedAssignment();
+      $db = new My_Db();
+      $data = $db->prepFormInserts($data, $sa);
+
+      if ($sa->rowExists($where)) {
+         return true;
+      }
+
+      return false;
+   }
+
    /**
     * Checks if an assignment is due.
     * 
@@ -1612,151 +1624,63 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        return $form;
    }
 
-   public function submitStuInfoSheet($data)
+   public function submitStuInfoSheet($form)
    {
-       $coopSess = new Zend_Session_Namespace('coop');
-
+       $session = new Zend_Session_Namespace('coop');
        $db = new My_Db();
+       $SubAssign = new My_Model_SubmittedAssignment();
 
-       //die(var_dump($data));
+       $userData['username'] = $form->getUsername();
+       $userData['classes_id'] = $form->getClassId();
+       $userData['semesters_id'] = $form->getSemId();
+       $userData['assignments_id'] = $form->getAssignId();
+      
+
+       if ($form->saveOnly->isChecked()) {
+          $submitType = 'saveOnly';
+       } else if ($form->finalSubmit->isChecked()) {
+          $submitType = 'finalSubmit';
+       }
+
+       $persInfo = $form->personalInfo->getValues();
+       $persInfo = $persInfo['personalInfo'];
+       $uuid = $session->uhinfo['uhuuid'];
+       //$persInfo['uuid'] = new Zend_Db_Expr("AES_ENCRYPT('$uuid', 'alqpwoifjch')");
+       $persInfo['uuid'] = $uuid;
        
-       // get only the submited form data that matches table fields in coop_users
-       $userVals = $db->prepFormInserts($data, 'coop_users'); 
-       //if ($userVals['uuid'] == "") {
-       //   $userVals['uuid'] = null;
-       //}
-       //die(var_dump($userVals));
-       $userVals['username'] = $coopSess->username;
-       $uuid = $coopSess->uhinfo['uhuuid'];
-       $userVals['uuid'] = new Zend_Db_Expr("AES_ENCRYPT('$uuid', 'alqpwoifjch')");
+       $eduInfo = $form->eduInfo->getValues();
+       $eduInfo = $eduInfo['eduInfo'];
+       unset($eduInfo['classes_id']);
+       
+       $empInfo = $form->empInfo->getValues();
+       $empInfo = $empInfo['empInfo'];
+       $empInfo['username'] = $form->getUsername();
+       $empInfo['classes_id'] = $form->getClassId();
+       $empInfo['semesters_id'] = $form->getSemId();
+       $empInfo['start_date'] = date('Ymd', strtotime($empInfo['start_date']));
+       $empInfo['end_date'] = date('Ymd', strtotime($empInfo['end_date']));
+       //die(var_dump($empInfo['end_date']));
+       
+       // BEGIN TRANSACTION
+       $this->getAdapter()->beginTransaction();
 
-       // get only the submited form data that matches table fields in coop_addresses
-       $addrVals = $db->prepFormInserts($data, 'coop_addresses');
-       //die(var_dump($addrVals));
-       $addrVals['username'] = $coopSess->username;
-       $addrVals['date_mod'] = date('Ymdhis');
+       // Attempt to submit the assignment
+       $submitResult = $this->submit($userData, $submitType);
 
-       // get only the submited form data that matches table fields in coop_employmentinfo
-       $empVals = $db->prepFormInserts($data, 'coop_employmentinfo');
-       //die(var_dump($empVals));
-       if (empty($empVals['rate_of_pay'])) {
-          $empVals['rate_of_pay'] = null;
-       }
-       $empVals['username'] = $coopSess->username;
-       $empVals['classes_id'] = $coopSess->currentClassId;
-       $empVals['semesters_id'] = $coopSess->currentSemId;
+       $User = new My_Model_User();
+       $User->update($persInfo, "username = '" . $form->getUsername() . "'");
 
-       //die(var_dump($empVals));
+       $Student = new My_Model_Student();
+       $Student->update($eduInfo, 
+                        array("username = '" . $form->getUsername() . "'", 
+                              "semesters_id = " . $form->getSemId() 
+                        )) ;
 
-       // get only the submited form data that matches table fields in coop_phonenumbers
-       $homePhoneVals = $db->prepFormInserts($data, 'coop_phonenumbers');
-       //die(var_dump($homePhoneVals));
-       //die(var_dump($data));
-       $homePhoneVals['phonenumber'] = $data['phone'];
-       $homePhoneVals['phonetypes_id'] = $db->getId('coop_phonetypes', array('type' => 'home'));
-       $homePhoneVals['username'] = $coopSess->username;
-       $homePhoneVals['date_mod'] = date('Ymdhis');
+       $EmpInfo = new My_Model_EmpInfo();
+       $EmpInfo->insert($empInfo);
 
-       // get only the submited form data that matches table fields in coop_phonenumbers (for mobile #)
-       $mobilePhoneVals = $db->prepFormInserts($data, 'coop_phonenumbers');
-       $mobilePhoneVals['phonenumber'] = $data['mobile'];
-       $mobilePhoneVals['phonetypes_id'] = $db->getId('coop_phonetypes', array('type' => 'mobile'));
-       $mobilePhoneVals['username'] = $coopSess->username;
-       $mobilePhoneVals['date_mod'] = date('Ymdhis');
-
-       //die(var_dump($data));
-       // get only the submited form data that matches table fields in coop_students
-       $stuVals = $db->prepFormInserts($data, 'coop_students');
-       $stuVals['username'] = $coopSess->username;
-       //die(var_dump($stuVals));
-
-       $userSemVals = $db->prepFormInserts($data, 'coop_users_semesters');
-       //die(var_dump($userSemVals));
-
-       /* PUT DATES INTO PROPER FORMAT FOR DATABASE. */
-
-       // Set date to null if it is a blank string so that it appears as null
-       // in the database.
-       if ($stuVals['grad_date'] == "") {
-          $stuVals['grad_date'] = null;
-       } else {
-          $tokens = explode('/',$stuVals['grad_date']);
-          $stuVals['grad_date'] = $tokens[2] . $tokens[0] . $tokens[1];
-       }
-
-       if ($empVals['start_date'] == "") {
-          $empVals['start_date'] = null;
-       } else {
-          $tokens = explode('/',$empVals['start_date']);
-          $empVals['start_date'] = $tokens[2] . $tokens[0] . $tokens[1];
-       }
-
-       if ($empVals['end_date'] == "") {
-          $empVals['end_date'] = null;
-       } else {
-          $tokens = explode('/',$empVals['end_date']);
-          $empVals['end_date'] = $tokens[2] . $tokens[0] . $tokens[1];
-       }
-
-       //die(var_dump($userVals));
-
-       $db->update('coop_users', $userVals, "username = '".$coopSess->username."'");
-
-
-       if ($temp = $db->getId('coop_addresses', array('username' => $coopSess->username))) {
-          $query = $db->update('coop_addresses', $addrVals, "username = '".$coopSess->username."'");
-       } else {
-          $db->insert('coop_addresses', $addrVals);
-       }
-
-       //if ($temp = $db->getId('coop_employmentinfo', array('username' => $coopSess->username))) {
-       //   $db->update('coop_employmentinfo', $empVals, "username = '" . $coopSess->username . "'");
-       //} else {
-          $db->insert('coop_employmentinfo', $empVals);
-       //}
-
-       if ($temp = $db->getId('coop_students', array('username' => $coopSess->username))) {
-          $db->update('coop_students', $stuVals, "username = '" . $coopSess->username . "'");
-       } else {
-          $db->insert('coop_students', $stuVals);
-       }
-
-       $phoneType = $db->getId('coop_phonetypes', array('type' => 'home'));
-       if ($temp = $db->getCol('coop_phonenumbers', 'id', array('username' => $coopSess->username, 'phonetypes_id' => $phoneType))) {
-          $db->update('coop_phonenumbers', $homePhoneVals, array("username = '".$coopSess->username."'", "phonetypes_id = $phoneType"));
-       } else {
-          $db->insert('coop_phonenumbers', $homePhoneVals);
-       }
-
-       $phoneType = $db->getId('coop_phonetypes', array('type' => 'mobile'));
-       if ($temp = $db->getCol('coop_phonenumbers', 'id', array('username' => $coopSess->username, 'phonetypes_id' => $phoneType))) {
-          $db->update('coop_phonenumbers', $mobilePhoneVals, array("username = '".$coopSess->username."'", "phonetypes_id = $phoneType"));
-       } else {
-          $db->insert('coop_phonenumbers', $mobilePhoneVals);
-       }
-
-       // Submit as an assignment
-       $semester = new My_Model_Semester();
-       $assignVals['semesters_id'] = $coopSess->currentSemId;
-       $assignVals['classes_id'] = $coopSess->currentClassId;
-       $assignVals['username'] = $coopSess->username;
-       $assignVals['assignments_id'] = $this->getStuInfoId();
-       $assignVals['date_submitted'] = date('Ymd');
-
-       //die(var_dump($coopSess->currentClassId));
-       //die(var_dump($assignVals));
-
-       $subAs = new My_Model_SubmittedAssignment();
-       // First check if the assignment has already been submitted
-       if (!$subAs->isSubmitted($assignVals)) {
-          $subAs->insert($assignVals);
-       }
-
-       $userSem = new My_Model_UsersSemester();
-       $curSem = $coopSess->currentSemId;
-       $username = $coopSess->username;
-       $where = array("semesters_id = $curSem", "student = '$username'");
-       $userSem->update($userSemVals, $where);
+       $this->getAdapter()->commit();
+       
 
    }
 /********************* END STUDENT INFO SHEET METHODS ***********************************/

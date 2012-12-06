@@ -18,6 +18,21 @@ class FormController extends Zend_Controller_Action
            'username' => $session->username));
 
        $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          //die(var_dump($form->personalInfo->getValues()));
+
+          if ($form->isValid($data)) {
+
+             $Assign = new My_Model_Assignment();
+             $Assign->submitStuInfoSheet($form);
+
+          }
+
+
+       }
        
 
     }
