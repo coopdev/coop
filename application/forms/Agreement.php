@@ -83,17 +83,10 @@ class Application_Form_Agreement extends Application_Form_CommonForm
                   $formData[$elemName] = $a->answer_text;
                }
 
-               //$form = new Application_Form_Agreement(
-               //              array('classId' => $this->classId,
-               //                    'semId' => $this->semId,
-               //                    'username' => $this->username));
-               //$form->populate($formData);
-
                $this->populate($formData);
                $this->setAttrib('submissionid', $s->id);
                $this->getElement('finalSubmit')->setAttrib('submissionid', $s->id);
                $this->submissions[] = clone $this;
-
 
             }
          }

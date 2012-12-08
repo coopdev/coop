@@ -77,9 +77,6 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
       return $rows;
 
-      $funcs = new My_Funcs();
-
-
    }
 
    /** 
@@ -548,13 +545,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
       return $rows;
    }
 
-   public function getStudentInfo($data = array())
+   public function getStudentInfo($where = array())
    {
-      $coopSess = new Zend_Session_Namespace('coop');
-      $username = $coopSess->username;
-      $stuInfo = new My_Model_StudentInfo();
+      $db = new My_Db();
+      $Student = new My_Model_Student();
 
-      $row = $stuInfo->fetchRow("username = '$username'")->toArray();
+      $select = $Student->select();
+
+      $select = $db->buildSelectWhereClause($select, $where);
+
+      $row = $Student->fetchRow($select);
       return $row;
    }
 

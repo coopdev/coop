@@ -16,6 +16,7 @@ alter table coop_employmentinfo add column city_state_zip text after street_addr
 alter table coop_employmentinfo add column fax text;
 alter table coop_employmentinfo drop column wanted_class;
 alter table coop_employmentinfo drop column wanted_job;
+alter table coop_employmentinfo add column is_final boolean;
 
 
 drop table coop_phonenumbers;
@@ -23,3 +24,4 @@ drop table coop_phonetypes;
 
 alter table coop_users add column home_phone text after email;
 alter table coop_users add column mobile_phone text after email;
+

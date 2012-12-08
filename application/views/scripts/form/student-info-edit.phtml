@@ -1,0 +1,25 @@
+<?php
+$this->pageTitle = "Your Saved Student Information Sheets";
+
+$form = $this->form;
+
+$page = 0;
+echo "<ul class='paging'>";
+foreach ($form->submissions as $s) {
+   echo "<li class='simplePagerPage$page'>";
+   echo "<br /> <br /> $s";
+   echo "</li>";
+}
+echo "</ul>";
+?>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+
+      $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
+      $('.simplePagerNav').after('<br />');
+
+   });
+   
+
+</script>

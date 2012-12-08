@@ -1654,11 +1654,17 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        
        $empInfo = $form->empInfo->getValues();
        $empInfo = $empInfo['empInfo'];
+       unset($empInfo['empInfoId']);
        $empInfo['username'] = $form->getUsername();
        $empInfo['classes_id'] = $form->getClassId();
        $empInfo['semesters_id'] = $form->getSemId();
        $empInfo['start_date'] = date('Ymd', strtotime($empInfo['start_date']));
        $empInfo['end_date'] = date('Ymd', strtotime($empInfo['end_date']));
+       if ($submitType === 'saveOnly') {
+          $empInfo['is_final'] = 0;
+       } else {
+          $empInfo['is_final'] = 1;
+       }
        //die(var_dump($empInfo['end_date']));
        
        // BEGIN TRANSACTION
@@ -1677,9 +1683,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
                         )) ;
 
        $EmpInfo = new My_Model_EmpInfo();
-       $EmpInfo->insert($empInfo);
+       if ($form->submissionType === 'new') {
+          $EmpInfo->insert($empInfo);
+       } else if ($form->submissionType === 'update') {
+          $EmpInfo->update($empInfo, "id = " . $form->empInfo->empInfoId->getValue());
+       }
 
        $this->getAdapter()->commit();
+
+       return true;
        
 
    }

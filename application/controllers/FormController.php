@@ -17,6 +17,8 @@ class FormController extends Zend_Controller_Action
            'semId' => $session->currentSemId,
            'username' => $session->username));
 
+       $form->setSubmissions();
+
        $this->view->form = $form;
 
        if ($this->getRequest()->isPost()) {
@@ -27,11 +29,48 @@ class FormController extends Zend_Controller_Action
           if ($form->isValid($data)) {
 
              $Assign = new My_Model_Assignment();
-             $Assign->submitStuInfoSheet($form);
+             $result = $Assign->submitStuInfoSheet($form);
+             if ($result === true) {
+                $this->view->resultMessage = "<p class=success> Success </p>";
+             }
 
           }
+       }
+    }
 
 
+    public function studentInfoEditAction()
+    {
+       $session = new Zend_Session_Namespace('coop');
+
+
+       $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
+           'semId' => $session->currentSemId,
+           'username' => $session->username));
+
+       $form->setSubmissions();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+          $data = $_POST;
+
+          //die(var_dump($form->personalInfo->getValues()));
+
+          if ($form->isValid($data)) {
+             //die(var_dump($form->empInfo->getElement('empInfoId')->getValue()));
+             //die(var_dump($form->empInfo->empInfoId->getValue()));
+
+             $form->setSubmissionTypeToUpdate();
+             $Assign = new My_Model_Assignment();
+             $result = $Assign->submitStuInfoSheet($form);
+             if ($result === true) {
+                $this->view->resultMessage = "<p class=success> Success </p>";
+             }
+
+             //$form->setSubmissions();
+
+          } 
        }
        
 

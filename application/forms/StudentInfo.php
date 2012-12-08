@@ -2,6 +2,12 @@
 
 class Application_Form_StudentInfo extends Application_Form_CommonForm
 {
+    // An array of student info sheets that have been submitted.
+    public $submissions = array();
+
+    public $submissionType = 'new';
+
+    public $empInfoId;
 
     public function init()
     {
@@ -15,6 +21,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $this->eduInfoFields();
        $this->empInfoFields();
        
+       //$empInfoId = new Zend_Form_Element_Hidden('empInfoId');
        $elems = new My_FormElement();
        $saveSubmit = $elems->getSubmit('saveOnly');
        $saveSubmit->setLabel('Save Only')
@@ -24,15 +31,57 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
                    ->setAttrib('class', 'resubmit');
 
        $this->addElements( array($saveSubmit, $finalSubmit));
+
        
        $this->setElementDecorators(array('ViewHelper',
                                         'Errors'
                                   ));
     }
 
+    // This will create a cloned form for each submitted student info sheet and store
+    // it in $this->submissions.
+    public function setSubmissions()
+    {
+       $Class = new My_Model_Class();
+       $User = new My_Model_User();
+
+       $userRow = $User->getRow( array('username' => $this->username) );
+
+       $stuInfoRow = $User->getStudentInfo( array('username' => $this->username, 
+                                                  'semesters_id' => $this->semId) );
+       
+       $empInfoRows = $User->getEmpInfo( array('username' => $this->username, 
+           'classes_id' => $this->classId,
+           'semesters_id' => $this->semId,
+           'is_final' => 0) );
+
+       foreach ($empInfoRows as $row) {
+          $row['start_date'] = date('m/d/Y', strtotime($row['start_date']));
+          $row['end_date'] = date('m/d/Y', strtotime($row['end_date']));
+          $form = clone $this;
+          $form->setAttrib('empinfoid', $row['id']);
+
+          $form->personalInfo->populate($userRow);
+          $form->eduInfo->populate($stuInfoRow->toArray());
+          $classRow = $Class->getClass($this->classId);
+          //die($form->eduInfo->classes_id->getValue());
+          $form->eduInfo->classes_id->setValue($classRow['name']);
+          $form->empInfo->populate($row);
+          $form->empInfo->getElement('empInfoId')->setValue($row['id']);
+          $this->submissions[] = $form; 
+       }
+
+       //die(var_dump(count($this->submissions)));
+
+    }
+
 
     public function personalInfoFields()
     {
+       $User = new My_Model_User();
+
+       $userRow = $User->getRow( array('username' => $this->username) );
+
        $persInfoSubform = new Zend_Form_SubForm();
        $persInfoSubform->setElementsBelongTo('personalInfo');
 
@@ -46,6 +95,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $email = $elems->getCommonTbox('email', 'Email:');
 
        $persInfoSubform->addElements( array($fname, $lname, $uuid, $phone, $mobile, $email) );
+       $persInfoSubform->populate($userRow);
 
        $this->addSubForm($persInfoSubform, 'personalInfo');
 
@@ -54,6 +104,10 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
     public function eduInfoFields()
     {
+       $User = new My_Model_User();
+
+       $stuInfoRow = $User->getStudentInfo( array('username' => $this->username, 
+                                                  'semesters_id' => $this->semId) );
        $Class = new My_Model_Class();
        $classRow = $Class->getClass($this->classId);
        
@@ -78,6 +132,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $eduInfoSubform->addElements( array($major, $semInMajor, $gradDate, $class, $coopCreds, 
            $totalCreds, $coopSemYr, $otherCourses) );
+       $eduInfoSubform->populate($stuInfoRow->toArray());
 
        $this->addSubForm($eduInfoSubform, 'eduInfo');
 
@@ -88,7 +143,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
     {
        $empInfoSubform = new Zend_Form_SubForm();
        $empInfoSubform->setElementsBelongTo('empInfo');
-       
+       $empInfoId = new Zend_Form_Element_Hidden('empInfoId');
        
        $elems = new My_FormElement();
 
@@ -120,11 +175,21 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        
        $fax = $elems->getCommonTbox('fax', 'Fax:');
 
-       $empInfoSubform->addElements( array($jobTitle, $coopJobTitle, $startDate, $endDate,
+       $empInfoSubform->addElements( array($empInfoId, $jobTitle, $coopJobTitle, $startDate, $endDate,
            $rateOfPay, $employer, $department, $streetAddress, $cityStateZip, $supervName,
            $supervTitle, $supervPhone, $supervEmail, $fax) );
 
        $this->addSubForm($empInfoSubform, 'empInfo');
+    }
+
+    public function setSubmissionTypeToUpdate()
+    {
+       $this->submissionType = 'update';
+    }
+    
+    public function setSubmissionTypeToNew()
+    {
+       $this->submissionType = 'new';
     }
 
 
