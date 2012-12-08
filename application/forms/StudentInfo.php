@@ -53,22 +53,39 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $empInfoRows = $User->getEmpInfo( array('username' => $this->username, 
            'classes_id' => $this->classId,
            'semesters_id' => $this->semId,
-           'is_final' => 0) );
+           'is_final' => '0') );
 
+       $this->submissions = array();
        foreach ($empInfoRows as $row) {
           $row['start_date'] = date('m/d/Y', strtotime($row['start_date']));
           $row['end_date'] = date('m/d/Y', strtotime($row['end_date']));
-          $form = clone $this;
-          $form->setAttrib('empinfoid', $row['id']);
+          
+          $this->setAttrib('empinfoid', $row['id']);
 
-          $form->personalInfo->populate($userRow);
-          $form->eduInfo->populate($stuInfoRow->toArray());
+          $this->personalInfo->populate($userRow);
+          $this->eduInfo->populate($stuInfoRow->toArray());
           $classRow = $Class->getClass($this->classId);
           //die($form->eduInfo->classes_id->getValue());
-          $form->eduInfo->classes_id->setValue($classRow['name']);
-          $form->empInfo->populate($row);
-          $form->empInfo->getElement('empInfoId')->setValue($row['id']);
-          $this->submissions[] = $form; 
+          $this->eduInfo->classes_id->setValue($classRow['name']);
+          $this->empInfo->populate($row);
+          $this->empInfo->getElement('empInfoId')->setValue($row['id']);
+          $this->submissions[$this->getAttrib('empinfoid')] = clone $this; 
+          
+          
+          
+          
+          
+          //$form = clone $this;
+          //$form->setAttrib('empinfoid', $row['id']);
+
+          //$form->personalInfo->populate($userRow);
+          //$form->eduInfo->populate($stuInfoRow->toArray());
+          //$classRow = $Class->getClass($this->classId);
+          ////die($form->eduInfo->classes_id->getValue());
+          //$form->eduInfo->classes_id->setValue($classRow['name']);
+          //$form->empInfo->populate($row);
+          //$form->empInfo->getElement('empInfoId')->setValue($row['id']);
+          //$this->submissions[] = $form; 
        }
 
        //die(var_dump(count($this->submissions)));
@@ -148,31 +165,18 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $elems = new My_FormElement();
 
        $jobTitle = $elems->getCommonTbox('job_title', "Job Title:");
-       
        $coopJobTitle = $elems->getCommonTbox('coop_jobtitle', 'COOP. ED. JOBTITLE');
-
        $startDate = $elems->getDateTbox('start_date', 'Start Date');
-
        $endDate = $elems->getDateTbox('end_date', 'End Date:');
-
        $rateOfPay = $elems->getPayRateTbox();
-
        $employer = $elems->getCommonTbox('employer', 'Employer:');
-
        $department = $elems->getCommonTbox('department', 'Department:');
-       
        $streetAddress = $elems->getCommonTbox('street_address', 'Street Address:');
-       
        $cityStateZip = $elems->getCommonTbox('city_state_zip', 'City, State, Zip:');
-       
        $supervName = $elems->getCommonTbox('superv_name', 'Supervisor Name:');
-
        $supervTitle = $elems->getCommonTbox('superv_title', 'Supervisor Title:');
-
        $supervPhone = $elems->getCommonTbox('superv_phone', 'Telephone:');
-       
        $supervEmail = $elems->getEmailTbox('superv_email', 'E-Mail:');
-       
        $fax = $elems->getCommonTbox('fax', 'Fax:');
 
        $empInfoSubform->addElements( array($empInfoId, $jobTitle, $coopJobTitle, $startDate, $endDate,

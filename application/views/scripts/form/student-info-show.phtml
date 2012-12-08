@@ -3,6 +3,8 @@
    $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
 
    $this->pageTitle = "Student Information Sheet";
+   $url = $this->url( array('action' => 'student-info-edit'));
+   echo "<h4> <a href='$url'> View Saved Student Information Sheets </a> </h4> <br />";
    echo $this->message;
    echo $this->form;
 ?>

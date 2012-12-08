@@ -17,8 +17,6 @@ class FormController extends Zend_Controller_Action
            'semId' => $session->currentSemId,
            'username' => $session->username));
 
-       $form->setSubmissions();
-
        $this->view->form = $form;
 
        if ($this->getRequest()->isPost()) {
@@ -55,22 +53,29 @@ class FormController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
 
-          //die(var_dump($form->personalInfo->getValues()));
+          // Need to get the correct form that was submitted so it can be validated. 
+          $submittedForm = $form->submissions[$data['empInfo']['empInfoId']];
 
-          if ($form->isValid($data)) {
+          if ($submittedForm->isValid($data)) {
              //die(var_dump($form->empInfo->getElement('empInfoId')->getValue()));
              //die(var_dump($form->empInfo->empInfoId->getValue()));
 
-             $form->setSubmissionTypeToUpdate();
+             $submittedForm->setSubmissionTypeToUpdate();
              $Assign = new My_Model_Assignment();
-             $result = $Assign->submitStuInfoSheet($form);
+             $result = $Assign->submitStuInfoSheet($submittedForm);
              if ($result === true) {
                 $this->view->resultMessage = "<p class=success> Success </p>";
              }
 
-             //$form->setSubmissions();
+             $form->setSubmissions();
+             //die(var_dump(count($form->submissions)));
 
-          } 
+          } else {
+
+             $this->view->resultMessage = "<p class=error> The form failed to submit due to errors </p>";
+          }
+
+          //die(var_dump($form->getErrors()));
        }
        
 

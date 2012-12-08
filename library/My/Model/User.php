@@ -53,23 +53,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
     *             (username, classes_id, semesters_id).
     * @return array Associative array of the student's employment records.
     */
-   public function getEmpInfo(array $data)
+   public function getEmpInfo(array $where)
    {
-      $username = $data['username'];
-      $class = $data['classes_id'];
-      $sem = $data['semesters_id'];
+      $db = new My_Db();
 
       $empInfo = new My_Model_EmpInfo();
-      $empInfoTab = $empInfo->info('name');
+      $select = $empInfo->select();
 
-      $sel = $this->select()->setIntegrityCheck(false);
+      $select = $db->buildSelectWhereClause($select, $where);
 
-      $res = $sel->from($empInfoTab)
-                 ->where('username = ?', $username)
-                 ->where('classes_id = ?', $class)
-                 ->where('semesters_id = ?', $sem);
-
-      $rows = $this->fetchAll($res)->toArray();
+      $rows = $this->fetchAll($select)->toArray();
 
       if (empty($rows)) {
          $rows = array();

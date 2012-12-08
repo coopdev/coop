@@ -1,5 +1,8 @@
 <?php
 $this->pageTitle = "Your Saved Student Information Sheets";
+$url = $this->url( array('action' => 'student-info-show') );
+
+echo "<h3> <a href='$url'> Create New </a> </h3>";
 
 $form = $this->form;
 
