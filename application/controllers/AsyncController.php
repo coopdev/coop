@@ -411,6 +411,13 @@ class AsyncController extends Zend_Controller_Action
 
           $data = $_POST['data'];
           
+          $formData['classId'] = $data['classes_id'];
+          $formData['semId'] = $data['semesters_id'];
+          $formData['username'] = $data['username'];
+          $form = new Application_Form_Agreement($formData);
+          $this->view->form = $form;
+          
+          
           // To get text for the record being viewed (student's name, semester, class)
           $user = new My_Model_User();
           $recText = $user->getSemesterInfo($data);
@@ -418,13 +425,19 @@ class AsyncController extends Zend_Controller_Action
              $recText = $recText[0];
           }
           $this->view->recText = $recText;
-
           
-          $formData['classId'] = $data['classes_id'];
-          $formData['semId'] = $data['semesters_id'];
-          $formData['username'] = $data['username'];
-
-          $this->view->form = new Application_Form_Agreement($formData);
+          
+          // check if student eval has been submitted first
+          $Assignment = new My_Model_Assignment();
+          //$foo = $this->view->form->assignId;
+          $data['assignments_id'] = $form->getAssignId();
+          $res = $Assignment->isSubmitted($data);
+          unset($data['assignments_id']);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
           
 
        } else {
@@ -479,7 +492,7 @@ class AsyncController extends Zend_Controller_Action
        }
 
 
-       //die(var_dump($statics, $dynamics, $where));
+
 
        $assign->updateAnswers($statics, $where, array('static' => true));
        $assign->updateAnswers($dynamics, $where);

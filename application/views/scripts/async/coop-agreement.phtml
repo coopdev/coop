@@ -1,11 +1,11 @@
 <?php
-   $this->pageTitle = "Cooperative Education Agreement";
    
    $coopSess = new Zend_Session_Namespace('coop');
    //$this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
    $this->headScript()->prependFile($coopSess->baseUrl.'/js/views/async/funcs.js');
    echo $this->headScript();
 
+   echo "<h2> Cooperative Education Agreement </h2>";
    $recText = $this->recText;
 
    if (!empty($recText)) {
@@ -53,9 +53,18 @@
          });
 
          statics = $("form[submissionid=" + submissionId + "] .static");
+         
+         // to get selected radio in statics.
+         other_rating = '';
+         statics.each(function() {
+            if ($(this).attr('type') == 'radio' && $(this).is(':checked')) {
+               other_rating = $(this).val();
+            }
+         });
 
          jsonstring = JSON.stringify(statics, null, 4);
          statics = JSON.parse(jsonstring);
+         statics['static_tasks']['other_rating'] = other_rating;
          statics = statics.static_tasks;
 
          postData = { 'formStatics': statics, 
@@ -71,17 +80,11 @@
          });
 
          //console.log(statics);
-        
-
-
 
       });
 
-
       $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
-
       $('.simplePagerNav').after('<br />');
-
 
    });
 

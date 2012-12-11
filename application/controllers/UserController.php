@@ -70,7 +70,6 @@ class UserController extends Zend_Controller_Action
           if (empty($usersId)) {
              $db->insert('coop_users', $userVals);
              //$usersId = $db->lastInsertId('coop_users');
-             $db->insert('coop_students', array('username' => $username, 'semesters_id' => $coopSess->currentSemId));
              //$studentsId = $db->lastInsertId('coop_students');
           }
 
@@ -95,6 +94,7 @@ class UserController extends Zend_Controller_Action
              //$userSemVals['students_id'] = $studentsId;
              try {
                 $db->insert('coop_users_semesters', $userSemVals);
+                $db->insert('coop_students', array('username' => $username, 'semesters_id' => $coopSess->currentSemId));
                 $this->_helper->redirector('new', 'user', null, array('result' => 'success'));
                 //$this->view->message = "Student has been added";
 

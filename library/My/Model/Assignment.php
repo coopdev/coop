@@ -630,7 +630,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             $where[] = "assignmentquestions_id = '$key'";
          }
 
-         //die(var_dump($where));
          $row = $aa->fetchRow($where);
 
          // After using $where, get rid of the question id so a new one can be added on 
@@ -641,6 +640,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          try {
             $row->save();
          } catch(Exception $e) {
+            //die(var_dump($where));
             return 'exception';
          }
       }
@@ -1670,7 +1670,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        // BEGIN TRANSACTION
        $this->getAdapter()->beginTransaction();
 
-       if (!$form->submissionType === 'resubmit') {
+       if ($form->submissionType !== 'resubmit') {
           // Attempt to submit the assignment
           $submitResult = $this->submit($userData, $submitType);
        }
