@@ -52,6 +52,7 @@ class FormController extends Zend_Controller_Action
 
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
+          //die(var_dump($data['empInfo']));
 
           // Need to get the correct form that was submitted so it can be validated. 
           $submittedForm = $form->submissions[$data['empInfo']['empInfoId']];

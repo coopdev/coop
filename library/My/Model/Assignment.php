@@ -1670,8 +1670,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        // BEGIN TRANSACTION
        $this->getAdapter()->beginTransaction();
 
-       // Attempt to submit the assignment
-       $submitResult = $this->submit($userData, $submitType);
+       if (!$form->submissionType === 'resubmit') {
+          // Attempt to submit the assignment
+          $submitResult = $this->submit($userData, $submitType);
+       }
 
        $User = new My_Model_User();
        $User->update($persInfo, "username = '" . $form->getUsername() . "'");
@@ -1685,7 +1687,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $EmpInfo = new My_Model_EmpInfo();
        if ($form->submissionType === 'new') {
           $EmpInfo->insert($empInfo);
-       } else if ($form->submissionType === 'update') {
+       } else if ($form->submissionType === 'update' || $form->submissionType === 'resubmit') {
           $EmpInfo->update($empInfo, "id = " . $form->empInfo->empInfoId->getValue());
        }
 

@@ -25,10 +25,10 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $elems = new My_FormElement();
        $saveSubmit = $elems->getSubmit('saveOnly');
        $saveSubmit->setLabel('Save Only')
-                  ->setAttrib('class', 'resubmit');
+                  ->setAttrib('class', 'submit');
        $finalSubmit = $elems->getSubmit('finalSubmit');
        $finalSubmit->setLabel('Submit as Final')
-                   ->setAttrib('class', 'resubmit');
+                   ->setAttrib('class', 'submit');
 
        $this->addElements( array($saveSubmit, $finalSubmit));
 
@@ -38,14 +38,24 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
                                   ));
     }
 
-    // This will create a cloned form for each submitted student info sheet and store
-    // it in $this->submissions.
-    public function setSubmissions()
+    /* 
+     * This will create a cloned form for each submitted student info sheet and store
+     * it in $this->submissions.
+     * 
+     * @param $status Takes the value that should be used for is_final in coop_employmentinfo.
+     * 
+     */
+    public function setSubmissions($status='0')
     {
        $Class = new My_Model_Class();
        $User = new My_Model_User();
 
        $userRow = $User->getRow( array('username' => $this->username) );
+       //$dbExpr = new Zend_Db_Expr("AES_DECRYPT(uuid, 'alqpwoifjch') AS uuid");
+       //$sel = $User->select()->from($User, array($dbExpr))
+       //                         ->where("username = '" . $this->username . "'");
+       //$uuid = $User->fetchRow($sel);
+       //die(var_dump($uuid->uuid));
 
        $stuInfoRow = $User->getStudentInfo( array('username' => $this->username, 
                                                   'semesters_id' => $this->semId) );
@@ -53,7 +63,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $empInfoRows = $User->getEmpInfo( array('username' => $this->username, 
            'classes_id' => $this->classId,
            'semesters_id' => $this->semId,
-           'is_final' => '0') );
+           'is_final' => $status) );
 
        $this->submissions = array();
        foreach ($empInfoRows as $row) {
@@ -72,20 +82,6 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
           $this->submissions[$this->getAttrib('empinfoid')] = clone $this; 
           
           
-          
-          
-          
-          //$form = clone $this;
-          //$form->setAttrib('empinfoid', $row['id']);
-
-          //$form->personalInfo->populate($userRow);
-          //$form->eduInfo->populate($stuInfoRow->toArray());
-          //$classRow = $Class->getClass($this->classId);
-          ////die($form->eduInfo->classes_id->getValue());
-          //$form->eduInfo->classes_id->setValue($classRow['name']);
-          //$form->empInfo->populate($row);
-          //$form->empInfo->getElement('empInfoId')->setValue($row['id']);
-          //$this->submissions[] = $form; 
        }
 
        //die(var_dump(count($this->submissions)));
@@ -194,6 +190,11 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
     public function setSubmissionTypeToNew()
     {
        $this->submissionType = 'new';
+    }
+
+    public function setSubmissionTypeToResubmit()
+    {
+       $this->submissionType = 'resubmit';
     }
 
 

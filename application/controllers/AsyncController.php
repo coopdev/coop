@@ -79,7 +79,6 @@ class AsyncController extends Zend_Controller_Action
              $data = $_POST['data'];
           }
 
-          
 
           $user = new My_Model_User();
 
@@ -92,36 +91,53 @@ class AsyncController extends Zend_Controller_Action
 
           $this->view->recText = $recText;
 
-          $form = new Application_Form_StudentInfo();
+          $form = new Application_Form_StudentInfo( array('classId' => $data['classes_id'],
+                                                          'semId' => $data['semesters_id'],
+                                                          'username' => $data['username']));
+          $form->setSubmissions('1');
 
-          $as = new My_Model_Assignment();
+          //die(var_dump(count($form->submissions)));
+          $data['assignments_id'] = $form->getAssignId();
 
-          $data['assignments_id'] = $as->getStuInfoId();
-          // check if student info sheet has been submitted first
-          $res = $as->isSubmitted($data);
+          $Assign = new My_Model_Assignment();
+          $res = $Assign->isSubmitted($data);
           // if not submitted
           if ($res === false) {
              $this->view->submitted = false;
              return;
           }
 
-          $form = $as->populateStuInfoSheet($form, array('username' => $data['username'],
-                                                'semesters_id' => $data['semesters_id']));
           //die(var_dump($form));
-          $form->removeElement('agreement');
-          $elems = new My_FormElement();
-          $uhuuid = $elems->getUuidTbox();
-          $form->addElement($uhuuid, 'uhuuid', array('order' => 3));
-
-          $empinfo = $user->getEmpInfo($data);
-
-          $this->view->empinfo = $empinfo;
+          //$form->removeElement('agreement');
           $this->view->form = $form;
 
        } else {
           $this->_helper->viewRenderer->setNoRender();
        }
 
+    }
+
+    public function resubmitStuInfoSheetAction()
+    {
+       $this->_helper->viewRenderer->setNoRender();
+       if ($this->getRequest()->isPost()) {
+          $studentRec = $_POST['studentRec'];
+          unset($_POST['studentRec']);
+          //$personalInfo = $_POST['personalInfo'];
+          //$eduInfo = $_POST['eduInfo'];
+          //$eduInfo['classes_id'] = $studentRec['classes_id'];
+          //$empInfo = $_POST['empInfo'];
+          $form = new Application_Form_StudentInfo( array('classId' => $studentRec['classes_id'],
+                                                          'semId' => $studentRec['semesters_id'],
+                                                          'username' => $studentRec['username']));
+
+          $form->setSubmissionTypeToResubmit();
+          $form->isValid($_POST);
+
+          $Assign = new My_Model_Assignment();
+          $result = $Assign->submitStuInfoSheet($form);
+
+       }
     }
 
 

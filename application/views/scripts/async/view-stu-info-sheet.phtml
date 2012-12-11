@@ -3,6 +3,7 @@
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
    $this->headScript()->appendFile($coopSess->baseUrl.'/js/quickpager.jquery.js');
+   $this->headScript()->prependFile($coopSess->baseUrl.'/js/views/async/funcs.js');
    echo $this->headScript();
    $recText = $this->recText;
    //die(var_dump($recText));
@@ -20,28 +21,18 @@
       echo "<p class='error'> Form has not been submitted </p>";
    } else {
 
-      $form = $this->form;
-      $empForm = $form->getSubForm('empinfo[0]');
-      $empinfo = $this->empinfo;
+        $form = $this->form;
 
-      // For each record of empinfo that the student has, echo a separate form and populate
-      // the empinfo section of the form with the empinfo record.
-      $page = 0;
-      //echo "<div class='simplePagerContainer'>";
-      echo "<ul class='paging'>";
-      foreach ($empinfo as $e) {
-         $page++;
-         $e['start_date'] = $funcs->formatDateOut($e['start_date']);
-         $e['end_date'] = $funcs->formatDateOut($e['end_date']);
-         //$empForm->populate($e);
-         $form->populate($e);
-         $form->removeElement('Submit');
-         echo "<li class='simplePagerPage$page'>";
-         echo $form;
-         echo "</li>";
-      }
-      echo "</ul>";
-      //echo "</div>";
+        $page = 0;
+        echo "<ul class='paging'>";
+        foreach ($form->submissions as $s) {
+           $s->removeElement('saveOnly');
+           echo "<li class='simplePagerPage$page'>";
+           echo "<br /> <br /> $s";
+           echo "</li>";
+        }
+        echo "</ul>";
+
    }
 
 
@@ -51,12 +42,72 @@
 <script type="text/javascript">
 
    $('document').ready(function() {
+      /* TEST FOR COORD VIEW */
+      $(".submit").live('click', function(e) {
+         e.preventDefault();
+         
+         studentRec = getRec();
+         
+         
+         form = $(this).parent();
+         //elems = $(form + " [name^='empInfo[']");
+
+         elems = form.find("[name^='personalInfo[']");
+
+         personalInfo = {};
+         // create function for this loop.
+         elems.each(function() {
+            name = $(this).attr('name');
+            name = name.replace('personalInfo[', '').replace(']', '');
+            val = $(this).val();
+            personalInfo[name] = val;
+         });
+
+
+
+         elems = form.find("[name^='empInfo[']");
+         empInfo = {};
+         // create function for this loop.
+         elems.each(function() {
+            name = $(this).attr('name');
+            name = name.replace('empInfo[', '').replace(']', '');
+            val = $(this).val();
+            empInfo[name] = val;
+         });
+
+
+         elems = form.find("[name^='eduInfo[']");
+         eduInfo = {};
+         // create function for this loop.
+         elems.each(function() {
+            if ($(this).attr('type') == 'radio') {
+               if ($(this).is(':checked')) {
+                  name = $(this).attr('name');
+                  name = name.replace('eduInfo[', '').replace(']', '');
+                  val = $(this).val();
+               }
+            } else {
+                  name = $(this).attr('name');
+                  name = name.replace('eduInfo[', '').replace(']', '');
+                  val = $(this).val();
+            }
+
+            eduInfo[name] = val;
+         });
+         
+         
+         $.post(base + '/async/resubmit-stu-info-sheet', { 'studentRec': studentRec, 'personalInfo': personalInfo, 'eduInfo': eduInfo, 'empInfo': empInfo }, function(resp) {
+            //form.append(resp);
+            $("button#stuInfoSheet").click();
+
+         });
+
+      });
 
       $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
-
-
       $('.simplePagerNav').after('<br />');
 
    });
+
 
 </script>
