@@ -20,8 +20,12 @@
    <?php foreach ($recs as $r) { 
       if (!is_null($r['classes_id']) && $r['is_final']) {
          //$assignId = $r['assignments_id'];
+         $assignNum = $r['assignment_num'];
          $submittedAssignId = $r['submittedassignments_id'];
-         $subed = "<font color='green'> Yes </font> <a href='#' class='undoSubmit' value='$submittedAssignId'> undo </a>";
+         $subed = "<font color='green'> Yes </font> ";
+         if ($assignNum !== '1') {
+            $subed .= "<a href='#' class='undoSubmit' value='$submittedAssignId'> undo </a>";
+         }
          $dateSubed = $r['date_submitted'];
       } else {
          $subed = "<font color='red'> No </font>";
@@ -72,23 +76,5 @@
       });
 
    });
-
-
-   /* FUNCTIONS */
-
-   // Gets the record information of the selected record (username, class, semester) to
-   // use in queries for different assignment information.
-   //function getRec() {
-   //   // If the search results table (the table with student's name, class, semester, 
-   //   // coordinator, etc.) is present, then the record information should be coming from
-   //   // the selected record, so reset the stored record (#stored-rec) to that. 
-   //   if ( $("#searchresults-table").length > 0 ) {
-   //      $("#stored-rec").data("rec", "");
-   //      rec = $("input[name=rec-choice]:checked").data('rec');
-   //      $("#stored-rec").data("rec", rec);
-   //   } 
-   //   data = $("#stored-rec").data("rec");
-   //   return data;
-   //}
 
 </script>
