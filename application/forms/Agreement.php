@@ -138,9 +138,21 @@ class Application_Form_Agreement extends Application_Form_CommonForm
                     ->setAttrib('placeholder', 'Enter Learning Objective');
             $lrnObj2 = $Elems->getCommonTbox('lrnObjective2', "2.");
             $lrnObj2->setAttrib('size', '105')
-                    ->setAttrib('placeholder', 'Enter Learning Objective');
+                       ->setAttrib('placeholder', 'Enter Learning Objective');
             
-            $staticTasks->addElements(array($lrnObj1, $lrnObj2));
+            $rating1 = new Zend_Form_Element_Radio('lrnObjectiveRating1');
+            $rating1->setRequired(true)
+                    ->setLabel("Rate this learning objective")
+                    ->setMultiOptions($this->options)
+                    ->setSeparator("");
+
+            $rating2 = new Zend_Form_Element_Radio('lrnObjectiveRating2');
+            $rating2->setRequired(true)
+                    ->setLabel("Rate this learning objective")
+                    ->setMultiOptions($this->options)
+                    ->setSeparator("");
+            
+            $staticTasks->addElements(array($lrnObj1, $rating1, $lrnObj2, $rating2));
          } else {
             $duties = $Elems->getCommonTarea('duties', ' ');
             $staticTasks->addElement($duties);
