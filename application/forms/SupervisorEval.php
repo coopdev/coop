@@ -131,6 +131,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
                 ->addFilter('StringTrim')
                 ->addFilter('StripTags')
                 ->setAttrib('placeholder', 'Enter Learning Objective')
+                ->setAttrib('getValFrom', 'agreementForm')
                 ->setAttrib('size', 85);
 
        $objective2 = new Zend_Form_Element_Text('lrnObjective2');
@@ -139,6 +140,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
                 ->addFilter('StringTrim')
                 ->addFilter('StripTags')
                 ->setAttrib('placeholder', 'Enter Learning Objective')
+                ->setAttrib('getValFrom', 'agreementForm')
                 ->setAttrib('size', 85);
 
        $rating1 = new Zend_Form_Element_Radio('lrnObjectiveRating1');

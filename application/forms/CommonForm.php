@@ -51,6 +51,7 @@ class Application_Form_CommonForm extends Zend_Form
        // Used elsewhere to get these fields.
        foreach ($fields as $f) {
           $f->setAttrib('fieldType', 'jobsite');
+          //$f->setAttrib('class', 'getFromAgreementForm');
        }
        return $fields;
 
@@ -69,21 +70,16 @@ class Application_Form_CommonForm extends Zend_Form
           $j->setAttrib('class','jobsite');
        }
 
-
        //$this->populateJobsiteFields($jobSiteSubform);
-       
        
        $jobSiteSubform->setElementDecorators(array('ViewHelper',
                                            'Errors',
                                            'Label'
                                      ));
-       
 
        //$this->addSubForm($jobSiteSubform, 'jobsite');
 
        return $jobSiteSubform;
-
-       
     }
     
     
@@ -103,7 +99,8 @@ class Application_Form_CommonForm extends Zend_Form
        $jobSiteFields = array();
        foreach ($elems as $e) {
           //die(var_dump($e->getAttrib('class')));
-          if ($e->getAttrib('fieldType') === 'jobsite') {
+          if ($e->getAttrib('fieldType') === 'jobsite' || $e->getAttrib('getValFrom') === 'agreementForm') {
+          //if ($e->getAttrib('class') === 'getFromAgreementForm') {
              foreach ($answers as $a) {
                 if ($e->getName() === $a->static_question) {
                    $e->setValue($a->answer_text);
