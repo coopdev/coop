@@ -16,7 +16,7 @@ class Application_Form_AddStudentAid extends Zend_Form
        $email = $elems->getEmailTbox('email', "Enter email:");
        $email->setRequired(false);
 
-       $phone = $elems->getCommonTbox('phonenumber', "Enter phone number:");
+       $phone = $elems->getCommonTbox('home_phone', "Enter phone number:");
        $phone->setRequired(false);
 
        $submit = $elems->getSubmit();

@@ -142,13 +142,13 @@ class Application_Form_Agreement extends Application_Form_CommonForm
             
             $rating1 = new Zend_Form_Element_Radio('lrnObjectiveRating1');
             $rating1->setRequired(true)
-                    ->setLabel("Rate this learning objective")
+                    ->setLabel("Rate the importance of this learning objective")
                     ->setMultiOptions($this->options)
                     ->setSeparator("");
 
             $rating2 = new Zend_Form_Element_Radio('lrnObjectiveRating2');
             $rating2->setRequired(true)
-                    ->setLabel("Rate this learning objective")
+                    ->setLabel("Rate the importance of this learning objective")
                     ->setMultiOptions($this->options)
                     ->setSeparator("");
             

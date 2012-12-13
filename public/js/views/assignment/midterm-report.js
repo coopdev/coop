@@ -10,7 +10,7 @@ $(document).ready(function(){
        }, 500);
     });
 
-    // Beind my custom 'countChars' event to all answerTexts so it can be triggered on 
+    // Bind my custom 'countChars' event to all answerTexts so it can be triggered on 
     // page load.
     $('.answerText').live('countChars', function(e) { 
        countChars($(this));

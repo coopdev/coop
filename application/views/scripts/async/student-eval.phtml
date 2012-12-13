@@ -3,7 +3,8 @@
 <?php
    $coopSess = new Zend_Session_Namespace('coop');
    //$this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/main.css'); 
-   $this->headScript()->prependFile($coopSess->baseUrl.'/js/views/async/funcs.js');
+   $this->headScript()->prependFile($this->baseUrl.'/js/views/async/funcs.js');
+   $this->headScript()->appendFile($this->baseUrl.'/js/views/assignment/timesheet.js');
    echo $this->headScript();
 
    $recText = $this->recText;

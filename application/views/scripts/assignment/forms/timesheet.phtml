@@ -1,10 +1,8 @@
 <?php
 $coopSess = new Zend_Session_Namespace('coop');
 echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
-
 $elems = $this->element;
 ?>
-
 
 <form id="studentEvalForm" method="POST" action="<?php echo $elems->getAction ?>">
 

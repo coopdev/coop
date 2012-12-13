@@ -306,21 +306,6 @@ class My_Model_User extends Zend_Db_Table_Abstract
          return false;
       }
 
-      // if a phone number was entered through the form (it is optional)
-      if (!empty($data['phonenumber'])) {
-         //die('hi');
-         $pn = new My_Model_PhoneNumbers();
-         $pt = new My_Model_PhoneTypes();
-         // just make it a home phone number for simplicity
-         $homeId = $pt->getHomeId();
-         $pnVals = array('username' => $data['username'], 'phonenumber' => $data['phonenumber'], 'phonetypes_id' => $homeId);
-
-         // if insert fails
-         if (!$pn->insert($pnVals)) {
-            return false;
-         }
-      }
-
       return true;
 
    }
@@ -340,40 +325,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
       // prepare coop_users updates
       $userVals = $db->prepFormInserts($data, $this);
 
-      // update coop_users table
-      $this->update($userVals, "username = '$username'");
-
-
-      $pt = new My_Model_PhoneTypes();
-      // get id for home phone type
-      $ptId = $pt->getHomeId();
-
-      // prepare coop_phonenumbers updates
-      $phoneVals['phonenumber'] = $data['phonenumber'];
-      $phoneVals['date_mod'] = date('Ymdhis');
-
-      $pn = new My_Model_PhoneNumbers();
-
-      // if coordinator already has a home phone record, do an update
-      if ($pn->rowExists(array('username' => $data['username'], 'phonetypes_id' => $ptId))) {
-         if ($pn->update($phoneVals, "username = '".$data['username']."' AND phonetypes_id = $ptId")) {
-            return true;
-         }
-      // if not, insert
-      } else {
-         $phoneVals['username'] = $data['username'];
-         $phoneVals['phonetypes_id'] = $pt->getHomeId();
-         if ($pn->insert($phoneVals)) {
-            return true;
-         }
+      try {
+         // update coop_users table
+         $this->update($userVals, "username = '$username'");
+      } catch (Exception $e) {
+         return false;
       }
 
-      return false;
-
-
-      //$data = $userVals + $phoneVals;
-
-      //die(var_dump($data));
+      return true;
 
    }
 
@@ -411,23 +370,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
          return false;
       }
 
-      // if a phone number was entered through the form (it is optional)
-      if (!empty($data['phonenumber'])) {
-         //die('hi');
-         $pn = new My_Model_PhoneNumbers();
-         $pt = new My_Model_PhoneTypes();
-         // just make it a home phone number for simplicity
-         $homeId = $pt->getHomeId();
-         $pnVals = array('username' => $data['username'], 'phonenumber' => $data['phonenumber'], 'phonetypes_id' => $homeId);
-
-         // if insert fails
-         if (!$pn->insert($pnVals)) {
-            return false;
-         }
-      }
-
       return true;
-
    }
 
    public function editStuAid($username, $data)
@@ -437,40 +380,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
       // prepare coop_users updates
       $userVals = $db->prepFormInserts($data, $this);
 
-      // update coop_users table
-      $this->update($userVals, "username = '$username'");
-
-
-      $pt = new My_Model_PhoneTypes();
-      // get id for home phone type
-      $ptId = $pt->getHomeId();
-
-      // prepare coop_phonenumbers updates
-      $phoneVals['phonenumber'] = $data['phonenumber'];
-      $phoneVals['date_mod'] = date('Ymdhis');
-
-      $pn = new My_Model_PhoneNumbers();
-
-      // if coordinator already has a home phone record, do an update
-      if ($pn->rowExists(array('username' => $data['username'], 'phonetypes_id' => $ptId))) {
-         if ($pn->update($phoneVals, "username = '".$data['username']."' AND phonetypes_id = $ptId")) {
-            return true;
-         }
-      // if not, insert
-      } else {
-         $phoneVals['username'] = $data['username'];
-         $phoneVals['phonetypes_id'] = $pt->getHomeId();
-         if ($pn->insert($phoneVals)) {
-            return true;
-         }
+      try {
+         // update coop_users table
+         $this->update($userVals, "username = '$username'");
+      } catch (Exception $e) {
+         return false;
       }
 
-      return false;
-
-
-      //$data = $userVals + $phoneVals;
-
-      //die(var_dump($data));
+      return true;
 
    }
 
@@ -490,27 +407,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    public function getStuAidInfo(array $where = array())
    {
-      $pnType = new My_Model_PhoneTypes();
-      
-      $pnTypeId = $pnType->getHomeId();
+      $db = new My_Db();
+      $select = $this->select()->setIntegrityCheck(false);
+      $select->from('coop_userrole_view')->where("role = 'studentAid'");
+      $select = $db->buildSelectWhereClause($select, $where);
 
-      $pn = new My_Model_PhoneNumbers();
-      $pnName = $pn->info('name');
+      //die($select->assemble());
 
-      $role = new My_Model_Role();
-      $stuAidId = $role->getStuAidId();
-
-      $sel = $this->select()->setIntegrityCheck(false);
-
-      $query = $sel->from(array('u' => $this->_name))
-                   ->joinLeft(array('pn' => $pnName), "u.username = pn.username AND pn.phonetypes_id = $pnTypeId", array('phonenumber'))
-                   ->where('roles_id = ?', $stuAidId);
-
-      foreach ($where as $key =>$val) {
-         $query = $query->where("u.$key = ?", $val);
-      }
-
-      $rows = $this->fetchAll($query)->toArray();
+      $rows = $this->fetchAll($select)->toArray();
 
       if (empty($rows)) {
          $rows = array();
