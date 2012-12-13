@@ -1,6 +1,6 @@
- DROP VIEW IF EXISTS coop_userrole_view;
- CREATE VIEW coop_userrole_view AS
-     SELECT u.*, r.role
-     FROM coop_users AS u
-     LEFT JOIN coop_roles AS r
-        ON u.roles_id = r.id;
+DROP VIEW IF EXISTS coop_classinfo_view;
+CREATE VIEW coop_classinfo_view AS 
+   SELECT c.*, u.fname, u.lname, u.email, u.home_phone 
+   FROM coop_classes AS c 
+   LEFT JOIN coop_users AS u
+      ON c.coordinator = u.username;

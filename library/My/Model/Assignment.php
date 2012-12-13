@@ -1658,8 +1658,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $empInfo['username'] = $form->getUsername();
        $empInfo['classes_id'] = $form->getClassId();
        $empInfo['semesters_id'] = $form->getSemId();
-       $empInfo['start_date'] = date('Ymd', strtotime($empInfo['start_date']));
-       $empInfo['end_date'] = date('Ymd', strtotime($empInfo['end_date']));
+       //$empInfo['start_date'] = date('Ymd', strtotime($empInfo['start_date']));
+       //$empInfo['end_date'] = date('Ymd', strtotime($empInfo['end_date']));
        if ($submitType === 'saveOnly') {
           $empInfo['is_final'] = 0;
        } else {

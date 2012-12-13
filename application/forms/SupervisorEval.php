@@ -92,18 +92,12 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
                                             '3' => 'Satisfactory',
                                             '4' => 'Unsatisfactory'));
        
-       $coord = $elems->getCommonTbox('coordinator', 'Coordinator:');
-       $coordPhone = $elems->getCommonTbox('coord_phone', 'Telephone:');
-       $college = $elems->getCommonTbox('college', 'College:');
-       $coordEmail = $elems->getCommonTbox('coord_email', 'Email:');
-       $address = $elems->getCommonTbox('address', 'Address:');
-       $fax = $elems->getCommonTbox('fax', 'Fax:');
+       $staticTasks->addElements($this->makeCoordFields());
 
        $staticTasks->addElements($this->makeOther());
        
        
-       $staticTasks->addElements(array($coord, $coordPhone, $college, $coordEmail, $address, 
-           $fax, $avgHrs, $hrlyWage, $comments, $overallEval));
+       $staticTasks->addElements(array($avgHrs, $hrlyWage, $comments, $overallEval));
 
        // Make all elements required except 'comments'.
        $temp = $staticTasks->getElements();
@@ -118,6 +112,39 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        //                              ));
 
        $this->addSubForm($staticTasks, 'static_tasks');
+
+    }
+
+    public function makeCoordFields()
+    {
+       $Class = new My_Model_Class();
+       $classRow = $Class->getClassInfo(array('id' => $this->classId));
+       $elems = new My_FormElement();
+
+       $coord = $elems->getCommonTbox('coordinator', 'Coordinator:');
+       $coord->setValue($classRow->fname . ' ' . $classRow->lname)
+             ->setAttrib('disabled', true);
+       
+       $coordPhone = $elems->getCommonTbox('coord_phone', 'Telephone:');
+       $coordPhone->setValue($classRow->home_phone);
+       
+       $college = $elems->getCommonTbox('college', 'College:');
+       $college->setValue('Honolulu Community College');
+       
+       $coordEmail = $elems->getCommonTbox('coord_email', 'Email:');
+       $coordEmail->setValue($classRow->email);
+       
+       $address = $elems->getCommonTbox('address', 'Address:');
+       $address->setValue("874 Dillingham Blvd., Honolulu, HI, 96817");
+       $fax = $elems->getCommonTbox('fax', 'Fax:');
+
+       $elems = array($coord, $coordPhone, $college, $coordEmail, $address, $fax);
+
+       foreach($elems as $e) {
+          $e->setAttrib('size', '35');
+       }
+
+       return $elems;
 
     }
 

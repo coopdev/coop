@@ -67,8 +67,8 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $this->submissions = array();
        foreach ($empInfoRows as $row) {
-          $row['start_date'] = date('m/d/Y', strtotime($row['start_date']));
-          $row['end_date'] = date('m/d/Y', strtotime($row['end_date']));
+          //$row['start_date'] = date('m/d/Y', strtotime($row['start_date']));
+          //$row['end_date'] = date('m/d/Y', strtotime($row['end_date']));
           
           $this->setAttrib('empinfoid', $row['id']);
 
@@ -80,7 +80,6 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
           $this->empInfo->populate($row);
           $this->empInfo->getElement('empInfoId')->setValue($row['id']);
           $this->submissions[$this->getAttrib('empinfoid')] = clone $this; 
-          
           
        }
 

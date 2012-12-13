@@ -28,6 +28,21 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $this->fetchAll(null, "name")->toArray();
    }
 
+   public function getClassInfo($where)
+   {
+      $db = new My_Db();
+      $select = $this->select()->setIntegrityCheck(false);
+      $select->from('coop_classinfo_view');
+      $select = $db->buildSelectWhereClause($select, $where);
+
+      $rows = $this->fetchRow($select);
+
+      if (count($rows) < 1) {
+         $rows = array();
+      }
+      //die(var_dump($rows));
+      return $rows;
+   }
 
    /**
     * Retrieves the class name given a specific ID.

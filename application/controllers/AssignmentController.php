@@ -132,7 +132,7 @@ class AssignmentController extends Zend_Controller_Action
 
           $data = $_POST;
           //$data = $form->getAllElementsIncludingNested();
-          //die(var_dump($data));
+          die(var_dump($data));
 
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();

@@ -111,24 +111,23 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
          //die(var_dump($id));
 
-         $position = $Elems->getCommonTbox('position', 'Position:');
-         //die(var_dump($position->getId()));
-         //die(var_dump($position));
+         $staticTasks->addElements($this->makeJobsiteFields());
 
-         $company = $Elems->getCommonTbox('company', 'Company:');
+         //$position = $Elems->getCommonTbox('position', 'Position:');
+         ////die(var_dump($position->getId()));
+         ////die(var_dump($position));
 
-         $hours = $Elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
-         
-         $semesters = $Elems->getCommonTbox('semester_dates', 'Semester Dates:');
-         
-         $superv = $Elems->getCommonTbox('supervisor', 'Supervisor:');
-         
-         $phone = $Elems->getCommonTbox('phone', 'Telephone:');
+         //$company = $Elems->getCommonTbox('company', 'Company:');
+
+         //$hours = $Elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
+         //
+         //$semesters = $Elems->getCommonTbox('semester_dates', 'Semester Dates:');
+         //
+         //$superv = $Elems->getCommonTbox('supervisor', 'Supervisor:');
+         //
+         //$phone = $Elems->getCommonTbox('phone', 'Telephone:');
 
          $staticTasks->addElements($this->makeOther());
-
-         $staticTasks->addElements(array($position, $company, $hours, $semesters, $superv, $phone));
-
 
          $Class = new My_Model_Class();
 

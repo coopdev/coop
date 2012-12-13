@@ -1,6 +1,6 @@
 <?php
 $coopSess = new Zend_Session_Namespace('coop');
-$this->headScript()->appendFile($this->baseUrl . '/js/views/assignment/timesheet.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/views/assignment/timesheet.js');
 echo $this->headScript();
 
 $this->pageTitle = "Student Time Sheet";
