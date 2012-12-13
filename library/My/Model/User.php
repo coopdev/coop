@@ -213,31 +213,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
     */
    public function getCoordInfo(array $where = array())
    {
-      $pnType = new My_Model_PhoneTypes();
-      
-      $pnTypeId = $pnType->getHomeId();
+      $db = new My_Db();
+      $select = $this->select()->setIntegrityCheck(false);
+      $select->from('coop_userrole_view')->where("role = 'coordinator'");
+      $select = $db->buildSelectWhereClause($select, $where);
 
-      $pn = new My_Model_PhoneNumbers();
-      $pnName = $pn->info('name');
+      //die($select->assemble());
 
-      $role = new My_Model_Role();
-      $row = $role->fetchRow("role = 'coordinator'")->toArray();
-      $coordId = $row['id'];
-
-      $sel = $this->select()->setIntegrityCheck(false);
-
-      $query = $sel->from(array('u' => $this->_name))
-                   ->joinLeft(array('pn' => $pnName), "u.username = pn.username AND pn.phonetypes_id = $pnTypeId", array('phonenumber'))
-                   ->where('roles_id = ?', $coordId);
-
-      foreach ($where as $key =>$val) {
-         if ($key === 'username') {
-            //$query = $query->where("u.$key = ?", '$val');
-         }
-         $query = $query->where("u.$key = ?", $val);
-      }
-
-      $rows = $this->fetchAll($query)->toArray();
+      $rows = $this->fetchAll($select)->toArray();
 
       if (empty($rows)) {
          $rows = array();
