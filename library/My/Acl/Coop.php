@@ -83,6 +83,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_delete-question'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_list-status-by-class'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_midterm-report'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_resume'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_list-submitted'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_learning-outcome'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_set-stu-eval-option-amount'), 'assignment');
@@ -152,11 +153,11 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('user', 'form', 'form_edit-disclaimer');
       $this->allow('user', 'class', 'class_change');
       $this->allow('user', 'assignment', 'assignment_list-all-for-student');
-      $this->allow('user', 'assignment', 'assignment_midterm-report');
       $this->allow('user', 'assignment', 'assignment_list-submitted');
+      $this->allow('user', 'assignment', 'assignment_midterm-report');
+      $this->allow('user', 'assignment', 'assignment_resume');
       $this->allow('user', 'assignment', 'assignment_learning-outcome');
       $this->allow('user', 'assignment', 'assignment_student-eval');
-      $this->allow('user', 'assignment', 'assignment_supervisor-eval');
       //$this->allow('user', 'user', 'user_new');
       //$this->allow('user', 'user', 'user_create');
             

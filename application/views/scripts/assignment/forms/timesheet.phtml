@@ -6,31 +6,13 @@ $elems = $this->element;
 
 <form id="studentEvalForm" method="POST" action="<?php echo $elems->getAction ?>">
 
-   <div id="col1-fields">
-      
-      <?php echo $elems->static_tasks->position ?> <br />
+   <?php echo $elems->static_tasks->position ?>
+   <?php echo $elems->static_tasks->company ?>
+   <?php echo $elems->static_tasks->hrs_per_week ?> <br />
 
-      <?php echo $elems->static_tasks->semester_dates ?>
-      
-   </div>
-
-   
-   <div id="col2-fields">
-      
-      <?php echo $elems->static_tasks->company ?> <br />
-
-      <?php echo $elems->static_tasks->supervisor ?>
-      
-   </div>
-
-   
-   <div id="col3-fields">
-
-      <?php echo $elems->static_tasks->hrs_per_week ?> <br />
-
-      <?php echo $elems->static_tasks->phone ?>
-
-   </div>
+   <?php echo $elems->static_tasks->semester_dates ?>
+   <?php echo $elems->static_tasks->supervisor ?>
+   <?php echo $elems->static_tasks->phone ?> 
 
    <br /> <br /> <br />
 
