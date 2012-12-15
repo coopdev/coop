@@ -25,6 +25,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * Student eval = 5,
     * Supervisor eval = 6,
     * Student Time Sheet = 7
+    * Resume = 8
+    * Cover Letter = 9
     */
 
 
