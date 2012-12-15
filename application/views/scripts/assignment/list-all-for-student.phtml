@@ -73,14 +73,6 @@
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'form',
                          'action'=>'student-info-show'), null, true) ?>'> Student Information Sheet </a> | due: <?php echo $due ?>  </li><br />
 
-   <?php
-      $assignId = $as->getCoopAgreementId();
-      $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
-   ?>
-
-   <li><a class="regText" href='<?php echo $this->url(array('controller'=>'form',
-                         'action'=>'coop-agreement'), null, true) ?>'> Cooperative Agreement Form </a> | due: <?php echo $due ?></li><br />
 
    <?php 
       $onclick = "return true";
