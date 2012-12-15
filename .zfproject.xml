@@ -120,6 +120,7 @@
         <formFile formName="CommonForm"/>
         <formFile formName="DeleteRatedQuestions"/>
         <formFile formName="TimeSheet"/>
+        <formFile formName="Resume"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

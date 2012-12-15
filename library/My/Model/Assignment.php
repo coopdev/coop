@@ -1303,6 +1303,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 
+   public function getResumeId()
+   {
+      $id = $this->getId(array('assignment_num' => 8));
+      if (empty($id)) {
+         $id = 0;
+      }
+      return $id;
+   }
    /*
     * Gets all questions for a specific assignment based on assignment id
     * 

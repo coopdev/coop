@@ -20,6 +20,13 @@ echo "</ul>";
    $(document).ready(function() {
       $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
       $('.simplePagerNav').after('<br />');
+      
+      // Add confirmation to submit button
+      $("#finalSubmit").live('click', function() {
+         if (!confirm("Really submit?")) {
+            return false;
+         }
+      });
 
       /* TEST FOR COORD VIEW */
       //$(".submit").live('click', function(e) {

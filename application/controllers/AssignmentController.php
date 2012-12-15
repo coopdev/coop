@@ -132,7 +132,7 @@ class AssignmentController extends Zend_Controller_Action
 
           $data = $_POST;
           //$data = $form->getAllElementsIncludingNested();
-          die(var_dump($data));
+          //die(var_dump($data));
 
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
@@ -194,6 +194,42 @@ class AssignmentController extends Zend_Controller_Action
        }
 
        //die($classId);
+    }
+    
+    public function resumeAction()
+    {
+       $as = new My_Model_Assignment();
+       $session = new Zend_Session_Namespace('coop');
+
+       $form = new Application_Form_Resume(array('username' => $session->username, 
+                                                 'classId' => $session->currentClassId,
+                                                 'semId' => $session->currentSemId));
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+          //$data = $form->getAllElementsIncludingNested();
+          //die(var_dump($data['static_tasks']));
+
+          if ($form->isValid($data)) {
+             $as = new My_Model_Assignment();
+             $res = $as->submitStudentEval($form);
+
+             if ($res === true) {
+                $this->view->resultMessage = "<p class='success'> Success </p>";
+             } else if ($res === 'submitted') {
+                $this->view->resultMessage = "<p class='error'> Assignment has already been submitted </p>";
+             } else {
+                $this->view->resultMessage = "<p class='error'> Error </p>";
+             }
+          } else {
+             $this->view->resultMessage = "<p class='error'> One or more fields have errors </p>";
+          } 
+
+       }
+
     }
     
     
@@ -290,6 +326,8 @@ class AssignmentController extends Zend_Controller_Action
 
        }
     }
+
+
 /***********************************END MAIN ASSIGNMENTS*********************************/
 
 

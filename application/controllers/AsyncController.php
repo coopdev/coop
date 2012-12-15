@@ -371,12 +371,11 @@ class AsyncController extends Zend_Controller_Action
           $formData = array('classId' => $data['classes_id'], 
                             'semId' => $data['semesters_id'],
                             'username' => $data['username']);
+          
           if (isset($_POST['supervisorEval'])) {
              $form = new Application_Form_SupervisorEval($formData);
-             
           }  else if (isset($_POST['timesheet'])) { 
              $form = new Application_Form_TimeSheet($formData);
-             
           } else {
              $form = new Application_Form_StudentEval($formData);
           }
@@ -415,6 +414,52 @@ class AsyncController extends Zend_Controller_Action
           $formData['semId'] = $data['semesters_id'];
           $formData['username'] = $data['username'];
           $form = new Application_Form_Agreement($formData);
+          $this->view->form = $form;
+          
+          
+          // To get text for the record being viewed (student's name, semester, class)
+          $user = new My_Model_User();
+          $recText = $user->getSemesterInfo($data);
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+          $this->view->recText = $recText;
+          
+          
+          // check if student eval has been submitted first
+          $Assignment = new My_Model_Assignment();
+          //$foo = $this->view->form->assignId;
+          $data['assignments_id'] = $form->getAssignId();
+          $res = $Assignment->isSubmitted($data);
+          unset($data['assignments_id']);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
+          
+
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+
+    }
+
+
+    public function resumeAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST['data'];
+          
+          $formData['classId'] = $data['classes_id'];
+          $formData['semId'] = $data['semesters_id'];
+          $formData['username'] = $data['username'];
+          $form = new Application_Form_Resume($formData);
           $this->view->form = $form;
           
           

@@ -11,5 +11,17 @@ echo $form;
 
 
 <script type="text/javascript">
+   
+$(document).ready(function() {
+
+   // Add confirmation to submit button
+   $("#finalSubmit").live('click', function() {
+      if (!confirm("Really submit?")) {
+         return false;
+      }
+   });
+
+
+});
 
 </script>

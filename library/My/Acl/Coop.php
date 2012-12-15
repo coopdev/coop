@@ -176,23 +176,6 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'form', 'form_edit-disclaimer');
       $this->allow('coordinator', 'backup');
       $this->allow('coordinator', 'semester');
-      //$this->allow('coordinator','user','user_new');
-      //$this->allow('coordinator','user','user_create');
-      //$this->allow('coordinator', 'user', 'user_searchstudent');
-      //$this->allow('coordinator', 'user', 'user_history-show');
-      //$this->allow('coordinator', 'user', 'user_list-coords');
-      //$this->allow('coordinator', 'user', 'user_delete-coord');
-      //$this->allow('coordinator', 'user', 'user_edit-coord');
-      //$this->allow('coordinator', 'user', 'user_add-coord');
-      //$this->allow('coordinator', 'user', 'user_list-studentaid');
-      //$this->allow('coordinator', 'assignment', 'assignment_submit');
-      //$this->allow('coordinator', 'assignment', 'assignment_list-all');
-      //$this->allow('coordinator', 'assignment', 'assignment_edit-duedate');
-      //$this->allow('coordinator', 'assignment', 'assignment_properties');
-      //$this->allow('coordinator', 'assignment', 'assignment_edit-questions');
-      //$this->allow('coordinator', 'assignment', 'assignment_add-question');
-      //$this->allow('coordinator', 'assignment', 'assignment_delete-question');
-      //$this->allow('coordinator', 'assignment', 'assignment_list-status-by-class');
       
 
       /* 

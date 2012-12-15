@@ -1,0 +1,55 @@
+<?php
+$coopSess = new Zend_Session_Namespace('coop');
+$this->headScript()->appendFile($coopSess->baseUrl.'/js/tinymce/jscripts/tiny_mce/tiny_mce.js');
+echo $this->headScript();
+
+$this->pageTitle = "Resume";
+
+$form = $this->form;
+echo $form;
+?>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+   $("#finalSubmit").live('click', function() {
+      if (!confirm("Really submit?")) {
+         return false;
+      }
+   });
+
+
+   tinyMCE.init({
+        mode : "textareas",
+        plugins : "spellchecker,searchreplace,paste,table",
+        theme_advanced_resizing_min_height : 800,
+        theme_advanced_resizing_max_width : 1020,
+
+        // this file is a copy of the default content.css file in tinymce. font-size of 
+        // the line containing "body, td, pre" was changed to give a different default font size.
+        content_css : base + "/css/tinymce_custom_content.css",
+
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,fontselect,fontsizeselect",
+        theme_advanced_buttons2 : "pastetext,pasteword,|,bullist,numlist,|,outdent,indent,undo,redo,forecolor,backcolor,spellchecker,tablecontrols",
+        theme_advanced_resizing : true,
+
+        setup : function(ed) {
+           //ed.onInit.add(function(ed) {
+           //   ed.onKeyUp.dispatch();
+           //}); 
+
+           //ed.onKeyUp.add(function() {
+           //   countChars();
+           //});
+
+           //ed.onPaste.add(function() {
+           //});
+        }
+   });
+
+});
+
+
+
+
+</script>

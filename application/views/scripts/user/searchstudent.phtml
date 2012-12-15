@@ -56,13 +56,14 @@
    <hr>
 
    <button type="button" id="assignment-hist"> Assignment Record </button>
+   <button type="button" class="resume" value="resume"> Resume </button> 
    <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
+   <button type="button" class="coopAgreement" value="coopAgreement"> Coop Agreement </button> 
    <button type="button" class="midtermReport"> Midterm Report </button>
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
-   <button type="button" class="studentEval"> Student Evaluation </button>
-   <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button>
-   <button type="button" class="timesheet" value="timesheet"> Time Sheet </button>
-   <button type="button" class="coopAgreement" value="coopAgreement"> Coop Agreement </button> <br /><br />
+   <button type="button" class="studentEval"> Student Evaluation </button> <br />
+   <button type="button" class="supervisorEval" value="supervisorEval"> Supervisor Evaluation </button> 
+   <button type="button" class="timesheet" value="timesheet"> Time Sheet </button> <br /> <br />
 
    <!-- Change a students status -->
    <select class="selectStatus" name="status"> 
@@ -208,6 +209,23 @@
 
       });
 
+      $("button.resume").live('click', function() {
+         data = getRec();
+         if (data == "" || data == null) {
+            return;
+         }
+         $.post(base + "/async/resume", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+            //$("#studentEvalForm").attr("value", "coopAgreement");
+            //$(".highlighted").css('background-color', 'green');
+
+         });
+
+      });
+      
+      
       $("button.learningOutcome").live('click', function() {
          data = getRec();
          if (data == "" || data == null) {
