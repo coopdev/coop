@@ -492,6 +492,51 @@ class AsyncController extends Zend_Controller_Action
 
 
     }
+    
+    public function coverLetterAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST['data'];
+          
+          $formData['classId'] = $data['classes_id'];
+          $formData['semId'] = $data['semesters_id'];
+          $formData['username'] = $data['username'];
+          $form = new Application_Form_CoverLetter($formData);
+          $this->view->form = $form;
+          
+          
+          // To get text for the record being viewed (student's name, semester, class)
+          $user = new My_Model_User();
+          $recText = $user->getSemesterInfo($data);
+          if (!empty($recText)) {
+             $recText = $recText[0];
+          }
+          $this->view->recText = $recText;
+          
+          
+          // check if student eval has been submitted first
+          $Assignment = new My_Model_Assignment();
+          //$foo = $this->view->form->assignId;
+          $data['assignments_id'] = $form->getAssignId();
+          $res = $Assignment->isSubmitted($data);
+          unset($data['assignments_id']);
+          // if not submitted
+          if ($res === false) {
+             $this->view->submitted = false;
+             return;
+          }
+          
+
+       } else {
+          // If not a POST request, don't render the view
+          $this->_helper->viewRenderer->setNoRender();
+       }
+
+
+    }
 
     // Resubmits student or supervisor eval.
     public function resubmitAssignmentAction()

@@ -25,6 +25,37 @@
 
 
 <ul>
+   <?php 
+      $onclick = "return true";
+      $isDisabled = "enabled";
+      $assignId = $as->getResumeId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
+      $chk['assignments_id'] = $assignId;
+      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
+         $onclick = "return false";
+         $isDisabled = "disabled";
+      } 
+    ?>
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
+                         'action'=>'resume'), null, true) ?>'> Resume </a> | due: <?php echo $due ?> </li><br />
+   
+   <?php 
+      $onclick = "return true";
+      $isDisabled = "enabled";
+      $assignId = $as->getCoverLetterId();
+      $assignment = $as->getAssignment($assignId);
+      $due = $funcs->formatDateOut($assignment['due_date']);
+      $chk['assignments_id'] = $assignId;
+      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
+         $onclick = "return false";
+         $isDisabled = "disabled";
+      } 
+    ?>
+
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
+                         'action'=>'cover-letter'), null, true) ?>'> Cover Letter </a> | due: <?php echo $due ?> </li><br />
 
    <?php 
       $onclick = "return true";
@@ -99,21 +130,6 @@
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
                          'action'=>'student-eval'), null, true) ?>'> Student's Evaluation </a> | due: <?php echo $due ?> </li><br />
 
-   <?php 
-      $onclick = "return true";
-      $isDisabled = "enabled";
-      $assignId = $as->getResumeId();
-      $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
-      $chk['assignments_id'] = $assignId;
-      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
-         $onclick = "return false";
-         $isDisabled = "disabled";
-      } 
-    ?>
-
-   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'resume'), null, true) ?>'> Resume </a> | due: <?php echo $due ?> </li><br />
    <?php
       //$assignId = $as->getSupervisorEvalId();
       //$assignment = $as->getAssignment($assignId);

@@ -57,7 +57,8 @@
 
    <button type="button" id="assignment-hist"> Assignment Record </button>
    <button type="button" class="resume" value="resume"> Resume </button> 
-   <button type="button" id="stuInfoSheet"> Student Information Sheet </button>
+   <button type="button" class="coverLetter" value="coverLetter"> Cover Letter </button> 
+   <button type="button" class="stuInfoSheet" id="stuInfoSheet"> Student Information Sheet </button>
    <button type="button" class="coopAgreement" value="coopAgreement"> Coop Agreement </button> 
    <button type="button" class="midtermReport"> Midterm Report </button>
    <button type="button" class="learningOutcome"> Learning Outcome Report </button>
@@ -225,6 +226,21 @@
 
       });
       
+      $("button.coverLetter").live('click', function() {
+         data = getRec();
+         if (data == "" || data == null) {
+            return;
+         }
+         $.post(base + "/async/cover-letter", {'data' : data}, function(resp) {
+
+            $("#asyncContainer").empty();
+            $("#asyncContainer").append(resp);
+            //$("#studentEvalForm").attr("value", "coopAgreement");
+            //$(".highlighted").css('background-color', 'green');
+
+         });
+
+      });
       
       $("button.learningOutcome").live('click', function() {
          data = getRec();

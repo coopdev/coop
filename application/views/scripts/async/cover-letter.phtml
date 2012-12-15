@@ -1,0 +1,17 @@
+<h2> Cover Letter </h2>
+<?php
+$form = $this->form;
+$recText = $this->recText;
+
+if (!empty($recText)) {
+   echo $recText['fname'] . " " . $recText['lname'] . "<br /> ";
+   echo $recText['class'] . "<br /> ";
+   echo $recText['semester'] . "<br /><br /><br />";
+}
+
+if ($this->submitted === false) {
+   echo "<p class=error> Report has not been submitted </p>";
+} else {
+   echo $form->static_tasks->coverLetter->getValue();
+}
+?>
