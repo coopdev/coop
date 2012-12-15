@@ -38,6 +38,7 @@ class My_Acl_Coop extends Zend_Acl
       /* Form Controller */
       $this->add(new Zend_Acl_Resource('form'));
       $this->add(new Zend_Acl_Resource('form_student-info-show'), 'form');
+      $this->add(new Zend_Acl_Resource('form_student-info-edit'), 'form');
       $this->add(new Zend_Acl_Resource('form_student-info-submit'), 'form');
       $this->add(new Zend_Acl_Resource('form_coop-agreement'), 'form');
       $this->add(new Zend_Acl_Resource('form_coop-agreement-pdf'), 'form');
@@ -88,6 +89,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_manage-rated-questions'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_add-rated-question'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_edit-rated-question'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_delete-rated-question'), 'assignment');
 
 
       /* Async Controller */
@@ -146,6 +148,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user','index');
       $this->allow('user', 'syllabus','syllabus_view');
       $this->allow('user', 'form');
+      $this->deny('user', 'form', 'form_coop-agreement');
       $this->deny('user', 'form', 'form_edit-disclaimer');
       $this->allow('user', 'class', 'class_change');
       $this->allow('user', 'assignment', 'assignment_list-all-for-student');
@@ -169,6 +172,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('coordinator', 'assignment', 'assignment_list-submitted');
       $this->deny('coordinator', 'assignment', 'assignment_list-all-for-student');
       $this->deny('coordinator', 'form');
+      $this->allow('coordinator', 'form', 'form_coop-agreement');
       $this->allow('coordinator', 'form', 'form_edit-disclaimer');
       $this->allow('coordinator', 'backup');
       $this->allow('coordinator', 'semester');
