@@ -108,6 +108,11 @@ class My_Acl_Coop extends Zend_Acl
 
       /* Semester Controller */
       $this->add(new Zend_Acl_Resource('semester'));
+      
+      
+      /* PDF Controller */
+      $this->add(new Zend_Acl_Resource('pdf'));
+      $this->add(new Zend_Acl_Resource('pdf_timesheet'), 'pdf');
 
       /* Roles */
 
@@ -160,6 +165,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'assignment', 'assignment_learning-outcome');
       $this->allow('user', 'assignment', 'assignment_student-eval');
       $this->allow('user', 'assignment', 'assignment_cover-letter');
+      $this->allow('user', 'pdf');
       //$this->allow('user', 'user', 'user_new');
       //$this->allow('user', 'user', 'user_create');
             
@@ -179,6 +185,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'form', 'form_edit-disclaimer');
       $this->allow('coordinator', 'backup');
       $this->allow('coordinator', 'semester');
+      $this->allow('coordinator', 'pdf');
       
 
       /* 

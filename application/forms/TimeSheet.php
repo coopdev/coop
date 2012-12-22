@@ -109,7 +109,7 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        $formFields[] = $elem;
 
        foreach ($formFields as $f) {
-          $f->setAttrib('size', '5');
+          $f->setAttrib('size', '8');
           $f->setAttrib('class', 'static');
           $f->setRequired(false);
        }

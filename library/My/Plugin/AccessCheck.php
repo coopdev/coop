@@ -27,7 +27,8 @@
          // need this when executing wkhtmltopdf since it has a role of none and gets sent to 
          // the weblogin page.
          if($this->getRequest()->isGet()) {
-            if (isset($_GET['role']) && $_GET['role'] === 'A592NXZ71680STWVR926' ) {
+            $pdfRole = $this->getRequest()->getParam('pdfRole');
+            if ($pdfRole === 'A592NXZ71680STWVR926' ) {
                return;
             }
          }

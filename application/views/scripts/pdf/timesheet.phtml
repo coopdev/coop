@@ -1,0 +1,121 @@
+<?php
+$form = $this->form;
+?>
+
+<?php
+//$coopSess = new Zend_Session_Namespace('coop');
+//echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
+//$elems = $this->element;
+?>
+
+<form id="studentEvalForm" method="POST" action="<?php echo $form->getAction ?>">
+
+   <b>Position:</b>
+   <?php echo $form->static_tasks->position->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+
+   <b>Company:</b> 
+   <?php echo $form->static_tasks->company->getValue() ?>&nbsp;&nbsp;&nbsp;&nbsp;
+
+   <b>Hrs/Week:</b>
+   <?php echo $form->static_tasks->hrs_per_week->getValue() ?> <br />
+
+   <b>Semester Dates:</b>
+   <?php echo $form->static_tasks->semester_dates->getValue() ?>&nbsp;&nbsp;&nbsp;&nbsp;
+
+   <b>Supervisor:</b>
+   <?php echo $form->static_tasks->supervisor->getValue() ?>&nbsp;&nbsp;&nbsp;&nbsp;
+
+   <b>Telephone:</b>
+   <?php echo $form->static_tasks->phone->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+
+   <br /> <br /> <br />
+
+   <div style="text-align:center;">
+      <h3> TOTAL NUMBER OF HOURS WORKED </h3>
+   </div>
+
+   
+   
+   
+   <table>
+      <tr>
+         <th> Fall Semester </th>
+         <th> Hours </th>
+         <th> Spring Semester </th>
+         <th> Hours </th>
+         <th> Summer Semester </th>
+         <th> Hours </th>
+      </tr>
+
+      <tr>
+         <td> August ___ thru 31 </td>
+         <td> <?php echo $form->static_tasks->fallHrs1 ?> </td>
+
+         <td> January ___ thru 31 </td>
+         <td> <?php echo $form->static_tasks->springHrs1 ?> </td>
+         
+         <td> May ___ to June 30 </td>
+         <td> <?php echo $form->static_tasks->summerHrs1 ?> </td>
+      </tr>
+
+
+      <tr>
+         <td> September 1 thru 30 </td>
+         <td> <?php echo $form->static_tasks->fallHrs2 ?> </td>
+
+         <td> February 1 thru 28 </td>
+         <td> <?php echo $form->static_tasks->springHrs2 ?> </td>
+         
+         <td> July 1 to August __ </td>
+         <td> <?php echo $form->static_tasks->summerHrs2 ?> </td>
+      </tr>
+
+      <tr>
+         <td> October 1 thru 31 </td>
+         <td> <?php echo $form->static_tasks->fallHrs3 ?> </td>
+
+         <td> March 1 thru 31 </td>
+         <td> <?php echo $form->static_tasks->springHrs3 ?> </td>
+
+         <td></td>
+         <td></td>
+      </tr>
+      
+      <tr>
+         <td> November 1 thru 30 </td>
+         <td> <?php echo $form->static_tasks->fallHrs4 ?> </td>
+
+         <td> April 1 thru 30 </td>
+         <td> <?php echo $form->static_tasks->springHrs4 ?> </td>
+         
+         <td></td>
+         <td></td>
+      </tr>
+      
+      <tr>
+         <td> December 1 thru __ </td>
+         <td> <?php echo $form->static_tasks->fallHrs5 ?> </td>
+
+         <td> May 1 thru __ </td>
+         <td> <?php echo $form->static_tasks->springHrs5 ?> </td>
+         
+         <td></td>
+         <td></td>
+      </tr>
+      
+      <tr>
+         <td> <b>Total Hours</b> </td>
+         <td> <?php echo $form->static_tasks->fallTotalHrs ?> </td>
+
+         <td> <b>Total Hours</b> </td>
+         <td> <?php echo $form->static_tasks->springTotalHrs ?> </td>
+         
+         <td> <b>Total Hours</b> </td>
+         <td> <?php echo $form->static_tasks->summerTotalHrs ?> </td>
+      </tr>
+      
+   </table>
+
+   <br /> <br />
+
+</form>

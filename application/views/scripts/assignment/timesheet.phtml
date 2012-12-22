@@ -13,6 +13,10 @@ echo $form;
 <script type="text/javascript">
    
 $(document).ready(function() {
+    $("#pdfSubmit").live('click', function() {
+        $("#studentEvalForm").attr('action', base + "/pdf/timesheet");
+
+    });
 
    // Add confirmation to submit button
    $("#finalSubmit").live('click', function() {
