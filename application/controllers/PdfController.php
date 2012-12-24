@@ -17,16 +17,17 @@ class PdfController extends Zend_Controller_Action
             $formData = rawurlencode(serialize($formData));
 
             $serverName = $_SERVER['SERVER_NAME'];
-            $baseUrl = $this->view->baseUrl();
             $url = $this->view->url(array('action' => 'timesheet', 
                                     'formData' => $formData,
                                     'pdfRole' => 'A592NXZ71680STWVR926'));
-            $url = "http://$serverName" . $baseUrl . $url;
+            $url = "http://$serverName" . $url;
 
             $html = fopen($url, 'r');
             $html = stream_get_contents($html);
 
-            $mpdf = new mPDF('c', 'A4', '', '', 0,0,0,0,0,0);
+            //$mpdf = new mPDF('c', 'A4', '', '', 0,0,0,0,0,0);
+            $mpdf = new mPDF('c');
+            //$mpdf->debug = true;
             $mpdf->SetDisplayMode('fullpage');
             $mpdf->WriteHTML($html);
             $mpdf->Output();

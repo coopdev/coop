@@ -29,6 +29,7 @@ class AuthController extends Zend_Controller_Action
         //$adapter->setService($service); // ASK ABOUT $service. IT WORKS FOR THE SAMPLE APP BUT IS UNDEFINED FOR THIS APP.
         $local_service = $this->config_cas->params->local_service;
         $this->adapter->setLoginUrl();
+        //die(var_dump($this->adapter->getLoginUrl()));
         
         // If user authenticated through CAS, and CAS returned a ticket.
         if(isset($_GET['ticket'])) {
@@ -51,6 +52,8 @@ class AuthController extends Zend_Controller_Action
         if(!$this->auth->hasIdentity() && $this->adapter->hasTicket()) {
            
            // Validate the ticket
+            // CHECK $this->result IF CAS AUTHENTICATION ISN'T WORKING. IT WILL
+            // SAY WHY.
             $this->result = $this->auth->authenticate($this->adapter);
             
             if(!$this->result->isValid()) {
