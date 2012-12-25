@@ -376,6 +376,7 @@ class AsyncController extends Zend_Controller_Action
              $form = new Application_Form_SupervisorEval($formData);
           }  else if (isset($_POST['timesheet'])) { 
              $form = new Application_Form_TimeSheet($formData);
+             $form->removeElement('pdfSubmit');
           } else {
              $form = new Application_Form_StudentEval($formData);
           }

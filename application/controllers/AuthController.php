@@ -55,6 +55,7 @@ class AuthController extends Zend_Controller_Action
             // CHECK $this->result IF CAS AUTHENTICATION ISN'T WORKING. IT WILL
             // SAY WHY.
             $this->result = $this->auth->authenticate($this->adapter);
+            //die(var_dump($this->result));
             
             if(!$this->result->isValid()) {
                //die($this->result->getMessages());

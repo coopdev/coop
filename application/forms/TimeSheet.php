@@ -21,8 +21,10 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        $finalSubmit = $elems->getSubmit('finalSubmit');
        $finalSubmit->setLabel('Submit as Final')
                    ->setAttrib('class', 'resubmit');
+       $pdfSubmit = $elems->getSubmit('pdfSubmit');
+       $pdfSubmit->setLabel('PDF');
 
-       $this->addElements( array($saveSubmit, $finalSubmit));
+       $this->addElements( array($saveSubmit, $finalSubmit, $pdfSubmit));
        
        // Checks if there are submitted answers in order to populate the form with them.
        if ($this->populateForm === true) {
