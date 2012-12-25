@@ -1,8 +1,12 @@
 div#col1-fields {
-    margin-right: 50px;
+    /*margin-right: 50px;*/
     float: left;
 }
 div#col2-fields {
-    margin-right: 50px;
+    /*margin-right: 50px;*/
+    float: left;
+}
+div#col3-fields {
+    /*margin-right: 50px;*/
     float: left;
 }

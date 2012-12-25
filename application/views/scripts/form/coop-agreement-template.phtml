@@ -1,18 +1,24 @@
 <?php
+$coopSess = new Zend_Session_Namespace('coop');
+echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
 $elems = $this->element;
 ?>
 
 <form method="POST" class="coopAgreementForm"  submissionid="<?php echo $elems->getAttrib('submissionid') ?>" >
-   
+    
+    
    <?php echo $elems->static_tasks->id ?>
-   
-   <?php echo $elems->static_tasks->position ?>
-   <?php echo $elems->static_tasks->company ?>
-   <?php echo $elems->static_tasks->hrs_per_week ?> <br />
+    
+    
+   <?php 
+       echo $this->partial('assignment/partials/jobsite-fields.phtml', 
+               array('static_tasks' => $elems->static_tasks));
+   ?>
 
-   <?php echo $elems->static_tasks->semester_dates ?>
-   <?php echo $elems->static_tasks->supervisor ?>
-   <?php echo $elems->static_tasks->phone ?> <br /><br /><br /><br />
+
+   <div class="clear"></div>
+   
+   <br /><br /><br />
    
    
    <h4> <b> The Student Agrees To: </b> </h4>

@@ -107,25 +107,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
                                      ));
          $Elems = new My_FormElement();
 
-         //$id = new Zend_Form_Element_Text('id');
-
-         //die(var_dump($id));
-
          $staticTasks->addElements($this->makeJobsiteFields());
-
-         //$position = $Elems->getCommonTbox('position', 'Position:');
-         ////die(var_dump($position->getId()));
-         ////die(var_dump($position));
-
-         //$company = $Elems->getCommonTbox('company', 'Company:');
-
-         //$hours = $Elems->getCommonTbox('hrs_per_week', 'Hrs/Week:');
-         //
-         //$semesters = $Elems->getCommonTbox('semester_dates', 'Semester Dates:');
-         //
-         //$superv = $Elems->getCommonTbox('supervisor', 'Supervisor:');
-         //
-         //$phone = $Elems->getCommonTbox('phone', 'Telephone:');
 
          $staticTasks->addElements($this->makeOther());
 
@@ -162,10 +144,10 @@ class Application_Form_Agreement extends Application_Form_CommonForm
             $e->setAttrib('class', 'static');
          }
 
-         $staticTasks->setElementDecorators(array('ViewHelper',
-                                             'Errors',
-                                             'Label'
-                                       ));
+         //$staticTasks->setElementDecorators(array('ViewHelper',
+         //                                    'Errors',
+         //                                    'Label'
+         //                              ));
 
          $this->addSubForm($staticTasks, 'static_tasks');
 

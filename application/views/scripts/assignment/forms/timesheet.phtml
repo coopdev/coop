@@ -6,13 +6,12 @@ $elems = $this->element;
 
 <form id="studentEvalForm" method="POST" action="<?php echo $elems->getAction ?>">
 
-   <?php echo $elems->static_tasks->position ?>
-   <?php echo $elems->static_tasks->company ?>
-   <?php echo $elems->static_tasks->hrs_per_week ?> <br />
-
-   <?php echo $elems->static_tasks->semester_dates ?>
-   <?php echo $elems->static_tasks->supervisor ?>
-   <?php echo $elems->static_tasks->phone ?> 
+    <?php 
+        echo $this->partial('assignment/partials/jobsite-fields.phtml', 
+                array('static_tasks' => $elems->static_tasks));
+    ?>
+    
+   <div class="clear"></div>
 
    <br /> <br /> <br />
 
@@ -105,7 +104,11 @@ $elems = $this->element;
    <br /> <br />
 
    <?php echo $elems->saveOnly ?> 
-   <?php echo $elems->finalSubmit ?> 
+   <?php 
+       if ($coopSess->role === 'coordinator') {
+           echo $elems->finalSubmit;
+       } 
+   ?>
 
    <input type="submit" id="pdfSubmit" value="PDF" />
 

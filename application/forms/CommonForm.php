@@ -51,7 +51,7 @@ class Application_Form_CommonForm extends Zend_Form
        // Used elsewhere to get these fields.
        foreach ($fields as $f) {
           $f->setAttrib('fieldType', 'jobsite');
-          $f->setAttrib('size', '35');
+          $f->setAttrib('size', '33');
           //$f->setAttrib('class', 'getFromAgreementForm');
        }
        return $fields;

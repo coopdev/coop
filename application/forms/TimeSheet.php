@@ -50,76 +50,76 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
 
        $elems = new My_FormElement();
 
-       $formFields = array();
+       $hoursFields = array();
        $elem = $elems->getCommonTbox('fallHrs1', ' ');
        $elem->setAttrib('semester', 'fall');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
 
        $elem = $elems->getCommonTbox('fallHrs2', ' ');
        $elem->setAttrib('semester', 'fall');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
 
        $elem = $elems->getCommonTbox('fallHrs3', ' ');
        $elem->setAttrib('semester', 'fall');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
 
        $elem = $elems->getCommonTbox('fallHrs4', ' ');
        $elem->setAttrib('semester', 'fall');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('fallHrs5', ' ');
        $elem->setAttrib('semester', 'fall');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('fallTotalHrs', ' ');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springHrs1', ' ');
        $elem->setAttrib('semester', 'spring');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springHrs2', ' ');
        $elem->setAttrib('semester', 'spring');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springHrs3', ' ');
        $elem->setAttrib('semester', 'spring');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springHrs4', ' ');
        $elem->setAttrib('semester', 'spring');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springHrs5', ' ');
        $elem->setAttrib('semester', 'spring');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('springTotalHrs', ' ');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('summerHrs1', ' ');
        $elem->setAttrib('semester', 'summer');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('summerHrs2', ' ');
        $elem->setAttrib('semester', 'summer');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
        
        $elem = $elems->getCommonTbox('summerTotalHrs', ' ');
-       $formFields[] = $elem;
+       $hoursFields[] = $elem;
 
-       foreach ($formFields as $f) {
+       foreach ($hoursFields as $f) {
           $f->setAttrib('size', '8');
           $f->setAttrib('class', 'static');
           $f->setRequired(false);
        }
 
-       $staticSubform->addElements($formFields);
+       $staticSubform->addElements($hoursFields);
        
-       $staticSubform->setElementDecorators(array('ViewHelper',
-                                                  'Errors',
-                                                  'Label'
-                                           ));
+       //$staticSubform->setElementDecorators(array('ViewHelper',
+       //                                           'Errors',
+       //                                           'Label'
+       //                                    ));
 
        $this->addSubForm($staticSubform, 'static_tasks');
 
