@@ -120,7 +120,6 @@ class Application_Form_CommonForm extends Zend_Form
        $where['classes_id'] = $this->classId;
        $where['assignments_id'] = $this->assignId;
        $where['semesters_id'] = $this->semId;
-       //die(var_dump($where));
 
        //die(var_dump($this->assignId));
        $assign = new My_Model_Assignment();
