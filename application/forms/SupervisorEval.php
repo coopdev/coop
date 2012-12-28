@@ -12,6 +12,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $this->setDecorators(array(array('ViewScript', 
                                   array('viewScript' => '/assignment/forms/supervisor-eval.phtml'))));
 
+       //die(var_dump($this->username, $this->classId, $this->semId));
        $this->makeStatics();
 
        $this->makeDynamics();
@@ -27,13 +28,16 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $finalSubmit = $elems->getSubmit('finalSubmit');
        $finalSubmit->setLabel('Submit as Final')
                    ->setAttrib('class', 'resubmit');
+       $pdfSubmit = $elems->getSubmit('pdfSubmit');
+       $pdfSubmit->setLabel('PDF');
 
-       $this->addElements( array($saveSubmit, $finalSubmit));
+       $this->addElements( array($saveSubmit, $finalSubmit, $pdfSubmit));
 
        // Checks if there are submitted answers in order to populate the form with them.
        if ($this->populateForm === true) {
           $this->checkSubmittedAnswers(); 
           $this->populateJobsiteFields();
+          $this->populateCoordFields();
        }
 
        $this->setElementDecorators(array('ViewHelper',
@@ -115,6 +119,21 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
     }
 
+    public function populateCoordFields()
+    {
+        $Class = new My_Model_Class();
+        $classRow = $Class->getClassInfo(array('id' => $this->classId));
+        $staticTasks = $this->static_tasks;
+
+        $staticTasks->coordinator->setValue($classRow->fname . ' ' . $classRow->lname);
+        
+        $staticTasks->coord_phone->setValue($classRow->home_phone);
+
+        $staticTasks->college->setValue('Honolulu Community College');
+        
+        $staticTasks->address->setValue("874 Dillingham Blvd., Honolulu, HI, 96817");
+    }
+
     public function makeCoordFields()
     {
        $Class = new My_Model_Class();
@@ -122,8 +141,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $elems = new My_FormElement();
 
        $coord = $elems->getCommonTbox('coordinator', 'Coordinator:');
-       $coord->setValue($classRow->fname . ' ' . $classRow->lname)
-             ->setAttrib('disabled', true);
+       $coord->setValue($classRow->fname . ' ' . $classRow->lname);
        
        $coordPhone = $elems->getCommonTbox('coord_phone', 'Telephone:');
        $coordPhone->setValue($classRow->home_phone);
@@ -136,6 +154,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        
        $address = $elems->getCommonTbox('address', 'Address:');
        $address->setValue("874 Dillingham Blvd., Honolulu, HI, 96817");
+       
        $fax = $elems->getCommonTbox('fax', 'Fax:');
 
        $elems = array($coord, $coordPhone, $college, $coordEmail, $address, $fax);

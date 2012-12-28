@@ -125,6 +125,7 @@ class AssignmentController extends Zend_Controller_Action
        $form = new Application_Form_SupervisorEval(array('username' => $username, 
                                                          'classId' => $classId,
                                                          'semId' => $semId));
+       //die($form->static_tasks->address->getValue());
 
        $this->view->form = $form;
 

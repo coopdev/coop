@@ -9,6 +9,11 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+    
+    // Change action of form if the PDF submit button is clicked.
+    $("#pdfSubmit").live('click', function() {
+        $("#studentEvalForm").attr('action', base + "/pdf/supervisor-eval");
+    });
 
    // Add confirmation to submit button
    $("#finalSubmit").live('click', function() {
