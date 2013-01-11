@@ -56,10 +56,7 @@ class PdfController extends Zend_Controller_Action
         $coopSess = new Zend_Session_Namespace('coop');
         $this->_helper->getHelper('layout')->disableLayout();
         if ($this->getRequest()->isPost()) {
-            $formData = $_POST;
-            $formData = rawurlencode(serialize($formData));
-            //$formData = array('static_tasks' => array('position' => 'one', 'company' => 'two'));
-            //die(var_dump($formData));
+            //$formData = $_POST;
             //$formData = rawurlencode(serialize($formData));
 
             $formMetaData = array();
@@ -79,7 +76,7 @@ class PdfController extends Zend_Controller_Action
             //$serverName = $_SERVER['SERVER_NAME'];
             $serverName = $this->view->serverUrl();
             $url = $this->view->url(array('action' => 'supervisor-eval', 
-                                    'formData' => $formData,
+                                    //'formData' => $formData,
                                     'pdfRole' => $this->pdfRole,
                                     'formMetaData' => $formMetaData));
             $url = $serverName . $url;
@@ -98,9 +95,9 @@ class PdfController extends Zend_Controller_Action
 
 
         } else if ($this->getRequest()->isGet()) {
-            $formData = $this->getRequest()->getParam('formData');
-            $formData = str_replace('\\', '', $formData);
-            $formData = unserialize(rawurldecode($formData));
+            //$formData = $this->getRequest()->getParam('formData');
+            //$formData = str_replace('\\', '', $formData);
+            //$formData = unserialize(rawurldecode($formData));
 
             $formMetaData = $this->getRequest()->getParam('formMetaData');
             $formMetaData = str_replace('\\', '', $formMetaData);
@@ -109,7 +106,7 @@ class PdfController extends Zend_Controller_Action
             //die(var_dump($formMetaData));
             $form = new Application_Form_SupervisorEval($formMetaData);
             //$form = new Application_Form_SupervisorEval(array('username' => 'johndoe', 'classId' => '4', 'semId' => '14'));
-            $form->populate($formData);
+            //$form->populate($formData);
 
             $this->view->form = $form;
 

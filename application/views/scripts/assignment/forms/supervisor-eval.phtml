@@ -105,9 +105,12 @@ echo $elems->static_tasks->comments . "<br /> <br />";
 </h3> <br /> <br />
 
 <?php
-echo $elems->saveOnly;
-echo $elems->finalSubmit;
-echo $elems->pdfSubmit;
+if ($coopSess->role === 'coordinator') {
+    echo $elems->saveOnly;
+    echo $elems->finalSubmit;
+}
+
+echo $elems->pdfSubmit->setLabel("Convert to PDF");
 
 ?>
 

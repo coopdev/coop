@@ -88,13 +88,17 @@ class FormController extends Zend_Controller_Action
 
        $coopSess = new Zend_Session_Namespace('coop');
 
-       $subForStudentData = $coopSess->submitForStudentData;
-       //die(var_dump($subForStudentData));
-       $classId = $subForStudentData['classes_id'];
-       //$assignId = $subForStudentData['assignments_id'];
-       $username = $subForStudentData['username'];
-       $semId = $subForStudentData['semesters_id'];
-
+       if ($coopSess->role === 'user') {
+           $classId = $coopSess->currentClassId;
+           $username = $coopSess->username;
+           $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
+       
        $form = new Application_Form_Agreement(array('username' => $username, 
                                                     'classId' => $classId,
                                                     'semId' => $semId,

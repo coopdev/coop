@@ -116,10 +116,16 @@ class AssignmentController extends Zend_Controller_Action
        $as = new My_Model_Assignment();
        $coopSess = new Zend_Session_Namespace('coop');
 
-       $subForStudentData = $coopSess->submitForStudentData;
-       $classId = $subForStudentData['classes_id'];
-       $username = $subForStudentData['username'];
-       $semId = $subForStudentData['semesters_id'];
+       if ($coopSess->role === 'user') {
+           $classId = $coopSess->currentClassId;
+           $username = $coopSess->username;
+           $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
 
                                                       
        $form = new Application_Form_SupervisorEval(array('username' => $username, 

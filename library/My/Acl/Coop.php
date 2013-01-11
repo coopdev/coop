@@ -165,6 +165,8 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'assignment', 'assignment_learning-outcome');
       $this->allow('user', 'assignment', 'assignment_student-eval');
       $this->allow('user', 'assignment', 'assignment_cover-letter');
+      $this->allow('user', 'assignment', 'assignment_supervisor-eval');
+      $this->allow('user', 'assignment', 'assignment_timesheet');
       $this->allow('user', 'pdf');
       //$this->allow('user', 'user', 'user_new');
       //$this->allow('user', 'user', 'user_create');
