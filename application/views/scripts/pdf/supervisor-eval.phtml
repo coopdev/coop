@@ -162,17 +162,19 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
          <b> SPECIFIC LEARNING OBJECTIVE </b>
       </h3> 
    </div> <br />
+   <?php
+       $form->static_tasks->lrnObjectiveRating1->setSeparator(' ');
+       $form->static_tasks->lrnObjectiveRating2->setSeparator(' ');
+       echo "1. <b>" . $form->static_tasks->lrnObjective1->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+               $form->static_tasks->lrnObjectiveRating1 . "<br /> <br />";
+
+       echo "2. <b>" . $form->static_tasks->lrnObjective2->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+               $form->static_tasks->lrnObjectiveRating2 . "<br /> <br />";
+   ?>
 <?php } ?>
 
 
 <?php
-$form->static_tasks->lrnObjectiveRating1->setSeparator(' ');
-$form->static_tasks->lrnObjectiveRating2->setSeparator(' ');
-echo "1. <b>" . $form->static_tasks->lrnObjective1->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
-        $form->static_tasks->lrnObjectiveRating1 . "<br /> <br />";
-
-echo "2. <b>" . $form->static_tasks->lrnObjective2->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
-        $form->static_tasks->lrnObjectiveRating2 . "<br /> <br />";
 
 
 echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
