@@ -99,6 +99,7 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
          $coopSess->currentSemId = $this->getCurrentSemId();
          return true;
       } catch(Exception $e) {
+          die($e->getMessage());
          return false;
       }
 

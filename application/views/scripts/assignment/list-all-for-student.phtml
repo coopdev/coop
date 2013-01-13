@@ -4,6 +4,7 @@
    $coopSess = new Zend_Session_Namespace('coop');
 
    $as = new My_Model_Assignment();
+   $Semester = new My_Model_Semester();
 
    $curSem = $coopSess->currentSemId;
    $curClass = $coopSess->currentClassId;
@@ -11,7 +12,14 @@
 
    $funcs = new My_Funcs();
 
-
+   $currentSemester = $Semester->getCurrentSemester();
+   if ($currentSemester === "Fall") {
+       $due_date_column = "fall_due_date";
+   } else if ($currentSemester === "Spring") {
+       $due_date_column = "spring_due_date";
+   } else if ($currentSemester === "Summer") {
+       $due_date_column = "summer_due_date";
+   }
 
    $chk['semesters_id'] = $curSem;
    $chk['classes_id'] = $curClass;
@@ -30,7 +38,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getResumeId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -46,7 +54,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getCoverLetterId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -63,7 +71,7 @@
       $assignId = $as->getStuInfoId();
       //die($assignId);
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       if ( $as->isDue($assignId) ) { 
          $onclick = "return false";
          $isDisabled = "disabled";
@@ -78,7 +86,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getCoopAgreementId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -94,7 +102,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getMidtermId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -110,7 +118,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getLearningOutcomeId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -126,7 +134,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getTimeSheetId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -142,7 +150,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getStudentEvalId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -158,7 +166,7 @@
       $isDisabled = "enabled";
       $assignId = $as->getSupervisorEvalId();
       $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment['due_date']);
+      $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
@@ -172,7 +180,7 @@
    <?php
       //$assignId = $as->getSupervisorEvalId();
       //$assignment = $as->getAssignment($assignId);
-      //$due = $funcs->formatDateOut($assignment['due_date']);
+      //$due = $funcs->formatDateOut($assignment['$due_date_column']);
    ?>
 
    <!-- <li><a class="regText" href='<?php echo $this->url(array('controller'=>'assignment',

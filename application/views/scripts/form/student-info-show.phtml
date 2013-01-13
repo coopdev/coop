@@ -3,10 +3,14 @@
    $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/jquery_datepicker/ui.all.css');
 
    $this->pageTitle = "Student Information Sheet";
-   $url = $this->url( array('action' => 'student-info-edit'));
-   echo "<h4> <a href='$url'> View Saved Student Information Sheets </a> </h4> <br />";
-   echo $this->message;
-   echo $this->form;
+   if ($this->isDue) {
+       echo "<p class=error> This assignment is past it's due date </p>";
+   } else {
+       $url = $this->url( array('action' => 'student-info-edit'));
+       echo "<h4> <a href='$url'> View Saved Student Information Sheets </a> </h4> <br />";
+       echo $this->message;
+       echo $this->form;
+   }
 ?>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.3/jquery-ui.min.js"></script> 

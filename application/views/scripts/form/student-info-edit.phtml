@@ -1,19 +1,24 @@
 <?php
 $this->pageTitle = "Your Saved Student Information Sheets";
-$url = $this->url( array('action' => 'student-info-show') );
+if ($this->isDue) {
+    echo "<p class=error> This assignment is past it's due date </p>";
 
-echo "<h3> <a href='$url'> Create New </a> </h3>";
+} else {
+    $url = $this->url( array('action' => 'student-info-show') );
 
-$form = $this->form;
+    echo "<h3> <a href='$url'> Create New </a> </h3>";
 
-$page = 0;
-echo "<ul class='paging'>";
-foreach ($form->submissions as $s) {
-   echo "<li class='simplePagerPage$page'>";
-   echo "<br /> <br /> $s";
-   echo "</li>";
+    $form = $this->form;
+
+    $page = 0;
+    echo "<ul class='paging'>";
+    foreach ($form->submissions as $s) {
+       echo "<li class='simplePagerPage$page'>";
+       echo "<br /> <br /> $s";
+       echo "</li>";
+    }
+    echo "</ul>";
 }
-echo "</ul>";
 ?>
 
 <script type="text/javascript">

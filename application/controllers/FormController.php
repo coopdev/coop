@@ -11,7 +11,13 @@ class FormController extends Zend_Controller_Action
     public function studentInfoShowAction()
     {
        $session = new Zend_Session_Namespace('coop');
+       $as = new My_Model_Assignment();
 
+       $assignId = $as->getStuInfoId();
+       if ($as->isDue($assignId)) {
+          $this->view->isDue = true;
+          return;
+       }
 
        $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
            'semId' => $session->currentSemId,
@@ -41,6 +47,12 @@ class FormController extends Zend_Controller_Action
     {
        $session = new Zend_Session_Namespace('coop');
 
+       $as = new My_Model_Assignment();
+       $assignId = $as->getStuInfoId();
+       if ($as->isDue($assignId)) {
+          $this->view->isDue = true;
+          return;
+       }
 
        $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
            'semId' => $session->currentSemId,
@@ -89,6 +101,13 @@ class FormController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
 
        if ($coopSess->role === 'user') {
+           $as = new My_Model_Assignment();
+           $assignId = $as->getCoopAgreementId();
+           if ($as->isDue($assignId)) {
+              $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+              return;
+           }
+           
            $classId = $coopSess->currentClassId;
            $username = $coopSess->username;
            $semId = $coopSess->currentSemId;

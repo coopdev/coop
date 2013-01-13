@@ -115,8 +115,15 @@ class AssignmentController extends Zend_Controller_Action
     {
        $as = new My_Model_Assignment();
        $coopSess = new Zend_Session_Namespace('coop');
+       
 
        if ($coopSess->role === 'user') {
+           $assignId = $as->getSupervisorEvalId();
+           if ($as->isDue($assignId)) {
+              $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+              return;
+           }
+           
            $classId = $coopSess->currentClassId;
            $username = $coopSess->username;
            $semId = $coopSess->currentSemId;
@@ -166,6 +173,12 @@ class AssignmentController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
 
        if ($coopSess->role === 'user') {
+           $assignId = $as->getTimeSheetId();
+           if ($as->isDue($assignId)) {
+              $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+              return;
+           }
+           
            $classId = $coopSess->currentClassId;
            $username = $coopSess->username;
            $semId = $coopSess->currentSemId;
@@ -212,6 +225,12 @@ class AssignmentController extends Zend_Controller_Action
     {
        $as = new My_Model_Assignment();
        $session = new Zend_Session_Namespace('coop');
+       
+       $assignId = $as->getResumeId();
+       if ($as->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
 
        $form = new Application_Form_Resume(array('username' => $session->username, 
                                                  'classId' => $session->currentClassId,
@@ -248,6 +267,12 @@ class AssignmentController extends Zend_Controller_Action
     {
        $as = new My_Model_Assignment();
        $session = new Zend_Session_Namespace('coop');
+       
+       $assignId = $as->getCoverLetterId();
+       if ($as->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
 
        $form = new Application_Form_CoverLetter(array('username' => $session->username, 
                                                  'classId' => $session->currentClassId,
@@ -343,6 +368,13 @@ class AssignmentController extends Zend_Controller_Action
 
        $as = new My_Model_Assignment();
        $coopSess = new Zend_Session_Namespace('coop');
+       
+       // Check if due.
+       $assignId = $as->getLearningOutcomeId();
+       if ($as->isDue($assignId)) {
+          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+          return;
+       }
 
        $form = $as->populateLearningOutcome($form, array('classes_id' => $coopSess->currentClassId,
                                 'semesters_id' => $coopSess->currentSemId,
