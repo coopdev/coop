@@ -20,12 +20,17 @@ class Application_Form_EditDuedate extends Zend_Form
        foreach ($data as $d) {
 
           $subf = new Zend_Form_SubForm();
+          $subf->setAttrib("assignment", $d['assignment']);
 
-          $elem = $elems->getDateTbox('due_date', $d['assignment']);
+          $elem = $elems->getDateTbox('fall_due_date', "Fall");
+          $elem1 = $elems->getDateTbox('spring_due_date', "Spring");
+          $elem2 = $elems->getDateTbox('summer_due_date', "Summer");
 
-          $subf->addElement($elem);
+          $subf->addElements(array($elem, $elem1, $elem2));
 
-          $d['due_date'] = $funcs->formatDateOut($d['due_date']);
+          $d['fall_due_date'] = $funcs->formatDateOut($d['fall_due_date']);
+          $d['spring_due_date'] = $funcs->formatDateOut($d['spring_due_date']);
+          $d['summer_due_date'] = $funcs->formatDateOut($d['summer_due_date']);
 
           $subf->populate($d);
 

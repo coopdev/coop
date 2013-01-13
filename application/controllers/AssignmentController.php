@@ -497,6 +497,7 @@ class AssignmentController extends Zend_Controller_Action
        $as = new My_Model_Assignment();
 
        $assigns = $as->getAll();
+       $this->view->assignments = $assigns;
 
        $form = new Application_Form_EditDuedate($assigns);
        $this->view->form = $form;

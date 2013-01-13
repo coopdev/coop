@@ -1,9 +1,18 @@
+<h2> Edit Due Dates </h2> <br />
 <?php
 
    $form = $this->form;
+   $assignments = $this->assignments;
 
    echo $this->result;
 
-   echo $form;
+   //echo $form;
 
+   echo "<form method='POST' action=''>";
+   foreach ($form as $f) {
+       echo "<h3>" . $f->getAttrib("assignment") . "</h3>";
+       echo $f;
+   }
+
+   echo "</form>";
 ?>

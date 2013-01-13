@@ -474,22 +474,13 @@ class TestController extends Zend_Controller_Action
        die(var_dump($res));
     }
 
-    // test zend form element
-    public function elemAction()
+    public function currentSemAction()
     {
-       $elem = new Zend_Form_Element('foo');
-       $elem->setDescription("Hello");
+        $sem = new My_Model_Semester();
 
-       echo $elem;
+        $curSem = $sem->getCurrentSemester();
 
-       $dec = $elem->getDecorators();
-       //$elem->setDecorators(array(
-       //    'ViewHelper',
-       //    
-
-       //));
-       //die(var_dump($elem));
-
+        die($curSem);
     }
 
 

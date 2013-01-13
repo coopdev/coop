@@ -132,6 +132,20 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
       return $this->getId(array('current' => 1));
    }
 
+
+   public function getCurrentSemester()
+   {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       $row = $this->fetchRow("current = 1");
+
+       $semParts = explode(" ", $row['semester']);
+
+       $semester = trim($semParts[0]);
+
+       return $semester;
+   }
+
    /**
     * Gets semester in database from first to current
     * 

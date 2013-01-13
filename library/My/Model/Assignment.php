@@ -724,7 +724,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       foreach ($data as $id => $dueDate) {
 
          //die(var_dump($dueDate));
-         $dueDate['due_date'] = $funcs->formatDateIn($dueDate['due_date']); 
+         $dueDate['fall_due_date'] = $funcs->formatDateIn($dueDate['fall_due_date']); 
+         $dueDate['spring_due_date'] = $funcs->formatDateIn($dueDate['spring_due_date']); 
+         $dueDate['summer_due_date'] = $funcs->formatDateIn($dueDate['summer_due_date']); 
          //die(var_dump($dueDate['due_date']));
          try {
             $res = $this->update($dueDate, "id = $id");
@@ -1477,7 +1479,18 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             return false;
          }
          $row = $row->toArray();
-         $dueDate = $row['due_date'];
+
+         // Determine current semester and use appropriate due date field.
+         $Semester = new My_Model_Semester();
+         $currentSemester = $Semester->getCurrentSemester();
+         if ($currentSemester === "Fall") {
+             $dueDate = $row['fall_due_date'];
+         } else if ($currentSemester === "Spring") {
+             $dueDate = $row['spring_due_date'];
+         } else if ($currentSemester === "Summer") {
+             $dueDate = $row['summer_due_date'];
+         }
+
       }
 
       $dueDate = strtotime($dueDate);
