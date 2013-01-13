@@ -1481,15 +1481,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $row = $row->toArray();
 
          // Determine current semester and use appropriate due date field.
-         $Semester = new My_Model_Semester();
-         $currentSemester = $Semester->getCurrentSemester();
-         if ($currentSemester === "Fall") {
-             $dueDate = $row['fall_due_date'];
-         } else if ($currentSemester === "Spring") {
-             $dueDate = $row['spring_due_date'];
-         } else if ($currentSemester === "Summer") {
-             $dueDate = $row['summer_due_date'];
-         }
+         $due_date_column = $this->getDuedateColumn();
+         $dueDate = $row[$due_date_column];
 
       }
 
@@ -1730,6 +1723,22 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    }
 /********************* END STUDENT INFO SHEET METHODS ***********************************/
+
+   public function getDuedateColumn()
+   {
+      $Semester = new My_Model_Semester();
+      $currentSemester = $Semester->getCurrentSemester();
+      if ($currentSemester === "Fall") {
+          $due_date_column = "fall_due_date";
+      } else if ($currentSemester === "Spring") {
+          $due_date_column = "spring_due_date";
+      } else if ($currentSemester === "Summer") {
+          $due_date_column = "summer_due_date";
+      }
+
+      return $due_date_column;
+
+   }
 
 
 /******************************* SURVEY METHODS *****************************************/

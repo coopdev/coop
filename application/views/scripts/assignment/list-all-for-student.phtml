@@ -12,14 +12,7 @@
 
    $funcs = new My_Funcs();
 
-   $currentSemester = $Semester->getCurrentSemester();
-   if ($currentSemester === "Fall") {
-       $due_date_column = "fall_due_date";
-   } else if ($currentSemester === "Spring") {
-       $due_date_column = "spring_due_date";
-   } else if ($currentSemester === "Summer") {
-       $due_date_column = "summer_due_date";
-   }
+   $due_date_column = $as->getDuedateColumn();
 
    $chk['semesters_id'] = $curSem;
    $chk['classes_id'] = $curClass;

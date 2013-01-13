@@ -4,6 +4,8 @@
    //                                     'text/javascript', 
    //                                     array('conditional' => 'lt IE 9'));
    
+   $Assignment = new My_Model_Assignment();
+   $due_date_column = $Assignment->getDuedateColumn();
 
    $recs = $this->recs;
    $recText = $this->recText;
@@ -47,7 +49,7 @@
          </td>
 
          <td>
-            <?php echo $r['due_date'] ?>
+            <?php echo $r[$due_date_column] ?>
          </td>
       </tr>
 

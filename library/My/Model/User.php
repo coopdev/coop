@@ -435,6 +435,9 @@ class My_Model_User extends Zend_Db_Table_Abstract
       $select = $db->buildSelectWhereClause($select, $where);
 
       $row = $Student->fetchRow($select);
+      if (is_null($row)) {
+          $row = new Zend_Db_Table_Rowset(array());
+      }
       return $row;
    }
 

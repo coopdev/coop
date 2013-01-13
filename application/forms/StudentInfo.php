@@ -120,6 +120,7 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $stuInfoRow = $User->getStudentInfo( array('username' => $this->username, 
                                                   'semesters_id' => $this->semId) );
+       
        $Class = new My_Model_Class();
        $classRow = $Class->getClass($this->classId);
        
