@@ -11,6 +11,7 @@ class PdfController extends Zend_Controller_Action
     }
 
 
+    // Does not use generatePdf action because it requires special handling.
     public function timesheetAction()
     {
         $this->_helper->getHelper('layout')->disableLayout();
@@ -51,13 +52,18 @@ class PdfController extends Zend_Controller_Action
         }
     }
 
-    public function supervisorEvalAction()
+    
+
+    // Generic PDF action that doesn't require special handling.
+    public function generatePdfAction()
     {
         $coopSess = new Zend_Session_Namespace('coop');
         $this->_helper->getHelper('layout')->disableLayout();
-        if ($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isGet()) {
             //$formData = $_POST;
             //$formData = rawurlencode(serialize($formData));
+
+            $assignment = $this->getRequest()->getParam("assignment");
 
             $formMetaData = array();
             if ($coopSess->role === 'user') {
@@ -75,12 +81,19 @@ class PdfController extends Zend_Controller_Action
 
             //$serverName = $_SERVER['SERVER_NAME'];
             $serverName = $this->view->serverUrl();
-            $url = $this->view->url(array('action' => 'supervisor-eval', 
+            //$url = $this->view->url(array('action' => 'supervisor-eval', 
+            //                        //'formData' => $formData,
+            //                        'pdfRole' => $this->pdfRole,
+            //                        'formMetaData' => $formMetaData));
+            
+            $url = $this->view->url(array('action' => 'html-to-convert', 
                                     //'formData' => $formData,
                                     'pdfRole' => $this->pdfRole,
-                                    'formMetaData' => $formMetaData));
+                                    'formMetaData' => $formMetaData,
+                                    'assignment' => $assignment
+                                    ));
+            
             $url = $serverName . $url;
-            //die($url);
 
             $html = fopen($url, 'r');
             $html = stream_get_contents($html);
@@ -91,26 +104,35 @@ class PdfController extends Zend_Controller_Action
             $mpdf->SetDisplayMode('fullpage');
             $mpdf->WriteHTML($html);
             $mpdf->Output();
-            //$this->_helper->redirector('timesheet', 'assignment');
-
-
-        } else if ($this->getRequest()->isGet()) {
-            //$formData = $this->getRequest()->getParam('formData');
-            //$formData = str_replace('\\', '', $formData);
-            //$formData = unserialize(rawurldecode($formData));
-
-            $formMetaData = $this->getRequest()->getParam('formMetaData');
-            $formMetaData = str_replace('\\', '', $formMetaData);
-            $formMetaData = unserialize(rawurldecode($formMetaData));
-            $formMetaData['populateForm'] = false;
-            //die(var_dump($formMetaData));
-            $form = new Application_Form_SupervisorEval($formMetaData);
-            //$form = new Application_Form_SupervisorEval(array('username' => 'johndoe', 'classId' => '4', 'semId' => '14'));
-            //$form->populate($formData);
-
-            $this->view->form = $form;
-
         }
+
+    }
+    
+    
+    // View that has the HTML version of the forms that will be converted to PDF.
+    public function htmlToConvertAction()
+    {
+        $this->_helper->getHelper('layout')->disableLayout();
+        
+        //$formData = $this->getRequest()->getParam('formData');
+        //$formData = str_replace('\\', '', $formData);
+        //$formData = unserialize(rawurldecode($formData));
+
+        $formMetaData = $this->getRequest()->getParam('formMetaData');
+        $formMetaData = str_replace('\\', '', $formMetaData);
+        $formMetaData = unserialize(rawurldecode($formMetaData));
+        $formMetaData['populateForm'] = false;
+
+        $assignment = $this->getRequest()->getParam("assignment");
+
+        if ($assignment === "supervisor-eval") {
+            $form = new Application_Form_SupervisorEval($formMetaData);
+        } 
+
+        //$form->populate($formData);
+
+        $this->view->form = $form;
+
     }
 
 }

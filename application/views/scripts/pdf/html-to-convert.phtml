@@ -1,0 +1,205 @@
+<?php
+//$coopSess = new Zend_Session_Namespace('coop');
+//echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
+//$form = $this->element;
+
+$form = $this->form;
+$User = new My_Model_User();
+$userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
+?>
+<style>
+    #jobsite-fields-table td {
+        width: 60mm;
+        padding-right: 7mm;
+    }
+
+    .valueRow td {
+        padding-bottom: 5mm;
+    }
+</style>
+
+<div style="text-align: center">
+    <h3> SUPERVISOR'S EVALUATION OF STUDENT PERFORMANCE </h3>
+</div>
+
+<form id="studentEvalForm" method="<?php echo $form->getMethod() ?>" action="<?php echo $form->getAction() ?>">
+
+      
+    <table id="jobsite-fields-table">
+        <tr>
+            <td> <b>Student:</b> </td>
+        </tr>
+        <tr class="valueRow">
+            <td> <?php echo $userRow->fname . ' ' . $userRow->lname ?>  </td>
+        </tr>
+        
+        <tr>  
+            <td> <b>Position:</b> </td>
+            <td> <b>Company:</b> </td>
+            <td> <b>Hrs/Week:</b> </td>
+        </tr>
+        <tr class="valueRow">
+            <td> <?php echo $form->static_tasks->position->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->company->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->hrs_per_week->getValue() ?>  </td>
+        </tr>
+        
+        <tr>  
+            <td> <b>Semester Dates:</b> </td>
+            <td> <b>Supervisor:</b> </td>
+            <td> <b>Telephone:</b> </td>
+        </tr>
+        
+        <tr class="valueRow">
+            <td> <?php echo $form->static_tasks->semester_dates->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->supervisor->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->phone->getValue() ?>  </td>
+        </tr>
+        
+        <tr>  
+            <td> <b>Coordinator:</b> </td>
+            <td> <b>Telephone:</b> </td>
+            <td> <b>College:</b> </td>
+        </tr>
+        
+        <tr class="valueRow">
+            <td> <?php echo $form->static_tasks->coordinator->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->coord_phone->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->college->getValue() ?>  </td>
+        </tr>
+        
+        <tr>  
+            <td> <b>Email:</b> </td>
+            <td> <b>Address:</b> </td>
+            <td> <b>Fax:</b> </td>
+        </tr>
+        
+        <tr class="valueRow">
+            <td> <?php echo $form->static_tasks->coord_email->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->address->getValue() ?>  </td>
+            <td> <?php echo $form->static_tasks->fax->getValue() ?>  </td>
+        </tr>
+        
+        
+    </table>
+      
+        <!--
+      <b> Position: </b>
+      <?php echo $form->static_tasks->position->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Company: </b>
+      <?php echo $form->static_tasks->company->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+
+      <b> Hrs/Week: </b>
+      <?php echo $form->static_tasks->hrs_per_week->getValue() ?> <br /> <br />
+      
+      <b> Semester Dates: </b>
+      <?php echo $form->static_tasks->semester_dates->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Supervisor: </b>
+      <?php echo $form->static_tasks->supervisor->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Telephone </b>
+      <?php echo $form->static_tasks->phone->getValue() ?> <br /> <br />
+      
+      <b> Coordinator: </b>
+      <?php echo $form->static_tasks->coordinator->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Telephone: </b>
+      <?php echo $form->static_tasks->coord_phone->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> College: </b>
+      <?php echo $form->static_tasks->college->getValue() ?> <br /> <br />
+      
+      
+      <b> Email: </b>
+      <?php echo $form->static_tasks->coord_email->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Address: </b>
+      <?php echo $form->static_tasks->address->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
+      
+      <b> Fax: </b>
+      <?php echo $form->static_tasks->fax->getValue() ?> <br /><br /><br />
+
+        -->
+   
+   
+
+
+   <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+      <h4> 
+         PLEASE RATE THE STUDENT'S PERFORMANCE FOR EACH TASK LISTED BELOW: <br /> 
+         4=Always meets Standard  3=Usually Meets Standard 2=Approaches Standard 1=Below Standard NA=Not Applicable
+      </h4> 
+   </div> <br />
+
+
+            <!-- DYNAMIC TASKS -->
+<?php 
+
+   foreach ($form->dynamic_tasks as $t) {
+      echo "<b> " . $t->getLabel() . "</b>";
+      $t->setLabel('')
+        ->setSeparator(' ');
+      
+      echo "$t <br />";
+   }
+?>
+
+<?php echo "<b>" . $form->static_tasks->other->getLabel() . "</b>" ?> 
+<?php $form->static_tasks->other->setLabel('') ?>
+<?php //echo $form->static_tasks->other->getValue() ?>  <br /><br /> &nbsp;&nbsp;&nbsp;&nbsp;
+
+<?php $form->static_tasks->other_rating->setSeparator(' ') ?>
+<?php echo $form->static_tasks->other_rating ?>
+
+
+
+     <!-- ONLY SHOW THIS DIV IF THERE SHOULD BE A LEARNING OUTCOME SECTION -->
+<?php if (!empty($form->static_tasks->lrnObjective1)) { ?>
+   <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+      <h3> 
+         <b> SPECIFIC LEARNING OBJECTIVE </b>
+      </h3> 
+   </div> <br />
+   <?php
+       $form->static_tasks->lrnObjectiveRating1->setSeparator(' ');
+       $form->static_tasks->lrnObjectiveRating2->setSeparator(' ');
+       echo "1. <b>" . $form->static_tasks->lrnObjective1->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+               $form->static_tasks->lrnObjectiveRating1 . "<br /> <br />";
+
+       echo "2. <b>" . $form->static_tasks->lrnObjective2->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+               $form->static_tasks->lrnObjectiveRating2 . "<br /> <br />";
+   ?>
+<?php } ?>
+
+
+<?php
+
+
+echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
+
+
+
+//echo "<b> Average hours student worked per week during evaluation period: </b> <br />";
+echo "<b> Average hours student worked per week during evaluation period: </b> <br /> &nbsp;&nbsp;&nbsp;";
+echo $form->static_tasks->avg_hrs->getValue() . '<br /> <br />'; 
+
+echo "<b> Hourly wage: </b> <br /> &nbsp;&nbsp;&nbsp;";
+echo $form->static_tasks->hrly_wage->getValue() . "<br /> <br />";
+
+echo "<b> Comments: </b><br />";
+//echo $form->static_tasks->comments->getValue() . "<br /> <br />";
+echo "<textarea rows='10' cols='80'></textarea>";
+
+//echo "<b> OVERALL EVALUATION: </b>" . $form->static_tasks->overall_eval;
+?>
+
+<div style="border-top: 1px solid;"> </div> <br />
+<h3>
+   <?php $form->static_tasks->overall_eval->setSeparator(' ') ?>
+   <b> OVERALL EVALUATION: </b> <?php echo $form->static_tasks->overall_eval ?>
+</h3> <br /> <br />
+
+
+</form>

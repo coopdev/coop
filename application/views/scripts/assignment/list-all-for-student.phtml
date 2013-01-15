@@ -163,12 +163,12 @@
       $chk['assignments_id'] = $assignId;
       if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
          $onclick = "return false";
-         $isDisabled = "disabled";
+         //$isDisabled = "disabled";
       } 
     ?>
 
-   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'supervisor-eval'), null, true) ?>'> Supervisor's Evaluation </a> | due: <?php echo $due ?> </li><br />
+   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'pdf',
+                         'action'=>'generate-pdf', 'assignment' => 'supervisor-eval'), null, true) ?>'> Supervisor's Evaluation </a> | due: <?php echo $due ?> </li><br />
 
    <?php
       //$assignId = $as->getSupervisorEvalId();
