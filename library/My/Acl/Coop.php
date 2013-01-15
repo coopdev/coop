@@ -113,6 +113,7 @@ class My_Acl_Coop extends Zend_Acl
       /* PDF Controller */
       $this->add(new Zend_Acl_Resource('pdf'));
       $this->add(new Zend_Acl_Resource('pdf_timesheet'), 'pdf');
+      $this->add(new Zend_Acl_Resource('pdf_generate-pdf'), 'pdf');
 
       /* Roles */
 
