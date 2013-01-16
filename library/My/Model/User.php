@@ -34,6 +34,124 @@ class My_Model_User extends Zend_Db_Table_Abstract
       //return $this->fetchAll()->toArray();
    }
 
+   public function isEnrolled($where)
+   {
+       $db = new My_Db();
+       $UsersSem = new My_Model_UsersSemester();
+       
+       $select = $db->buildSelectWhereClause($UsersSem->select(), $where);
+
+       if ($UsersSem->fetchRow($select)) {
+           return true;
+       }
+
+       return false;
+   }
+
+   public function addStudent($student)
+   {
+       $Role = new My_Model_Role();
+       
+       $userRow = $this->fetchNew();
+       $userRow->setFromArray($student);
+       $userRow->roles_id = $Role->getStudentId();
+
+       try {
+           
+           // Begin transaction.
+           $this->getAdapter()->beginTransaction();
+           
+           // If user doesn't already exists, then save the user.
+           if (!$this->fetchRow("username = '" . $userRow->username . "'")) {
+               $userRow->save();
+           }
+           
+           $enrollmentData["student"] = $userRow->username;
+           $enrollmentData["classes_id"] = $student['classes_id'];
+           $enrollmentData["semesters_id"] = $student['semesters_id'];
+           
+           if ($this->isEnrolled($enrollmentData)) {
+               return "enrolled";
+           }
+
+           $UsersSem = new My_Model_UsersSemester();
+           $UsersSem->insert($enrollmentData);
+           
+           // Commit transaction.
+           $this->getAdapter()->commit();
+           
+       } catch (Exception $e) {
+           $this->getAdapter()->rollBack();
+           return false;
+       }
+
+       return true;
+       
+   }
+
+   public function addStudentsFromFile($data)
+   {
+       $file = $data['file'];
+       $classId = $data['classes_id'];
+       $semId = $data['semesters_id'];
+
+       $file = fopen($file['tmp_name'], "r");
+       $headers = fgetcsv($file, 0, ',');
+       $headers = array_map('trim', $headers);
+       $headers = array_map('strtolower', $headers);
+       
+       $fnameHeader = "firstname";
+       $lnameHeader = "lastname";
+       $usernameHeader = "username";
+
+       if (!in_array($usernameHeader, $headers)) {
+           return "noUsername";
+       }
+       
+       $insertUsersString = "insert into coop_users (fname, lname, username) values ";
+       $insertUsersSemString = "insert into coop_users_semesters (student, classes_id, semesters_id) values ";
+
+       while ($line = fgetcsv($file, 0, ',')) {
+
+           $insertUsersString .= "(";
+           $insertUsersSemString .= "(";
+           
+           if (in_array($fnameHeader, $headers)) {
+               $fnamePosition = array_keys($headers, $fnameHeader);
+               $fnamePosition = $fnamePosition[0];
+
+               $fname = trim($line[$fnamePosition]);
+               $insertUsersString .= "'$fname',";
+
+           }
+           
+           if (in_array($lnameHeader, $headers)) {
+               $lnamePosition = array_keys($headers, $lnameHeader);
+               $lnamePosition = $lnamePosition[0];
+
+               $lname = trim($line[$lnamePosition]);
+               $insertUsersString .= "'$lname',";
+
+           }
+
+           $usernamePosition = array_keys($headers, $usernameHeader);
+           $usernamePosition = $usernamePosition[0];
+           $username = trim($line[$usernamePosition]);
+           
+           
+           $insertUsersString .= "'$username',";
+
+           // Get rid of last comma.
+           $insertUsersString = substr_replace($insertUsersString, "", -1);
+           $insertUsersString .= ") ";
+
+
+           $insertUsersSemString .= "'$username', $semId, $classId) "; 
+       }
+
+       die(var_dump($insertUsersSemString, $insertUsersString));
+   }
+
 
    /* Returns role of current user.
     * 

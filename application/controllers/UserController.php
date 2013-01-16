@@ -17,6 +17,41 @@ class UserController extends Zend_Controller_Action
 
        $this->view->form = $form;
 
+       if ($this->getRequest()->isPost()) {
+           $submitType = $_POST['submitType'];
+
+           if ($submitType === "manual") {
+               $data = $_POST;
+           } else if ($submitType === "file") {
+
+               if (empty($_FILES['fileUpload']['name'])) {
+                   $this->view->resultMessage = "<p class=error> No file uploaded </p>";
+                   //return;
+               }
+               $data['classes_id'] = $_POST['classes_id'];
+               $data['semesters_id'] = $_POST['semesters_id'];
+               $data['file'] = $_FILES['fileUpload'];
+           }
+
+           $User = new My_Model_User();
+
+           if ($submitType === "manual") {
+               
+               if ($form->isValid($data)) {
+                   $User->addStudent($data);
+               }
+
+           } else if ($submitType === "file") {
+               $result = $User->addStudentsFromFile($data);
+
+               if ($result === "noUsername") {
+                   $this->view->resultMessage = "<p class=error> File must have proper headers </p>";
+               }
+           }
+
+
+       }
+
 
     }
 

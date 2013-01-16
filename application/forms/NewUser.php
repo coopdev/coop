@@ -13,7 +13,10 @@ class Application_Form_NewUser extends Zend_Form
        $fileUpload = new Zend_Form_Element_File("fileUpload");
 
        $fname = $elems->getCommonTbox("fname", "Enter student's first name:");
+       $fname->setRequired(false);
+       
        $lname = $elems->getCommonTbox("lname", "Enter student's last name:");
+       $lname->setRequired(false);
 
        $username = $elems->getCommonTbox("username", "Enter student's username:");
 
@@ -38,10 +41,12 @@ class Application_Form_NewUser extends Zend_Form
        //   $uname = $c['username'];
        //   $coord->addMultiOptions(array($uname => "$lname, $fname ($uname)"));
        //}
+       $submitType = new Zend_Form_Element_Hidden("submitType");
+       $submitType->setValue("manual");
 
        $submit = $elems->getSubmit();
 
-       $this->addElements(array($fileUploadToggle, $fileUpload, $fname, $lname, $username, $class, $semester, $submit));
+       $this->addElements(array($fileUploadToggle, $fileUpload, $fname, $lname, $username, $class, $semester, $submitType, $submit));
     }
 
 

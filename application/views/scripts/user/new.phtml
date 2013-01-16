@@ -25,6 +25,8 @@ $(document).ready(function() {
         $(this).attr("id", "addUserManuallyToggle");
         
         $("#fileUpload").show();
+
+        $("#submitType").attr("value", "file");
     });
 
 
@@ -40,6 +42,8 @@ $(document).ready(function() {
         $("#lname-label").show();
         $("#username").show();
         $("#username-label").show();
+        
+        $("#submitType").attr("value", "manual");
     });
 
 });

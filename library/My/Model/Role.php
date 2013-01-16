@@ -14,6 +14,13 @@ class My_Model_Role extends Zend_Db_Table_Abstract
 {
 
    protected $_name = "coop_roles";
+   
+   public function getStudentId()
+   {
+      $row = $this->fetchRow("role = 'user'")->toArray();
+
+      return $row['id'];
+   }
 
    public function getStuAidId()
    {
