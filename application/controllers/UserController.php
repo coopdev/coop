@@ -8,6 +8,19 @@ class UserController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
 
+
+    public function newAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+
+       $form = new Application_Form_NewUser();
+
+       $this->view->form = $form;
+
+
+    }
+
+    /*
     public function newAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
@@ -44,9 +57,6 @@ class UserController extends Zend_Controller_Action
 
     public function createAction()
     {
-       /*
-        * Requests covered on page 74 of zend book
-        */
        
        $coopSess = new Zend_Session_Namespace('coop');
 
@@ -106,6 +116,7 @@ class UserController extends Zend_Controller_Action
        
       
     }
+    */
 
     public function searchstudentAction()
     {

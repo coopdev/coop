@@ -6,3 +6,44 @@
    echo $this->form;
 
 ?>
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $("#fileUpload").hide();
+    
+    $("#fileUploadToggle").live('click', function() {
+        $("#fname").hide();
+        $("#fname-label").hide();
+        $("#lname").hide();
+        $("#lname-label").hide();
+        $("#username").hide();
+        $("#username-label").hide();
+
+        $(this).text("Add user manually");
+        $(this).attr("id", "addUserManuallyToggle");
+        
+        $("#fileUpload").show();
+    });
+
+
+    $("#addUserManuallyToggle").live('click', function() {
+        $("#fileUpload").hide();
+        
+        $(this).text("Upload File Instead");
+        $(this).attr("id", "fileUploadToggle");
+
+        $("#fname").show();
+        $("#fname-label").show();
+        $("#lname").show();
+        $("#lname-label").show();
+        $("#username").show();
+        $("#username-label").show();
+    });
+
+});
+
+
+
+</script>

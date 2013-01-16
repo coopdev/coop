@@ -7,6 +7,11 @@ class Application_Form_NewUser extends Zend_Form
     {
        $elems = new My_FormElement();
 
+       $fileUploadToggle = new Zend_Form_Element_Button("fileUploadToggle");
+       $fileUploadToggle->setLabel("Upload File Instead");
+
+       $fileUpload = new Zend_Form_Element_File("fileUpload");
+
        $fname = $elems->getCommonTbox("fname", "Enter student's first name:");
        $lname = $elems->getCommonTbox("lname", "Enter student's last name:");
 
@@ -36,7 +41,7 @@ class Application_Form_NewUser extends Zend_Form
 
        $submit = $elems->getSubmit();
 
-       $this->addElements(array($fname, $lname, $username, $class, $semester, $submit));
+       $this->addElements(array($fileUploadToggle, $fileUpload, $fname, $lname, $username, $class, $semester, $submit));
     }
 
 
