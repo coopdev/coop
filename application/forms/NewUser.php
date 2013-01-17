@@ -11,6 +11,7 @@ class Application_Form_NewUser extends Zend_Form
        $fileUploadToggle->setLabel("Upload File Instead");
 
        $fileUpload = new Zend_Form_Element_File("fileUpload");
+       $fileUpload->setLabel("File must include the following headers: 'firstname', 'lastname', 'username' but do not necessarily need values in their columns.");
 
        $fname = $elems->getCommonTbox("fname", "Enter student's first name:");
        $fname->setRequired(false);

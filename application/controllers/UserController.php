@@ -20,39 +20,40 @@ class UserController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
            $submitType = $_POST['submitType'];
 
+           $User = new My_Model_User();
+           
            if ($submitType === "manual") {
+               
                $data = $_POST;
+               
+               if ($form->isValid($data)) {
+                   $result = $User->addStudent($data);
+               }
+
            } else if ($submitType === "file") {
 
                if (empty($_FILES['fileUpload']['name'])) {
                    $this->view->resultMessage = "<p class=error> No file uploaded </p>";
-                   //return;
+                   return;
                }
                $data['classes_id'] = $_POST['classes_id'];
                $data['semesters_id'] = $_POST['semesters_id'];
                $data['file'] = $_FILES['fileUpload'];
-           }
-
-           $User = new My_Model_User();
-
-           if ($submitType === "manual") {
                
-               if ($form->isValid($data)) {
-                   $User->addStudent($data);
-               }
-
-           } else if ($submitType === "file") {
                $result = $User->addStudentsFromFile($data);
 
-               if ($result === "noUsername") {
-                   $this->view->resultMessage = "<p class=error> File must have proper headers </p>";
-               }
            }
-
-
+           
+           if ($result === "noUsername") {
+               $this->view->resultMessage = "<p class=error> File must have proper headers. </p>";
+           } else if ($result === "enrolled") {
+               $this->view->resultMessage = "<p class=error> Student is already enrolled in that class. </p>";
+           } else if ($result === true) {
+               $this->view->resultMessage = "<p class=success> Success. </p>";
+           } else if ($result === false) {
+               $this->view->resultMessage = "<p class=error> Error occured. </p>";
+           }
        }
-
-
     }
 
     /*

@@ -12,6 +12,7 @@
 
 $(document).ready(function() {
     $("#fileUpload").hide();
+    $("#fileUpload-label").hide();
     
     $("#fileUploadToggle").live('click', function() {
         $("#fname").hide();
@@ -25,6 +26,7 @@ $(document).ready(function() {
         $(this).attr("id", "addUserManuallyToggle");
         
         $("#fileUpload").show();
+        $("#fileUpload-label").show();
 
         $("#submitType").attr("value", "file");
     });
@@ -32,6 +34,7 @@ $(document).ready(function() {
 
     $("#addUserManuallyToggle").live('click', function() {
         $("#fileUpload").hide();
+        $("#fileUpload-label").hide();
         
         $(this).text("Upload File Instead");
         $(this).attr("id", "fileUploadToggle");

@@ -109,47 +109,63 @@ class My_Model_User extends Zend_Db_Table_Abstract
        }
        
        $insertUsersString = "insert into coop_users (fname, lname, username) values ";
-       $insertUsersSemString = "insert into coop_users_semesters (student, classes_id, semesters_id) values ";
+       $insertUsersSemString = "insert into coop_users_semesters (student, semesters_id, classes_id) values ";
+
+       //$updateUsersString = "update coop_users set ";
 
        while ($line = fgetcsv($file, 0, ',')) {
-
-           $insertUsersString .= "(";
-           $insertUsersSemString .= "(";
            
-           if (in_array($fnameHeader, $headers)) {
-               $fnamePosition = array_keys($headers, $fnameHeader);
-               $fnamePosition = $fnamePosition[0];
-
-               $fname = trim($line[$fnamePosition]);
-               $insertUsersString .= "'$fname',";
-
+           $position = array_keys($headers, $usernameHeader);
+           $position = $position[0];
+           $username = trim($line[$position]);
+           
+           $position = array_keys($headers, $fnameHeader);
+           $position = $position[0];
+           $fname = trim($line[$position]);
+           
+           $position = array_keys($headers, $lnameHeader);
+           $position = $position[0];
+           $lname = trim($line[$position]);
+           
+           if ($user = $this->fetchRow("username = '$username'")) {
+               $user->username = $username;
+               $user->fname = $fname;
+               $user->lname = $lname;
+               $user->save();
+           } else {
+               $insertUsersString .= "('$fname', '$lname', '$username'),";
+               $haveUsersToInsert = true;
            }
            
-           if (in_array($lnameHeader, $headers)) {
-               $lnamePosition = array_keys($headers, $lnameHeader);
-               $lnamePosition = $lnamePosition[0];
-
-               $lname = trim($line[$lnamePosition]);
-               $insertUsersString .= "'$lname',";
-
+           if (!$this->isEnrolled(array('student' => $username, 'semesters_id' => $semId, 'classes_id' => $classId))) {
+               $insertUsersSemString .= "('$username', $semId, $classId),"; 
+               $haveUsersToEnroll = true;
            }
 
-           $usernamePosition = array_keys($headers, $usernameHeader);
-           $usernamePosition = $usernamePosition[0];
-           $username = trim($line[$usernamePosition]);
-           
-           
-           $insertUsersString .= "'$username',";
-
-           // Get rid of last comma.
-           $insertUsersString = substr_replace($insertUsersString, "", -1);
-           $insertUsersString .= ") ";
-
-
-           $insertUsersSemString .= "'$username', $semId, $classId) "; 
        }
 
-       die(var_dump($insertUsersSemString, $insertUsersString));
+       $this->getAdapter()->beginTransaction();
+       try {
+           if (isset($haveUsersToInsert)) {
+               $insertUsersString = substr_replace($insertUsersString, "", -1);
+               $this->getAdapter()->query($insertUsersString);
+           }
+           
+           if (isset($haveUsersToEnroll)) {
+               $insertUsersSemString = substr_replace($insertUsersSemString, "", -1);
+               $this->getAdapter()->query($insertUsersSemString);
+           }
+           
+           $this->getAdapter()->commit();
+           return true;
+           
+       } catch (Exception $e) {
+           $this->getAdapter()->rollBack();
+           return false;
+       }
+
+       
+
    }
 
 
