@@ -15,7 +15,7 @@ class SyllabusController extends Zend_Controller_Action
     public function listallAction()
     {
        $link = My_DbLink::connect();
-       $classes = $link->fetchAll('SELECT * FROM coop_classes');
+       $classes = $link->fetchAll('SELECT * FROM coop_classes ORDER BY name');
        $this->view->classes = $classes;
     }
     
