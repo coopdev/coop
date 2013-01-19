@@ -105,7 +105,7 @@ echo $elems->static_tasks->comments . "<br /> <br />";
 </h3> <br /> <br />
 
 <?php
-if ($coopSess->role === 'coordinator') {
+if ($coopSess->role === 'coordinator' || $coopSess->role === 'studentAid') {
     echo $elems->saveOnly;
     echo $elems->finalSubmit;
 }

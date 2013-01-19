@@ -121,8 +121,8 @@ class My_Acl_Coop extends Zend_Acl
       //$this->addRole(new Zend_Acl_Role('guest'), 'none');
       
       $this->addRole(new Zend_Acl_Role('user'),'none');
-      $this->addRole(new Zend_Acl_Role('studentAid'),'none');
       $this->addRole(new Zend_Acl_Role('coordinator'), 'user');
+      $this->addRole(new Zend_Acl_Role('studentAid'),'coordinator');
 
       // for students who may be in the database but are not enrolled in the current semester.
       $this->addRole(new Zend_Acl_Role('notEnrolled'), 'none');       
@@ -140,9 +140,6 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('none', 'auth');
       //$this->deny('none', 'auth', 'logout');
 
-      $this->allow('studentAid', 'assignment', 'assignment_submit');
-      $this->allow('studentAid', 'async', 'async_class-roll-json');
-      $this->allow('studentAid', 'pages', 'pages_home');
 
       //$this->allow('guest','auth');
       //$this->allow('guest','pages');
@@ -190,6 +187,16 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'semester');
       $this->allow('coordinator', 'pdf');
       
+      $this->deny('studentAid', 'syllabus');
+      $this->deny('studentAid', 'user');
+      $this->allow('studentAid', 'user', 'user_new');
+      $this->allow('studentAid', 'user', 'user_view-logins');
+      $this->allow('studentAid', 'user', 'user_searchstudent');
+      $this->deny('studentAid', 'backup');
+      
+      //$this->allow('studentAid', 'assignment', 'assignment_submit');
+      //$this->allow('studentAid', 'async', 'async_class-roll-json');
+      //$this->allow('studentAid', 'pages', 'pages_home');
 
       /* 
        * Users who haven't agreed to disclaimer can

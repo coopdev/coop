@@ -105,7 +105,7 @@ $elems = $this->element;
 
    <?php echo $elems->saveOnly ?> 
    <?php 
-       if ($coopSess->role === 'coordinator') {
+       if ($coopSess->role === 'coordinator' || $coopSess->role === 'studentAid') {
            echo $elems->finalSubmit;
        } 
    ?>
