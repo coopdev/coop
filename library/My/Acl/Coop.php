@@ -192,6 +192,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('studentAid', 'user', 'user_new');
       $this->allow('studentAid', 'user', 'user_view-logins');
       $this->allow('studentAid', 'user', 'user_searchstudent');
+      $this->deny('studentAid', 'form', 'form_edit-disclaimer');
       $this->deny('studentAid', 'backup');
       
       //$this->allow('studentAid', 'assignment', 'assignment_submit');

@@ -83,48 +83,6 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
         
     </table>
       
-        <!--
-      <b> Position: </b>
-      <?php echo $form->static_tasks->position->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Company: </b>
-      <?php echo $form->static_tasks->company->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-
-      <b> Hrs/Week: </b>
-      <?php echo $form->static_tasks->hrs_per_week->getValue() ?> <br /> <br />
-      
-      <b> Semester Dates: </b>
-      <?php echo $form->static_tasks->semester_dates->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Supervisor: </b>
-      <?php echo $form->static_tasks->supervisor->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Telephone </b>
-      <?php echo $form->static_tasks->phone->getValue() ?> <br /> <br />
-      
-      <b> Coordinator: </b>
-      <?php echo $form->static_tasks->coordinator->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Telephone: </b>
-      <?php echo $form->static_tasks->coord_phone->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> College: </b>
-      <?php echo $form->static_tasks->college->getValue() ?> <br /> <br />
-      
-      
-      <b> Email: </b>
-      <?php echo $form->static_tasks->coord_email->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Address: </b>
-      <?php echo $form->static_tasks->address->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
-      
-      <b> Fax: </b>
-      <?php echo $form->static_tasks->fax->getValue() ?> <br /><br /><br />
-
-        -->
-   
-   
-
 
    <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
       <h4> 
@@ -139,9 +97,8 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
 
    foreach ($form->dynamic_tasks as $t) {
       echo "<b> " . $t->getLabel() . "</b>";
-      $t->setLabel('')
+      $t->removeDecorator("Label")
         ->setSeparator(' ');
-      
       echo "$t <br />";
    }
 ?>
@@ -203,3 +160,4 @@ echo "<textarea rows='10' cols='80'></textarea>";
 
 
 </form>
+

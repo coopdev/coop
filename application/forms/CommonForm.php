@@ -84,7 +84,7 @@ class Application_Form_CommonForm extends Zend_Form
     }
     
     
-    protected function populateJobsiteFields()
+    public function populateJobsiteFields()
     {
        $Asnmt = new My_Model_Assignment();
        $agrmtFormId = $Asnmt->getCoopAgreementId();

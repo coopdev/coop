@@ -1,0 +1,117 @@
+<?php
+
+$form = $this->form;
+$User = new My_Model_User();
+$userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
+?>
+<style>
+    #jobsite-fields-table td {
+        width: 60mm;
+        padding-right: 7mm;
+    }
+
+    .valueRow td {
+        padding-bottom: 5mm;
+    }
+</style>
+
+<div style="text-align: center">
+    <h3> Cooperative Education Agreement </h3>
+</div>
+
+<table id="jobsite-fields-table">
+    <tr>
+        <td> <b>Student:</b> </td>
+    </tr>
+    <tr class="valueRow">
+        <td> <?php echo $userRow->fname . ' ' . $userRow->lname ?>  </td>
+    </tr>
+    
+    <tr>  
+        <td> <b>Position:</b> </td>
+        <td> <b>Company:</b> </td>
+        <td> <b>Hrs/Week:</b> </td>
+    </tr>
+    <tr class="valueRow">
+        <td> <?php echo $form->static_tasks->position->getValue() ?>  </td>
+        <td> <?php echo $form->static_tasks->company->getValue() ?>  </td>
+        <td> <?php echo $form->static_tasks->hrs_per_week->getValue() ?>  </td>
+    </tr>
+    
+    <tr>  
+        <td> <b>Semester Dates:</b> </td>
+        <td> <b>Supervisor:</b> </td>
+        <td> <b>Telephone:</b> </td>
+    </tr>
+    
+    <tr class="valueRow">
+        <td> <?php echo $form->static_tasks->semester_dates->getValue() ?>  </td>
+        <td> <?php echo $form->static_tasks->supervisor->getValue() ?>  </td>
+        <td> <?php echo $form->static_tasks->phone->getValue() ?>  </td>
+    </tr>
+    
+</table> 
+
+<?php echo $this->render("form/partials/_coop-agreement-agrees-to-list.phtml") ?>
+
+
+<div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+  <h4> 
+     <b>PLEASE INDICATE HOW IMPORTANT THE TASKS BELOW ARE FOR STUDENT SUCCESS AT WORK </b> <br /> 
+  </h4> 
+</div> <br />
+
+<?php 
+  foreach ($form->dynamic_tasks as $t) {
+      echo "<b> " . $t->getLabel() . "</b>";
+      $t->removeDecorator("Label")
+        ->setSeparator(' ');
+      echo "$t <br />";
+  }
+  echo "<b>" . $form->static_tasks->other->getLabel() . "</b>";
+  $form->static_tasks->other_rating->setSeparator(" ");
+  echo $form->static_tasks->other->getValue() . "<br /><br />" . $form->static_tasks->other_rating . "<br /> <br />";
+?>
+
+                 <!-- IF CLASS IS BELOW 193 --> 
+                 
+<?php if (isset($form->static_tasks->duties)) { ?>
+  <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+     <h4> 
+        <b>Please describe briefly the duties and performance objective as assigned to 
+           this student during the co-op period. </b> <br /> 
+     </h4> 
+  </div> <br />
+
+  <?php 
+      $form->static_tasks->duties->setAttrib("rows", "10");
+      echo $form->static_tasks->duties; 
+  ?>
+
+  
+                   <!-- ELSE IF CLASS IS 193 OR ABOVE --> 
+<?php } else {?>
+
+  <div style="border-bottom: 1px solid;border-top: 1px solid;text-align: center;"> 
+     <h4> 
+        <b> 
+            The Student will achieve the following Learning Objective(s) during this work 
+            period <br />
+            (Complete one objective for each credit that the student is enrolled in 
+            for the semester)
+        </b> <br /> 
+     </h4> 
+  </div> <br />
+
+  <?php 
+      echo $form->static_tasks->lrnObjective1->getLabel();
+      echo $form->static_tasks->lrnObjective1->getValue(); 
+  ?> <br /> <br />
+  
+  <?php 
+      echo $form->static_tasks->lrnObjective2->getLabel();
+      echo $form->static_tasks->lrnObjective2->getValue();
+  ?> <br />
+
+
+<?php } ?>
