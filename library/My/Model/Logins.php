@@ -73,6 +73,9 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
 
       if (!empty($order)) {
          $sel = $sel->order($order);
+      } else {
+         $sel = $sel->order("l.login_date DESC");
+
       }
 
       $sel = $sel->limit(50);

@@ -4,7 +4,7 @@
 
 <h2> <?php echo $className ?> Class Roll </h2>
 
-<table>
+<table class="stripe">
 
 <!-- BEGIN FOREACH -->
 <?php 
@@ -20,7 +20,7 @@
                            'student' => $username, 'classes_id' => $r['classes_id']));
 ?>
    <tr> 
-      <td> <?php echo "$fname $lname ($username)" ?> </td>
+      <td> <?php echo "$lname, $fname ($username)" ?> </td>
       <td> <a id="dropStudent" class="regText" href="<?php echo $url ?>"> Drop student </a> </td>
    </tr>
 
