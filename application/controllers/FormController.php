@@ -122,6 +122,7 @@ class FormController extends Zend_Controller_Action
                                                     'classId' => $classId,
                                                     'semId' => $semId,
                                                     'populateForm' => false ));
+       $form->populateJobsiteFields();
 
        $this->view->form = $form;
 

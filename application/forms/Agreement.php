@@ -51,11 +51,34 @@ class Application_Form_Agreement extends Application_Form_CommonForm
           // Checks if there are submitted answers in order to populate the form with them.
           if ($this->populateForm === true) {
              $this->checkSubmittedAnswers(); 
+             $this->populateJobsiteFields();
           }
 
           $this->setElementDecorators(array('ViewHelper',
                                             'Errors'
                                      ));
+      }
+
+      public function populateJobsiteFields() 
+      {
+          $EmpInfo = new My_Model_EmpInfo();
+
+          $select = $EmpInfo->select()->where("username = ?", $this->username)
+                                      ->where("classes_id = ?", $this->classId)
+                                      ->where("semesters_id = ?", $this->semId)
+                                      ->order("id DESC")
+                                      ->limit(1);
+          
+          $row = $EmpInfo->fetchRow($select);
+          
+          if (is_null($row)) {
+              return;
+          }
+
+          $this->static_tasks->position->setValue($row->job_title);
+          $this->static_tasks->supervisor->setValue($row->superv_name);
+          $this->static_tasks->phone->setValue($row->superv_phone);
+
       }
 
       public function checkSubmittedAnswers() {
