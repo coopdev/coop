@@ -44,7 +44,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
                  ON s.username = sub.username and sub.classes_id = $classes_id and sub.semesters_id = $semesters_id 
                RIGHT JOIN coop_assignments AS a 
                  ON sub.assignments_id = a.id 
-               ORDER BY a.$due_date_column");
+               ORDER BY a.position_submitted");
 
       // Format dates for output
       $funcs = new My_Funcs();

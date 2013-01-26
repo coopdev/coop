@@ -162,8 +162,8 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $jobTitle = $elems->getCommonTbox('job_title', "Job Title:");
        $coopJobTitle = $elems->getCommonTbox('coop_jobtitle', 'COOP. ED. JOBTITLE');
-       $startDate = $elems->getDateTbox('start_date', 'Start Date');
-       $endDate = $elems->getDateTbox('end_date', 'End Date:');
+       $startDate = $elems->getCommonTbox('start_date', 'Start Date');
+       $endDate = $elems->getCommonTbox('end_date', 'End Date:');
        $rateOfPay = $elems->getPayRateTbox();
        $employer = $elems->getCommonTbox('employer', 'Employer:');
        $department = $elems->getCommonTbox('department', 'Department:');
