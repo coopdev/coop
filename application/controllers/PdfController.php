@@ -131,6 +131,7 @@ class PdfController extends Zend_Controller_Action
             $this->render("supervisor-eval");
         } else if ($assignment === "coop-agreement") {
             $this->view->form = new Application_Form_Agreement($formMetaData);
+            $this->view->form->populateJobsiteFields();
             $this->render("coop-agreement");
         }
 
