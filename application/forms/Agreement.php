@@ -62,10 +62,13 @@ class Application_Form_Agreement extends Application_Form_CommonForm
       public function populateJobsiteFields() 
       {
           $EmpInfo = new My_Model_EmpInfo();
+          $Assignment = new My_Model_Assignment();
+
 
           $select = $EmpInfo->select()->where("username = ?", $this->username)
                                       ->where("classes_id = ?", $this->classId)
                                       ->where("semesters_id = ?", $this->semId)
+                                      ->where("is_final = 1")
                                       ->order("id DESC")
                                       ->limit(1);
           

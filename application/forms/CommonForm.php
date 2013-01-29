@@ -96,19 +96,46 @@ class Application_Form_CommonForm extends Zend_Form
                     'username' => $this->username));
 
 
-       $elems = $this->static_tasks->getElements();
-       $jobSiteFields = array();
-       foreach ($elems as $e) {
-          //die(var_dump($e->getAttrib('class')));
-          if ($e->getAttrib('fieldType') === 'jobsite' || $e->getAttrib('getValFrom') === 'agreementForm') {
-          //if ($e->getAttrib('class') === 'getFromAgreementForm') {
-             foreach ($answers as $a) {
-                if ($e->getName() === $a->static_question) {
-                   $e->setValue($a->answer_text);
-                }
-             }
-          }
+       if (count($answers) > 0) {
+           $elems = $this->static_tasks->getElements();
+           $jobSiteFields = array();
+           foreach ($elems as $e) {
+              //die(var_dump($e->getAttrib('class')));
+              if ($e->getAttrib('fieldType') === 'jobsite' || $e->getAttrib('getValFrom') === 'agreementForm') {
+              //if ($e->getAttrib('class') === 'getFromAgreementForm') {
+                 foreach ($answers as $a) {
+                    if ($e->getName() === $a->static_question) {
+                       $e->setValue($a->answer_text);
+                    }
+                 }
+              }
+           }
+       } else {
+           $this->populateJobsiteFieldsFromStuInfoSheet();
        }
+
+    }
+
+    public function populateJobsiteFieldsFromStuInfoSheet()
+    {
+       $EmpInfo = new My_Model_EmpInfo();
+
+       $select = $EmpInfo->select()->where("username = ?", $this->username)
+                                   ->where("classes_id = ?", $this->classId)
+                                   ->where("semesters_id = ?", $this->semId)
+                                   ->order("id DESC")
+                                   ->limit(1);
+       
+       $row = $EmpInfo->fetchRow($select);
+       
+       if (is_null($row)) {
+           return;
+       }
+
+       $this->static_tasks->position->setValue($row->job_title);
+       $this->static_tasks->supervisor->setValue($row->superv_name);
+       $this->static_tasks->phone->setValue($row->superv_phone);
+
     }
 
 
