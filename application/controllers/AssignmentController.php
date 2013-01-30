@@ -277,6 +277,8 @@ class AssignmentController extends Zend_Controller_Action
        $form = new Application_Form_CoverLetter(array('username' => $session->username, 
                                                  'classId' => $session->currentClassId,
                                                  'semId' => $session->currentSemId));
+       //echo $form->static_tasks->coverLetter;
+       $form->static_tasks->coverLetter->setValue(stripslashes($form->static_tasks->coverLetter->getValue()));
 
        $this->view->form = $form;
 
@@ -286,6 +288,7 @@ class AssignmentController extends Zend_Controller_Action
           //$data = $form->getAllElementsIncludingNested();
           //die(var_dump($data['static_tasks']));
 
+          //die(var_dump($data));
           if ($form->isValid($data)) {
              $as = new My_Model_Assignment();
              $res = $as->submitStudentEval($form);
@@ -392,6 +395,7 @@ class AssignmentController extends Zend_Controller_Action
 
 
           if ($form->isValid($dataNoHTML)) {
+             $data['report'] = htmlspecialchars($data['report']);
              $res = $as->submitLearningOutcome($data);
 
              if ($res === 'submitted') {
