@@ -114,6 +114,9 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('pdf'));
       $this->add(new Zend_Acl_Resource('pdf_timesheet'), 'pdf');
       $this->add(new Zend_Acl_Resource('pdf_generate-pdf'), 'pdf');
+      
+      /* HelpPage Controller */
+      $this->add(new Zend_Acl_Resource('help-page'));
 
       /* Roles */
 
@@ -186,6 +189,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'backup');
       $this->allow('coordinator', 'semester');
       $this->allow('coordinator', 'pdf');
+      $this->allow('coordinator', 'help-page');
       
       $this->deny('studentAid', 'syllabus');
       $this->deny('studentAid', 'user');

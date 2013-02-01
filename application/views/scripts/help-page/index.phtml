@@ -1,0 +1,173 @@
+<style>
+    #contents ul li {
+        padding-bottom: 10px;
+     
+    }
+    
+    #contents ul li a {
+        font-size: 15px;
+        color: black;
+    }
+
+    #body {
+        margin-top: 200px;
+        font-size: 16px;
+    }
+
+    .sub-heading {
+        margin-top: 40px;
+        font-size: 20px;
+    }
+
+    p.notice {
+        width: 25%;
+        font-size: 15px;
+    }
+
+
+</style>
+
+<div id="contents">
+<h2 class="center"> Contents </h2>
+
+<p class="notice"> Click the text to jump to the section </p>
+
+<a href="#student-management"> <h3> Student Management </h3> </a>
+<ul>
+    <li> <a href="#add-student-1"> Adding students one at a time </a> </li>
+    <li> <a href="#add-student-2"> Adding multiple students at once </a> </li>
+    <li> <a href="#submit-assignment"> Submitting assignments for students </a> </li>
+    <li> <a href="#search-students"> Searching student records </a> </li>
+    <li> <a href="#incompletes"> Incomplete students </a> </li>
+    <li> <a href="#assignment-by-class"> Assignment status by class </a> </li>
+    <li> <a href="#logins"> Student logins </a> </li>
+</ul>
+
+<a href="#assignment-management"> <h3> Assignment Management </h3> </a>
+<ul>
+    <li> <a href="#edit-duedates"> Editing due dates </a> </li>
+    <li> <a href="#extend-duedates"> Extending due dates </a> </li>
+    <li> <a href="#rated-questions"> Manage rated questions </a> </li>
+    <li> <a href="#individual-assignments"> Managing individual assignments </a> </li>
+</ul>
+
+<a href="#syllabus-management"> <h3> Syllabus Management </h3> </a>
+<ul>
+    <li> <a href="#view-syllabus"> Viewing a syllabus </a> </li>
+    <li> <a href="#edit-syllabus"> Editing a syllabus </a> </li>
+</ul>
+
+<a href="#class-management"> <h3> Class Management </h3> </a>
+
+
+</div> <!-- END CONTENTS -->
+
+
+
+<div id="body"> <!-- START BODY -->
+    
+    <a name="student-management"> <h2 class="center"> Student Management </h2> </a>
+    
+    A student will not be able to access the site unless that student is added to 
+    at least one class for the current semester. 
+
+
+    <a name="add-student-1"> <h3 class="sub-heading"> <u> Adding students one at a time </u> </h3> </a>
+    
+    To add a student click the “Add student” link.  Filling out this form will 
+    add students one at a time.  A student can be added to different classes in 
+    the same semester, but trying to add to the same class will result in an error.
+
+    
+    <a name="add-student-2"> <h3 class="sub-heading"> <u> Adding multiple students at once </u> </h3> </a>
+    
+    To add multiple students at once, put them in a spreadsheet first.  The 
+    spreadsheet must have the following headers: “username”, “firstname”, “lastname”.  
+    Spelling of the headers must be exactly as shown and each of them must be present.  
+    The “firstname” and “lastname” rows beneath the header do not necessarily need 
+    to have a value, but the “username” row for each student must have a value to 
+    uniquely represent that student.  All students being added to the same class/semester 
+    must go in one spreadsheet, while another class's students go in a separate one.  
+    When the users are added, click: File > Save as, and select the .csv extension.  
+    When prompted for the Field delimiter choose a comma, and for Text delimiter 
+    choose the double quotes then click OK.  This is the file that will be uploaded 
+    to the “Add student” page.  Now go the the Add student page and click the “Upload file instead” button.  Then click the browse button to select the file.
+
+    When adding students this way,  if the student is not in the database already, 
+    it will add the student.  If the student is already in the database, it will 
+    update the student to what was in the spreadsheet.  But you cannot update their 
+    username that way.  So any corrections that need to be made to a student's first 
+    or last name can be changed in the spreadsheet, saved as a .csv file again, 
+    and then re-uploaded to update them.
+    
+    
+    <a name="submit-assignment"> <h3 class="sub-heading"> <u> Submitting assignments for students </u> </h3> </a>
+
+    Click the “Submit an assignment” link.  From the drop downs, select the 
+    appropriate information.  The students that appear in the drop down is 
+    filtered depending on which class is selected.  If you need to submit an 
+    assignment for a student which has an incomplete status for a previous semester, 
+    check the “Check to only show students with incomplete status.” check box.   
+    A new drop down containing semesters will appear.  Then select the appropriate 
+    semester for which they have the incomplete status and hit submit.
+
+    After filling out the form, you can either save it or submit it as final.  
+    Saving it will make it not show up when viewing the assignments a student has 
+    turned in through the student records.  After saving it,  the form will be 
+    populated the next time you come back to it.  After submitting it as final, the 
+    only place to make any changes to the form will be through “Search student records” 
+    link.  The Coop Agreement form can but submitted as final more than once in 
+    case a student has more than one job site.
+    
+    
+    <a name="search-students"> <h3 class="sub-heading"> <u> Searching student records </u> </h3> </a>
+
+    Click the “Search student records” link.  This page allows you to search for 
+    any students in the database from past or present semesters.  Leaving the search 
+    fields blank will search for all students, so it's best to enter criteria into 
+    the fields to limit the results.  For example, filling in the Last name field 
+    with “Doe” and class fields with “CENT293v” will search for all students with 
+    last name “Doe” AND in the “CENT293v” class for any semester.  Fill in more fields 
+    to get more specific.  When the search results appear,  buttons will show up
+    above the results.  These buttons apply to the selected student in the list.  
+    The buttons that are named after assignments will show you the submitted assignment 
+    for that particular student.  
+
+    The “Assignment Record” button will show a record of which assignments a student 
+    has, or has not, submitted.
+
+    The “Set Status” button will allows you to mark a student as Incomplete for that 
+    semester/class.  The status will then show up for the student in the result list.
+
+    If you want to see the search results again, just click “Search” again 
+    (the criteria you entered should still be there).
+    
+    
+    <a name="incompletes"> <h3 class="sub-heading"> <u> Incomplete students </u> </h3> </a>
+
+    To mark a student as incomplete, go to “Search student records,” search for 
+    the student and select the student, select “Incomplete” from the drop down 
+    above the “Set Status” button, and click “Set Status”.
+    The student will not have an incomplete status for that particular class and 
+    semester combination.  Now, when the semester changes, the student will still 
+    be able to submit assignments for the semester which she/he has an incomplete 
+    status.
+    From the Coordinator's view, to submit an assignment for an Incomplete student, 
+    go to where you would normally go.  Then check the “Check to only show students 
+    with incomplete status.” check box.  A new drop down containing semesters will 
+    appear.  Select the semester for which you want the assignment to be submitted.
+
+    <a name="assignment-by-class"> <h3 class="sub-heading"> <u> Assignment status by class </u> </h3> </a>
+
+    This page allows you to see which students have turned in which assignments 
+    for an entire class.  Just select the class from the drop down and click submit.  
+    Blank values under the assignment names mean it has not been submitted.
+    
+    
+    <a name="logins"> <h3 class="sub-heading"> <u> Student logins </u> </h3> </a>
+
+    Click the “View student logins” link.  Enter the criteria to search for.  The 
+    first date is the date to start viewing logins from.  The end date is the date 
+    to stop.  The limit is the amount of results returned, one per line – default is 50.
+        
+</div>

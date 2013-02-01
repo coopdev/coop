@@ -207,6 +207,10 @@ a {
    text-decoration: none;
 }
 
+.center {
+    text-align: center;
+}
+
 .regText {
    font-size: 14px;
 }

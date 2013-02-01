@@ -82,6 +82,9 @@
         <controllerFile controllerName="Pdf">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="HelpPage">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -278,6 +281,9 @@
             <viewScriptFile forActionName="changeCurrent"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Pdf">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="HelpPage">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
