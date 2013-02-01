@@ -638,9 +638,12 @@ class AsyncController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
 
           $data = $_POST['data'];
+          $limit = $data['limit'];
+          var_dump($limit);
+          unset($data['limit']);
 
           $login = new My_Model_Logins();
-          $logins = $login->getLogins($data);
+          $logins = $login->getLogins($data, $limit);
 
           //var_dump($logins);
 

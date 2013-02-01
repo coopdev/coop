@@ -19,10 +19,13 @@ class Application_Form_ViewLogins extends Zend_Form
        $endDate->setLabel("Specify date to end search (mm/dd/yyyy): ")
                ->setRequired(false);
 
+       $limit = $elems->getCommonTbox('limit', 'Set limit on amount of records returned');
+       $limit->setValue("50");
+
        $submit = new Zend_Form_Element_Button("search");
        $submit->setLabel("Search");
 
-       $this->addElements(array($fname, $lname, $username, $startDate, $endDate, $submit));
+       $this->addElements(array($fname, $lname, $username, $startDate, $endDate, $limit, $submit));
     }
 }
 

@@ -40,7 +40,7 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
     * @param array $where WHERE criteria.
     * @param int|string $order Optional order criteria.
     */
-   public function getLogins($where, $order = "")
+   public function getLogins($where, $limit, $order = "")
    {
       date_default_timezone_set('US/Hawaii');
       $user = new My_Model_User();
@@ -78,7 +78,7 @@ class My_Model_Logins extends Zend_Db_Table_Abstract
 
       }
 
-      $sel = $sel->limit(50);
+      $sel = $sel->limit($limit);
 
       $sql = $sel->assemble();
       //return $sql;
