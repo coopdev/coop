@@ -203,6 +203,28 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
        $elems =  array($objective1, $objective2, $rating1, $rating2);
 
+       $Class = new My_Model_Class();
+       if ($Class->isFire193V($this->classId)) {
+           $objective3 = new Zend_Form_Element_Text('lrnObjective3');
+           $objective3->setRequired(true)
+                    ->setLabel('3.')
+                    ->addFilter('StringTrim')
+                    ->addFilter('StripTags')
+                    ->setAttrib('placeholder', 'Enter Learning Objective')
+                    ->setAttrib('getValFrom', 'agreementForm')
+                    ->setAttrib('size', 85);
+
+           $rating3 = new Zend_Form_Element_Radio('lrnObjectiveRating3');
+           $rating3->setRequired(true)
+                   ->setLabel("Rate student's performance on this learning objective")
+                   ->setMultiOptions($this->options)
+                   ->setSeparator("");
+
+           $elems[] = $objective3;
+           $elems[] = $rating3;
+
+       }
+
 
        return $elems;
 

@@ -66,6 +66,7 @@ $elems = $this->element;
 
 ?> 
 
+<br /> <br /> <br /> <br /> <br />
 
      <!-- ONLY SHOW THIS DIV IF THERE SHOULD BE A LEARNING OUTCOME SECTION -->
 <?php if (!empty($elems->static_tasks->lrnObjective1)) { ?>
@@ -84,6 +85,8 @@ echo $elems->static_tasks->lrnObjective1 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nb
 echo $elems->static_tasks->lrnObjective2 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
         $elems->static_tasks->lrnObjectiveRating2 . "<br /> <br />";
 
+echo $elems->static_tasks->lrnObjective3 . '&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
+        $elems->static_tasks->lrnObjectiveRating3 . "<br /> <br />";
 
 echo "<div style='border-bottom: 1px solid;'> </div> <br /><br />";
 
