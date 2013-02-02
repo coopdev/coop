@@ -374,5 +374,19 @@ class UserController extends Zend_Controller_Action
         $this->view->extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1));
 
     }
+
+    public function deleteExtendedDuedateAction()
+    {
+        if ($this->getRequest()->isGet()) {
+            $id = $this->getRequest()->getParam('id');
+
+            $Assignment = new My_Model_Assignment();
+
+            $Assignment->deleteExtendedDuedate($id);
+
+            $this->_helper->redirector("view-extended-duedates");
+        }
+
+    }
 }
 

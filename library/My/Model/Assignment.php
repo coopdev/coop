@@ -822,6 +822,14 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        return $rows;
    }
 
+   public function deleteExtendedDuedate($id)
+   {
+       $ExtDuedate = new My_Model_ExtendedDuedates();
+
+       $ExtDuedate->delete("id = $id");
+
+   }
+
 
 /*********************** Methods For Managing Assignment Questions **********************/
 
