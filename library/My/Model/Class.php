@@ -164,7 +164,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    {
        $row = $this->fetchRow("id = $id");
 
-       if ($row->name === "Fire 193V") {
+       if ($row->name === "FIRE 193V") {
            return true;
        }
 
