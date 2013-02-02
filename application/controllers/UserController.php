@@ -366,7 +366,12 @@ class UserController extends Zend_Controller_Action
        $form = new Application_Form_ViewLogins();
 
        $this->view->form = $form;
+    }
 
+    public function viewExtendedDuedatesAction()
+    {
+        $Assignment = new My_Model_Assignment();
+        $this->view->extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1));
 
     }
 }

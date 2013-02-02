@@ -10,9 +10,6 @@ class Application_Form_ExtendDuedates extends Zend_Form
        $classes = $elems->getClassChoiceSelect();
        $classes->setLabel("Select class:");
 
-       $classOptions = $classes->getMultiOptions();
-       $classIds = array_keys($classOptions);
-       $firstClass = array_shift($classIds); // the id of the first class in the dropdown
 
        //die(var_dump($firstClass));
 

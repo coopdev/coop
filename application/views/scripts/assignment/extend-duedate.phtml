@@ -3,6 +3,9 @@
 
 <?php
    echo $this->message;
+   echo "<a class='regText' href='" . $this->url( array("controller" => "user", "action" => "view-extended-duedates") ) . "'> 
+       View Extended Due Dates For This Semester </a>";
+   echo "<br /> <br />";
    echo $this->form;
 ?>
 

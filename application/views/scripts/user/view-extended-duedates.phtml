@@ -1,0 +1,39 @@
+<style>
+    #ext-duedates {
+        width: 60%;
+    }
+    
+    #ext-duedates tr th,td {
+        font-size: 15px;
+        padding: 10px 0 10px 0;
+    }
+
+
+</style>
+
+<h2> Extended Due Dates </h2>
+
+<?php
+   $extDuedates = $this->extDuedates;
+?>
+
+<a class="regText" href="<?php echo $this->url( array('controller' => 'assignment', 'action' => 'extend-duedate')) ?>">
+    Extend a due date
+</a>
+
+<table id="ext-duedates" class="stripe">
+    <tr>
+        <th> Student </th> <th> Assignment </th> <th> Extended Due date </th>
+    </tr>
+
+    <?php foreach ($extDuedates as $e) { ?>
+        <tr>
+            <td> <?php echo $e->lname . ', ' . $e->fname . ' ('. $e->username . ')' ?> </td>
+            <td> <?php echo $e->assignment ?> </td>
+            <td> <?php echo $e->due_date ?> </td>
+        </tr>
+
+    <?php } ?>
+
+
+</table>

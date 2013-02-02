@@ -796,6 +796,32 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
       return true;
    }
 
+   /*
+    * $where = array with keys, 'username', 'assignments_id'.
+    */
+   public function getExtendedDuedates($where)
+   {
+       $db = new My_Db();
+       $funcs = new My_Funcs();
+       
+       $select = $this->select()->setIntegrityCheck(false);
+       $select->from('extended_duedates_view');
+       $select = $db->buildSelectWhereClause($select, $where);
+       $select->order("lname ASC");
+
+       $rows = $this->fetchAll($select);
+
+       if (count($rows) < 1) {
+           return array();
+       }
+
+       foreach ($rows as $row) {
+           $row->due_date = $funcs->formatDateOut($row->due_date);
+       }
+       
+       return $rows;
+   }
+
 
 /*********************** Methods For Managing Assignment Questions **********************/
 
