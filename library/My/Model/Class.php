@@ -160,6 +160,17 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       
    }
 
+   public function isFire193V($id) 
+   {
+       $row = $this->fetchRow("id = $id");
+
+       if ($row->name === "Fire 193V") {
+           return true;
+       }
+
+       return false;
+   }
+
 
    /**
     * Gets all the students enrolled in a specified class for the current semester

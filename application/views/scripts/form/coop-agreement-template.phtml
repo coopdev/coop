@@ -70,6 +70,13 @@ $elems = $this->element;
       <?php echo $elems->static_tasks->lrnObjective1 ?> <br />
       <?php echo $elems->static_tasks->lrnObjective2 ?> <br />
 
+      <?php 
+         if (isset($elems->static_tasks->lrnObjective3)) {
+             echo $elems->static_tasks->lrnObjective3;
+         }
+      ?>
+
+
 
    <?php } ?>
 
