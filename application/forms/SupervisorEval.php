@@ -160,7 +160,7 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $elems = array($coord, $coordPhone, $college, $coordEmail, $address, $fax);
 
        foreach($elems as $e) {
-          $e->setAttrib('size', '33');
+          $e->setAttrib('size', '30');
        }
 
        return $elems;

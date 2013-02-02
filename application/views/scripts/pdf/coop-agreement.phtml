@@ -111,7 +111,13 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
   <?php 
       echo $form->static_tasks->lrnObjective2->getLabel();
       echo $form->static_tasks->lrnObjective2->getValue();
-  ?> <br />
+  ?> <br /> <br />
 
+  <?php 
+     if (isset($form->static_tasks->lrnObjective3)) {
+         echo $form->static_tasks->lrnObjective3->getLabel();
+         echo $form->static_tasks->lrnObjective3->getValue();
+     }
+  ?> <br />
 
 <?php } ?>
