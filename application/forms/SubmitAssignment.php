@@ -39,7 +39,7 @@ class Application_Form_SubmitAssignment extends Zend_Form
                 ->setRegisterInArrayValidator(false); 
 
        $showIncompletes = new Zend_Form_Element_Checkbox('showIncompletes');
-       $showIncompletes->setLabel("Check to only show students with incomplete status.");
+       $showIncompletes->setLabel("Check to show students with incomplete status.");
 
 
        // Semester dropdown if needed.
