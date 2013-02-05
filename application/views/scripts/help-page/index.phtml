@@ -10,13 +10,17 @@
     }
 
     #body {
-        margin-top: 200px;
+        margin-top: 120px;
         font-size: 16px;
     }
 
     .sub-heading {
         margin-top: 40px;
         font-size: 20px;
+    }
+
+    .main-heading {
+        margin-top: 90px;
     }
 
     p.notice {
@@ -66,7 +70,8 @@
 
 <div id="body"> <!-- START BODY -->
     
-    <a name="student-management"> <h2 class="center"> Student Management </h2> </a>
+                            <!-- STUDENT MANAGEMENT -->
+    <a name="student-management"> <h2 class="center main-heading"> Student Management </h2> </a>
     
     A student will not be able to access the site unless that student is added to 
     at least one class for the current semester. 
@@ -169,5 +174,84 @@
     Click the “View student logins” link.  Enter the criteria to search for.  The 
     first date is the date to start viewing logins from.  The end date is the date 
     to stop.  The limit is the amount of results returned, one per line – default is 50.
+    
+    
+                            <!-- ASSIGNMENT MANAGEMENT -->
+    <a name="assignment-management"> <h2 class="center main-heading"> Assignment Management </h2> </a>
+
+    Managing assignments is done through the “Manage assignments” link.  This 
+    page is for managing properties of the different Coop assignments, such as 
+    adding/editing questions for some.  This page is not for submitting assignments 
+    for students.  Some assignments can have things done to them which others can't.  
+    For example, the Midterm Report can have it's questions edited/added to/deleted, 
+    but others don't have this.  Click the “Properties” link next to each assignment 
+    to see what can be done to it.  
         
+
+    <a name="edit-duedates"> <h3 class="sub-heading"> <u> Editing due dates </u> </h3> </a>
+
+    Click the “Edit due dates” link.  This allows you to set the due dates for 
+    each assignment and for each semester. 
+    
+    
+    <a name="extend-duedates"> <h3 class="sub-heading"> <u> Extending due dates </u> </h3> </a>
+
+    Click “Extend due date”.  This allows you to extend a due date for a particular 
+    student/assignment/semester/class combination allowing the student to submit 
+    the chosen assignment for the chosen class and semester after it is past the 
+    default due date.
+    
+    
+    <a name="rated-questions"> <h3 class="sub-heading"> <u> Manage rated questions </u> </h3> </a>
+
+    These represent the survey portion of the Coop Agreement Form, Supervisor Eval, 
+    and Time Sheet.  After clicking “Manage Rated Questions”, select the class 
+    from the drop down.  The three forms mentioned above which belong to the 
+    selected class will be affected.  After selecting the class, click any of the 
+    links above to add, edit, or delete items on the survey.
+
+    <a name="individual-assignments"> <h3 class="sub-heading"> <u> Manage individual assignments </u> </h3> </a>
+
+    You can perform actions on specific assignments by clicking the “Manage” link 
+    next to an assignment.  Even though all the assignments in the list have the 
+    “Manage” link, not all of them have anything useful.  But some of the assignments, 
+    like the Midterm Report, can have it's questions edited.  This would be done 
+    through the appropriate “Manage” link.  Specific assignment actions are:
+    
+    <br /><br />
+    <ul>
+        <li>Midterm Report – Add, Edit, Delete questions.</li>
+        <li>Learning Outcome Report – Set minimum character length for the report.</li>
+    </ul>
+    
+    
+                            <!-- SYLLABUS MANAGEMENT -->
+    <a name="syllabus-management"> <h2 class="center main-heading"> Syllabus Management </h2> </a>
+
+    Click the “Class syllabi” link.
+    
+    
+    <a name="view-syllabus"> <h3 class="sub-heading"> <u> Viewing a syllabus </u> </h3> </a>
+
+    Click “View” next to the syllabus.  This will show the Final Draft of the syllabus.
+    
+    
+    <a name="edit-syllabus"> <h3 class="sub-heading"> <u> Editing a syllabus </u> </h3> </a>
+
+    Click “Edit” next to the syllabus.  After editing the syllabus, if you click 
+    the submit button without checking the “Final draft?” button, then it will only 
+    save it.  Whenever VIEWING a syllabus (either coordinator or student), only 
+    the final draft will be shown.  Whenever EDITING a syllabus,  the non-final 
+    version will be shown, not the final draft.
+    
+    
+    
+                            <!-- CLASS MANAGEMENT -->
+    <a name="class-management"> <h2 class="center main-heading"> Class Management </h2> </a>
+
+    Click the “Manage coop classes” link.  From here you can add, edit or delete 
+    classes.  You can also click “View students” to see the students enrolled in 
+    that class.  From here you can drop any students from the class.  Dropping 
+    the student will not erase them from the database, it will just drop them from 
+    that one class for the current semester.
 </div>
