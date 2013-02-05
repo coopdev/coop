@@ -1172,7 +1172,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    public function getAll()
    {
-      $rows = $this->fetchAll()->toArray();
+      $rows = $this->fetchAll(null, "position_submitted ASC")->toArray();
 
       if (empty($rows)) {
          $rows = array();
