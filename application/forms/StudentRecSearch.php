@@ -52,6 +52,10 @@ class Application_Form_StudentRecSearch extends Zend_Form
           $coord->addMultiOptions(array($c['username'] => $c['lname'].", ".$c['fname']." (".$c['username'].")"));
        }
 
+       $status = new Zend_Form_Element_Select('sem_status');
+       $status->addMultiOptions(array('' => "--------------",
+                                      'Incomplete' => "Incomplete"));
+
        $search = new Zend_Form_Element_Button('search');
        $search->setLabel('Search')
               ->setAttrib('id', 'search');
@@ -59,7 +63,7 @@ class Application_Form_StudentRecSearch extends Zend_Form
       $this->setDecorators( array( 
           array('ViewScript', array('viewScript' => '/user/searchstudent.phtml'))));
 
-       $this->addElements(array($fname, $lname, $username, $semester, $class, $coord, $search));
+       $this->addElements(array($fname, $lname, $username, $semester, $class, $coord, $status, $search));
 
        $this->setElementDecorators(array('ViewHelper'));
     }
