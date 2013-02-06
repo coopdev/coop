@@ -388,5 +388,19 @@ class UserController extends Zend_Controller_Action
         }
 
     }
+
+/****************************** STUDENT MANAGEMENT ****************************/
+
+    public function studentManagementAction()
+    {
+
+    }
+    
+    
+    
+    
+    
+    
+/****************************** END STUDENT MANAGEMENT ****************************/
 }
 

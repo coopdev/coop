@@ -85,6 +85,9 @@
         <controllerFile controllerName="HelpPage">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Comments">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Contract"/>
@@ -128,6 +131,7 @@
         <formFile formName="TimeSheet"/>
         <formFile formName="Resume"/>
         <formFile formName="CoverLetter"/>
+        <formFile formName="Comment"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>
@@ -284,6 +288,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="HelpPage">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Comments">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
