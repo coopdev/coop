@@ -100,6 +100,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('async_submission-recs'), 'async');
       $this->add(new Zend_Acl_Resource('async_view-stu-info-sheet'), 'async');
       $this->add(new Zend_Acl_Resource('async_class-roll-json'), 'async');
+      $this->add(new Zend_Acl_Resource('async_fetch-students-as-json'), 'async');
 
       /* Backup Controller */
       $this->add(new Zend_Acl_Resource('backup'));
@@ -117,6 +118,10 @@ class My_Acl_Coop extends Zend_Acl
       
       /* HelpPage Controller */
       $this->add(new Zend_Acl_Resource('help-page'));
+      
+      /* Comments Controller */
+      $this->add(new Zend_Acl_Resource('comments'));
+      $this->add(new Zend_Acl_Resource('new'), 'comments');
 
       /* Roles */
 
@@ -190,6 +195,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'semester');
       $this->allow('coordinator', 'pdf');
       $this->allow('coordinator', 'help-page');
+      $this->allow('coordinator', 'comments');
       
       $this->deny('studentAid', 'syllabus');
       $this->deny('studentAid', 'user');
@@ -199,6 +205,11 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('studentAid', 'user', 'user_view-extended-duedates');
       $this->allow('studentAid', 'user', 'user_delete-extended-duedate');
       $this->deny('studentAid', 'class');
+      $this->deny('studentAid', 'assignment');
+      $this->allow('studentAid', 'assignment', 'assignment_submit');
+      $this->allow('studentAid', 'assignment', 'assignment_supervisor-eval');
+      $this->allow('studentAid', 'assignment', 'assignment_timesheet');
+      $this->allow('studentAid', 'assignment', 'assignment_list-status-by-class');
       $this->deny('studentAid', 'semester');
       $this->deny('studentAid', 'form', 'form_edit-disclaimer');
       $this->deny('studentAid', 'backup');

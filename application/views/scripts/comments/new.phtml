@@ -1,0 +1,90 @@
+<style>
+
+    label {
+        display: block;
+    }
+
+    #comment-form {
+        margin-top: 100px;
+    }
+
+    #student-select select option {
+        padding: 0 0 7px;
+    }
+
+</style>
+
+<?php
+   $searchForm = $this->searchForm;
+   $commentForm = $this->commentForm;
+?>
+
+<h2> Create a Comment </h2>
+
+                <!-- Search Form -->
+<form id="search-form">                
+    <div style="float:left; margin-right:10px;">
+        <label for="fname"> First name: </label>
+        <?php echo $searchForm->fname ?>
+    </div>
+
+    <div style="float:left; margin-right: 10px;">
+        <label for="lname"> Last name: </label>
+        <?php echo $searchForm->lname ?>
+    </div>
+
+    <div style="float:left; margin-right: 20px;">
+        <label for="username"> Username: </label>
+        <?php echo $searchForm->username ?>
+    </div>
+
+    <div style="float:left; margin-top: 25px;">
+        <button id="search-button"> Search </button>
+    </div>
+
+    <div style="clear:both"></div>
+</form>
+
+
+
+                <!-- Comment Form -->
+
+<form id="comment-form" method="POST">
+    <div id="student-select" style="float:left; margin-right: 100px;">
+        <label for="comment-username"> Select student: </label>
+        <?php echo $commentForm->comment->username ?>
+    </div>
+    <div style="float:left">
+        <label for="comment-comment"> Enter comment: </label>
+        <?php echo $commentForm->comment->comment ?>
+    </div>
+
+    <div style="float:left; margin-top: 245px;">
+        <?php echo $commentForm->submit ?> 
+    </div>
+</form>
+
+
+
+<script>
+    $(document).ready(function() {
+        $("#search-button").live('click', function() {
+           formData = $("#search-form").toJSON(); 
+
+           $.get(base + "/async/fetch-students-as-json", {'data' : formData}, function(resp) {
+               students = resp;
+
+               optionStr = "";
+               $.each(students, function(key, user) {
+                   optionStr += "<option value=" + user.id + ">" + user.lname + 
+                       ", " + user.fname + " (" + user.username + ")</option>"
+               })
+
+               $("#student-select select").html(optionStr)
+
+           }, 'json');
+
+           return false;
+        });
+    });
+</script>

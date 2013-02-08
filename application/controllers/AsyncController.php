@@ -730,4 +730,26 @@ class AsyncController extends Zend_Controller_Action
 
 
     }
+
+    public function fetchStudentsAsJsonAction()
+    {
+           $this->_helper->getHelper('layout')->disableLayout();
+           $this->_helper->viewRenderer->setNoRender();
+           $data = $_GET['data'];
+           foreach ($data as $key => $val) {
+               if (empty($val)) {
+                   unset($data[$key]);
+               }
+           }
+           //var_dump($data); // As JSON
+           $User = new My_Model_User();
+           $Role = new My_Model_Role();
+           $studentRole = $Role->getStudentId();
+           $data['roles_id'] = $studentRole;
+
+           $users = $User->fetchAsJson($data);
+
+           echo json_encode($users->toArray());
+           //var_dump($users->toArray()); // As JSON
+    }
 }

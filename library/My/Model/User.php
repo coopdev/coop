@@ -576,6 +576,18 @@ class My_Model_User extends Zend_Db_Table_Abstract
       return $row;
    }
 
+   public function fetchAsJson($where = array())
+   {
+       $db = new My_Db();
+       $select = $this->select();
+       $select = $db->buildSelectWhereClause($select, $where);
+       $select->order('lname ASC');
+
+       $users = $this->fetchAll($select);
+
+       return $users;
+   }
+
 
 
 
