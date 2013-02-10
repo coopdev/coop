@@ -86,7 +86,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       $userTablename = $user->info('name');
       $sel = $sel->from(array('u' => $userTablename))
                  ->joinLeft(array('sa' => $this->_name), 
-                      "u.username = sa.username AND sa.semesters_id = $curSemId AND sa.classes_id = $classId",
+                      "u.username = sa.username AND sa.semesters_id = $curSemId AND sa.classes_id = $classId AND sa.is_final = 1",
                       array('assignments_id', 'is_final'));
 
       foreach($students as $s) {

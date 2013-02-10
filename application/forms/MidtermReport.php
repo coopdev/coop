@@ -34,6 +34,8 @@ class Application_Form_MidtermReport extends Application_Form_CommonForm
           $elem->setLabel($q['question_text'])
                ->setRequired(true)
                ->addValidator($strLength)
+               ->addFilter("StringTrim")
+               ->addFilter("StripTags")
                ->setAttrib('class', 'answerText');
 
           $validator = $elem->getValidator('StringLength');

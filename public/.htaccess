@@ -6,3 +6,5 @@ RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
 
 SetEnv APPLICATION_ENV development
+
+php_flag magic_quotes_gpc Off

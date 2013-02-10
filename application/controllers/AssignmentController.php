@@ -2,9 +2,11 @@
 
 class AssignmentController extends Zend_Controller_Action
 {
+    private $flashMessenger;
 
     public function init()
     {
+        $this->flashMessenger = $this->_helper->FlashMessenger;
     }
 
     // form to choose class to see assignment status for each of the classe's student's
@@ -46,6 +48,7 @@ class AssignmentController extends Zend_Controller_Action
        if ($req->isPost()) {
           $data = $_POST;
           //unset($data['Submit']);
+          //die(var_dump($data));
 
           if ($form->isValid($data)) {
 
@@ -54,11 +57,15 @@ class AssignmentController extends Zend_Controller_Action
 
              if ($res === "submitted") {
                 $this->view->message = "<p class=error> Assignment has already been submitted </p>";
+                //$this->flashMessenger->addMessage(array('error' => "Assignment has already been submitted"));
              } else if ($res === false) {
                 $this->view->message = "<p class=error> Error occured </p>";
+                //$this->flashMessenger->addMessage(array('error' => "Error occured"));
              } else if ($res === true) {
                 $this->view->message = "<p class=success> Assignment has been submitted </p>";
+                //$this->flashMessenger->addMessage(array('success' => "Assignment has been submitted"));
              }
+             //$this->_helper->redirector('midterm-report');
 
           }
        }
@@ -278,7 +285,7 @@ class AssignmentController extends Zend_Controller_Action
                                                  'classId' => $session->currentClassId,
                                                  'semId' => $session->currentSemId));
        //echo $form->static_tasks->coverLetter;
-       $form->static_tasks->coverLetter->setValue(stripslashes($form->static_tasks->coverLetter->getValue()));
+       $form->static_tasks->coverLetter->setValue($form->static_tasks->coverLetter->getValue());
 
        $this->view->form = $form;
 

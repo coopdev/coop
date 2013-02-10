@@ -62,7 +62,8 @@
       echo "<div id=content>";
 
          echo "<h2>$this->pageTitle</h2>";
-         echo "$this->resultMessage";
+         echo $this->resultMessage;
+         echo $this->flashMessage();
          echo $this->layout()->content;
       
       echo "</div>";

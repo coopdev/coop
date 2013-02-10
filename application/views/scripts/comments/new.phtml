@@ -51,15 +51,15 @@
 
 <form id="comment-form" method="POST">
     <div id="student-select" style="float:left; margin-right: 100px;">
-        <label for="comment-username"> Select student: </label>
-        <?php echo $commentForm->comment->username ?>
+        <label for="student"> Select student: </label>
+        <?php echo $commentForm->student ?>
     </div>
     <div style="float:left">
-        <label for="comment-comment"> Enter comment: </label>
-        <?php echo $commentForm->comment->comment ?>
+        <label for="comment"> Enter comment: </label>
+        <?php echo $commentForm->comment ?>
     </div>
 
-    <div style="float:left; margin-top: 245px;">
+    <div style="float:left; margin-top: 265px;">
         <?php echo $commentForm->submit ?> 
     </div>
 </form>
@@ -74,9 +74,10 @@
            $.get(base + "/async/fetch-students-as-json", {'data' : formData}, function(resp) {
                students = resp;
 
+               // Create options to populate student drop down.
                optionStr = "";
                $.each(students, function(key, user) {
-                   optionStr += "<option value=" + user.id + ">" + user.lname + 
+                   optionStr += "<option value=" + user.username + ">" + user.lname + 
                        ", " + user.fname + " (" + user.username + ")</option>"
                })
 

@@ -53,3 +53,12 @@ create view submittedassignment_answers_view AS
       sa.semesters_id, sa.is_final, aa.answer_text, aa.static_question, aa.assignmentquestions_id 
       FROM coop_submittedassignments sa JOIN coop_assignmentanswers aa
       ON sa.id = aa.submittedassignments_id;
+
+drop view if exists extended_duedates_view;
+create view extended_duedates_view as 
+   select u.fname, u.lname, u.username, ext.id, ext.due_date, a.assignment, 
+          s.current AS cur_sem 
+   from coop_extended_duedates ext 
+   JOIN coop_users u ON ext.username = u.username 
+   JOIN coop_assignments a ON ext.assignments_id = a.id 
+   JOIN coop_semesters s ON ext.semesters_id = s.id;

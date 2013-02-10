@@ -145,6 +145,7 @@
           <dbTableFile dbTableName="Assignment"/>
           <dbTableFile dbTableName="SubmittedAssignment"/>
         </dbTableDirectory>
+        <modelFile modelName="Comment"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

@@ -51,6 +51,9 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $User = new My_Model_User();
 
        $userRow = $User->getRow( array('username' => $this->username) );
+       foreach ($userRow as $key => $val) {
+          $userRow[$key] = $val;
+       }
        //$dbExpr = new Zend_Db_Expr("AES_DECRYPT(uuid, 'alqpwoifjch') AS uuid");
        //$sel = $User->select()->from($User, array($dbExpr))
        //                         ->where("username = '" . $this->username . "'");
@@ -59,6 +62,9 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $stuInfoRow = $User->getStudentInfo( array('username' => $this->username, 
                                                   'semesters_id' => $this->semId) );
+       foreach ($stuInfoRow as $key => $val) {
+          $stuInfoRow[$key] = $val;
+       }
        
        $empInfoRows = $User->getEmpInfo( array('username' => $this->username, 
            'classes_id' => $this->classId,
@@ -67,6 +73,9 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $this->submissions = array();
        foreach ($empInfoRows as $row) {
+          foreach ($row as $key => $val) {
+             $row[$key] = $val;
+          }
           //$row['start_date'] = date('m/d/Y', strtotime($row['start_date']));
           //$row['end_date'] = date('m/d/Y', strtotime($row['end_date']));
           
@@ -173,7 +182,9 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $supervTitle = $elems->getCommonTbox('superv_title', 'Supervisor Title:');
        $supervPhone = $elems->getCommonTbox('superv_phone', 'Telephone:');
        $supervEmail = $elems->getEmailTbox('superv_email', 'E-Mail:');
+       $supervEmail->setRequired(false);
        $fax = $elems->getCommonTbox('fax', 'Fax:');
+       $fax->setRequired(false);
 
        $empInfoSubform->addElements( array($empInfoId, $jobTitle, $coopJobTitle, $startDate, $endDate,
            $rateOfPay, $employer, $department, $streetAddress, $cityStateZip, $supervName,

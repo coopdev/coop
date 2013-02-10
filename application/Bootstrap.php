@@ -44,6 +44,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
        
       Zend_Validate_Abstract::setDefaultTranslator($translator);
       // End changing messages
+
+      // Add custom action helpers to path.
+      //Zend_Controller_Action_HelperBroker::addPrefix('My_Action_Helpers');
+
+      // Add custom view helpers to path. DOESN'T WORK FOR SOME REASON.
+      //$View = new Zend_View();
+      //$View->setHelperPath("My/View/Helper", "My_View_Helper");
    }
       
    protected function _initRoutes()

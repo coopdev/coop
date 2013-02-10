@@ -25,6 +25,15 @@ class SyllabusController extends Zend_Controller_Action
      */
     public function viewAction()
     {
+       // test
+       //Zend_Controller_Action_HelperBroker::addPrefix('My_Action_Helpers_FlashMessage');
+      //$View = new Zend_View();
+      //$View->addHelperPath("My/View/Helper", "My_View_Helper");
+      //$this->view->flashMessage();
+       
+       
+       // test
+       
        $coopSess = new Zend_Session_Namespace('coop');
        $link = new My_Db();
        if ($this->_request->isGet()) {

@@ -461,7 +461,7 @@ class AsyncController extends Zend_Controller_Action
           $formData['semId'] = $data['semesters_id'];
           $formData['username'] = $data['username'];
           $form = new Application_Form_Resume($formData);
-          $form->static_tasks->resume->setValue(stripslashes($form->static_tasks->resume->getValue()));
+          //$form->static_tasks->resume->setValue(stripslashes($form->static_tasks->resume->getValue()));
           $this->view->form = $form;
           
           
@@ -507,7 +507,7 @@ class AsyncController extends Zend_Controller_Action
           $formData['semId'] = $data['semesters_id'];
           $formData['username'] = $data['username'];
           $form = new Application_Form_CoverLetter($formData);
-          $form->static_tasks->coverLetter->setValue(stripslashes($form->static_tasks->coverLetter->getValue()));
+          //$form->static_tasks->coverLetter->setValue(stripslashes($form->static_tasks->coverLetter->getValue()));
           $this->view->form = $form;
           
           
