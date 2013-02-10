@@ -1,0 +1,68 @@
+<style>
+
+   #comments {
+      margin-top: 20px;
+      list-style: none;
+      width: 600px;
+   }
+
+   li.comment {
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e8e8e8;
+   }
+   .comment-date {
+      font-style: italic;
+      color: gray;
+      margin-top: 2px;
+   }
+
+
+</style>
+
+
+
+<?php
+$comments = $this->comments;
+?>
+
+<ul id="comments">
+   <?php foreach ($comments as $c) { ?>
+      <?php $editLinkId = "edit-comment-" . $c->id ?>
+      <?php $deleteLinkId = "delete-comment-" . $c->id ?>
+      <li class="comment" id="<?php echo $c->id ?>"> 
+         <p><?php echo $c->comment ?></p> 
+         <span class="comment-date"><?php echo $c->date ?></span><br />
+         <a class="edit-comment" id="<?php echo $editLinkId ?>" href=""> edit </a> | 
+         <a class="delete-comment" id="<?php echo $deleteLinkId ?>" href=""> delete </a>
+      </li>
+   <?php } ?>
+
+</ul>
+
+
+
+
+<script type="text/javascript">
+   $(document).ready(function() {
+
+      $(".edit-comment").live('click', function() {
+         $(".cancel-update-button").click();
+         commentText = $(this).parent("li").children("p").text();
+
+         listItem = $(this).parent("li");
+         children = listItem.html();
+         //alert(commentText);
+         listItem.html("<textarea name='comment'>" + commentText + "</textarea>");
+         listItem.append("<button class='update-comment-button'> Update </button>");
+         listItem.append("<button class='cancel-update-button'> Cancel </button>");
+
+         return false;
+
+      });
+      //$(".update-comment-button")
+      $(".cancel-update-button").live('click', function() {
+         listItem.html(children);
+      })
+   });
+
+</script>

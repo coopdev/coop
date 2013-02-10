@@ -6,7 +6,7 @@ class Application_Form_Comment extends Zend_Form
     public function init()
     {
         $student = new Zend_Form_Element_Select('student');
-        $student->setAttrib('size', 10);
+        $student->setAttrib('size', 6);
         $student->setRequired(true)
                 ->setRegisterInArrayValidator(false);
 
@@ -14,7 +14,7 @@ class Application_Form_Comment extends Zend_Form
         $comment->setRequired(true);
         
         $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel("Submit");
+        $submit->setLabel("Create comment");
 
         $this->addElements(array($student, $comment, $submit));
         $this->setElementDecorators(array('ViewHelper', 'Errors'));

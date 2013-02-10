@@ -8,8 +8,16 @@
         margin-top: 100px;
     }
 
+    #comment {
+       height: 100px;
+    }
+
     #student-select select option {
         padding: 0 0 7px;
+    }
+
+    #view-comments-button {
+       margin-top: 20px;
     }
 
 </style>
@@ -22,6 +30,7 @@
 <h2> Create a Comment </h2>
 
                 <!-- Search Form -->
+<h3> Search for student to add a comment for </h3>
 <form id="search-form">                
     <div style="float:left; margin-right:10px;">
         <label for="fname"> First name: </label>
@@ -45,12 +54,12 @@
     <div style="clear:both"></div>
 </form>
 
-
+<br /><br /><hr />
 
                 <!-- Comment Form -->
 
 <form id="comment-form" method="POST">
-    <div id="student-select" style="float:left; margin-right: 100px;">
+    <div id="student-select" style="float:left; margin-right: 30px;">
         <label for="student"> Select student: </label>
         <?php echo $commentForm->student ?>
     </div>
@@ -59,10 +68,17 @@
         <?php echo $commentForm->comment ?>
     </div>
 
-    <div style="float:left; margin-top: 265px;">
+    <div style="float:left; margin-top: 115px;">
         <?php echo $commentForm->submit ?> 
     </div>
 </form>
+<div style="clear:both"></div>
+
+<button id="view-comments-button">View comments for student</button>
+
+<div id="comments-for-student">
+
+</div>
 
 
 
@@ -84,6 +100,15 @@
                $("#student-select select").html(optionStr)
 
            }, 'json');
+
+           return false;
+        });
+
+        $("#view-comments-button").live('click', function() {
+           student = $("#student").val();
+           $.get(base + "/comments/list", { 'student' : student }, function(resp) {
+              $("#comments-for-student").empty().append(resp);
+           })
 
            return false;
         });

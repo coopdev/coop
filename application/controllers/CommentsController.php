@@ -37,6 +37,27 @@ class CommentsController extends Zend_Controller_Action
 
    }
 
+   /*
+    *  Async.
+    */
+   public function listAction()
+   {
+       $this->_helper->getHelper('layout')->disableLayout();
+       //$this->_helper->viewRenderer->setNoRender();
+
+       if ($this->getRequest()->isGet()) {
+          $student = $_GET['student'];
+          //die(var_dump($student));
+
+          $Comment = new My_Model_Comment();
+          $comments = $Comment->fetch(array('student' => $student));
+
+          //die(var_dump($comments->toArray()));
+
+          $this->view->comments = $comments;
+       }
+   }
+
 
 
 }

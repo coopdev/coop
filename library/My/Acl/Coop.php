@@ -122,6 +122,7 @@ class My_Acl_Coop extends Zend_Acl
       /* Comments Controller */
       $this->add(new Zend_Acl_Resource('comments'));
       $this->add(new Zend_Acl_Resource('new'), 'comments');
+      $this->add(new Zend_Acl_Resource('json-list'), 'comments');
 
       /* Roles */
 
@@ -213,6 +214,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('studentAid', 'semester');
       $this->deny('studentAid', 'form', 'form_edit-disclaimer');
       $this->deny('studentAid', 'backup');
+      $this->deny('studentAid', 'comments');
       
       //$this->allow('studentAid', 'assignment', 'assignment_submit');
       //$this->allow('studentAid', 'async', 'async_class-roll-json');
