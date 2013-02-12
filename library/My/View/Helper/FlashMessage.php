@@ -15,10 +15,10 @@ class My_View_Helper_FlashMessage extends Zend_View_Helper_Abstract
    public function flashMessage()
    {
       $message = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->getMessages();
-      $message = $message[0];
       $output = '';
       
       if (!empty($message)) {
+         $message = $message[0];
          foreach ($message as $key => $val) {
             $output .= "<p class='$key'> $val </p>";
          }
