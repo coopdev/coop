@@ -38,31 +38,3 @@ $comments = $this->comments;
    <?php } ?>
 
 </ul>
-
-
-
-
-<script type="text/javascript">
-   $(document).ready(function() {
-
-      $(".edit-comment").live('click', function() {
-         $(".cancel-update-button").click();
-         commentText = $(this).parent("li").children("p").text();
-
-         listItem = $(this).parent("li");
-         children = listItem.html();
-         //alert(commentText);
-         listItem.html("<textarea name='comment'>" + commentText + "</textarea>");
-         listItem.append("<button class='update-comment-button'> Update </button>");
-         listItem.append("<button class='cancel-update-button'> Cancel </button>");
-
-         return false;
-
-      });
-      //$(".update-comment-button")
-      $(".cancel-update-button").live('click', function() {
-         listItem.html(children);
-      })
-   });
-
-</script>

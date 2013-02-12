@@ -10,6 +10,29 @@ class CommentsController extends Zend_Controller_Action
    {
       $this->session = new Zend_Session_Namespace('coop');
    }
+   
+   
+   /*
+    *  Async.
+    */
+   public function listAction()
+   {
+       $this->_helper->getHelper('layout')->disableLayout();
+       //$this->_helper->viewRenderer->setNoRender();
+
+       if ($this->getRequest()->isGet()) {
+          $student = $_GET['student'];
+          //die(var_dump($student));
+
+          $Comment = new My_Model_Comment();
+          $comments = $Comment->fetch(array('student' => $student));
+
+          //die(var_dump($comments->toArray()));
+
+          $this->view->comments = $comments;
+       }
+   }
+   
 
    public function newAction()
    {
@@ -37,26 +60,22 @@ class CommentsController extends Zend_Controller_Action
 
    }
 
-   /*
-    *  Async.
-    */
-   public function listAction()
+   public function updateAction()
    {
-       $this->_helper->getHelper('layout')->disableLayout();
-       //$this->_helper->viewRenderer->setNoRender();
+      $this->_helper->getHelper('layout')->disableLayout();
+      $this->_helper->viewRenderer->setNoRender();
 
-       if ($this->getRequest()->isGet()) {
-          $student = $_GET['student'];
-          //die(var_dump($student));
+      if ($this->getRequest()->isPost()) {
+         $comment = $_POST['comment'];
+         //$id = $_POST['id'];
+         //die(var_dump($comment));
 
-          $Comment = new My_Model_Comment();
-          $comments = $Comment->fetch(array('student' => $student));
-
-          //die(var_dump($comments->toArray()));
-
-          $this->view->comments = $comments;
-       }
+         $Comment = new My_Model_Comment();
+         $Comment->updateComment($comment);
+      }
+      
    }
+
 
 
 

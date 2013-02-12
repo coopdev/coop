@@ -82,7 +82,7 @@
 
 
 
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
         $("#search-button").live('click', function() {
            formData = $("#search-form").toJSON(); 
@@ -112,5 +112,47 @@
 
            return false;
         });
+        
+
+        // FOR LIST.PHTML
+        $(".edit-comment").live('click', function() {
+           $(".cancel-update-button").click();
+           commentText = $(this).parent("li").children("p").text();
+  
+           listItem = $(this).parent("li");
+           children = listItem.html();
+           //alert(commentText);
+           listItem.html("<textarea name='comment'>" + commentText + "</textarea>");
+           listItem.append("<button class='update-comment-button'> Update </button>");
+           listItem.append("<button class='cancel-update-button'> Cancel </button>");
+  
+           return false;
+  
+        });
+        
+        
+        $(".update-comment-button").live('click', function() {
+           //comment['comment'] = listItem.children("textarea").val();
+           //comment['id'] = listItem.attr("id");
+  
+           comment = {
+              comment : listItem.children("textarea").val(),
+              id      : listItem.attr("id")
+           };
+  
+           //alert(comment.comment);
+  
+           $.post(base + "/comments/update", { 'comment' : comment }, function(resp) {
+              $("#view-comments-button").click();
+  
+              return false;
+           });
+  
+        });
+        
+        
+        $(".cancel-update-button").live('click', function() {
+           listItem.html(children);
+        })
     });
 </script>

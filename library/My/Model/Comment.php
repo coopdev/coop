@@ -31,5 +31,15 @@ class My_Model_Comment extends Zend_Db_Table_Abstract
       return $rows;
    }
 
+   public function updateComment($comment)
+   {
+      $cols['comment'] = $comment['comment'];
+      $where = "id = " . $comment['id'];
+      
+      $this->update($cols, $where);
+
+      return true;
+   }
+
 }
 ?>
