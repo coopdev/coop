@@ -9,19 +9,26 @@
    echo $this->form;
 ?>
 
+<button id="foo"> foo </button>
+
 
 <script type="text/javascript">
 
    $("document").ready(function() {
-
-      fillStudents();
+      // lastStudent is the last student selected when posting form.
+      lastStudent = "<?php echo $this->lastStudent ?>"
+      fillStudents(lastStudent);
 
       $("[name=classes_id]").change(function() {
          fillStudents();
       });
 
 
-      function fillStudents() {
+      /*
+       * @param defaultValue If set, after pupulating the drop down, set the value
+       *                     of the drop down to defaultValue.
+       */
+      function fillStudents(defaultValue) {
          val = $("[name=classes_id]").val();
 
          $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
@@ -44,8 +51,13 @@
 
             $("[name=username]").html(optString);
 
+            if (typeof defaultValue !== "undefined") {
+               $("#username").val(defaultValue)
+            }
+
          }, 'json');
       }
+
 
    });
 

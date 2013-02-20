@@ -47,13 +47,22 @@ class CommentsController extends Zend_Controller_Action
       $this->view->commentForm = $commentForm;
 
       if ($this->getRequest()->isPost()) {
-         $data = $_POST;
-         //die(var_dump($data));
+         //$data = $_POST;
+         $data = $_POST['data'];
+         //die(var_dump($data['data']));
+         $this->_helper->getHelper('layout')->disableLayout();
+         $this->_helper->viewRenderer->setNoRender();
 
          if ($commentForm->isValid($data)) {
             $Comment = new My_Model_Comment();
             $data['coordinator'] = $this->session->username;
-            $Comment->create($data);
+            if ($Comment->create($data)) {
+               echo "<p class='success'> Success </p>";
+            } else {
+               echo "<p class='error'> Error occured </p>";
+            }
+         } else {
+            echo "<p class='error'> Invalid information submitted </p>";
          }
 
       }
@@ -74,6 +83,20 @@ class CommentsController extends Zend_Controller_Action
          $Comment->updateComment($comment);
       }
       
+   }
+
+   public function destroyAction()
+   {
+      $this->_helper->getHelper('layout')->disableLayout();
+      $this->_helper->viewRenderer->setNoRender();
+
+      if ($this->getRequest()->isPost()) {
+         $comment = $_POST['comment'];
+
+         $Comment = new My_Model_Comment();
+         $Comment->destroy($comment);
+      }
+
    }
 
 

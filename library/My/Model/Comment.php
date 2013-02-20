@@ -8,7 +8,13 @@ class My_Model_Comment extends Zend_Db_Table_Abstract
       $comment = $this->fetchNew();
       $comment->setFromArray($data);
       $comment->date = date('Y-m-d h:i:s');
-      $comment->save();
+
+      try {
+         $comment->save();
+         return true;
+      } catch (Exception $e) {
+         return false;
+      }
    }
 
    public function fetch($where)
@@ -39,6 +45,12 @@ class My_Model_Comment extends Zend_Db_Table_Abstract
       $this->update($cols, $where);
 
       return true;
+   }
+
+   public function destroy($comment)
+   {
+      $this->delete("id = $comment");
+
    }
 
 }

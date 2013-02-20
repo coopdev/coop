@@ -578,6 +578,7 @@ class AssignmentController extends Zend_Controller_Action
           $data = $_POST;
 
           //die(var_dump($data));
+          $this->view->lastStudent = $data['username'];
 
           if ($form->isValid($data)) {
              unset($data['classes_id']);

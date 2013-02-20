@@ -57,8 +57,11 @@
 <br /><br /><hr />
 
                 <!-- Comment Form -->
+<div id="result-message"> </div>
 
 <form id="comment-form" method="POST">
+   
+    
     <div id="student-select" style="float:left; margin-right: 30px;">
         <label for="student"> Select student: </label>
         <?php echo $commentForm->student ?>
@@ -102,6 +105,29 @@
            }, 'json');
 
            return false;
+        });
+
+        $("#comment-form").submit(function() {
+           form = $(this)
+           data = {
+              'student' : form.find("select#student").val(),
+              'comment' : form.find("textarea#comment").val()
+           }
+
+           $.post(base + "/comments/new", { 'data' : data }, function(resp) {
+              $("#result-message").html(resp)
+              $("#view-comments-button").click()
+              
+              // Fade out the result message after 7 seconds.
+              setTimeout(function(){
+                 $("#result-message p").fadeOut("slow", function () {
+                    $("#result-message p").remove();
+                 })
+
+              }, 7000) 
+           })
+             
+           return false
         });
 
         $("#view-comments-button").live('click', function() {
@@ -153,6 +179,20 @@
         
         $(".cancel-update-button").live('click', function() {
            listItem.html(children);
+        })
+
+
+        $(".delete-comment").live('click', function() {
+           if (confirm("Are you sure?")) {
+              parentListItem = $(this).parent("li")
+              comment = parentListItem.attr("id")
+              
+              $.post(base + "/comments/destroy", { 'comment' : comment }, function(resp) {
+                 $("#view-comments-button").click()
+              })
+           }
+
+           return false
         })
     });
 </script>

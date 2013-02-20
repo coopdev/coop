@@ -30,9 +30,12 @@ $comments = $this->comments;
       <?php $editLinkId = "edit-comment-" . $c->id ?>
       <?php $deleteLinkId = "delete-comment-" . $c->id ?>
       <li class="comment" id="<?php echo $c->id ?>"> 
-         <p><?php echo $c->comment ?></p> 
+         <p class="text"><?php echo $c->comment ?></p> 
+
          <span class="comment-date"><?php echo $c->date ?></span><br />
+         
          <a class="edit-comment" id="<?php echo $editLinkId ?>" href=""> edit </a> | 
+         
          <a class="delete-comment" id="<?php echo $deleteLinkId ?>" href=""> delete </a>
       </li>
    <?php } ?>
