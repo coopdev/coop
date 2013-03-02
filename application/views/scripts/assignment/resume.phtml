@@ -1,6 +1,6 @@
 <?php
 $coopSess = new Zend_Session_Namespace('coop');
-//$this->headScript()->appendFile($coopSess->baseUrl.'/js/tinymce/jscripts/tiny_mce/tiny_mce.js');
+$this->headScript()->appendFile($coopSess->baseUrl.'/js/tinymce/jscripts/tiny_mce/tiny_mce.js');
 //$this->headScript()->appendFile($coopSess->baseUrl.'/xinha/XinhaCore.js');
 echo $this->headScript();
 
@@ -21,7 +21,6 @@ $(document).ready(function() {
    });
 
 
-   /*
    tinyMCE.init({
         mode : "textareas",
         plugins : "spellchecker,searchreplace,paste,table",
@@ -49,12 +48,12 @@ $(document).ready(function() {
            //});
         }
    });
-   */
 
 
 
 
 
+   /*
    xinha_editors = null;
    xinha_init    = null;
    xinha_config  = null;
@@ -104,15 +103,16 @@ $(document).ready(function() {
   
    }
    Xinha._addEvent(window,'load', xinha_init);
+*/
 
 });
 
-_editor_url = base + "/xinha/";   // (preferably absolute) URL (including trailing slash) where Xinha is installed
-_editor_lang = "en";       // And the language we need to use in the editor.
-_editor_skin = "silva";    // If you want use a skin, add the name (of the folder) here
-_editor_icons = "classic"; // If you want to use a different iconset, add the name (of the folder, under the `iconsets` folder) here
+//_editor_url = base + "/xinha/";   // (preferably absolute) URL (including trailing slash) where Xinha is installed
+//_editor_lang = "en";       // And the language we need to use in the editor.
+//_editor_skin = "silva";    // If you want use a skin, add the name (of the folder) here
+//_editor_icons = "classic"; // If you want to use a different iconset, add the name (of the folder, under the `iconsets` folder) here
 
 
 </script>
 
-<script type="text/javascript" src="<?php echo $coopSess->baseUrl ?>/xinha/XinhaCore.js"></script>
+<!-- <script type="text/javascript" src="<?php //echo $coopSess->baseUrl ?>/xinha/XinhaCore.js"></script> -->

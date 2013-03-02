@@ -1,3 +1,11 @@
+<style>
+#asyncContainer #cover-letter ul li {
+   margin-left: 20px;
+}
+</style>
+
+
+
 <h2> Cover Letter </h2>
 <?php
 $form = $this->form;
@@ -12,6 +20,8 @@ if (!empty($recText)) {
 if ($this->submitted === false) {
    echo "<p class=error> Report has not been submitted </p>";
 } else {
+   echo "<div id='cover-letter'>";
    echo $form->static_tasks->coverLetter->getValue();
+   echo "</div>";
 }
 ?>

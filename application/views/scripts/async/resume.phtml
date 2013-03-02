@@ -1,3 +1,9 @@
+<style>
+#asyncContainer #resume ul li {
+   margin-left: 20px;
+}
+</style>
+
 <h2> Resume </h2>
 <?php
 $form = $this->form;
@@ -12,6 +18,8 @@ if (!empty($recText)) {
 if ($this->submitted === false) {
    echo "<p class=error> Report has not been submitted </p>";
 } else {
+   echo "<div id='resume'>";
    echo $form->static_tasks->resume->getValue();
+   echo "</div>";
 }
 ?>
