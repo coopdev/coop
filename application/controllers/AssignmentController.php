@@ -374,10 +374,14 @@ class AssignmentController extends Zend_Controller_Action
 
     public function learningOutcomeAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
+       
        $form = new Application_Form_LearningOutcomeReport();
+       $form->setUsername($coopSess->username);
+       $form->setClassId($coopSess->currentClassId);
+       $form->setSemId($coopSess->currentSemId);
 
        $as = new My_Model_Assignment();
-       $coopSess = new Zend_Session_Namespace('coop');
        
        // Check if due.
        $assignId = $as->getLearningOutcomeId();
@@ -386,9 +390,9 @@ class AssignmentController extends Zend_Controller_Action
           return;
        }
 
-       $form = $as->populateLearningOutcome($form, array('classes_id' => $coopSess->currentClassId,
-                                'semesters_id' => $coopSess->currentSemId,
-                                'username' => $coopSess->username));
+       //$form = $as->populateLearningOutcome($form, array('classes_id' => $coopSess->currentClassId,
+       //                         'semesters_id' => $coopSess->currentSemId,
+       //                         'username' => $coopSess->username));
 
        $this->view->form = $form;
 
@@ -402,8 +406,9 @@ class AssignmentController extends Zend_Controller_Action
 
 
           if ($form->isValid($dataNoHTML)) {
-             $data['report'] = htmlspecialchars($data['report']);
-             $res = $as->submitLearningOutcome($data);
+             $form->submit();
+             //$data['report'] = htmlspecialchars($data['report']);
+             //$res = $as->submitLearningOutcome($data);
 
              if ($res === 'submitted') {
                 $message = "<p class=error> Already submitted </p>";
@@ -417,6 +422,36 @@ class AssignmentController extends Zend_Controller_Action
           }
 
        }
+    }
+
+    public function learningOutcomeEditAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       
+       $form = new Application_Form_LearningOutcomeReport();
+       $form->setUsername($coopSess->username);
+       $form->setClassId($coopSess->currentClassId);
+       $form->setSemId($coopSess->currentSemId);
+
+       $form->setSavedReports();
+
+       $this->view->form = $form;
+
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+          
+          // Use this data to validate form because the HTML tags in the rich text area
+          // count as character, but we don't want them to.
+          $dataNoHTML = $data;
+          $dataNoHTML['report'] = trim(strip_tags($dataNoHTML['report']));
+
+          if ($form->isValid($dataNoHTML)) {
+
+          }
+       }
+       
+
     }
 
 
