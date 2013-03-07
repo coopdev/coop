@@ -3,6 +3,7 @@
 class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
 {
     protected $minLen;
+    public $submissions = array();
 
     public function init()
     {
@@ -56,5 +57,43 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
     }
 
 
+    private function setSubmissions()
+    {
+       
+       $SubmittedAssign = new My_Model_SubmittedAssignment();
+       
+       $uname     = $this->username;
+       $classId   = $this->classId;
+       $semId     = $this->semId;
+
+       $where = array("username = '$uname'", "classes_id = $classId", "semesters_id = $semId");
+       
+       $rows = $SubmittedAssign->fetchAll($where);
+
+       if (count($rows) < 1) {
+          return;
+       }
+
+       foreach ($rows as $row) {
+          
+       }
+
+    }
+
+    public function submit()
+    {
+
+    }
+
+
+    public function submitFinal()
+    {
+
+    }
+
+    public function submitSaveOnly()
+    {
+
+    }
 }
 
