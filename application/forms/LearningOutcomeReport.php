@@ -62,6 +62,7 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
 
     public function setSavedReports()
     {
+       $this->savedReports = array();
        
        $SubmittedAssign   = new My_Model_SubmittedAssignment();
        $AssignmentAnswers = new My_Model_AssignmentAnswers();
@@ -86,12 +87,26 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
        $count = 0;
        foreach ($rows as $row) {
           $count++;
+          
           $subAssignId = $row->id;
           $answer = $AssignmentAnswers->fetchRow("submittedassignments_id = $subAssignId");
+          
+          $savedReport = clone $this;
+          $savedReport->report->setValue($answer->answer_text);
+          $savedReport->report->setAttrib("id", "report-$count");
+          $hiddenSubAssignId = new Zend_Form_Element_Hidden("submittedassignments_id");
+          $hiddenSubAssignId->id = "submittedassignment-$count-id";
+          $hiddenSubAssignId->setValue($answer->submittedassignments_id);
 
-          $this->report->setValue($answer->answer_text);
-          $this->report->setAttrib("id", "report-$count");
-          $this->savedReports[] = clone $this;
+          $lastPage = new Zend_Form_Element_Hidden("lastPage");
+          $lastPage->id = "lastPage$count";
+          
+          $savedReport->addElements( array($hiddenSubAssignId, $lastPage) );
+          //die(var_dump($savedReport->getElements()));
+
+          // Use subassignments_id as the index of array so the submitted form can 
+          // be retrieved from the array easier.
+          $this->savedReports[$answer->submittedassignments_id] = $savedReport;
        }
 
     }
@@ -125,15 +140,34 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
        $Assignment->insertAnswers($answers, $foreignKeys, array('static' => true));
     }
 
-
-    public function submitFinal()
+    public function update()
     {
+       $formValues = $this->getValues();
+       unset($formValues['lastPage']);
+
+       $SubAssign = new My_Model_SubmittedAssignment();
+       $Assignment = new My_Model_Assignment();
+
+       $dateSubmitted = date('Ymd');
+
+       $updateVals['date_submitted'] = $dateSubmitted;
+       if ($this->finalSubmit->isChecked()) {
+          $updateVals['is_final'] = 1;
+       } else {
+          $updateVals['is_final'] = 0;
+       }
+
+       $username = $this->username;
+       $SubAssign->update($updateVals, 
+                          "id = " . $formValues['submittedassignments_id'] .
+                          " AND username = '$username'");
+
+       $updateVals = NULL;
+       $answers["report"] = $formValues['report'];
+       $where['submittedassignments_id'] = $formValues['submittedassignments_id'];
+       $Assignment->updateAnswers($answers, $where, array('static' => true));
 
     }
 
-    public function submitSaveOnly()
-    {
-
-    }
 }
 

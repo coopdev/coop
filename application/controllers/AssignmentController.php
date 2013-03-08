@@ -440,15 +440,29 @@ class AssignmentController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
 
           $data = $_POST;
+
+          $this->view->lastPage = $data['lastPage'];
           
           // Use this data to validate form because the HTML tags in the rich text area
           // count as character, but we don't want them to.
           $dataNoHTML = $data;
           $dataNoHTML['report'] = trim(strip_tags($dataNoHTML['report']));
 
-          if ($form->isValid($dataNoHTML)) {
+          $submittedForm = $form->savedReports[$data['submittedassignments_id']];
 
+          if ($submittedForm->isValid($dataNoHTML)) {
+             $submittedForm->update();
+
+             // Reset the saved reports.
+             $form->setSavedReports();
+
+             $this->view->resultMessage = "<p class=success> Success </p>";
+
+          } else {
+             $errors = $submittedForm->getMessages();
+             $this->view->errors = $errors['report'];
           }
+
        }
        
 
