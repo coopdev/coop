@@ -64,21 +64,17 @@
 
    function countChars()
    {
-        chars = tinyMCE.activeEditor.getContent();
-        chars = $(chars).text();
-        totalChars = chars.length;
-        newLines = chars.match(/\r|\n/g); // searches for "\r" and "\n" chars.
-        newLines = newLines ? newLines.length : 0;
-           
-        totalChars = totalChars - newLines;
-
-        minLen = $('#minLen').text();
-        charsLeft = minLen - totalChars;
-        if (charsLeft < 0) {
-           charsLeft = 0;
-        }
+     chars = tinyMCE.activeEditor.getContent();
+     chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
+     //console.log(totalChars);
         
-        $('#charsLeft').text(charsLeft);
+     minLen = $('#minLen').text();
+     charsLeft = minLen - chars.length;
+     if (charsLeft < 0) {
+        charsLeft = 0;
+     }
+     
+     $('.charsLeft').text(charsLeft);
    }
 
 </script>

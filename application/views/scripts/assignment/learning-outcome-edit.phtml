@@ -35,6 +35,7 @@ $(document).ready(function() {
    });
 
 
+   // Paging.
    $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
    $('.simplePagerNav').after('<br />');
    
@@ -99,20 +100,16 @@ function initTinyMCE()
 function countChars()
 {
      chars = tinyMCE.activeEditor.getContent();
-     chars = $(chars).text();
-     totalChars = chars.length;
-     newLines = chars.match(/\r|\n/g); // searches for "\r" and "\n" chars.
-     newLines = newLines ? newLines.length : 0;
+     chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
+     //console.log(totalChars);
         
-     totalChars = totalChars - newLines;
-
      minLen = $('#minLen').text();
-     charsLeft = minLen - totalChars;
+     charsLeft = minLen - chars.length;
      if (charsLeft < 0) {
         charsLeft = 0;
      }
      
-     $('#charsLeft').text(charsLeft);
+     $('.charsLeft').text(charsLeft);
 }
 
 </script>
