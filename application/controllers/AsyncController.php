@@ -270,12 +270,16 @@ class AsyncController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
 
        if ($this->getRequest()->isPost()) {
-          $form = new Application_Form_LearningOutcomeReport();
 
           $data = array();
           if (isset($_POST['data'])) {
              $data = $_POST['data'];
           }
+          
+          $form = new Application_Form_LearningOutcomeReport();
+          $form->setUsername($data['username']);
+          $form->setClassId($data['classes_id']);
+          $form->setSemId($data['semesters_id']);
 
           //die(var_dump($data));
 
@@ -299,18 +303,9 @@ class AsyncController extends Zend_Controller_Action
              return;
           }
 
-          //die(var_dump($data));
-
-          // Populate the form based on data
-          $form = $as->populateLearningOutcome($form, $data);
-          // the content of the textarea.
-          $report = $form->getValue('report');
-
-          // Take out submit button since it's for coordinator view
-          $form->removeElement("Submit");
-          $form->removeElement("SaveOnly");
+          $form->setSubmittedReports();
+          
           $this->view->form = $form;
-          $this->view->report = $report;
           
        } else {
           // If not a POST request, don't render the view

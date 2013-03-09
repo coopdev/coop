@@ -16,7 +16,21 @@
    if ($this->submitted === false) {
       echo "<p class=error> Report has not been submitted </p>";
    } else {
-      echo $this->report;
+      echo "<ul class='paging'>";
+      foreach ($this->form->submittedReports as $report) {
+         echo "<li>";
+         echo "<br /> <br />" . $report->report->getValue();
+         echo "</li>";
+      }
+      echo "</ul>";
    }
 
 ?>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      // Paging.
+      $("ul.paging").quickPager( {pageSize : 1, pagerLocation : "both"} );
+      $('.simplePagerNav').after('<br />');
+   });
+</script>

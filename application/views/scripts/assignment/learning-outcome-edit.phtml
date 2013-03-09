@@ -13,9 +13,11 @@ if (!empty($errors)) {
 
 }
 
-$page = 0;
+$url = $this->url(array('action' => 'learning-outcome'));
+echo "<h4> <a href='$url'> Create new report </a> </h4>";
+
 echo "<ul class='paging'>";
-foreach ($form->savedReports as $saved) {
+foreach ($form->submittedReports as $saved) {
    echo "<li>";
    echo "<br /> <br /> $saved";
    echo "</li>";

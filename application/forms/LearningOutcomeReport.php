@@ -3,7 +3,7 @@
 class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
 {
     protected $minLen;
-    public $savedReports = array();
+    public $submittedReports = array();
 
     public function init()
     {
@@ -60,9 +60,12 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
     }
 
 
-    public function setSavedReports()
+    /*
+     * @param $isFinal Value of is_final column in submittedassignments table.
+     */
+    public function setSubmittedReports($isFinal=1)
     {
-       $this->savedReports = array();
+       $this->submittedReports = array();
        
        $SubmittedAssign   = new My_Model_SubmittedAssignment();
        $AssignmentAnswers = new My_Model_AssignmentAnswers();
@@ -76,7 +79,7 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
                       "classes_id     = $classId", 
                       "semesters_id   = $semId", 
                       "assignments_id = $assignId",
-                      "is_final       = 0");
+                      "is_final       = $isFinal");
        
        $rows = $SubmittedAssign->fetchAll($where);
 
@@ -91,9 +94,9 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
           $subAssignId = $row->id;
           $answer = $AssignmentAnswers->fetchRow("submittedassignments_id = $subAssignId");
           
-          $savedReport = clone $this;
-          $savedReport->report->setValue($answer->answer_text);
-          $savedReport->report->setAttrib("id", "report-$count");
+          $submittedReport = clone $this;
+          $submittedReport->report->setValue($answer->answer_text);
+          $submittedReport->report->setAttrib("id", "report-$count");
           $hiddenSubAssignId = new Zend_Form_Element_Hidden("submittedassignments_id");
           $hiddenSubAssignId->id = "submittedassignment-$count-id";
           $hiddenSubAssignId->setValue($answer->submittedassignments_id);
@@ -101,17 +104,17 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
           $lastPage = new Zend_Form_Element_Hidden("lastPage");
           $lastPage->id = "lastPage$count";
           
-          $savedReport->addElements( array($hiddenSubAssignId, $lastPage) );
+          $submittedReport->addElements( array($hiddenSubAssignId, $lastPage) );
           //die(var_dump($savedReport->getElements()));
 
           // Use subassignments_id as the index of array so the submitted form can 
           // be retrieved from the array easier.
-          $this->savedReports[$answer->submittedassignments_id] = $savedReport;
+          $this->submittedReports[$answer->submittedassignments_id] = $submittedReport;
        }
 
     }
 
-    public function submit()
+    public function submit($data)
     {
        $SubmittedAssign = new My_Model_SubmittedAssignment();
        $Assignment      = new My_Model_Assignment();
@@ -134,16 +137,17 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
        $SubmittedAssign->insert($insertVals);
        $subAssignId = $SubmittedAssign->getAdapter()->lastInsertId();
        
-       $answers['report'] = $this->report->getValue();
+       $answers['report'] = $data['report'];
+
+       //die(var_dump($this->getValues()));
        $foreignKeys["submittedassignments_id"] = $subAssignId;
 
        $Assignment->insertAnswers($answers, $foreignKeys, array('static' => true));
     }
 
-    public function update()
+    public function update($data)
     {
-       $formValues = $this->getValues();
-       unset($formValues['lastPage']);
+       unset($data['lastPage']);
 
        $SubAssign = new My_Model_SubmittedAssignment();
        $Assignment = new My_Model_Assignment();
@@ -159,12 +163,12 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
 
        $username = $this->username;
        $SubAssign->update($updateVals, 
-                          "id = " . $formValues['submittedassignments_id'] .
+                          "id = " . $data['submittedassignments_id'] .
                           " AND username = '$username'");
 
        $updateVals = NULL;
-       $answers["report"] = $formValues['report'];
-       $where['submittedassignments_id'] = $formValues['submittedassignments_id'];
+       $answers["report"] = $data['report'];
+       $where['submittedassignments_id'] = $data['submittedassignments_id'];
        $Assignment->updateAnswers($answers, $where, array('static' => true));
 
     }

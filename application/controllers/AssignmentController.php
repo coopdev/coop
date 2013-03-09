@@ -406,7 +406,7 @@ class AssignmentController extends Zend_Controller_Action
 
 
           if ($form->isValid($dataNoHTML)) {
-             $form->submit();
+             $form->submit($data);
              //$data['report'] = htmlspecialchars($data['report']);
              //$res = $as->submitLearningOutcome($data);
 
@@ -433,7 +433,7 @@ class AssignmentController extends Zend_Controller_Action
        $form->setClassId($coopSess->currentClassId);
        $form->setSemId($coopSess->currentSemId);
 
-       $form->setSavedReports();
+       $form->setSubmittedReports(0);
 
        $this->view->form = $form;
 
@@ -448,13 +448,13 @@ class AssignmentController extends Zend_Controller_Action
           $dataNoHTML = $data;
           $dataNoHTML['report'] = trim(strip_tags($dataNoHTML['report']));
 
-          $submittedForm = $form->savedReports[$data['submittedassignments_id']];
+          $submittedForm = $form->submittedReports[$data['submittedassignments_id']];
 
           if ($submittedForm->isValid($dataNoHTML)) {
-             $submittedForm->update();
+             $submittedForm->update($data);
 
              // Reset the saved reports.
-             $form->setSavedReports();
+             $form->setSubmittedReports(0);
 
              $this->view->resultMessage = "<p class=success> Success </p>";
 
