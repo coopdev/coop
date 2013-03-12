@@ -118,6 +118,16 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
     {
        $SubmittedAssign = new My_Model_SubmittedAssignment();
        $Assignment      = new My_Model_Assignment();
+
+       $where = array();
+       $where[] = "username = '" . $this->username . "'";
+       $where[] = "classes_id = " . $this->classId;
+       $where[] = "semesters_id = " . $this->semId;
+       $where[] = "assignments_id = " . $this->assignId;
+       $submits = $SubmittedAssign->fetchAll($where);
+       if (count($submits) >= 3) {
+          return "tooManySubmits";
+       }
        
        
        $insertVals = array("username"       => $this->username,

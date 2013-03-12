@@ -406,12 +406,12 @@ class AssignmentController extends Zend_Controller_Action
 
 
           if ($form->isValid($dataNoHTML)) {
-             $form->submit($data);
+             $res = $form->submit($data);
              //$data['report'] = htmlspecialchars($data['report']);
              //$res = $as->submitLearningOutcome($data);
 
-             if ($res === 'submitted') {
-                $message = "<p class=error> Already submitted </p>";
+             if ($res === 'tooManySubmits') {
+                $message = "<p class=error> Maximum amount has been submitted </p>";
              } else if ($res === false) {
                 $message = "<p class=error> Error occured </p>";
              } else {
