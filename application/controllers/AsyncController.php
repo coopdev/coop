@@ -691,7 +691,7 @@ class AsyncController extends Zend_Controller_Action
           $data = $_POST['data'];
           //die(var_dump($data));
 
-          if ($status === 'Complete') {
+          if ($status === 'none') {
              $status = "";
           }
 

@@ -54,7 +54,8 @@ class Application_Form_StudentRecSearch extends Zend_Form
 
        $status = new Zend_Form_Element_Select('sem_status');
        $status->addMultiOptions(array('' => "--------------",
-                                      'Incomplete' => "Incomplete"));
+                                      'Incomplete' => "Incomplete",
+                                      'Exempt' => 'Exempt'));
 
        $search = new Zend_Form_Element_Button('search');
        $search->setLabel('Search')
