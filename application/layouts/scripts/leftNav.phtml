@@ -26,6 +26,9 @@
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                    'action'=>'student-management'), null, true)."'> Manage students </a></li> <br />";
       
+      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
+                   'action'=>'list-all'), null, true)."'> Manage assignments </a></li> <br />";
+      
       echo    "<li><a href='".$this->url(array('controller'=>'class',
                    'action'=>'listall'), null, true)."'> Manage coop classes </a></li> <br />";
 
@@ -34,12 +37,6 @@
 
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                    'action'=>'list-studentaids'), null, true)."'> Manage student helpers </a></li> <br />";
-
-      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
-                   'action'=>'list-all'), null, true)."'> Manage assignments </a></li> <br />";
-
-      echo    "<li><a href='".$this->url(array('controller'=>'user',
-                   'action'=>'view-logins'), null, true)."'> View student logins </a></li> <br />";
 
       echo    "<li><a href='".$this->url(array('controller'=>'form',
                    'action'=>'edit-disclaimer'), null, true)."'> Edit disclaimer text </a></li> <br />";
@@ -62,9 +59,6 @@
       
       echo    "<li><a href='".$this->url(array('controller'=>'assignment',
                    'action'=>'list-status-by-class'), null, true)."'> Assignment status by class </a></li> <br />";
-      
-      echo    "<li><a href='".$this->url(array('controller'=>'assignment',
-                   'action'=>'list-all'), null, true)."'> Manage assignments </a></li> <br />";
       
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                    'action'=>'view-logins'), null, true)."'> View student logins </a></li> <br />";
