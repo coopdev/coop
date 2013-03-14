@@ -61,6 +61,10 @@
       echo "<div id='contentContainer' class='span-35 last'>";
       echo "<div id=content>";
 
+         if ($coopSess->currentSemStatus === 'Exempt') {
+            echo "<p class=notice> You are exempt from " . $coopSess->currentClassName . "</p>";
+         }
+
          echo "<h2>$this->pageTitle</h2>";
          echo $this->resultMessage;
          echo $this->flashMessage();

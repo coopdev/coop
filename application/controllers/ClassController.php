@@ -19,21 +19,28 @@ class ClassController extends Zend_Controller_Action
              $coopSess->currentClassId = $id;
              $class = new My_Model_Class();
              $coopSess->currentClassName = $class->getName($id);
-          }
 
-          // If student has incompletes.
-          if ( isset($coopSess->incompleteClassIds) ) {
+             foreach ($coopSess->semStatuses as $ss) {
+                if ($id === $ss['classId']) {
+                   $coopSess->currentSemStatus = $ss['status'];
+                   break;
+                }
+             }
 
-             // If the student is changing to a class which is incomplete, set the current
-             // semester id to the incomplete semester id.
-             if (in_array($id, $coopSess->incompleteClassIds)) {
-                $coopSess->currentSemId = $coopSess->incompleteSemId;
-             // Else, set it to the current semester.
-             } else {
-                $sem = new My_Model_Semester();
-                $coopSess->currentSemId = $sem->getCurrentSemId();
+             // If student has incompletes.
+             if ( isset($coopSess->incompleteClassIds) ) {
+                // If the student is changing to a class which is incomplete, set the current
+                // semester id to the incomplete semester id.
+                if (in_array($id, $coopSess->incompleteClassIds)) {
+                   $coopSess->currentSemId = $coopSess->incompleteSemId;
+                // Else, set it to the current semester.
+                } else {
+                   $sem = new My_Model_Semester();
+                   $coopSess->currentSemId = $sem->getCurrentSemId();
+                }
              }
           }
+
 
           $action = $coopSess->prevAction;
           $controller = $coopSess->prevController;

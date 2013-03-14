@@ -62,13 +62,23 @@ class My_Funcs
 
           // Otherwise, the user is enrolled for the current semester so set the class ids.
           } else {
+              $UsersSemester = new My_Model_UsersSemester();
+              $usersSemester = $UsersSemester->fetchAll("semesters_id = " . $coopSess->currentSemId);
 
+              $count = 0;
+              foreach ($usersSemester as $us) {
+                 $coopSess->classIds[] = $us->classes_id;
+                 $coopSess->semStatuses[$count]['classId'] = $us->classes_id;
+                 $coopSess->semStatuses[$count]['status'] = $us->status;
+                 $count++;
+              }
+              $coopSess->currentSemStatus = $coopSess->semStatuses[0]['status'];
               // store enrolled class ids.
-              $coopSess->classIds = $db->getCols('coop_users_semesters', 
-                                       'classes_id',
-                                       array('student'=>$user['username'], 
-                                       'semesters_id' => $coopSess->currentSemId
-                                       ));
+              //$coopSess->classIds = $db->getCols('coop_users_semesters', 
+              //                         'classes_id',
+              //                         array('student'=>$user['username'], 
+              //                         'semesters_id' => $coopSess->currentSemId
+              //                         ));
 
               // If student also has incomplete status for other classes/semester.
               if (!empty($incompleteData)) {
