@@ -125,6 +125,8 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
        $where[] = "semesters_id = " . $this->semId;
        $where[] = "assignments_id = " . $this->assignId;
        $submits = $SubmittedAssign->fetchAll($where);
+       
+       // Only allow at most 3 submits.
        if (count($submits) >= 3) {
           return "tooManySubmits";
        }
