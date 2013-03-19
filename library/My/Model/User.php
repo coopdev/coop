@@ -290,6 +290,16 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+   public function getSemesterStatus($username)
+   {
+
+      $UsersSem = new My_Model_UsersSemester();
+
+      $row = $UsersSem->fetchRow("student = '$username'");
+      return $row->status;
+
+   }
+
    /**
     * Retrieves all coordinators from the database
     * 

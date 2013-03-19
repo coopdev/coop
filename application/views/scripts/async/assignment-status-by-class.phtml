@@ -7,6 +7,7 @@
 ?>
 <![endif]--> 
 <?php
+   $User = new My_Model_User();
    $recs = $this->recs;
    $assigns = $this->assigns;
    $error = $this->error;
@@ -35,6 +36,8 @@
       <!-- loop through student assignment records -->
       <?php foreach($recs as $r) { ?>
 
+         <?php $semStatus = $User->getSemesterStatus($r['username']) ?>
+
          <!-- check if record is a different student from previous record to prevent duplicates -->
          <?php if($rowName !== $r['username']) { ?>
 
@@ -53,14 +56,20 @@
                   <!-- set id of the <td> to the current records username and the assignment 
                        id so that the inner HTML can be set in jQuery -->
                   <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >
+                     <!-- If user is exempt -->
+                     <?php if ($semStatus === 'Exempt') { ?>
+                     
+                        Exempt
+                        
+                     <?php } else { ?>
 
-                     <!-- if the current student submitted the assignment (evaluates to not null) and
-                          the assignments_id field of the record == the id of the assignment we are currently on,
-                          then fill in the <td> tag with "Submitted". -->
-                     <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
-
-                        <font color="green"> Submitted </font>
-
+                        <!-- if the current student submitted the assignment (evaluates to not null) and
+                             the assignments_id field of the record == the id of the assignment we are currently on,
+                             then fill in the <td> tag with "Submitted". -->
+                        <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
+                           <font color="green"> Submitted </font>
+                        <?php } ?>
+                           
                      <?php } ?>
 
                   </td>
@@ -75,21 +84,32 @@
          <?php } else { ?>
 
             <?php foreach($assigns as $a) { ?>
-
-               <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
-
-                  <!-- $td is being assigned the value of the id attribute of the appropriate <td> 
-                       so that the <td> inner html can be set -->
-                  <?php $td = $r['username'] .'-'. (string)$a['id'] ?>
-
-                  <!-- must use javascript to set html in the <td>s since the <td>s already 
-                       exist at this point -->
+         
+               <!-- $td is being assigned the value of the id attribute of the appropriate <td> 
+                    so that the <td> inner html can be set -->
+               <?php $td = $r['username'] .'-'. (string)$a['id'] ?>
+         
+               <?php if ($semStatus === 'Exempt') { ?>
                   <script type="text/javascript">
                      // quotes arount the php tags are necessary to assign it to a JS variable
                      td = '<?php echo $td ?>'
-                     $("#"+td).html("<font color=green> Submitted </font>");
+                     $("#"+td).html("Exempt");
                   </script>
+               
+               <?php } else { ?>
 
+                  <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
+
+                     <!-- must use javascript to set html in the <td>s since the <td>s already 
+                          exist at this point -->
+                     <script type="text/javascript">
+                        // quotes arount the php tags are necessary to assign it to a JS variable
+                        td = '<?php echo $td ?>'
+                        $("#"+td).html("<font color=green> Submitted </font>");
+                     </script>
+
+                  <?php } ?>
+                     
                <?php } ?>
 
             <?php } ?>
