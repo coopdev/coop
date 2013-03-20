@@ -113,7 +113,7 @@
       $assignment = $as->getAssignment($assignId);
       $due = $funcs->formatDateOut($assignment[$due_date_column]);
       $chk['assignments_id'] = $assignId;
-      if ( $as->isSubmitted($chk) === true || $as->isDue($assignId) ) { 
+      if ($as->isDue($assignId) ) { 
          $onclick = "return false";
          $isDisabled = "disabled";
       } 
