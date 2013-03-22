@@ -29,7 +29,7 @@ CREATE VIEW coop_survey_option_amount_view AS
 
 DROP VIEW IF EXISTS coop_classinfo_view;
 CREATE VIEW coop_classinfo_view AS 
-   SELECT c.*, u.fname, u.lname, u.email, u.home_phone 
+   SELECT c.*, u.fname, u.lname, u.email, u.home_phone, u.fax
    FROM coop_classes AS c 
    LEFT JOIN coop_users AS u
       ON c.coordinator = u.username;

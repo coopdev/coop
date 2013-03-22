@@ -128,6 +128,8 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
         $staticTasks->coordinator->setValue($classRow->fname . ' ' . $classRow->lname);
         
         $staticTasks->coord_phone->setValue($classRow->home_phone);
+        
+        $staticTasks->fax->setValue($classRow->fax);
 
         $staticTasks->college->setValue('Honolulu Community College');
         

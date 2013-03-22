@@ -13,7 +13,7 @@
 
 <table id="coordList" class="stripe">
 
-   <th> Name </th> <th> Number </th> <th> Email </th>
+   <th> Name </th> <th> Number </th> <th> Email </th> <th> Fax </th>
 
 
    <?php foreach ($coords as $c) { ?>
@@ -32,6 +32,11 @@
 
          <td class="regText">
             <?php echo $c['email'] ?>
+
+         </td>
+         
+         <td class="regText">
+            <?php echo $c['fax'] ?>
 
          </td>
 

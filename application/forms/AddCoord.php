@@ -19,9 +19,12 @@ class Application_Form_AddCoord extends Zend_Form
        $phone = $elems->getCommonTbox('home_phone', "Enter coordinator's phone number:");
        $phone->setRequired(false);
 
+       $fax = $elems->getCommonTbox('fax', "Enter coordinator's fax:");
+       $fax->setRequired(false);
+       
        $submit = $elems->getSubmit('Add');
 
-       $this->addElements(array($username, $fname, $lname, $email, $phone, $submit));
+       $this->addElements(array($username, $fname, $lname, $email, $phone, $fax, $submit));
     }
 
 
