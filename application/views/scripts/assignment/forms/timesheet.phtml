@@ -4,6 +4,7 @@ echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignme
 $elems = $this->element;
 ?>
 
+
 <form id="studentEvalForm" method="POST" action="<?php echo $elems->getAction ?>">
 
     <?php 
@@ -33,13 +34,13 @@ $elems = $this->element;
       </tr>
 
       <tr>
-         <td> August ___ thru 31 </td>
+         <td> August <?php echo $elems->static_tasks->fall_start_date ?> thru 31 </td>
          <td> <?php echo $elems->static_tasks->fallHrs1 ?> </td>
 
-         <td> January ___ thru 31 </td>
+         <td> January <?php echo $elems->static_tasks->spring_start_date ?> thru 31 </td>
          <td> <?php echo $elems->static_tasks->springHrs1 ?> </td>
          
-         <td> May ___ to June 30 </td>
+         <td> May <?php echo $elems->static_tasks->summer_start_date ?> to June 30 </td>
          <td> <?php echo $elems->static_tasks->summerHrs1 ?> </td>
       </tr>
 
@@ -51,7 +52,7 @@ $elems = $this->element;
          <td> February 1 thru 28 </td>
          <td> <?php echo $elems->static_tasks->springHrs2 ?> </td>
          
-         <td> July 1 to August __ </td>
+         <td> July 1 to August <?php echo $elems->static_tasks->summer_end_date ?> </td>
          <td> <?php echo $elems->static_tasks->summerHrs2 ?> </td>
       </tr>
 
@@ -78,10 +79,10 @@ $elems = $this->element;
       </tr>
       
       <tr>
-         <td> December 1 thru __ </td>
+         <td> December 1 thru <?php echo $elems->static_tasks->fall_end_date ?> </td>
          <td> <?php echo $elems->static_tasks->fallHrs5 ?> </td>
 
-         <td> May 1 thru __ </td>
+         <td> May 1 thru <?php echo $elems->static_tasks->spring_end_date ?> </td>
          <td> <?php echo $elems->static_tasks->springHrs5 ?> </td>
          
          <td></td>
@@ -114,3 +115,13 @@ $elems = $this->element;
 
 
 </form>
+
+<script type="text/javascript"> 
+   $(document).ready(function() {
+      $(".start-date").parent("dt")
+
+
+
+   })
+
+</script>

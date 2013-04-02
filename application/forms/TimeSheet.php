@@ -75,6 +75,11 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        
        $elem = $elems->getCommonTbox('fallTotalHrs', ' ');
        $hoursFields[] = $elem;
+
+       $startEndDates = array();
+       $startEndDates[] = $elems->getCommonTbox('fall_start_date', ' ');
+       $startEndDates[] = $elems->getCommonTbox('fall_end_date', ' ');
+
        
        $elem = $elems->getCommonTbox('springHrs1', ' ');
        $elem->setAttrib('semester', 'spring');
@@ -98,6 +103,9 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        
        $elem = $elems->getCommonTbox('springTotalHrs', ' ');
        $hoursFields[] = $elem;
+
+       $startEndDates[] = $elems->getCommonTbox('spring_start_date', ' ');
+       $startEndDates[] = $elems->getCommonTbox('spring_end_date', ' ');
        
        $elem = $elems->getCommonTbox('summerHrs1', ' ');
        $elem->setAttrib('semester', 'summer');
@@ -109,6 +117,9 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        
        $elem = $elems->getCommonTbox('summerTotalHrs', ' ');
        $hoursFields[] = $elem;
+       
+       $startEndDates[] = $elems->getCommonTbox('summer_start_date', ' ');
+       $startEndDates[] = $elems->getCommonTbox('summer_end_date', ' ');
 
        foreach ($hoursFields as $f) {
           $f->setAttrib('size', '8');
@@ -116,7 +127,14 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
           $f->setRequired(false);
        }
 
+       foreach ($startEndDates as $se) {
+          $se->setDecorators(array('ViewHelper'))
+             ->setAttrib('class', 'static textinput-line')
+             ->setAttrib('size', '5');
+       }
+
        $staticSubform->addElements($hoursFields);
+       $staticSubform->addElements($startEndDates);
        
        //$staticSubform->setElementDecorators(array('ViewHelper',
        //                                           'Errors',

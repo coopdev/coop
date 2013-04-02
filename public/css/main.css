@@ -324,3 +324,15 @@ label {
 }
 
 
+
+/* Text input with only bottom border */
+
+.textinput-line {
+   /*
+   outline: 0;
+   border: 0;
+   background: transparent;
+   border-bottom: 2px solid black;
+   */
+   width: 20px;
+}
