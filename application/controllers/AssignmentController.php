@@ -220,6 +220,7 @@ class AssignmentController extends Zend_Controller_Action
                 $this->view->resultMessage = "<p class='error'> Error </p>";
              }
           } else {
+             //die(var_dump($form->getErrors()));
              $this->view->resultMessage = "<p class='error'> One or more fields have errors </p>";
           } 
 

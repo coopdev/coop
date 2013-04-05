@@ -128,9 +128,11 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        }
 
        foreach ($startEndDates as $se) {
-          $se->setDecorators(array('ViewHelper'))
+          $se->setDecorators(array('ViewHelper',
+                                   'Errors'))
              ->setAttrib('class', 'static textinput-line')
-             ->setAttrib('size', '5');
+             ->setAttrib('size', '5')
+             ->setRequired(false);
        }
 
        $staticSubform->addElements($hoursFields);
