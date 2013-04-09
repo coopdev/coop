@@ -143,8 +143,30 @@ class Application_Form_StudentEval extends Application_Form_CommonForm
                ->setLabel("Rate yourself on this learning outcome")
                ->setMultiOptions($this->options)
                ->setSeparator("");
+       
 
        $elems =  array($outcome1, $outcome2, $rating1, $rating2);
+       
+       $Class = new My_Model_Class();
+       if ($Class->isFire193V($this->classId)) {
+           $objective3 = new Zend_Form_Element_Text('lrnOutcome3');
+           $objective3->setRequired(true)
+                    ->setLabel('3.')
+                    ->addFilter('StringTrim')
+                    ->addFilter('StripTags')
+                    ->setAttrib('placeholder', 'Enter Learning Outcome')
+                    ->setAttrib('size', 85);
+
+           $rating3 = new Zend_Form_Element_Radio('lrnOutcomeRating3');
+           $rating3->setRequired(true)
+                   ->setLabel("Rate yourself on this learning outcome")
+                   ->setMultiOptions($this->options)
+                   ->setSeparator("");
+
+           $elems[] = $objective3;
+           $elems[] = $rating3;
+
+       }
 
        foreach ($elems as $t) {
           $t->setDecorators( array('ViewHelper',
