@@ -87,6 +87,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('asignment_cover-letter'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_list-submitted'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_learning-outcome'), 'assignment');
+      $this->add(new Zend_Acl_Resource('asignment_learning-outcome-instructions'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_set-stu-eval-option-amount'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_manage-rated-questions'), 'assignment');
       $this->add(new Zend_Acl_Resource('asignment_add-rated-question'), 'assignment');
@@ -171,6 +172,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('user', 'assignment', 'assignment_resume');
       $this->allow('user', 'assignment', 'assignment_learning-outcome');
       $this->allow('user', 'assignment', 'assignment_learning-outcome-edit');
+      $this->allow('user', 'assignment', 'assignment_learning-outcome-instructions');
       $this->allow('user', 'assignment', 'assignment_student-eval');
       $this->allow('user', 'assignment', 'assignment_cover-letter');
       $this->allow('user', 'assignment', 'assignment_supervisor-eval');

@@ -48,6 +48,11 @@ class My_Model_User extends Zend_Db_Table_Abstract
        return false;
    }
 
+   public function getLearningObjectives($data)
+   {
+
+   }
+
    public function addStudent($student)
    {
        $Role = new My_Model_Role();

@@ -1,0 +1,89 @@
+<?php
+$learningObjectives = $this->learningObjectives;
+$class = $this->class;
+$newReportUrl = $this->url(array('controller' => 'assignment', 'action' => 'learning-outcome'));
+$editReportUrl = $this->url(array('controller' => 'assignment', 'action' => 'learning-outcome-edit'));
+?>
+
+<style type="text/css">
+   div#learning-outcome-instructions p, div#learning-outcome-instructions li {
+      font-size: 16px;
+   }
+
+   li {
+      margin-left: 30px;
+   }
+
+
+</style>
+
+<div id="learning-outcome-instructions">
+
+<p> <a href="<?php echo $newReportUrl ?>"> Create New Report </a> </p>
+<p> <a href="<?php echo $editReportUrl ?>"> View Saved Reports </a> </p>
+
+
+
+<h2> Learning Objective Reports </h2>
+
+<p> 
+   <b> Your Learning Outcome </b> this work period was: As part of a team, the 
+   student will perform all duties required at the Coop Ed work site, demonstrating 
+   positive work habits and using appropriate procedures, tools and equipment, 
+   consistent with all standards and OSHA regulations. Please comment on how you 
+   feel you performed.
+</p>
+
+<p> The specific objectives that you established were: </p>
+
+<ol id="learning-objectives">
+<?php foreach ($learningObjectives as $lo) { ?>
+   <li>
+      <u> <?php echo $lo ?> </u>
+   </li>
+<?php } ?>
+</ol>
+
+<p> The purpose for developing learning objectives are to: </p>
+
+<ul>
+   <li> further enhance your effectiveness by establishing a framework for direction. </li>
+   <li> assist you in understanding more clearly what you are learning on-the-job and your accomplishments. </li>
+   <li> provide a useful tool for evaluating your effectiveness and measuring your progress on-the-job. </li>
+   <li> provide you with a summary of your overall work experience for now and in the future. </li>
+   <li> Offer a vehicle for creating experiences that go beyond original expectation. </li>
+</ul>
+
+<h3> <strong> Writing Learning Objective Reports </strong> </h3>
+
+<p>
+   <b> Step 1: </b> Think about the learning objectives that you established with 
+   your supervisor at the beginning of the semester, the skills/knowledge which you 
+   learned at your Co-op site and anything that can be applied from classroom/Lab activities at HCC. 
+</p>
+
+<p>
+   <b> Step 2: </b> Analyze the action plans, measurements, and completion dates for each objective.
+</p>
+
+<p> 
+   <b> Step 3: </b> Write a Report on each Learning Objective. You are required 
+   to submit 1 Learning Objective Report Paper <b><i> for each credit </i></b> of <?php echo $class ?>.   
+   Each Paper must be 3-5 pages typewritten & double-spaced and include the following:
+</p>
+
+<ol>
+   <li> A description of the learning objective and why it was established; </li>
+   <li> A discussion of how the objective relates to your job duties and your HCC major; </li>
+   <li> An explanation of the thoughts, feelings and actions you experienced this semester; </li>
+   <li> Examples of how people responded to you, and what you learned from the interaction; and, </li>
+   <li> The results of your efforts, the outcome of your objective, and future goals related to your experience this semester. </li>
+</ol>
+
+<p>
+   <b> Step 4: </b> Submit your Learning Objective Report Paper(s) to the 
+   Cooperative Education Coordinator by the Last full week of the Semester. 
+   You are welcome to submit your papers early to obtain feedback if desired.
+</p>
+
+</div> <!-- END div#learning-outcome-instructions -->

@@ -589,6 +589,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       $select = $db->buildSelectWhereClause($select, $where);
 
+      //die($select->assemble());
 
       $subAsnmts = $this->fetchAll($select);
       //die(var_dump(count($subAsnmts)));

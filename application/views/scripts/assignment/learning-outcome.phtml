@@ -4,6 +4,9 @@
    echo $this->headScript();
 
    $url = $this->url(array('action' => 'learning-outcome-edit'));
+   $instructionsUrl = $this->url(array('action' => 'learning-outcome-instructions'));
+   
+   echo "<h4> <a href='$instructionsUrl'> Instructions </a> </h4> <br />";
    echo "<h4> <a href='$url'> View Saved Reports </a> </h4> <br />";
 
    echo $this->message;

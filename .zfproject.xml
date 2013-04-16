@@ -132,6 +132,8 @@
         <formFile formName="Resume"/>
         <formFile formName="CoverLetter"/>
         <formFile formName="Comment"/>
+        <formFile formName="LearningObjectiveInstructions"/>
+        <formFile formName="LearningOutcomeInstructions"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

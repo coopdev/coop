@@ -373,6 +373,28 @@ class AssignmentController extends Zend_Controller_Action
 
     }
 
+    public function learningOutcomeInstructionsAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $Assignment = new My_Model_Assignment();
+       $agreementId = $Assignment->getCoopAgreementId();
+       
+       $answers = $Assignment->fetchAnswersForLastSubmitted(
+                       array('username'       => $coopSess->username,
+                             'classes_id'     => $coopSess->currentClassId,
+                             'semesters_id'    => $coopSess->currentSemId,
+                             'assignments_id' => $agreementId));
+
+       $learningObjectives = array();
+       foreach ($answers as $a) {
+          if (preg_match('/lrnObjective[0-9]/', $a->static_question)) {
+             $learningObjectives[] = $a->answer_text;
+          }
+       }
+       $this->view->learningObjectives = $learningObjectives;
+       $this->view->class = $coopSess->currentClassName;
+    }
+
     public function learningOutcomeAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
