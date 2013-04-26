@@ -134,6 +134,7 @@
         <formFile formName="Comment"/>
         <formFile formName="LearningObjectiveInstructions"/>
         <formFile formName="LearningOutcomeInstructions"/>
+        <formFile formName="EditStudent"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

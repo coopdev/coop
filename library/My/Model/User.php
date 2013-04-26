@@ -486,6 +486,14 @@ class My_Model_User extends Zend_Db_Table_Abstract
 
    }
 
+
+   public function editStudent($username, $data)
+   {
+      $row = $this->fetchRow("username = '$username'");
+      $row->setFromArray($data);
+      $row->save();
+   }
+
    /**
     * Adds a student aid to the database.
     * 

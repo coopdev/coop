@@ -398,7 +398,21 @@ class UserController extends Zend_Controller_Action
 
     public function editStudentAction()
     {
+       $username = $this->getRequest()->getParam('username');
+       $form = new Application_Form_EditStudent( array('username' => $username) );
+       $this->view->form = $form;
 
+       if ($this->getRequest()->isPost()) {
+
+          $data = $_POST;
+
+          if ($form->isValid($data)) {
+             $User = new My_Model_User();
+             $User->editStudent($username, $data);
+             $this->view->resultMessage = "<p class='success'> Student has been updated </p>";
+          }
+
+       }
     }
     
     

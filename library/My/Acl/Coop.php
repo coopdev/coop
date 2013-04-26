@@ -51,6 +51,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user_list-coords'), 'user');
       $this->add(new Zend_Acl_Resource('user_edit-coord'), 'user');
       $this->add(new Zend_Acl_Resource('user_add-coord'), 'user');
+      $this->add(new Zend_Acl_Resource('user_edit-student'), 'user');
       $this->add(new Zend_Acl_Resource('user_list-studentaids'), 'user');
 
 

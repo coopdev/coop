@@ -32,6 +32,9 @@ if (empty($results)) { ?>
             $sid = $r['semesters_id'];
             $coord = $r['coordinator'];
             $semid = $r['semesters_id'];
+            $editStudentUrl = $this->url( array('controller' => 'user', 
+                                                'action' => 'edit-student', 
+                                                'username' => $r['username']) );
     ?>
 
       <tr>
@@ -40,7 +43,7 @@ if (empty($results)) { ?>
                    data-rec='[{"username":"<?php echo $uname ?>","classes_id":"<?php echo $cid ?>","semesters_id":"<?php echo $semid ?>"}]' />
          </td>
 
-         <td> <?php echo $r['lname'].', '.$r['fname'].' ('.$r['username'].')' ?> </td>
+         <td> <a href="<?php echo $editStudentUrl ?>"> <?php echo $r['lname'].', '.$r['fname'].' ('.$r['username'].')' ?> </a> </td>
 
          <td> <?php echo $r['class'] ?> </td>
 
