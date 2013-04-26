@@ -3,8 +3,9 @@
 
    $coopSess = new Zend_Session_Namespace('coop');
 
-   $as = new My_Model_Assignment();
+   $as       = new My_Model_Assignment();
    $Semester = new My_Model_Semester();
+   $Class    = new My_Model_Class();
 
    $curSem = $coopSess->currentSemId;
    $curClass = $coopSess->currentClassId;
@@ -106,23 +107,27 @@
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
                          'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a> | due: <?php echo $due ?> </li><br />
 
-   <li><a class="regText"  href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'learning-outcome-instructions'), null, true) ?>'> Learning Outcome Report Instructions </a><br /><br />
-   <?php 
-      $onclick = "return true";
-      $isDisabled = "enabled";
-      $assignId = $as->getLearningOutcomeId();
-      $assignment = $as->getAssignment($assignId);
-      $due = $funcs->formatDateOut($assignment[$due_date_column]);
-      $chk['assignments_id'] = $assignId;
-      if ($as->isDue($assignId) ) { 
-         $onclick = "return false";
-         $isDisabled = "disabled";
-      } 
-    ?>
+   <?php if ($Class->isTransferable($coopSess->currentClassId)) { ?>
+      
+      <li><a class="regText"  href='<?php echo $this->url(array('controller'=>'assignment',
+                            'action'=>'learning-outcome-instructions'), null, true) ?>'> Learning Outcome Report Instructions </a><br /><br />
+      <?php 
+         $onclick = "return true";
+         $isDisabled = "enabled";
+         $assignId = $as->getLearningOutcomeId();
+         $assignment = $as->getAssignment($assignId);
+         $due = $funcs->formatDateOut($assignment[$due_date_column]);
+         $chk['assignments_id'] = $assignId;
+         if ($as->isDue($assignId) ) { 
+            $onclick = "return false";
+            $isDisabled = "disabled";
+         } 
+       ?>
 
-   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
-                         'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report </a> | due: <?php echo $due ?> </li><br />
+      <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
+                            'action'=>'learning-outcome'), null, true) ?>'> Learning Outcome Report </a> | due: <?php echo $due ?> </li><br />
+
+   <?php } ?>
    
    <?php 
       $onclick = "return true";

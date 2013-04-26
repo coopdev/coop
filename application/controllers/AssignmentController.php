@@ -375,14 +375,21 @@ class AssignmentController extends Zend_Controller_Action
 
     public function learningOutcomeInstructionsAction()
     {
+       $Class = new My_Model_Class();
        $coopSess = new Zend_Session_Namespace('coop');
+
+       if (!$Class->isTransferable($coopSess->currentClassId)) {
+          $this->_helper->viewRenderer->setNoRender();
+          return;
+       }
+
        $Assignment = new My_Model_Assignment();
        $agreementId = $Assignment->getCoopAgreementId();
        
        $answers = $Assignment->fetchAnswersForLastSubmitted(
                        array('username'       => $coopSess->username,
                              'classes_id'     => $coopSess->currentClassId,
-                             'semesters_id'    => $coopSess->currentSemId,
+                             'semesters_id'   => $coopSess->currentSemId,
                              'assignments_id' => $agreementId));
 
        $learningObjectives = array();
@@ -397,7 +404,13 @@ class AssignmentController extends Zend_Controller_Action
 
     public function learningOutcomeAction()
     {
+       $Class = new My_Model_Class();
        $coopSess = new Zend_Session_Namespace('coop');
+       
+       if (!$Class->isTransferable($coopSess->currentClassId)) {
+          $this->_helper->viewRenderer->setNoRender();
+          return;
+       }
        
        $form = new Application_Form_LearningOutcomeReport();
        $form->setUsername($coopSess->username);
@@ -450,6 +463,12 @@ class AssignmentController extends Zend_Controller_Action
     public function learningOutcomeEditAction()
     {
        $coopSess = new Zend_Session_Namespace('coop');
+       $Class = new My_Model_Class();
+       
+       if (!$Class->isTransferable($coopSess->currentClassId)) {
+          $this->_helper->viewRenderer->setNoRender();
+          return;
+       }
        
        $form = new Application_Form_LearningOutcomeReport();
        $form->setUsername($coopSess->username);
