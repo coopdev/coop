@@ -15,29 +15,41 @@
 
 <?php
    $extDuedates = $this->extDuedates;
+   $majors = $this->majors;
 
    $deleteUrl = array("controller" => "user", "action" => "delete-extended-duedate");
 ?>
 
 <a class="regText" href="<?php echo $this->url( array('controller' => 'assignment', 'action' => 'extend-duedate')) ?>">
     Extend a due date
-</a>
+</a> <br /> <br />
 
-<table id="ext-duedates" class="stripe">
-    <tr>
-        <th> Student </th> <th> Assignment </th> <th> Extended Due date </th>
-    </tr>
+Major: <br />
+<select id="extended-duedates-filter">
+   <?php foreach($majors as $major) { ?>
+   <option> <?php echo $major ?> </option>
+   <?php } ?>
+</select>
 
-    <?php foreach ($extDuedates as $e) { ?>
-        <?php $deleteUrl['id'] = $e->id ?>
-        <tr>
-            <td> <?php echo $e->lname . ', ' . $e->fname . ' ('. $e->username . ')' ?> </td>
-            <td> <?php echo $e->assignment ?> </td>
-            <td> <?php echo $e->due_date ?> </td>
-            <td> <a href="<?php echo $this->url($deleteUrl) ?>"> delete </a> </td>
-        </tr>
+<button id="filter-btn"> Filter </button>
 
-    <?php } ?>
+<div id="async-container">
+   <?php echo $this->partial("user/partials/extended-duedates.phtml", array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl)) ?>
+</div>
 
+<script type="text/javascript">
+   $(document).ready(function() {
 
-</table>
+      $("#filter-btn").live('click', function() {
+         major = $("#extended-duedates-filter").val();
+
+         $.post(base + "/user/view-extended-duedates", { 'major' : major }, function(resp) {
+            $("#async-container").html(resp);
+            //$("#async-container").append("<?php //echo $this->partial('user/partials/extended-duedates.phtml',
+            //        array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl)) ?>");
+                    
+         });
+      });
+
+   });
+</script>

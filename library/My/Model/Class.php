@@ -28,6 +28,20 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       return $this->fetchAll(null, "name")->toArray();
    }
 
+   public function getMajors()
+   {
+      $db = $this->getAdapter();
+
+      $rows = $db->query("CALL get_majors()")->fetchAll();
+
+      $majors = array();
+      foreach ($rows as $r) {
+         $majors[] = $r['major'];
+      }
+
+      return $majors;
+   }
+
    public function getClassInfo($where)
    {
       $db = new My_Db();
@@ -130,6 +144,9 @@ class My_Model_Class extends Zend_Db_Table_Abstract
       if ($this->rowExists(array('name' => $data['name']))) {
          return "exists";
       }
+
+      // Make class name upper case.
+      $data['name'] = strtoupper($data['name']);
 
       $id = $this->insert($data);
 

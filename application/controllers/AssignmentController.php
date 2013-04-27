@@ -672,7 +672,7 @@ class AssignmentController extends Zend_Controller_Action
           $this->view->lastStudent = $data['username'];
 
           if ($form->isValid($data)) {
-             unset($data['classes_id']);
+             //unset($data['classes_id']);
              $as = new My_Model_Assignment();
              $res = $as->extendDuedate($data);
              if ($res) {

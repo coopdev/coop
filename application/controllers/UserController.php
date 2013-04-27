@@ -373,6 +373,22 @@ class UserController extends Zend_Controller_Action
         $Assignment = new My_Model_Assignment();
         $this->view->extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1));
 
+        $Class = new My_Model_Class();
+        $this->view->majors = $Class->getMajors();
+
+        if ($this->getRequest()->isPost()) {
+           $this->_helper->viewRenderer->setNoRender();
+           $this->_helper->getHelper('layout')->disableLayout();
+           $major = $_POST['major'];
+           
+           $extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1), 
+                   array("class LIKE '$major%'"));
+           
+           echo $this->view->partial("user/partials/extended-duedates.phtml", 
+                   array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl));
+        }
+
+
     }
 
     public function deleteExtendedDuedateAction()

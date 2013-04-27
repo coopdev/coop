@@ -1,0 +1,17 @@
+<table id='ext-duedates' class='stripe'>
+    <tr>
+        <th> Student </th> <th> Assignment </th> <th> Extended Due date </th>
+    </tr>
+
+    <?php foreach ($this->extDuedates as $e) { ?>
+        <?php $this->deleteUrl['id'] = $e->id ?>
+        <tr>
+            <td> <?php echo $e->lname . ', ' . $e->fname . ' ('. $e->username . ')' ?> </td>
+            <td> <?php echo $e->assignment ?> </td>
+            <td> <?php echo $e->due_date ?> </td>
+            <td> <a href="<?php echo $this->url($this->deleteUrl) ?>"> delete </a> </td>
+        </tr>
+
+    <?php } ?>
+
+</table>

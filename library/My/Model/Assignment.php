@@ -799,8 +799,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
    /*
     * $where = array with keys, 'username', 'assignments_id'.
+    * $nonEqualsWhere = just like $where, except doesn't use equals comparison. Can use 'LIKE', '<', etc.
     */
-   public function getExtendedDuedates($where)
+   public function getExtendedDuedates($where, $nonEqualsWhere=array())
    {
        $db = new My_Db();
        $funcs = new My_Funcs();
@@ -808,6 +809,13 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $select = $this->select()->setIntegrityCheck(false);
        $select->from('extended_duedates_view');
        $select = $db->buildSelectWhereClause($select, $where);
+
+       if (!empty($nonEqualsWhere)) {
+          foreach ($nonEqualsWhere as $w) {
+             $select->where($w);
+          }
+       }
+
        $select->order("lname ASC");
 
        $rows = $this->fetchAll($select);
