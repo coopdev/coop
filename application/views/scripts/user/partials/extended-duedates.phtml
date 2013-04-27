@@ -13,9 +13,28 @@
             <td> <?php echo $e->lname . ', ' . $e->fname . ' ('. $e->username . ')' ?> </td>
             <td> <?php echo $e->assignment ?> </td>
             <td> <?php echo $e->due_date ?> </td>
-            <td> <a href="<?php echo $this->url($deleteUrl) ?>"> delete </a> </td>
+            <td> <a data-ext-duedate-id="<?php echo $e->id ?>" class="delete-extended-duedate" href="<?php echo $this->url($deleteUrl) ?>"> delete </a> </td>
         </tr>
 
     <?php } ?>
 
 </table>
+
+
+<script type="text/javascript"> 
+   $(document).ready(function() {
+      $(".delete-extended-duedate").live('click', function() {
+
+         id = $(this).data('ext-duedate-id');
+         
+         filter = $("#extended-duedates-filter").data('filter');
+         
+         $.post(base + "/user/delete-extended-duedate", { 'id' : id, 'filter' : filter }, function(resp) {
+            $("#async-container").html(resp);
+         })
+
+
+         return false;
+      })
+   })
+</script>

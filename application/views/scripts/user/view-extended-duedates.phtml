@@ -23,7 +23,7 @@
 </a> <br /> <br />
 
 Major: <br />
-<select id="extended-duedates-filter">
+<select id="extended-duedates-filter" data-filter="">
    <?php foreach($majors as $major) { ?>
    <option> <?php echo $major ?> </option>
    <?php } ?>
@@ -40,6 +40,10 @@ Major: <br />
 
       $("#filter-btn").live('click', function() {
          major = $("#extended-duedates-filter").val();
+
+         $("#extended-duedates-filter").data('filter', major);
+         //filter = $("#extended-duedates-filter").data('filter');
+         //alert(filter);
 
          $.post(base + "/user/view-extended-duedates", { 'major' : major }, function(resp) {
             $("#async-container").html(resp);

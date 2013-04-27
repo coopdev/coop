@@ -391,16 +391,30 @@ class UserController extends Zend_Controller_Action
 
     }
 
+    // Async
     public function deleteExtendedDuedateAction()
     {
-        if ($this->getRequest()->isGet()) {
-            $id = $this->getRequest()->getParam('id');
-
+        //if ($this->getRequest()->isGet()) {
+        if ($this->getRequest()->isPost()) {
+            $this->_helper->viewRenderer->setNoRender();
+            $this->_helper->getHelper('layout')->disableLayout();
+            
+            //$id = $this->getRequest()->getParam('id');
+            
+            $id = $_POST['id'];
             $Assignment = new My_Model_Assignment();
-
             $Assignment->deleteExtendedDuedate($id);
 
-            $this->_helper->redirector("view-extended-duedates");
+            $filter = $_POST['filter'];
+            if (!empty($filter)) {
+               $extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1), 
+                       array("class LIKE '$filter%'"));
+            } else {
+               $extDuedates = $Assignment->getExtendedDuedates(array("cur_sem" => 1));
+            }
+            echo $this->view->partial("user/partials/extended-duedates.phtml", 
+                    array('extDuedates' => $extDuedates));
+            //$this->_helper->redirector("view-extended-duedates");
         }
 
     }
