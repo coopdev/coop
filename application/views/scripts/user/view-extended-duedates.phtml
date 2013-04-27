@@ -16,8 +16,6 @@
 <?php
    $extDuedates = $this->extDuedates;
    $majors = $this->majors;
-
-   $deleteUrl = array("controller" => "user", "action" => "delete-extended-duedate");
 ?>
 
 <a class="regText" href="<?php echo $this->url( array('controller' => 'assignment', 'action' => 'extend-duedate')) ?>">
@@ -34,7 +32,7 @@ Major: <br />
 <button id="filter-btn"> Filter </button>
 
 <div id="async-container">
-   <?php echo $this->partial("user/partials/extended-duedates.phtml", array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl)) ?>
+   <?php echo $this->partial("user/partials/extended-duedates.phtml", array('extDuedates' => $extDuedates)) ?>
 </div>
 
 <script type="text/javascript">
@@ -45,9 +43,6 @@ Major: <br />
 
          $.post(base + "/user/view-extended-duedates", { 'major' : major }, function(resp) {
             $("#async-container").html(resp);
-            //$("#async-container").append("<?php //echo $this->partial('user/partials/extended-duedates.phtml',
-            //        array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl)) ?>");
-                    
          });
       });
 

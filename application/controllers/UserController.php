@@ -385,7 +385,7 @@ class UserController extends Zend_Controller_Action
                    array("class LIKE '$major%'"));
            
            echo $this->view->partial("user/partials/extended-duedates.phtml", 
-                   array('extDuedates' => $extDuedates, 'deleteUrl' => $deleteUrl));
+                   array('extDuedates' => $extDuedates));
         }
 
 
