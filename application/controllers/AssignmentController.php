@@ -67,6 +67,8 @@ class AssignmentController extends Zend_Controller_Action
              }
              //$this->_helper->redirector('midterm-report');
 
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
        }
 
@@ -114,7 +116,10 @@ class AssignmentController extends Zend_Controller_Action
 
              $this->view->message = $message;
 
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
+
        }
     }
 
@@ -167,7 +172,9 @@ class AssignmentController extends Zend_Controller_Action
              } else {
                 $this->view->resultMessage = "<p class='error'> Error </p>";
              }
-          } 
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
+          }
 
        }
 
@@ -220,9 +227,8 @@ class AssignmentController extends Zend_Controller_Action
                 $this->view->resultMessage = "<p class='error'> Error </p>";
              }
           } else {
-             //die(var_dump($form->getErrors()));
-             $this->view->resultMessage = "<p class='error'> One or more fields have errors </p>";
-          } 
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
+          }
 
        }
 
@@ -455,6 +461,8 @@ class AssignmentController extends Zend_Controller_Action
              }
 
              $this->view->message = $message;
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
 
        }
@@ -503,6 +511,7 @@ class AssignmentController extends Zend_Controller_Action
           } else {
              $errors = $submittedForm->getMessages();
              $this->view->errors = $errors['report'];
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
 
        }

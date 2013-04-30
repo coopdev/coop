@@ -38,6 +38,8 @@ class FormController extends Zend_Controller_Action
                 $this->view->resultMessage = "<p class=success> Success </p>";
              }
 
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
        }
     }
@@ -84,8 +86,7 @@ class FormController extends Zend_Controller_Action
              //die(var_dump(count($form->submissions)));
 
           } else {
-
-             $this->view->resultMessage = "<p class=error> The form failed to submit due to errors </p>";
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
 
           //die(var_dump($form->getErrors()));
@@ -144,6 +145,8 @@ class FormController extends Zend_Controller_Action
              } else {
                 $this->view->resultMessage = "<p class='error'> Error </p>";
              }
+          } else {
+             $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
        }
 
