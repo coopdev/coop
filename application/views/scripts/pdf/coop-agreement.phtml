@@ -13,10 +13,16 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
     .valueRow td {
         padding-bottom: 5mm;
     }
+
+    #signatures {
+       margin-top: 30px;
+       border-top: medium solid #000000;
+       padding-top: 30px;
+    }
 </style>
 
 <div style="text-align: center">
-    <h3> Cooperative Education Agreement </h3>
+    <h3> Cooperative Education Agreement Hello </h3>
 </div>
 
 <table id="jobsite-fields-table">
@@ -121,3 +127,9 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
   ?> <br />
 
 <?php } ?>
+
+<div id="signatures">
+   <p> Supervisor's Signature: _________________________________________________  Date: _____________ </p>
+   <p> Student's Signature: ____________________________________________________  Date: _____________ </p>
+   <p> Cooperative Education Coordinator's Signature: ______________________________  Date: _____________ </p>
+</div>

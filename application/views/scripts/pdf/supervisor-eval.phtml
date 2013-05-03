@@ -16,6 +16,12 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
     .valueRow td {
         padding-bottom: 5mm;
     }
+
+    #signatures {
+       margin-top: 30px;
+       border-top: medium solid #000000;
+       padding-top: 30px;
+    }
 </style>
 
 <div style="text-align: center">
@@ -169,3 +175,7 @@ echo "<textarea rows='10' cols='80'></textarea>";
 
 </form>
 
+
+<div id="signatures">
+   <p> Supervisor's Signature: _________________________________________________  Date: _____________ </p>
+</div>
