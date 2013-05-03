@@ -111,7 +111,9 @@ $elems = $this->element;
        } 
    ?>
 
-   <?php echo $elems->pdfSubmit ?>
+   <?php if ($coopSess->role === 'user') { ?>
+      <?php echo $elems->pdfSubmit ?>
+   <?php } ?>
 
 
 </form>
