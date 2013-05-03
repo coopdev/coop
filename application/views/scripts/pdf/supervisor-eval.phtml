@@ -129,7 +129,9 @@ $userRow = $User->fetchRow("username = '" . $form->getUsername() . "'");
    <?php
        $form->static_tasks->lrnObjectiveRating1->setSeparator(' ');
        $form->static_tasks->lrnObjectiveRating2->setSeparator(' ');
-       $form->static_tasks->lrnObjectiveRating3->setSeparator(' ');
+       if (isset($form->static_tasks->lrnObjectiveRating3)) {
+          $form->static_tasks->lrnObjectiveRating3->setSeparator(' ');
+       }
        echo "1. <b>" . $form->static_tasks->lrnObjective1->getValue() . '</b> <br /> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' .
                $form->static_tasks->lrnObjectiveRating1 . "<br /> <br />";
 
