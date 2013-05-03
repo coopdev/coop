@@ -16,15 +16,22 @@ class PdfController extends Zend_Controller_Action
     {
         $this->_helper->getHelper('layout')->disableLayout();
         if ($this->getRequest()->isPost()) {
+            $coopSess = new Zend_Session_Namespace('coop');
+            $username = null;
+            if ($coopSess->role === 'user') {
+               $username = $coopSess->username;
+            }
+            
             $formData = $_POST;
             //die(var_dump($formData));
             $formData = rawurlencode(serialize($formData));
 
             //$serverName = $_SERVER['SERVER_NAME'];
             $serverName = $this->view->serverUrl();
-            $url = $this->view->url(array('action' => 'timesheet', 
-                                    'formData' => $formData,
-                                    'pdfRole' => $this->pdfRole));
+            $url = $this->view->url(array('action'   => 'timesheet', 
+                                          'formData' => $formData,
+                                          'pdfRole'  => $this->pdfRole,
+                                          'username' => $username));
             $url = $serverName . $url;
 
             $html = fopen($url, 'r');
@@ -43,8 +50,10 @@ class PdfController extends Zend_Controller_Action
             $formData = $this->getRequest()->getParam('formData');
             $formData = str_replace('\\', '', $formData);
             $formData = unserialize(rawurldecode($formData));
+
+            $username = $this->getRequest()->getParam('username');
             //die(var_dump($formData));
-            $form = new Application_Form_TimeSheet(array('populateForm' => false));
+            $form = new Application_Form_TimeSheet(array('populateForm' => false, 'username' => $username));
             $form->populate($formData);
 
             $this->view->form = $form;

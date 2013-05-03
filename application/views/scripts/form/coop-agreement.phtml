@@ -1,9 +1,22 @@
+<style>
+   #form-meta-data {
+      margin-bottom: 30px;
+      font-size: 16px;
+   }
+</style>
+
 <h2> Cooperative Education Agreement </h2>
 
 
 <?php
    echo $this->message;
 
+   echo "<div id=form-meta-data>";
+   echo $this->form->studentName . "<br />";
+   echo $this->form->class . "<br />";
+   echo $this->form->semester . "<br />";
+   echo "</div>";
+   
    $form = $this->form;
    echo $form;
 ?>

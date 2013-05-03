@@ -7,6 +7,15 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
     {
        $Assign = new My_Model_Assignment();
        $this->assignId = $Assign->getTimeSheetId();
+
+       //die(var_dump($this->username));
+       $User = new My_Model_User();
+       $user = $User->fetchRow("username = '" . $this->username . "'");
+
+       $studentsName = new Zend_Form_Element_Text('studentsName');
+       $studentsName->addFilter("StripTags")
+                    ->setValue($user->fname . ' ' . $user->lname);
+       $this->addElement($studentsName);
        
        $this->setDecorators(array(array('ViewScript', 
                                   array('viewScript' => '/assignment/forms/timesheet.phtml'))));

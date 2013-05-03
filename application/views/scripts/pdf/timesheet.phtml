@@ -10,6 +10,8 @@ $form = $this->form;
 
 <form id="studentEvalForm" method="POST" action="<?php echo $form->getAction ?>">
 
+   <b> Student: </b> <?php echo $form->studentName ?> <br /><br />
+
    <b>Position:</b>
    <?php echo $form->static_tasks->position->getValue() ?> &nbsp;&nbsp;&nbsp;&nbsp;
 

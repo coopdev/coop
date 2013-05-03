@@ -1,9 +1,21 @@
+<style>
+   #form-meta-data {
+      margin-bottom: 30px;
+      font-size: 16px;
+   }
+</style>
 <?php
    $this->pageTitle = "Supervisor's Evaluation Form";
    $coopSess = new Zend_Session_Namespace('coop');
    
    echo $this->message;
    //echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/assignments/supervisor-eval.css'); 
+
+   echo "<div id=form-meta-data>";
+   echo $this->form->studentName . "<br />";
+   echo $this->form->class . "<br />";
+   echo $this->form->semester . "<br />";
+   echo "</div>";
    
    echo $this->form;
 ?>

@@ -6,14 +6,17 @@ class Application_Form_CommonForm extends Zend_Form
     // since all three forms using this Class share the same questions.
     protected $assignId;
     protected $classId;
+    public $class;
     protected $username;
+    public $studentName;
     protected $semId;
+    public $semester;
     protected $populateForm = true;
 
-    protected $options = array('4' => '4',
-                               '3' => '3',
-                               '2' => '2',
-                               '1' => '1',
+    protected $options = array('4'  => '4',
+                               '3'  => '3',
+                               '2'  => '2',
+                               '1'  => '1',
                                'NA' => 'NA');
 
     public function init()
@@ -264,12 +267,21 @@ class Application_Form_CommonForm extends Zend_Form
     {
        $this->classId = $classId;
 
+       $Class = new My_Model_Class();
+       $row = $Class->fetchRow("id = $classId");
+
+       $this->class = $row->name;
+
     }
 
     public function setUsername($username)
     {
        $this->username = $username;
 
+       $User = new My_Model_User();
+       $row = $User->fetchRow("username = '$username'");
+
+       $this->studentName = $row->fname . ' ' . $row->lname;
     }
 
     public function setAssignId($assignId)
@@ -280,6 +292,11 @@ class Application_Form_CommonForm extends Zend_Form
     public function setSemId($semId)
     {
        $this->semId = $semId;
+       
+       $Sem = new My_Model_Semester();
+       $row = $Sem->fetchRow("id = $semId");
+
+       $this->semester = $row->semester;
     }
     
     public function setPopulateForm($flag)

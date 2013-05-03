@@ -1,3 +1,10 @@
+<style>
+   #form-meta-data {
+      margin-bottom: 30px;
+      font-size: 16px;
+   }
+</style>
+
 <?php
 $coopSess = new Zend_Session_Namespace('coop');
 $this->headScript()->appendFile($this->baseUrl() . '/js/views/assignment/timesheet.js');
@@ -5,6 +12,15 @@ echo $this->headScript();
 
 $this->pageTitle = "Student Time Sheet";
 echo $this->message;
+
+if ($coopSess->role === 'coordinator') {
+   echo "<div id=form-meta-data>";
+   echo $this->form->studentName . "<br />";
+   echo $this->form->class . "<br />";
+   echo $this->form->semester . "<br />";
+   echo "</div>";
+}
+
 $form = $this->form;
 
 echo $form;
