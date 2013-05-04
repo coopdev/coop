@@ -29,7 +29,7 @@
 
       window.setInterval(function() {
          countChars();
-      }, 5000);
+      }, 3000);
 
       tinyMCE.init({
            mode : "textareas",
@@ -67,8 +67,8 @@
    function countChars()
    {
      chars = tinyMCE.activeEditor.getContent();
-     alert("" + chars);
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
+     alert("" + chars);
      //console.log(totalChars);
         
      minLen = $('#minLen').text();
