@@ -70,8 +70,8 @@
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
      //console.log(totalChars);
         
-     //minLen = $('#minLen').text();
-     minLen = $("#minlen").attr("data-minlen");
+     minLen = $('#minlen').text();
+     //minLen = $("#minlen").attr("data-minlen");
      //alert("" + minLen);
      //foo = $("#foo").text();
      //foo = $("#foobar").attr("data-foo");
@@ -80,8 +80,8 @@
      if (charsLeft < 0) {
         charsLeft = 0;
      }
-
      alert("" + charsLeft);
+
      
      
      $('.charsLeft').text(charsLeft);
