@@ -68,11 +68,11 @@
    {
      chars = tinyMCE.activeEditor.getContent();
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
-     alert("" + chars.length);
      //console.log(totalChars);
         
      minLen = $('#minLen').text();
      charsLeft = minLen - chars.length;
+     alert("" + charsLeft);
      if (charsLeft < 0) {
         charsLeft = 0;
      }
