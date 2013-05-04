@@ -71,11 +71,11 @@
      //console.log(totalChars);
         
      //minLen = $('#minLen').text();
-     //minLen = $('#minLen').attr("data-minlen");
+     minLen = $('#minLen').attr("data-minlen");
      //foo = $("#foo").text();
-     foo = $("#foobar").attr("data-foo");
-     //alert("" + minLen);
-     alert(foo);
+     //foo = $("#foobar").attr("data-foo");
+     alert("" + minLen);
+     //alert(foo);
      charsLeft = minLen - chars.length;
      if (charsLeft < 0) {
         charsLeft = 0;
