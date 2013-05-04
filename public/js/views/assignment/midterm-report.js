@@ -7,7 +7,7 @@ $(document).ready(function(){
        answerText = $(this);
        setInterval(function() {
           countChars(answerText);
-       }, 500);
+       }, 3000);
     });
 
     // Bind my custom 'countChars' event to all answerTexts so it can be triggered on 
@@ -37,6 +37,7 @@ function countChars(answerText)
      id = answerText.attr('id');
 
      minLen = $('#minLen-' + id).text();
+     alert("" + minLen);
      charsLeft = minLen - totalChars;
      if (charsLeft < 0) {
         charsLeft = 0;
