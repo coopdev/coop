@@ -70,7 +70,7 @@
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
      //console.log(totalChars);
         
-     minLen = $('#minLen').html();
+     minLen = $('#minLen').text();
      alert("" + minLen);
      charsLeft = minLen - chars.length;
      if (charsLeft < 0) {
