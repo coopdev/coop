@@ -36,9 +36,9 @@ function countChars(answerText)
 
      id = answerText.attr('id');
 
-     alert("hi");
+     //alert("hi");
      minLen = $('#minLen-' + id).text();
-     alert("" + minLen);
+     //alert("" + minLen);
      charsLeft = minLen - totalChars;
      if (charsLeft < 0) {
         charsLeft = 0;
