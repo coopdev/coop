@@ -67,7 +67,10 @@
    function countChars()
    {
      chars = tinyMCE.activeEditor.getContent();
-     console.log($(chars).text().split());
+
+     // To see characters, including new lines.
+     //console.log($(chars).text().split());
+     
      //alert(chars);
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
      //chars = $(chars).text().replace(/\n\s|\n/g, "");
