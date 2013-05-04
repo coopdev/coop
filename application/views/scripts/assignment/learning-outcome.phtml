@@ -67,8 +67,8 @@
    function countChars()
    {
      chars = tinyMCE.activeEditor.getContent();
+     alert(chars);
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
-     //console.log(totalChars);
         
      minLen = $('#minlen').text();
      //alert("" + minLen);
