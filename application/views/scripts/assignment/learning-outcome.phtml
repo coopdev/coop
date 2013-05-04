@@ -67,9 +67,11 @@
      chars = $(chars).text().replace(/\r|\n\s|\n/g, "");
      //console.log(totalChars);
         
-     alert("hello");
      minLen = $('#minLen').text();
      //minLen = $('#minLen').attr("data-minlen");
+     foo = $('#foo').text();
+     //alert("" + minLen);
+     alert(foo);
      charsLeft = minLen - chars.length;
      if (charsLeft < 0) {
         charsLeft = 0;
