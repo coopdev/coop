@@ -641,7 +641,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
          $row->answer_text = $val;
          try {
-            die(var_dump($row));
             $row->save();
          } catch(Exception $e) {
             //die(var_dump($where));
