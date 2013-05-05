@@ -586,9 +586,14 @@ class AssignmentController extends Zend_Controller_Action
 
     public function listSubmittedAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
+       $where['username'] = $coopSess->username;
+       $where['classes_id'] = $coopSess->currentClassId;
+       $where['semesters_id'] = $coopSess->currentSemId;
+       
        $as = new My_Model_Assignment();
 
-       $assignments = $as->getSubmitted();
+       $assignments = $as->getSubmitted($where);
 
        $this->view->assignments = $assignments;
 

@@ -56,9 +56,19 @@ create view submittedassignment_answers_view AS
 
 drop view if exists extended_duedates_view;
 create view extended_duedates_view as 
-   select u.fname, u.lname, u.username, ext.id, ext.due_date, a.assignment, 
-          s.current AS cur_sem
+   select ext.id, u.fname, u.lname, u.username, ext.due_date, a.assignment, 
+          s.current AS cur_sem, c.name AS class
    from coop_extended_duedates ext 
-   JOIN coop_users u ON ext.username = u.username 
+   JOIN coop_users       u ON ext.username = u.username 
    JOIN coop_assignments a ON ext.assignments_id = a.id 
-   JOIN coop_semesters s ON ext.semesters_id = s.id;
+   JOIN coop_semesters   s ON ext.semesters_id = s.id
+   JOIN coop_classes     c ON ext.classes_id = c.id;
+
+DROP VIEW IF EXISTS submitted_assignments_view;
+CREATE VIEW submitted_assignments_view AS
+   SELECT u.fname AS student_fname, u.lname AS student_lname, u.username, 
+      sa.classes_id, sa.semesters_id, a.assignment
+   FROM coop_users AS u
+   INNER JOIN coop_submittedassignments AS sa ON u.username = sa.username 
+      AND sa.is_final = 1
+   INNER JOIN coop_assignments AS a ON sa.assignments_id = a.id;

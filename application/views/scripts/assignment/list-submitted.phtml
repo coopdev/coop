@@ -4,27 +4,11 @@
    $assigns = $this->assignments;
 ?>
 
-<!-- <table class="submittedAssignments">
-
-   <?php //foreach ($assigns as $a) { ?>
-
-      <tr>
-
-         <td> <?php //echo $a['assignment'] ?> </td>
-
-      </tr>
-
-   <?php //} ?>
-
-</table>
-
--->
-
 <ul>
    <?php foreach ($assigns as $a) { ?>
 
 
-         <li class="regText"> <?php echo $a['assignment'] ?> </li>
+         <li class="regText"> <?php echo $a->assignment ?> </li>
 
 
    <?php } ?>

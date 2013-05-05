@@ -1216,26 +1216,47 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
    }
 
    // Gets submitted assignments for a student, class, semester
-   public function getSubmitted()
+   public function getSubmitted($where)
    {
       $coopSess = new Zend_Session_Namespace('coop');
-      $assigns = $this->getAll();
+      $db = new My_Db();
 
-      $chk['semesters_id'] =  $coopSess->currentSemId;
-      $chk['classes_id'] =  $coopSess->currentClassId;
-      $chk['username'] =  $coopSess->username;
+      $select = $this->select()->setIntegrityCheck(false);
+      $select->from("submitted_assignments_view");
+      
+      $select = $db->buildSelectWhereClause($select, $where);
 
-      $submitted = array();
-      foreach ($assigns as $a) {
-         $chk['assignments_id'] = $a['id'];
+      //die(var_dump($select->assemble()));
 
-         if ($this->isSubmitted($chk) === true) {
-            $submitted[] = $a;
-         }
+      $submittedAssignments = $this->fetchAll($select);
 
+      if (count($submittedAssignments) < 1) {
+         $submittedAssignments = array();
       }
 
-      return $submitted;
+      return $submittedAssignments;
+
+
+
+      /* OLD WAY */
+
+      //$assigns = $this->getAll();
+
+      //$chk['semesters_id'] =  $coopSess->currentSemId;
+      //$chk['classes_id'] =  $coopSess->currentClassId;
+      //$chk['username'] =  $coopSess->username;
+
+      //$submitted = array();
+      //foreach ($assigns as $a) {
+      //   $chk['assignments_id'] = $a['id'];
+
+      //   if ($this->isSubmitted($chk) === true) {
+      //      $submitted[] = $a;
+      //   }
+
+      //}
+
+      //return $submitted;
 
    }
 

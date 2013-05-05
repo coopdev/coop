@@ -28,3 +28,12 @@ BEGIN
    -- SELECT * FROM coop_semesters WHERE id = @sem_id - 1;
 END//
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS get_majors;
+DELIMITER // 
+CREATE PROCEDURE get_majors()
+BEGIN
+   select distinct substring_index(name, ' ', 1) AS major from coop_classes order by name;
+END//
+DELIMITER ;
