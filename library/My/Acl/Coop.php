@@ -216,6 +216,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('studentAid', 'assignment', 'assignment_timesheet');
       $this->allow('studentAid', 'assignment', 'assignment_list-status-by-class');
       $this->deny('studentAid', 'semester');
+      $this->allow('studentAid', 'semester', 'semester_change-current');
       $this->deny('studentAid', 'form', 'form_edit-disclaimer');
       $this->deny('studentAid', 'backup');
       $this->deny('studentAid', 'comments');

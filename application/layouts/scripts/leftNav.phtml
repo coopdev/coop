@@ -63,6 +63,8 @@
       echo    "<li><a href='".$this->url(array('controller'=>'user',
                    'action'=>'view-logins'), null, true)."'> View student logins </a></li> <br />";
       
+      echo    "<li><a href='".$this->url(array('controller'=>'semester', 'action' => 'change-current'))."'> Change semester </a></li> <br />";
+      
       echo    "<li><a href='".$this->url(array('controller'=>'help-page', 'action' => 'index'))."'> Help </a></li> <br />";
    } else if ($coopSess->role == 'user') {
       //echo "<h4> Student Links </h4>";
