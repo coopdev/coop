@@ -11,7 +11,7 @@ class Application_Form_LearningOutcomeReport extends Application_Form_CommonForm
        $this->assignId = $Assign->getLearningOutcomeId();
        
        $this->setDecorators(array(array('ViewScript', 
-                                   array('viewScript' => '/assignment/forms/learning-outcome.phtml'))));
+                                  array('viewScript' => '/assignment/forms/learning-outcome.phtml'))));
 
        $elems = new My_FormElement();
 

@@ -614,6 +614,8 @@ class AsyncController extends Zend_Controller_Action
 
           $this->view->recs = $recs;
           $this->view->assigns = $assigns;
+          //die(var_dump($assigns));
+          $this->view->classId = $classId;
 
           //$this->_helper->viewRenderer->setRenderView(false);
           //echo "hello";

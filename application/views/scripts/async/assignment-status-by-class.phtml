@@ -1,3 +1,9 @@
+<style>
+   #assignment-status td {
+      border-right: thin solid #000000;
+   }
+</style>
+
 <!--[if lt IE 9]>
 <?php 
 //die('IE9');
@@ -8,6 +14,8 @@
 <![endif]--> 
 <?php
    $User = new My_Model_User();
+   $Assignment = new My_Model_Assignment();
+   $coopSess = new Zend_Session_Namespace('coop');
    $recs = $this->recs;
    $assigns = $this->assigns;
    $error = $this->error;
@@ -17,7 +25,7 @@
    } else {
 ?>
 
-   <table class="stripe">
+   <table id="assignment-status" class="stripe">
       <!-- set flag to know when we are dealing with a record of the same student as the previous record 
            so that the table does not duplicate students -->
       <?php $rowName = 'temp' ?>
@@ -58,16 +66,27 @@
                   <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >
                      <!-- If user is exempt -->
                      <?php if ($semStatus === 'Exempt') { ?>
-                     
                         Exempt
-                        
                      <?php } else { ?>
 
                         <!-- if the current student submitted the assignment (evaluates to not null) and
                              the assignments_id field of the record == the id of the assignment we are currently on,
                              then fill in the <td> tag with "Submitted". -->
                         <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
-                           <font color="green"> Submitted </font>
+                           <?php $count = '' ?>
+                           <?php if($a['assignment_num'] === '4') { ?>
+                              <?php 
+                                 $count = '(';
+                                 $count .= $Assignment->learningOutcomeReportSubmitCount(
+                                         array("username       = '" . $r['username'] . "'", 
+                                               "classes_id     = " . $this->classId, 
+                                               "semesters_id   = " . $coopSess->currentSemId,
+                                               "assignments_id = " . $a['id'],
+                                               "is_final       = 1"));
+                                 $count .= ' submitted)';
+                              ?>
+                           <?php } ?>
+                           <font color="green"> Yes </font> <?php echo $count ?>
                         <?php } ?>
                            
                      <?php } ?>
@@ -99,13 +118,27 @@
                <?php } else { ?>
 
                   <?php if( !is_null($r['assignments_id']) && $r['assignments_id'] === $a['id'] ) { ?>
+                     <?php $count = '' ?>
+                     <?php if($a['assignment_num'] === '4') { ?>
+                        <?php 
+                           $count = '(';
+                           $count .= $Assignment->learningOutcomeReportSubmitCount(
+                                   array("username       = '" . $r['username'] . "'", 
+                                         "classes_id     = " . $this->classId, 
+                                         "semesters_id   = " . $coopSess->currentSemId,
+                                         "assignments_id = " . $a['id'],
+                                         "is_final       = 1"));
+                           $count .= ' submitted)';
+                        ?>
+                     <?php } ?>
 
                      <!-- must use javascript to set html in the <td>s since the <td>s already 
                           exist at this point -->
                      <script type="text/javascript">
                         // quotes arount the php tags are necessary to assign it to a JS variable
                         td = '<?php echo $td ?>'
-                        $("#"+td).html("<font color=green> Submitted </font>");
+                        count = '<?php echo $count ?>'
+                        $("#"+td).html("<font color=green> Yes </font>" + count);
                      </script>
 
                   <?php } ?>

@@ -1925,6 +1925,21 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 /*************************** END SURVEY METHODS *****************************************/
 
 
+   public function learningOutcomeReportSubmitCount($where)
+   {
+       //$where = array();
+       //$where[] = "username = '" . $this->username . "'";
+       //$where[] = "classes_id = " . $this->classId;
+       //$where[] = "semesters_id = " . $this->semId;
+       //$where[] = "assignments_id = " . $this->assignId;
+      
+      //die(var_dump($where));
+      $SubmittedAssign = new My_Model_SubmittedAssignment();
+      
+      $submits = $SubmittedAssign->fetchAll($where);
+
+      return count($submits);
+   }
 
 
 
