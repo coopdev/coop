@@ -128,6 +128,8 @@ class Application_Form_TimeSheet extends Application_Form_CommonForm
        $hoursFields[] = $elem;
        
        $startEndDates[] = $elems->getCommonTbox('summer_start_date', ' ');
+       $startEndDates[] = $elems->getCommonTbox('summer_june_end_date', ' ');
+       $startEndDates[] = $elems->getCommonTbox('summer_july_start_date', ' ');
        $startEndDates[] = $elems->getCommonTbox('summer_end_date', ' ');
 
        foreach ($hoursFields as $f) {

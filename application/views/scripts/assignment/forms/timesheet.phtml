@@ -40,7 +40,7 @@ $elems = $this->element;
          <td> January <?php echo $elems->static_tasks->spring_start_date ?> thru 31 </td>
          <td> <?php echo $elems->static_tasks->springHrs1 ?> </td>
          
-         <td> May <?php echo $elems->static_tasks->summer_start_date ?> to June 30 </td>
+         <td> May <?php echo $elems->static_tasks->summer_start_date ?> to June <?php echo $elems->static_tasks->summer_june_end_date ?> </td>
          <td> <?php echo $elems->static_tasks->summerHrs1 ?> </td>
       </tr>
 
@@ -52,7 +52,7 @@ $elems = $this->element;
          <td> February 1 thru 28 </td>
          <td> <?php echo $elems->static_tasks->springHrs2 ?> </td>
          
-         <td> July 1 to August <?php echo $elems->static_tasks->summer_end_date ?> </td>
+         <td> July <?php echo $elems->static_tasks->summer_july_start_date ?> to August <?php echo $elems->static_tasks->summer_end_date ?> </td>
          <td> <?php echo $elems->static_tasks->summerHrs2 ?> </td>
       </tr>
 
