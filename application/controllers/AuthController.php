@@ -138,7 +138,8 @@ class AuthController extends Zend_Controller_Action
        $landingUrl = $this->adapter->getUrl().'/logout?service='.$local_service.'/pages/login';
        $this->adapter->setLogoutUrl($landingUrl);
        Zend_Session::destroy(true);
-       //die(var_dump($this->coopSess->role));
+
+       $this->view->resultMessage = "<p class='notice'> You have been logged out </p>";
        $this->_redirect($this->adapter->getLogoutUrl());
        //$this->render('logout');
        
