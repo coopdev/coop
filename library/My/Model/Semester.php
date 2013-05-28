@@ -164,9 +164,11 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
          $c++;
 
          if ($s['current']) {
+            $c++; // Add one additional to get one semester after the current.
             break;
          }
       }
+
       $db = new My_Db();
 
       $select = "SELECT s.semester, s.id, s.current FROM 
