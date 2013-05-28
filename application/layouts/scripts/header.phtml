@@ -7,9 +7,9 @@
    //echo       $coopSess->uhinfo['name']."<br />";
    
    if ($coopSess->role != 'none' || !empty($coopSess->uhinfo)) {
-      echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Logout </a>";
+      echo "<a href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'> Log out </a>";
    } else {
-      echo "<a href='".$this->url(array('controller'=>'auth','action'=>'cas'))."'> Login (CAS) </a>";
+      echo "<a style'font-size:14px;' class='regText' href='".$this->url(array('controller'=>'auth','action'=>'cas'))."'> Log in</a>";
    }
 
    //echo       "<a class='logout' href='".$this->url(array('controller'=>'auth','action'=>'logout'))."'>Logout </a>";

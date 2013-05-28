@@ -131,6 +131,9 @@ class AuthController extends Zend_Controller_Action
 
     public function logoutAction()
     {
+       Zend_Controller_Action_HelperBroker::addPrefix('My_Action_Helpers_FlashMessage');
+       $flashMessenger = $this->_helper->FlashMessenger;
+       $flashMessenger->addMessage('You have been logged out');
        //if ($this->coopSess->role != 'none') {
        $this->auth->clearIdentity();
        // Specify the landing URL to hit after logout
@@ -139,8 +142,6 @@ class AuthController extends Zend_Controller_Action
        $this->adapter->setLogoutUrl($landingUrl);
        Zend_Session::destroy(true);
 
-       $flashMessenger = $this->_helper->getHelper("FlashMessenger");
-       $flashMessenger->addMessage('You have been logged out');
        $this->_redirect($this->adapter->getLogoutUrl());
        //$this->render('logout');
        
