@@ -139,7 +139,8 @@ class AuthController extends Zend_Controller_Action
        $this->adapter->setLogoutUrl($landingUrl);
        Zend_Session::destroy(true);
 
-       $this->view->resultMessage = "<p class='notice'> You have been logged out </p>";
+       $flashMessenger = $this->_helper->getHelper("FlashMessenger");
+       $flashMessenger->addMessage('You have been logged out');
        $this->_redirect($this->adapter->getLogoutUrl());
        //$this->render('logout');
        
