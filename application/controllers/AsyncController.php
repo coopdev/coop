@@ -742,9 +742,10 @@ class AsyncController extends Zend_Controller_Action
            $User = new My_Model_User();
            $Role = new My_Model_Role();
            $studentRole = $Role->getStudentId();
+
            $data['roles_id'] = $studentRole;
 
-           $users = $User->fetchAsJson($data);
+           $users = $User->fetchCurrentAndIncompleteStudentsAsJson($data);
 
            //echo $users;
            echo json_encode($users->toArray());

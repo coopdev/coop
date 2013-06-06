@@ -599,8 +599,9 @@ class My_Model_User extends Zend_Db_Table_Abstract
       return $row;
    }
 
-   public function fetchAsJson($where = array())
+   public function fetchCurrentAndIncompleteStudentsAsJson($where = array())
    {
+
        $db = new My_Db();
        $select = $this->select()->setIntegrityCheck(false);
        $select->distinct()
@@ -610,9 +611,12 @@ class My_Model_User extends Zend_Db_Table_Abstract
                      array());
 
        $select = $db->buildSelectWhereClause($select, $where);
-       $select->order('lname ASC');
 
-       //return $select->assemble();
+       $coopSess = new Zend_Session_Namespace('coop');
+       $currentSemId = $coopSess->currentSemId;
+       $select->where("semesters_id = $currentSemId OR status = 'Incomplete'");
+
+       $select->order('lname ASC');
 
        $users = $this->fetchAll($select);
 

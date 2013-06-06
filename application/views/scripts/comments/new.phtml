@@ -92,6 +92,7 @@
 
            $.get(base + "/async/fetch-students-as-json", {'data' : formData}, function(resp) {
                //alert(resp);
+               $("#comments-for-student").empty();
                students = resp;
 
                // Create options to populate student drop down.
