@@ -602,9 +602,17 @@ class My_Model_User extends Zend_Db_Table_Abstract
    public function fetchAsJson($where = array())
    {
        $db = new My_Db();
-       $select = $this->select();
+       $select = $this->select()->setIntegrityCheck(false);
+       $select->distinct()
+              ->from(array('u' => 'coop_users'))
+              ->join(array('us' => 'coop_users_semesters'), 
+                     'u.username = us.student', 
+                     array());
+
        $select = $db->buildSelectWhereClause($select, $where);
        $select->order('lname ASC');
+
+       //return $select->assemble();
 
        $users = $this->fetchAll($select);
 

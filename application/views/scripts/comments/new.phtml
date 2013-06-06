@@ -91,6 +91,7 @@
            formData = $("#search-form").toJSON(); 
 
            $.get(base + "/async/fetch-students-as-json", {'data' : formData}, function(resp) {
+               //alert(resp);
                students = resp;
 
                // Create options to populate student drop down.

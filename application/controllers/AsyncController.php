@@ -746,6 +746,7 @@ class AsyncController extends Zend_Controller_Action
 
            $users = $User->fetchAsJson($data);
 
+           //echo $users;
            echo json_encode($users->toArray());
            //var_dump($users->toArray()); // As JSON
     }
