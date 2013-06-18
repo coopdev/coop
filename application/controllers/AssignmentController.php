@@ -543,6 +543,7 @@ class AssignmentController extends Zend_Controller_Action
              $coopSess->submitForStudentData['username'] = $data['username'];
              $coopSess->submitForStudentData['semesters_id'] = $data['semesters_id'];
 
+             //die(var_dump($data));
              // Get assignment number.
              $as = new My_Model_Assignment();
              $assignRow = $as->getAssignment($data['assignments_id']);

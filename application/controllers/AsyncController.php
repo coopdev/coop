@@ -580,6 +580,7 @@ class AsyncController extends Zend_Controller_Action
        }
 
 
+       //die(var_dump($where));
 
 
        $assign->updateAnswers($statics, $where, array('static' => true));

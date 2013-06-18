@@ -161,6 +161,7 @@ class My_Funcs
          $dateTokens[0] = $dateTokens[1];
          $dateTokens[1] = $dateTokens[2];
          $dateTokens[2] = $temp;
+
          $date = implode("/", $dateTokens);
 
          return $date;

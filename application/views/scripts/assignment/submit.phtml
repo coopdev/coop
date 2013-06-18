@@ -6,6 +6,8 @@
    //} else {
    //   echo "<p class='success'> Assignment has successfully been submitted </p>";
    //}
+   
+   $coopSess = new Zend_Session_Namespace('coop');
 
    echo $this->message;
 
@@ -17,6 +19,9 @@
    $("document").ready(function() {
       $("#semesters_id-label").hide();
       $("#semesters_id").hide();
+
+
+      selectCurrentSemester();
 
       fillStudents();
 
@@ -42,6 +47,7 @@
             $("#semesters_id").val("");
             fillStudents();
          }
+         selectCurrentSemester();
 
       });
 
@@ -102,6 +108,12 @@
 
          dropdown.html(optString);
 
+      }
+
+      function selectCurrentSemester() 
+      {
+         current_sem = '<?php echo $coopSess->currentSemId ?>'
+         $("#semesters_id option[value='" + current_sem + "']").attr('selected', true)
       }
 
 

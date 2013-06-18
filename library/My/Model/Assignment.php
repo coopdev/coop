@@ -635,13 +635,19 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
          $row = $aa->fetchRow($where);
 
+         // for testing only
+         //var_dump($row->toArray());
+         //var_dump($val);
+
          // After using $where, get rid of the question id so a new one can be added on 
          // the next loop.
          array_pop($where);
 
          $row->answer_text = $val;
          try {
-            $row->save();
+            $res = $row->save();
+            // testing
+            //var_dump($res);
          } catch(Exception $e) {
             //die(var_dump($where));
             return 'exception';
@@ -723,6 +729,7 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
       $funcs = new My_Funcs();
       foreach ($data as $id => $dueDate) {
+         //$dueDate = 
 
          //die(var_dump($dueDate));
          $dueDate['fall_due_date'] = $funcs->formatDateIn($dueDate['fall_due_date']); 

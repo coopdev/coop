@@ -1,4 +1,5 @@
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
    $this->pageTitle = "Add a Student";
    
    echo $this->message;
@@ -13,6 +14,10 @@
 $(document).ready(function() {
     $("#fileUpload").hide();
     $("#fileUpload-label").hide();
+
+    current_sem = '<?php echo $coopSess->currentSemId ?>'
+
+    //$("#semesters_id option[vlaue='" + current_sem + "']").select()
     
     $("#fileUploadToggle").live('click', function() {
         $("#fname").hide();
