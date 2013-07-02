@@ -27,10 +27,19 @@ class Application_Form_Report extends Zend_Form
        $bySemesterSubmit = new Zend_Form_Element_Submit('bySemester');
        $bySemesterSubmit->setLabel("Generate Report by Semester");
 
+
+       $years = array();
+       foreach ($sems as $s) {
+          $years[] = $s['year'];
+       }
+       $years = array_unique($years);
        $year = new Zend_Form_Element_Select('year');
-       $year->addMultiOptions( array(' ' => '-----------') )
-            ->addMultiOptions( array('2013' => '2013', '2012' => '2012'))
-            ->setLabel("Report by Academic Year");
+       $year->setLabel("Report by Academic Year");
+       $year->addMultiOptions( array(' ' => '-----------') );
+       foreach ($years as $y) {
+          $year->addMultiOptions( array($y => $y) );
+       }
+            
             
 
        $byYear = new Zend_Form_Element_Submit('byYear');

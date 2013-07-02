@@ -156,25 +156,13 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
     */
    public function getUpToCurrent($limit = null)
    {
-      $sems = $this->getAll();
-
-      $c = 0;
-
-      foreach ($sems as $s) {
-         $c++;
-
-         if ($s['current']) {
-            $c++; // Add one additional to get one semester after the current.
-            break;
-         }
-      }
 
       $db = new My_Db();
 
-      $select = "SELECT s.semester, s.id, s.current FROM 
-                            (SELECT * FROM coop_semesters LIMIT $c) AS s 
-                            ORDER BY SUBSTRING_INDEX(semester, ' ', -1) DESC, 
-                            SUBSTRING_INDEX(semester, ' ', 1)";
+      $curSem = $this->fetchRow("current = 1");
+      $targetSem = $curSem->id + 1;
+
+      $select = "SELECT * FROM coop_semesters WHERE id <= " . $targetSem . " ORDER BY id DESC";
 
       if (!is_null($limit)) {
          $select .= " LIMIT $limit ";
@@ -182,24 +170,35 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
 
       $rows = $db->fetchAll($select);
 
-      $temp = array(); // hold record to be swapped.
-      $tempPos = ""; // hold position for swapping.
-      $ind = 0;
-      // swap the order of Spring and Summer since we want summer to come first in this case.
-      foreach ($rows as $r) {
-         $tokens = explode(' ', $r['semester']);
-         if ($tokens[0] === "Spring") {
-            $temp = $r;
-            $tempPos = $ind;
-         } else if ($tokens[0] === "Summer") {
-            $rows[$tempPos] = $r;
-            $rows[$ind] = $temp;
-         }
-         $ind++;
-      }
-      //die(var_dump($rows));
-
       return $rows;
+   }
+
+   public function updateYearColumn()
+   {
+      $rows = $this->fetchAll();
+
+      foreach ($rows as $r) {
+         if (strpos($r['semester'], "Fall") !== false) {
+            $r->year = $r['year'] . "-" . ($r['year'] + 1);
+         } else {
+            $r->year = $r['year'] - 1 . "-" . $r['year'];
+         }
+         $r->save();
+      }
+
+
+
+      /*
+      $recs = $this->fetchAll();
+
+      foreach ($recs as $r) {
+         $r->year = substr($r->semester, -4);
+         $r->save();
+      }
+       *
+       */
+
+
    }
 
 
