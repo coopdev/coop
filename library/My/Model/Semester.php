@@ -260,17 +260,6 @@ class My_Model_Semester extends Zend_Db_Table_Abstract
 
    }
 
-
-   public function updateYearColumn()
-   {
-      $recs = $this->fetchAll();
-
-      foreach ($recs as $r) {
-         $r->year = substr($r->semester, -4);
-         $r->save();
-      }
-   }
-
    public function getAll()
    {
       return $this->fetchAll()->toArray();

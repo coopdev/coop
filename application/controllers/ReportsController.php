@@ -16,14 +16,4 @@ class ReportsController extends Zend_Controller_Action
        
     }
 
-    public function updateYearsAction()
-    {
-
-       $sem = new My_Model_Semester();
-       $sem->updateYearColumn();
-
-    }
-
-
 }
-
