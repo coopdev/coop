@@ -1,0 +1,74 @@
+<?php
+   $reports = $this->reports;
+   $assigns = $this->assigns;
+   $funcs = new My_Funcs();
+
+   $reportPeriod = "Report Period: ";
+   $reportPeriod .= (isset($this->semester)) ? $this->semester->semester : $this->academicYear;
+
+   //var_dump($assigns);
+   //var_dump($reports);
+
+   $currentRecord = array('username' => "", 'class_id' => '');
+?>
+
+<style>
+   #assign-report th {
+      width: 20px;
+   }
+   #assign-report th,td {
+      text-align: center;
+      border: 1px solid;
+      padding: 10px;
+   }
+   #page-title, #report-period {
+      text-align: center;
+   }
+
+</style>
+
+<h2 id='page-title'> Student Assignment Submission Report </h2>
+
+<h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
+
+<table id="assign-report">
+   <tr>
+      <th>Last</th>
+      <th>First</th>
+      <th>Course</th>
+      <?php foreach ($assigns as $a) { ?>
+         <th><?php echo $a['assignment'] ?></th>
+      <?php } ?>
+   </tr>
+
+
+   <?php foreach ($reports as $r) { ?>
+   <?php if ($currentRecord['username'] !== $r['username'] || $currentRecord['class_id'] !== $r['class_id']) { ?>
+      <?php 
+         $currentRecord['username'] = $r['username'];
+         $currentRecord['class_id'] = $r['class_id'];
+      ?>
+
+   <tr>
+      <td><?php echo $r['lname'] ?></td>
+      <td><?php echo $r['fname'] ?></td>
+      <td><?php echo $r['class_name'] ?></td>
+      <?php foreach ($assigns as $a) { ?>
+         <?php $tdVal = "No" ?>
+         <?php foreach ($reports as $r2) { ?>
+            <?php if ($currentRecord['username'] === $r2['username'] && $currentRecord['class_id'] === $r2['class_id']) { ?>
+
+               <?php if ($a['id'] === $r2['assignments_id']) { ?>
+                  <?php $tdVal = "Yes <br />" . $funcs->formatDateOut($r2['date_submitted']); break; ?>
+               <?php } ?>
+
+            <?php } ?>
+         <?php } ?>
+         <td><?php echo $tdVal ?></td>
+
+      <?php } ?>
+   </tr>
+
+   <?php } ?>
+   <?php } ?>
+</table>
