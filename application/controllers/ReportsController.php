@@ -60,7 +60,7 @@ class ReportsController extends Zend_Controller_Action
     {
        $sem = new My_Model_Semester();
 
-       //$sem->updateYearColumn();
+       $sem->updateYearColumn();
     }
 
 }
