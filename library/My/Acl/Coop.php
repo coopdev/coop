@@ -126,6 +126,9 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('new'), 'comments');
       $this->add(new Zend_Acl_Resource('json-list'), 'comments');
 
+      /* Reports Controller */
+      $this->add(new Zend_Acl_Resource('reports'));
+
       /* Roles */
 
       $this->addRole(new Zend_Acl_Role('none'));
@@ -201,6 +204,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'pdf');
       $this->allow('coordinator', 'help-page');
       $this->allow('coordinator', 'comments');
+      $this->allow('coordinator', 'reports');
       
       $this->deny('studentAid', 'syllabus');
       $this->deny('studentAid', 'user');
