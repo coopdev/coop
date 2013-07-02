@@ -14,14 +14,16 @@
 
 </style>
 
-<?php echo $form->report ?> <br />
+<form action="<?php echo $form->getAction() ?>" method="POST">
+   <?php echo $form->report ?> <br />
 
-<div id='left'>
-   <?php echo $form->semesters_id ?>
-   <?php echo $form->bySemester ?> <br />
-</div>
+   <div id='left'>
+      <?php echo $form->semesters_id ?>
+      <?php echo $form->bySemester ?> <br />
+   </div>
 
-<div id="right">
-   <?php echo $form->year ?>
-   <?php echo $form->byYear ?>
-</div>
+   <div id="right">
+      <?php echo $form->year ?>
+      <?php echo $form->byYear ?>
+   </div>
+</form>
