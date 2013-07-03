@@ -9,7 +9,7 @@
    //var_dump($assigns);
    //var_dump($reports);
 
-   $currentRecord = array('username' => "", 'class_id' => '');
+   $currentRecord = array('username' => "", 'class_id' => '', 'semesters_id' => '');
 ?>
 
 <style>
@@ -43,10 +43,14 @@
 
 
    <?php foreach ($reports as $r) { ?>
-   <?php if ($currentRecord['username'] !== $r['username'] || $currentRecord['class_id'] !== $r['class_id']) { ?>
+   <?php if ($currentRecord['username']     !== $r['username'] ||
+             $currentRecord['class_id']     !== $r['class_id'] ||
+             $currentRecord['semesters_id'] !== $r['semesters_id']) { ?>
+                 
       <?php 
-         $currentRecord['username'] = $r['username'];
-         $currentRecord['class_id'] = $r['class_id'];
+         $currentRecord['username']     = $r['username'];
+         $currentRecord['class_id']     = $r['class_id'];
+         $currentRecord['semesters_id'] = $r['semesters_id']
       ?>
 
    <tr>
@@ -56,7 +60,9 @@
       <?php foreach ($assigns as $a) { ?>
          <?php $tdVal = "No" ?>
          <?php foreach ($reports as $r2) { ?>
-            <?php if ($currentRecord['username'] === $r2['username'] && $currentRecord['class_id'] === $r2['class_id']) { ?>
+            <?php if ($currentRecord['username']     === $r2['username'] && 
+                      $currentRecord['class_id']     === $r2['class_id'] && 
+                      $currentRecord['semesters_id'] === $r2['semesters_id']) { ?>
 
                <?php if ($a['id'] === $r2['assignments_id']) { ?>
                   <?php $tdVal = "Yes <br />" . $funcs->formatDateOut($r2['date_submitted']); break; ?>
