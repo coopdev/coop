@@ -48,6 +48,28 @@ class My_Model_Report {
       $rows = $db->fetchAll($sql);
       return $rows;
    }
+
+   public function employerSatisfactionReport()
+   {
+      // Replace sa.assignments_id with actual ID of supervisor eval assignment.
+     "SELECT u.username, u.lname, u.fname, us.semesters_id, c.name AS class_name, 
+             c.id AS class_id, sa.assignments_id, aa.answer_text, aa.static_question 
+
+        FROM coop_users u 
+        JOIN coop_users_semesters us ON u.username = us.student 
+        JOIN coop_classes c ON us.classes_id = c.id 
+        LEFT JOIN coop_submittedassignments sa ON 
+           (u.username = sa.username 
+            AND c.id = sa.classes_id 
+            AND us.semesters_id = sa.semesters_id 
+            AND sa.is_final = 1 
+            AND sa.assignments_id = 6) 
+        LEFT JOIN coop_assignmentanswers aa ON
+           (sa.id = aa.submittedassignments_id 
+            AND aa.static_question IN('supervisor', 'comments', 'overall_eval'))  
+        WHERE us.semesters_id IN (13,14) ;"; 
+
+   }
 }
 
 ?>
