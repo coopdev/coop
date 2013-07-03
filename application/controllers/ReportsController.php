@@ -17,6 +17,7 @@ class ReportsController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           $data = $_POST;
           if ($form->isValid($data)) {
+             unset($_SESSION['reports']);
              if ($form->bySemester->isChecked()) {
                 $_SESSION['reports']['by'] = 'semester';
                 $_SESSION['reports']['semesters_id'] = $data['semesters_id'];
@@ -42,16 +43,20 @@ class ReportsController extends Zend_Controller_Action
     public function assignmentsAction()
     {
        $reportsSession = $_SESSION['reports'];
-       $_SESSION['reports'] = null;
        $Report = new My_Model_Report();
        $Report->by = $reportsSession['by'];
        if ($Report->by === "semester") {
           $Report->semId = $reportsSession['semesters_id'];
+          $Semester = new My_Model_Semester();
+          $this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
        } elseif ($Report->by === "year") {
           $Report->year = $reportsSession['year'];
+          $this->view->academicYear = $Report->year;
        }
 
-       $this->view->report = $Report->assignmentsReport();
+       $Assign = new My_Model_Assignment();
+       $this->view->assigns = $Assign->getAll();
+       $this->view->reports = $Report->assignmentsReport();
 
     }
 
@@ -62,5 +67,6 @@ class ReportsController extends Zend_Controller_Action
 
        //$sem->updateYearColumn();
     }
+
 
 }
