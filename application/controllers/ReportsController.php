@@ -19,9 +19,18 @@ class ReportsController extends Zend_Controller_Action
           if ($form->isValid($data)) {
              unset($_SESSION['reports']);
              if ($form->bySemester->isChecked()) {
+                if (trim($data['semesters_id']) === "") {
+                   $this->view->resultMessage = "<p class='error'> Must Select a Semester. </p>";
+                   return;
+                }
+
                 $_SESSION['reports']['by'] = 'semester';
                 $_SESSION['reports']['semesters_id'] = $data['semesters_id'];
              } elseif ($form->byYear->isChecked()) {
+                if (trim($data['year']) === "") {
+                   $this->view->resultMessage = "<p class='error'> Must Select Academic Year. </p>";
+                   return;
+                }
                 $_SESSION['reports']['by'] = 'year';
                 $_SESSION['reports']['year'] = $data['year'];
              }
@@ -29,12 +38,6 @@ class ReportsController extends Zend_Controller_Action
              if ($data['report'] === 'assignment') {
                 $this->_helper->redirector('assignments');
              }
-
-             // Set session indicating by year or by semester.
-             
-             // Check which type of report was selected, then redirect to
-             // appropriate action.
-
           }
        }
        
