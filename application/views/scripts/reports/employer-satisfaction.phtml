@@ -76,8 +76,8 @@
             <!-- If evalValues is 3, that means this record submitted the eval and has values.
                  Otherwise, just add 3 blank <td> -->
             <?php if (count($evalValues) === 3) { ?>
-               <?php foreach($evalValues as $t) { ?>
-                  <td><?php echo $t ?></td>
+               <?php foreach($evalValues as $v) { ?>
+                  <td><?php echo (trim($v) === "") ? "N/A" : $v ?></td>
                <?php } ?>
             <?php } else { ?>
                <td> N/A </td>
