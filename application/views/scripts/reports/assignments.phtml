@@ -10,11 +10,7 @@
    $assigns = $this->assigns;
    $funcs = new My_Funcs();
 
-   $reportPeriod = "Report Period: ";
-   $reportPeriod .= (isset($this->semester)) ? $this->semester->semester : $this->academicYear;
-
-   //var_dump($assigns);
-   //var_dump($reports);
+   $reportPeriod = $this->reportPeriod;
 
    $currentRecord = array('username' => "", 'class_id' => '', 'semesters_id' => '');
 ?>
@@ -37,7 +33,6 @@
    #page-title, #report-period {
       text-align: center;
    }
-
 </style>
 
 <h2 id='page-title'> Student Assignment Submission Report </h2>

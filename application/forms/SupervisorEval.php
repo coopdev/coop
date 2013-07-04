@@ -62,6 +62,9 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        //$staticTasks->addSubForm($jobSiteSubform, 'jobsite');
 
        $jobSiteFields = $this->makeJobsiteFields();
+       foreach ($jobSiteFields as $js) {
+          $js->setRequired(false);
+       }
 
        $staticTasks->addElements($jobSiteFields);
        
@@ -77,12 +80,14 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
 
 
        $avgHrs = $elems->getCommonTbox('avg_hrs', 'Average hours student worked per week during evaluation period:');
+       $avgHrs->setRequired(false);
        //$avgHrs = new Zend_Form_Element_Text('avg_hrs');
        //$avgHrs->setLabel('foo');
               //->addFilter('StringTrim')
               //->addFilter('StripTags');
        
        $hrlyWage = $elems->getCommonTbox('hrly_wage', 'Hourly wage:');
+       $hrlyWage->setRequired(false);
 
        $comments = $elems->getCommonTarea('comments', '');
        $comments->setRequired(false);
@@ -162,7 +167,8 @@ class Application_Form_SupervisorEval extends Application_Form_CommonForm
        $elems = array($coord, $coordPhone, $college, $coordEmail, $address, $fax);
 
        foreach($elems as $e) {
-          $e->setAttrib('size', '30');
+          $e->setAttrib('size', '30')
+            ->setRequired(false);
        }
 
        return $elems;

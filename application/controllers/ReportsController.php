@@ -51,14 +51,19 @@ class ReportsController extends Zend_Controller_Action
        $reportsSession = $_SESSION['reports'];
        $Report = new My_Model_Report();
        $Report->by = $reportsSession['by'];
+       $reportPeriod = "Report Period: ";
        if ($Report->by === "semester") {
           $Report->semId = $reportsSession['semesters_id'];
           $Semester = new My_Model_Semester();
-          $this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
+          //$this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
+          $reportPeriod .= $Semester->fetchRow("id = " . $Report->semId)->semester;
        } elseif ($Report->by === "year") {
           $Report->year = $reportsSession['year'];
           $this->view->academicYear = $Report->year;
+          $reportPeriod .= $Report->year;
        }
+
+       $this->view->reportPeriod = $reportPeriod;
 
        $Assign = new My_Model_Assignment();
        $this->view->assigns = $Assign->getAll();
@@ -73,17 +78,20 @@ class ReportsController extends Zend_Controller_Action
        $reportsSession = $_SESSION['reports'];
        $Report = new My_Model_Report();
        $Report->by = $reportsSession['by'];
+       $reportPeriod = "Report Period: ";
        if ($Report->by === "semester") {
           $Report->semId = $reportsSession['semesters_id'];
           $Semester = new My_Model_Semester();
-          $this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
+          $reportPeriod .= $Semester->fetchRow("id = " . $Report->semId)->semester;
        } elseif ($Report->by === "year") {
           $Report->year = $reportsSession['year'];
-          $this->view->academicYear = $Report->year;
+          $reportPeriod .= $Report->year;
        }
-       $result = $Report->employerSatisfaction();
 
-       die(var_dump($result));
+       $this->view->reportPeriod = $reportPeriod;
+       $this->view->results = $Report->employerSatisfaction();
+
+       //die(var_dump($results));
 
     }
 

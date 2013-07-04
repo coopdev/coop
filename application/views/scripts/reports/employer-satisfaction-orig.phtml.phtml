@@ -1,0 +1,61 @@
+<?php
+   $results = $this->results;
+   $reportPeriod = $this->reportPeriod;
+
+   $currentRecord = array('username' => "", 'class_id' => '', 'semesters_id' => '');
+?>
+
+<h2 id='page-title'> Employer Satisfaction Report </h2>
+<h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
+
+<div id="emp-satisfaction-report-container">
+   <table id="emp-satisfaction-report">
+      <tr>
+         <th> Last </th>
+         <th> First </th>
+         <th> Course </th>
+         <th> Supervisor </th>
+         <th> Comments </th>
+         <th> Overall </th>
+      </tr>
+
+      <?php foreach ($results as $r) { ?>
+      <?php if ($currentRecord['username']     !== $r['username'] ||
+                $currentRecord['class_id']     !== $r['class_id'] ||
+                $currentRecord['semesters_id'] !== $r['semesters_id']) { ?>
+                    
+         <?php 
+            $currentRecord['username']     = $r['username'];
+            $currentRecord['class_id']     = $r['class_id'];
+            $currentRecord['semesters_id'] = $r['semesters_id']
+         ?>
+
+         <tr>
+            <td><?php echo $r['lname'] ?></td>
+            <td><?php echo $r['fname'] ?></td>
+            <td><?php echo $r['class_name'] ?></td>
+
+
+            <?php for($i = 1; $i <= 3; $i++) { ?>
+               <?php $tdVal = "" ?>
+               <?php foreach ($results as $r2) { ?>
+                  <?php if ($currentRecord['username']     === $r2['username'] && 
+                            $currentRecord['class_id']     === $r2['class_id'] && 
+                            $currentRecord['semesters_id'] === $r2['semesters_id']) { ?>
+
+                     <?php $tdVal = $r2['answer_text'] ; break; ?>
+
+
+                  <?php } ?>
+               <?php } ?>
+
+               <td><?php echo $tdVal ?></td>
+
+            <?php } ?>
+
+         </tr>
+
+      <?php } ?>
+      <?php } ?>
+   </table>
+</div>
