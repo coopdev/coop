@@ -42,6 +42,7 @@ class ReportsController extends Zend_Controller_Action
 
     public function assignmentsAction()
     {
+       $this->_helper->getHelper('layout')->disableLayout();
        $reportsSession = $_SESSION['reports'];
        $Report = new My_Model_Report();
        $Report->by = $reportsSession['by'];
