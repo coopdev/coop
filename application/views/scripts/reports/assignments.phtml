@@ -1,4 +1,5 @@
 <head>
+   <?php $coopSess = new Zend_Session_Namespace('coop'); ?>
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); ?>
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); ?> 
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); ?>
