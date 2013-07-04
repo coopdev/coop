@@ -37,6 +37,8 @@ class ReportsController extends Zend_Controller_Action
 
              if ($data['report'] === 'assignment') {
                 $this->_helper->redirector('assignments');
+             } elseif ($data['report'] === 'empSatisfaction') {
+                $this->_helper->redirector('employer-satisfaction');
              }
           }
        }
@@ -60,7 +62,28 @@ class ReportsController extends Zend_Controller_Action
 
        $Assign = new My_Model_Assignment();
        $this->view->assigns = $Assign->getAll();
-       $this->view->reports = $Report->assignmentsReport();
+       $this->view->reports = $Report->assignments();
+
+    }
+
+
+    public function employerSatisfactionAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $reportsSession = $_SESSION['reports'];
+       $Report = new My_Model_Report();
+       $Report->by = $reportsSession['by'];
+       if ($Report->by === "semester") {
+          $Report->semId = $reportsSession['semesters_id'];
+          $Semester = new My_Model_Semester();
+          $this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
+       } elseif ($Report->by === "year") {
+          $Report->year = $reportsSession['year'];
+          $this->view->academicYear = $Report->year;
+       }
+       $result = $Report->employerSatisfaction();
+
+       die(var_dump($result));
 
     }
 

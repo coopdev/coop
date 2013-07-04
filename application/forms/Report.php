@@ -7,9 +7,10 @@ class Application_Form_Report extends Zend_Form
     {
        $report = new Zend_Form_Element_Radio('report');
        $report->setRequired(true)
-              ->setMultiOptions( array('assignment' => 'Student Assignment Submission Report',
-                                       'demog'       => 'Student Demographic Report',
-                                       'courseDemog' => 'Student Completed Course Demographic Report') );
+              ->setMultiOptions( array('assignment'       => 'Student Assignment Submission Report',
+                                       'empSatisfaction'  => 'Employer Satisfaction Report',
+                                       'demog'            => 'Student Demographic Report',
+                                       'courseDemog'      => 'Student Completed Course Demographic Report') );
 
        $Semester = new My_Model_Semester();
        $sems = $Semester->getUpToCurrent();
