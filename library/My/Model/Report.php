@@ -13,7 +13,28 @@
 class My_Model_Report {
    public $by = "semester";
    public $semId = null;
-   public $year = "";
+   public $year = null;
+   public $reportPeriod = "Report Period: ";
+
+
+   public function __construct($criteria=array()) 
+   {
+      if (!empty($criteria)) {
+         $this->by = $criteria['by'];
+
+         if ($this->by === "semester") {
+            $this->semId = $criteria['semesters_id'];
+            $Semester = new My_Model_Semester();
+            $this->reportPeriod .= $Semester->fetchRow("id = " . $this->semId)->semester;
+         } else {
+            $this->year = $criteria['year'];
+            $this->reportPeriod .= $this->year;
+         }
+      } else {
+         throw new Exception("Array can't be empty");
+      }
+      
+   }
 
 
    public function assignments()
@@ -26,24 +47,7 @@ class My_Model_Report {
                  LEFT JOIN coop_submittedassignments sa 
                     ON (u.username = sa.username AND c.id = sa.classes_id AND us.semesters_id = sa.semesters_id AND sa.is_final = 1 )";
                  
-
-      if ($this->by === "semester") {
-         $semId = $this->semId;
-         $sql .= " WHERE us.semesters_id = $semId";
-      } elseif ($this->by === "year") {
-         $year = $this->year;
-         $Semester = new My_Model_Semester;
-         $select = $Semester->select()->where("year = ?", $year);
-         $sems = $Semester->fetchAll($select);
-         $semIds = array();
-         foreach ($sems as $s) {
-            $semIds[] = $s->id;
-         }
-         $semIds = implode($semIds, ', ');
-         $sql .= " WHERE us.semesters_id IN ($semIds)";
-      }
-
-      $sql .= " ORDER BY class_name, lname;";
+      $sql = $this->addConditionsTo($sql);
 
       $rows = $db->fetchAll($sql);
       return $rows;
@@ -69,12 +73,22 @@ class My_Model_Report {
                  (sa.id = aa.submittedassignments_id 
                   AND aa.static_question IN('supervisor', 'comments', 'overall_eval')) ";
 
+      $sql = $this->addConditionsTo($sql);
+
+      $rows = $db->fetchAll($sql);
+      return $rows;
+
+   }
+
+
+   private function addConditionsTo($sql)
+   {
       if ($this->by === "semester") {
          $semId = $this->semId;
          $sql .= " WHERE us.semesters_id = $semId";
       } elseif ($this->by === "year") {
          $year = $this->year;
-         $Semester = new My_Model_Semester;
+         $Semester = new My_Model_Semester();
          $select = $Semester->select()->where("year = ?", $year);
          $sems = $Semester->fetchAll($select);
          $semIds = array();
@@ -85,11 +99,9 @@ class My_Model_Report {
          $sql .= " WHERE us.semesters_id IN ($semIds)";
       }
 
-      //die($sql);
       $sql .= " ORDER BY class_name, lname;";
 
-      $rows = $db->fetchAll($sql);
-      return $rows;
+      return $sql;
 
    }
 }

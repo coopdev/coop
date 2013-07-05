@@ -48,26 +48,13 @@ class ReportsController extends Zend_Controller_Action
     public function assignmentsAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
-       $reportsSession = $_SESSION['reports'];
-       $Report = new My_Model_Report();
-       $Report->by = $reportsSession['by'];
-       $reportPeriod = "Report Period: ";
-       if ($Report->by === "semester") {
-          $Report->semId = $reportsSession['semesters_id'];
-          $Semester = new My_Model_Semester();
-          //$this->view->semester = $Semester->fetchRow("id = " . $Report->semId);
-          $reportPeriod .= $Semester->fetchRow("id = " . $Report->semId)->semester;
-       } elseif ($Report->by === "year") {
-          $Report->year = $reportsSession['year'];
-          $this->view->academicYear = $Report->year;
-          $reportPeriod .= $Report->year;
-       }
 
-       $this->view->reportPeriod = $reportPeriod;
+       $Report = new My_Model_Report($_SESSION['reports']);
+       $this->view->reportPeriod = $Report->reportPeriod;
+       $this->view->reports = $Report->assignments();
 
        $Assign = new My_Model_Assignment();
        $this->view->assigns = $Assign->getAll();
-       $this->view->reports = $Report->assignments();
 
     }
 
@@ -75,23 +62,10 @@ class ReportsController extends Zend_Controller_Action
     public function employerSatisfactionAction()
     {
        $this->_helper->getHelper('layout')->disableLayout();
-       $reportsSession = $_SESSION['reports'];
-       $Report = new My_Model_Report();
-       $Report->by = $reportsSession['by'];
-       $reportPeriod = "Report Period: ";
-       if ($Report->by === "semester") {
-          $Report->semId = $reportsSession['semesters_id'];
-          $Semester = new My_Model_Semester();
-          $reportPeriod .= $Semester->fetchRow("id = " . $Report->semId)->semester;
-       } elseif ($Report->by === "year") {
-          $Report->year = $reportsSession['year'];
-          $reportPeriod .= $Report->year;
-       }
 
-       $this->view->reportPeriod = $reportPeriod;
+       $Report = new My_Model_Report($_SESSION['reports']);
+       $this->view->reportPeriod = $Report->reportPeriod;
        $this->view->results = $Report->employerSatisfaction();
-
-       //die(var_dump($results));
 
     }
 
