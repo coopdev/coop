@@ -49,6 +49,8 @@ class My_Model_Report {
                  
       $sql = $this->addConditionsTo($sql);
 
+      $sql .= " ORDER BY class_name, lname;";
+
       $rows = $db->fetchAll($sql);
       return $rows;
    }
@@ -56,6 +58,8 @@ class My_Model_Report {
    public function employerSatisfaction()
    {
       $db = new My_Db();
+      $Assignment = new My_Model_Assignment();
+      $supervEvalId = $Assignment->getSupervisorEvalId();
 
       // Replace sa.assignments_id with actual ID of supervisor eval assignment.
       $sql = "SELECT u.username, u.lname, u.fname, us.semesters_id, c.name AS class_name, 
@@ -68,12 +72,14 @@ class My_Model_Report {
                   AND c.id = sa.classes_id 
                   AND us.semesters_id = sa.semesters_id 
                   AND sa.is_final = 1 
-                  AND sa.assignments_id = 6) 
+                  AND sa.assignments_id = $supervEvalId) 
               LEFT JOIN coop_assignmentanswers aa ON
                  (sa.id = aa.submittedassignments_id 
                   AND aa.static_question IN('supervisor', 'comments', 'overall_eval')) ";
 
       $sql = $this->addConditionsTo($sql);
+
+      $sql .= " ORDER BY class_name, lname;";
 
       $rows = $db->fetchAll($sql);
       return $rows;
@@ -81,7 +87,28 @@ class My_Model_Report {
    }
 
 
-   private function addConditionsTo($sql)
+   public function completionRateForAll()
+   {
+      $db = new My_Db();
+
+      $sql = "SELECT count(*) AS count FROM coop_users_semesters AS us"; 
+      $sql = $this->addConditionsTo($sql);
+      $result = $db->fetchRow($sql);
+      $totalCount = (int) $result['count'];
+
+      $sql .= " AND status != 'Incomplete'";
+      $result = $db->fetchRow($sql);
+      $completeCount = (int) $result['count'];
+
+      return array("totalCount" => $totalCount, "completeCount" => $completeCount);
+
+      //$percent = round( ($completeCount / $totalCount) * 100 );
+      //$percent .= "%";
+
+   }
+
+
+   private function addConditionsTo($sql, $opts = array())
    {
       if ($this->by === "semester") {
          $semId = $this->semId;
@@ -99,7 +126,6 @@ class My_Model_Report {
          $sql .= " WHERE us.semesters_id IN ($semIds)";
       }
 
-      $sql .= " ORDER BY class_name, lname;";
 
       return $sql;
 

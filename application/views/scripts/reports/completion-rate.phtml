@@ -1,0 +1,67 @@
+<head>
+   <?php $coopSess = new Zend_Session_Namespace('coop'); ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jquery.js') ?>;
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+   <script type="text/javascript">
+      $(document).ready(function() {
+
+
+
+         google.load("visualization", "1", {packages:["corechart"]});
+         google.setOnLoadCallback(drawChart);
+         function drawChart() {
+           var data = google.visualization.arrayToDataTable([
+             ['Year', 'Sales', 'Expenses'],
+             ['2004',  1000,      400],
+             ['2005',  1170,      460],
+             ['2006',  660,       1120],
+             ['2007',  1030,      540]
+           ]);
+
+           var options = {
+             title: 'Company Performance',
+             vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+           };
+
+           var chart = new google.visualization.BarChart(document.getElementById('for-all'));
+           chart.draw(data, options);
+         }
+
+      })
+   </script>
+</head>
+
+<?php
+   $rateForAll = $this->view->rateForAll;
+   $reportPeriod = $this->reportPeriod;
+?>
+
+<style>
+   #report-container {
+      margin-left: 20px;
+      margin-right: 20px;
+      /*
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      */
+   }
+   #emp-satisfaction-report th,td {
+      text-align: center;
+      border: 1px solid;
+      padding: 10px 3px 10px 3px;
+   }
+   #page-title, #report-period {
+      text-align: center;
+   }
+</style>
+
+<h2 id='page-title'> Employer Satisfaction Report </h2>
+<h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
+
+
+<div id="for-all">
+   <h3> For All </h3>
+
+</div>
+

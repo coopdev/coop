@@ -39,6 +39,8 @@ class ReportsController extends Zend_Controller_Action
                 $this->_helper->redirector('assignments');
              } elseif ($data['report'] === 'empSatisfaction') {
                 $this->_helper->redirector('employer-satisfaction');
+             } elseif ($data['report'] === 'completionRate') {
+                $this->_helper->redirector('completion-rate');
              }
           }
        }
@@ -66,6 +68,16 @@ class ReportsController extends Zend_Controller_Action
        $Report = new My_Model_Report($_SESSION['reports']);
        $this->view->reportPeriod = $Report->reportPeriod;
        $this->view->results = $Report->employerSatisfaction();
+
+    }
+
+
+    public function completionRateAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $Report = new My_Model_Report($_SESSION['reports']);
+       $this->view->reportPeriod = $Report->reportPeriod;
+       $this->view->rateForAll = $Report->completionRateForAll();
 
     }
 
