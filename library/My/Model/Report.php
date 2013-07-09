@@ -111,6 +111,7 @@ class My_Model_Report {
    public function completionRateByMajor()
    {
       $db = new My_Db();
+      /*
       $sql = "SELECT c.name AS class, count(*) AS count FROM coop_users_semesters AS us
                 JOIN coop_classes AS c ON us.classes_id = c.id"; 
       $sql = $this->addConditionsTo($sql);
@@ -118,10 +119,20 @@ class My_Model_Report {
       // SQL for completes.
       $sqlComp = $sql . " AND status != 'Incomplete'";
 
-      $sql .= " GROUP BY c.id";
-      $sqlComp .= " GROUP BY c.id";
+      $sql .= " GROUP BY c.id ORDER BY class";
 
+      */
       //die($sqlComp);
+
+      $sql = "SELECT c.major AS major, count(*) AS count FROM coop_users_semesters AS us
+                JOIN coop_classes AS c ON us.classes_id = c.id"; 
+      $sql = $this->addConditionsTo($sql);
+
+      // SQL for completes.
+      $sqlComp = $sql . " AND status != 'Incomplete'";
+
+      $sql .= " GROUP BY major ORDER BY major";
+      $sqlComp .= " GROUP BY major ORDER BY major";
 
       $result = $db->fetchAll($sql);
 

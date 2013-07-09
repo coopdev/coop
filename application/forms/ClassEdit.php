@@ -5,7 +5,6 @@ class Application_Form_ClassEdit extends Zend_Form
 
     public function init()
     {
-
        $elems = new My_FormElement();
 
        $class = $elems->getCommonTbox('name', 'Enter class name:');

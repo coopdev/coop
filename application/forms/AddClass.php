@@ -18,7 +18,6 @@ class Application_Form_AddClass extends Zend_Form
           $major->addMultiOptions(array($m->major => $m->major));
        }
        
-
        $coord = $elems->getCoordsSelectOptional();
 
        $level = $this->levelSelect();
