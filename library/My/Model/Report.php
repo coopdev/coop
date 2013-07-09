@@ -108,6 +108,34 @@ class My_Model_Report {
    }
 
 
+   public function completionRateByMajor()
+   {
+      $db = new My_Db();
+      $sql = "SELECT c.name AS class, count(*) AS count FROM coop_users_semesters AS us
+                JOIN coop_classes AS c ON us.classes_id = c.id"; 
+      $sql = $this->addConditionsTo($sql);
+
+      // SQL for completes.
+      $sqlComp = $sql . " AND status != 'Incomplete'";
+
+      $sql .= " GROUP BY c.id";
+      $sqlComp .= " GROUP BY c.id";
+
+      //die($sqlComp);
+
+      $result = $db->fetchAll($sql);
+
+      $byMajor = array();
+      $byMajor['totalCount'] = $result;
+
+      $result = $db->fetchAll($sqlComp);
+      $byMajor['completionCount'] = $result;
+
+      //die(var_dump($byMajor));
+      return $byMajor;
+   }
+
+
    private function addConditionsTo($sql, $opts = array())
    {
       if ($this->by === "semester") {

@@ -79,6 +79,8 @@ class ReportsController extends Zend_Controller_Action
        $this->view->reportPeriod = $Report->reportPeriod;
        $this->view->forAllMajors = $Report->completionRateForAllMajors();
 
+       $this->view->byMajor = $Report->completionRateByMajor();
+
     }
 
     // Just used to update years, not for actual application.
