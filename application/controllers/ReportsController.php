@@ -77,7 +77,7 @@ class ReportsController extends Zend_Controller_Action
        $this->_helper->getHelper('layout')->disableLayout();
        $Report = new My_Model_Report($_SESSION['reports']);
        $this->view->reportPeriod = $Report->reportPeriod;
-       $this->view->rateForAll = $Report->completionRateForAll();
+       $this->view->forAllMajors = $Report->completionRateForAllMajors();
 
     }
 

@@ -87,7 +87,7 @@ class My_Model_Report {
    }
 
 
-   public function completionRateForAll()
+   public function completionRateForAllMajors()
    {
       $db = new My_Db();
 
@@ -98,11 +98,11 @@ class My_Model_Report {
 
       $sql .= " AND status != 'Incomplete'";
       $result = $db->fetchRow($sql);
-      $completeCount = (int) $result['count'];
+      $completionCount = (int) $result['count'];
 
-      return array("totalCount" => $totalCount, "completeCount" => $completeCount);
+      return array("totalCount" => $totalCount, "completionCount" => $completionCount);
 
-      //$percent = round( ($completeCount / $totalCount) * 100 );
+      //$percent = round( ($completionCount / $totalCount) * 100 );
       //$percent .= "%";
 
    }

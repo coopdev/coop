@@ -10,7 +10,7 @@
 
 <?php
    require 'libchart/classes/libchart.php';
-   $rateForAll = $this->rateForAll;
+   $forAllMajors = $this->forAllMajors;
    $reportPeriod = $this->reportPeriod;
 
 ?>
@@ -66,11 +66,11 @@
 <script>
    $(document).ready(function() {
 
-      rateForAll = {}
-      rateForAll = <?php echo json_encode($rateForAll); ?>;
+      forAllMajors = {}
+      forAllMajors = <?php echo json_encode($forAllMajors); ?>;
 
-      var s1 = [rateForAll.totalCount];
-      var s2 = [rateForAll.completeCount];
+      var s1 = [forAllMajors.totalCount];
+      var s2 = [forAllMajors.completionCount];
 
       var ticks = ["All Majors"];
 
