@@ -109,6 +109,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    public function edit($id, $data)
    {
       $vals['name'] = $data['name'];
+      $vals['major'] = $data['major'];
       $vals['coordinator'] = $data['coordinator'];
       $vals['level'] = $data['level'];
       if (empty($vals['coordinator'])) {

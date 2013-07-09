@@ -126,8 +126,10 @@
          var ticks = [];
 
          $.each(byMajor.totalCount, function(key, val) {
+            c = val['class'].split(' ')
+            c = c[0]
             s1.push(val['count'])
-            ticks.push(val['class'])
+            ticks.push(c)
          })
 
          $.each(byMajor.completionCount, function(key, val) {

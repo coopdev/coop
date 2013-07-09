@@ -131,6 +131,7 @@ class ClassController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           //$form = new Application_Form_AddClass();
           $data['name'] = $_POST['name'];
+          $data['major'] = $_POST['major'];
           $data['coordinator'] = $_POST['coordinator'];
           $data['level'] = $_POST['level'];
 
