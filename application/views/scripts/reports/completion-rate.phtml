@@ -82,7 +82,7 @@
             seriesDefaults:{
                 renderer:$.jqplot.BarRenderer,
                 rendererOptions: {fillToZero: true},
-                pointLabels: { show: true, location: 'n', edgeTolerance: -15 }
+                pointLabels: { show: true, location: 'n', edgeTolerance: -25 }
             },
             series:[
                 {label:'Total Students'},
@@ -108,12 +108,23 @@
 
          var s1 = []
          var s2 = []
-         var ticks = [];
+         var ticks = []
 
+         maxCount = 0
          $.each(byMajor.totalCount, function(key, val) {
+            if (val['count'] > maxCount) {
+               maxCount = val['count']
+            }
             s1.push(val['count'])
             ticks.push(val['major'])
          })
+         //maxCount = Math.ceil(maxCount)
+         /*
+         maxCount = maxCount * 2
+         //alert(maxCount + "")
+         maxCount = Math.round(maxCount / 10) * 10
+         maxCount = (maxCount == 0) ? 10 : maxCount
+         */
 
          $.each(byMajor.completionCount, function(key, val) {
             s2.push(val['count'])
@@ -121,6 +132,7 @@
 
          options['title'] = "By Major"
          options['axes']['xaxis']['ticks'] = ticks
+         options['axes']['yaxis']['max'] = maxCount
 
          plotByMajor = $.jqplot('by-major', [s1, s2], options) 
 
