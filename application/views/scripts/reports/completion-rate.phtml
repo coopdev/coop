@@ -112,12 +112,13 @@
 
          maxCount = 0
          $.each(byMajor.totalCount, function(key, val) {
-            if (val['count'] > maxCount) {
-               maxCount = val['count']
+            count = parseInt(val['count'])
+            if (count > maxCount) {
+               maxCount = count
                alert(val['count'] + "")
                alert(maxCount + "")
             }
-            s1.push(val['count'])
+            s1.push(count)
             ticks.push(val['major'])
          })
          //maxCount = Math.ceil(maxCount)
