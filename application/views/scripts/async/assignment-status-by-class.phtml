@@ -15,6 +15,7 @@
 <?php
    $User = new My_Model_User();
    $Assignment = new My_Model_Assignment();
+   $Class = new My_Model_Class();
    $coopSess = new Zend_Session_Namespace('coop');
    $recs = $this->recs;
    $assigns = $this->assigns;
@@ -36,7 +37,9 @@
 
          <!-- assignment headers -->
          <?php foreach($assigns as $a) { ?>
-            <th> <?php echo $a['assignment'] ?> </th> 
+            <?php if($a['assignment_num'] !== '4' || $Class->isTransferable($this->classId)) { ?>
+               <th> <?php echo $a['assignment'] ?> </th> 
+            <?php } ?>
          <?php } ?>
 
       </tr>
@@ -61,38 +64,39 @@
                <!-- use length of $assigns to create table divs to match amount of assignment headers -->
                <?php foreach($assigns as $a) { ?>
 
-                  <!-- set id of the <td> to the current records username and the assignment 
-                       id so that the inner HTML can be set in jQuery -->
-                  <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >
-                     <!-- If user is exempt -->
-                     <?php if ($semStatus === 'Exempt') { ?>
-                        Exempt
-                     <?php } else { ?>
+                  <?php if($a['assignment_num'] !== '4' || $Class->isTransferable($this->classId)) { ?>
+                     <!-- set id of the <td> to the current records username and the assignment 
+                          id so that the inner HTML can be set in jQuery -->
+                     <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >
+                        <!-- If user is exempt -->
+                        <?php if ($semStatus === 'Exempt') { ?>
+                           Exempt
+                        <?php } else { ?>
 
-                        <!-- if the current student submitted the assignment (evaluates to not null) and
-                             the assignments_id field of the record == the id of the assignment we are currently on,
-                             then fill in the <td> tag with "Submitted". -->
-                        <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
-                           <?php $count = '' ?>
-                           <?php if($a['assignment_num'] === '4') { ?>
-                              <?php 
-                                 $count = '(';
-                                 $count .= $Assignment->learningOutcomeReportSubmitCount(
-                                         array("username       = '" . $r['username'] . "'", 
-                                               "classes_id     = " . $this->classId, 
-                                               "semesters_id   = " . $coopSess->currentSemId,
-                                               "assignments_id = " . $a['id'],
-                                               "is_final       = 1"));
-                                 $count .= ' submitted)';
-                              ?>
+                           <!-- if the current student submitted the assignment (evaluates to not null) and
+                                the assignments_id field of the record == the id of the assignment we are currently on,
+                                then fill in the <td> tag with "Submitted". -->
+                           <?php if( !is_null($r['assignments_id']) && $r['is_final'] && $r['assignments_id'] === $a['id'] ) { ?>
+                              <?php $count = '' ?>
+                              <?php if($a['assignment_num'] === '4') { ?>
+                                 <?php 
+                                    $count = '(';
+                                    $count .= $Assignment->learningOutcomeReportSubmitCount(
+                                            array("username       = '" . $r['username'] . "'", 
+                                                  "classes_id     = " . $this->classId, 
+                                                  "semesters_id   = " . $coopSess->currentSemId,
+                                                  "assignments_id = " . $a['id'],
+                                                  "is_final       = 1"));
+                                    $count .= ' submitted)';
+                                 ?>
+                              <?php } ?>
+                              <font color="green"> Yes </font> <?php echo $count ?>
                            <?php } ?>
-                           <font color="green"> Yes </font> <?php echo $count ?>
+                              
                         <?php } ?>
-                           
-                     <?php } ?>
 
-                  </td>
-
+                     </td>
+                  <?php } ?>
                <?php } ?>
 
             </tr>

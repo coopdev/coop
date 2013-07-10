@@ -68,15 +68,15 @@
 <script>
    $(document).ready(function() {
 
-      forAllMajors = {}
-      forAllMajors = <?php echo json_encode($forAllMajors); ?>;
+         forAllMajors = {}
+         forAllMajors = <?php echo json_encode($forAllMajors); ?>;
 
-      var s1 = [forAllMajors.totalCount];
-      var s2 = [forAllMajors.completionCount];
+         var s1 = [forAllMajors.totalCount];
+         var s2 = [forAllMajors.completionCount];
 
-      var ticks = ["All Majors"];
+         var ticks = ["All Majors"];
 
-      options = 
+         options = 
          {
             title: 'For all Majors',
             seriesDefaults:{
@@ -94,47 +94,16 @@
                     renderer: $.jqplot.CategoryAxisRenderer,
                     ticks: ticks
                 },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
                 yaxis: {
                    min: 1000
-                   //pad: 1.05
                 }
             }
          }
 
+         plotForAll = $.jqplot('for-all-majors', [s1, s2], options) 
 
 
-      plotForAll = $.jqplot('for-all-majors', [s1, s2], options) 
-      /*
-         {
-            title: 'For all Majors',
-            seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-                rendererOptions: {fillToZero: true},
-                pointLabels: { show: true, location: 'n', edgeTolerance: -25 }
-            },
-            series:[
-                {label:'Total Students'},
-                {label:'Completed Students'}
-            ],
-            axes: {
-                // Use a category axis on the x axis and use our custom ticks.
-                xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks
-                },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
-                yaxis: {
-                   min: 1000
-                   //pad: 1.05
-                }
-            }
-         })
-         */
-
-
+         // By Major.
          byMajor = {}
          byMajor = <?php echo json_encode($byMajor); ?>;
 
@@ -155,33 +124,6 @@
          options['axes']['xaxis']['ticks'] = ticks
 
          plotByMajor = $.jqplot('by-major', [s1, s2], options) 
-         /*
-            {
-               title: 'By Major',
-               seriesDefaults:{
-                   renderer:$.jqplot.BarRenderer,
-                   rendererOptions: {fillToZero: true},
-                   pointLabels: { show: true, location: 'n', edgeTolerance: -25 }
-               },
-               series:[
-                   {label:'Total Students'},
-                   {label:'Completed Students'}
-               ],
-               axes: {
-                   // Use a category axis on the x axis and use our custom ticks.
-                   xaxis: {
-                       renderer: $.jqplot.CategoryAxisRenderer,
-                       ticks: ticks
-                   },
-                   // Pad the y axis just a little so bars can get close to, but
-                   // not touch, the grid boundaries.  1.2 is the default padding.
-                   yaxis: {
-                      min: 1000
-                      //pad: 1.05
-                   }
-               }
-            })
-            */
 
    })
 </script>
