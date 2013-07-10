@@ -136,7 +136,7 @@
 
          options['title'] = "By Major"
          options['axes']['xaxis']['ticks'] = ticks
-         options['axes']['yaxis']['max'] = maxCount + 10
+         options['axes']['yaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
 
          plotByMajor = $.jqplot('by-major', [s1, s2], options) 
 
