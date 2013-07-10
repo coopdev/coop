@@ -116,19 +116,10 @@
             count = parseInt(val['count'])
             if (count > maxCount) {
                maxCount = count
-               //alert(val['count'] + "")
-               //alert(maxCount + "")
             }
             s1.push(val['count'])
             ticks.push(val['major'])
          })
-         //maxCount = Math.ceil(maxCount)
-         /*
-         maxCount = maxCount * 2
-         //alert(maxCount + "")
-         maxCount = Math.round(maxCount / 10) * 10
-         maxCount = (maxCount == 0) ? 10 : maxCount
-         */
 
          $.each(byMajor.completionCount, function(key, val) {
             s2.push(val['count'])
