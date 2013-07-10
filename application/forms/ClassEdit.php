@@ -20,25 +20,14 @@ class Application_Form_ClassEdit extends Zend_Form
 
        $coord = $elems->getCoordsSelectOptional();
 
-       $level = $this->levelSelect();
+       //$level = $this->levelSelect();
+       $level = $elems->levelSelect();
        
        $id = new Zend_Form_Element_Hidden('id');
 
        $submit = $elems->getSubmit();
 
        $this->addElements(array($class, $major, $coord, $level, $id, $submit));
-
-    }
-
-    private function levelSelect()
-    {
-       $elem = new Zend_Form_Element_Select('level');
-
-       $elem->setLabel("Type")
-            ->addMultiOptions(array('lower' => 'Non-Transferable',
-                                    'upper' => 'Transferable'));
-
-       return $elem;
 
     }
 }

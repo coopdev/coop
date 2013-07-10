@@ -384,7 +384,7 @@ class AssignmentController extends Zend_Controller_Action
        $Class = new My_Model_Class();
        $coopSess = new Zend_Session_Namespace('coop');
 
-       if (!$Class->isTransferable($coopSess->currentClassId)) {
+       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }
@@ -413,7 +413,7 @@ class AssignmentController extends Zend_Controller_Action
        $Class = new My_Model_Class();
        $coopSess = new Zend_Session_Namespace('coop');
        
-       if (!$Class->isTransferable($coopSess->currentClassId)) {
+       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }
@@ -473,7 +473,7 @@ class AssignmentController extends Zend_Controller_Action
        $coopSess = new Zend_Session_Namespace('coop');
        $Class = new My_Model_Class();
        
-       if (!$Class->isTransferable($coopSess->currentClassId)) {
+       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }

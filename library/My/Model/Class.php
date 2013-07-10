@@ -166,7 +166,7 @@ class My_Model_Class extends Zend_Db_Table_Abstract
    /* 
     * Determines if a class is 193 or above or not.
     */
-   public function isTransferable($classId)
+   public function is100AndAbove($classId)
    {
        $classRow = $this->getClass($classId);
        // Add learning outcomes.

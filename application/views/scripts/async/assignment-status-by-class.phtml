@@ -37,7 +37,7 @@
 
          <!-- assignment headers -->
          <?php foreach($assigns as $a) { ?>
-            <?php if($a['assignment_num'] !== '4' || $Class->isTransferable($this->classId)) { ?>
+            <?php if($a['assignment_num'] !== '4' || $Class->is100AndAbove($this->classId)) { ?>
                <th> <?php echo $a['assignment'] ?> </th> 
             <?php } ?>
          <?php } ?>
@@ -64,7 +64,7 @@
                <!-- use length of $assigns to create table divs to match amount of assignment headers -->
                <?php foreach($assigns as $a) { ?>
 
-                  <?php if($a['assignment_num'] !== '4' || $Class->isTransferable($this->classId)) { ?>
+                  <?php if($a['assignment_num'] !== '4' || $Class->is100AndAbove($this->classId)) { ?>
                      <!-- set id of the <td> to the current records username and the assignment 
                           id so that the inner HTML can be set in jQuery -->
                      <td id="<?php echo $r['username'] . '-' . $a['id'] ?>" >

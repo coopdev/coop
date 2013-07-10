@@ -463,6 +463,18 @@ class My_FormElement
       $elem = new Zend_Form_Element_Submit($text);
       return $elem;
    }
+
+
+   public function levelSelect()
+   {
+      $elem = new Zend_Form_Element_Select('level');
+
+      $elem->setLabel("Type")
+           ->addMultiOptions(array('lower' => 'Below 100',
+                                   'upper' => '100 and above'));
+
+      return $elem;
+   }
    
    
    /** HELPERS **/

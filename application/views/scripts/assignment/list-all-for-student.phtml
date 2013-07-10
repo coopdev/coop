@@ -107,7 +107,7 @@
    <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'assignment',
                          'action'=>'midterm-report'), null, true) ?>'> Midterm Report </a> | due: <?php echo $due ?> </li><br />
 
-   <?php if ($Class->isTransferable($coopSess->currentClassId)) { ?>
+   <?php if ($Class->is100AndAbove($coopSess->currentClassId)) { ?>
       
       <li><a class="regText"  href='<?php echo $this->url(array('controller'=>'assignment',
                             'action'=>'learning-outcome-instructions'), null, true) ?>'> Learning Outcome Report Instructions </a><br /><br />

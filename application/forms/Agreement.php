@@ -139,7 +139,7 @@ class Application_Form_Agreement extends Application_Form_CommonForm
 
          $Class = new My_Model_Class();
 
-         if ($Class->isTransferable($this->classId)) {
+         if ($Class->is100AndAbove($this->classId)) {
             $lrnObj1 = $Elems->getCommonTbox('lrnObjective1', "1.");
             $lrnObj1->setAttrib('size', '105')
                     ->setAttrib('placeholder', 'Enter Learning Objective');
