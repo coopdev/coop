@@ -135,6 +135,32 @@ class My_Model_Report {
    }
 
 
+   public function numberOfStudentsPerMajor()
+   {
+      $db = new My_Db();
+      $sql = "SELECT c.major AS major, count(*) AS count FROM coop_users_semesters AS us
+                JOIN coop_classes AS c ON us.classes_id = c.id"; 
+      $sql = $this->addConditionsTo($sql);
+      $sql .= " GROUP BY major ORDER BY major";
+
+      $result = $db->fetchAll($sql);
+
+      return $result;
+   }
+
+   public function numberOfStudentsPerClass()
+   {
+      $db = new My_Db();
+      $sql = "SELECT c.name AS class, count(*) AS count FROM coop_users_semesters AS us
+                JOIN coop_classes AS c ON us.classes_id = c.id"; 
+      $sql = $this->addConditionsTo($sql);
+      $sql .= " GROUP BY class ORDER BY class";
+
+      $result = $db->fetchAll($sql);
+
+      return $result;
+   }
+
    private function addConditionsTo($sql, $opts = array())
    {
       if ($this->by === "semester") {

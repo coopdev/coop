@@ -5,11 +5,12 @@
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.barRenderer.min.js') ?>
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js') ?>
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.pointLabels.min.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/reports/main.js') ?>
    <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/js/jqplot/jquery.jqplot.css') ?>
+   <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/reports/main.css') ?>
 </head>
 
 <?php
-   require 'libchart/classes/libchart.php';
    $forAllMajors = $this->forAllMajors;
    $byMajor = $this->byMajor;
    $reportPeriod = $this->reportPeriod;
@@ -17,22 +18,9 @@
 ?>
 
 <style>
-   #report-container {
-      margin-left: 30px;
-      margin-right: 30px;
-   }
-
-   div#legend {
-      margin-bottom: 50px;
-   }
-
    #for-all-majors {
       width: 25%;
       margin-bottom: 100px;
-   }
-
-   #page-title, #report-period {
-      text-align: center;
    }
 
 </style>
@@ -57,7 +45,6 @@
    </div>
 
 
-
    <div id="for-all-majors">
    </div>
 
@@ -76,29 +63,9 @@
 
          var ticks = ["All Majors"];
 
-         options = 
-         {
-            title: 'For all Majors',
-            seriesDefaults:{
-                renderer:$.jqplot.BarRenderer,
-                rendererOptions: {fillToZero: true},
-                pointLabels: { show: true, location: 'n', edgeTolerance: -25 }
-            },
-            series:[
-                {label:'Total Students'},
-                {label:'Completed Students'}
-            ],
-            axes: {
-                // Use a category axis on the x axis and use our custom ticks.
-                xaxis: {
-                   renderer: $.jqplot.CategoryAxisRenderer,
-                   ticks: ticks
-                },
-                yaxis: {
-                   min: 0 
-                }
-            }
-         }
+         options = jqPlotDefaultOptions();
+         options['title'] = 'For all Majors'
+         options['series'] = [{label:'Total Students'}, {label: 'Completed Students'}]
 
          plotForAll = $.jqplot('for-all-majors', [s1, s2], options) 
 

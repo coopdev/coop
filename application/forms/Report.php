@@ -10,8 +10,7 @@ class Application_Form_Report extends Zend_Form
               ->setMultiOptions( array('assignment'       => 'Student Assignment Submission Report',
                                        'empSatisfaction'  => 'Employer Satisfaction Report',
                                        'completionRate'   => 'Completion Rate Report',
-                                       'demog'            => 'Student Demographic Report (not working yet)',
-                                       'courseDemog'      => 'Student Completed Course Demographic Report (not working yet)') );
+                                       'demog'            => 'Student Demographic Report (not working yet)'));
 
        $Semester = new My_Model_Semester();
        $sems = $Semester->getUpToCurrent();

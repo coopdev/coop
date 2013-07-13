@@ -41,6 +41,8 @@ class ReportsController extends Zend_Controller_Action
                 $this->_helper->redirector('employer-satisfaction');
              } elseif ($data['report'] === 'completionRate') {
                 $this->_helper->redirector('completion-rate');
+             } elseif ($data['report'] === 'demog') {
+                $this->_helper->redirector('student-demographic');
              }
           }
        }
@@ -80,6 +82,18 @@ class ReportsController extends Zend_Controller_Action
        $this->view->forAllMajors = $Report->completionRateForAllMajors();
 
        $this->view->byMajor = $Report->completionRateByMajor();
+
+    }
+
+
+    public function studentDemographicAction()
+    {
+       $this->_helper->getHelper('layout')->disableLayout();
+       $Report = new My_Model_Report($_SESSION['reports']);
+       $this->view->reportPeriod = $Report->reportPeriod;
+       $this->view->studentsPerMajor = $Report->numberOfStudentsPerMajor();
+       $this->view->studentsPerClass = $Report->numberOfStudentsPerClass();
+
 
     }
 

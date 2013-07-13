@@ -1,0 +1,80 @@
+<head>
+   <?php $coopSess = new Zend_Session_Namespace('coop'); ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jquery.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/jquery.jqplot.min.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.barRenderer.min.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.pointLabels.min.js') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/reports/main.js') ?>
+   <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/js/jqplot/jquery.jqplot.css') ?>
+   <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/reports/main.css') ?>
+</head>
+
+<?php
+   $studentsPerMajor = $this->studentsPerMajor;
+   $studentsPerClass = $this->studentsPerClass;
+   $reportPeriod     = $this->reportPeriod;
+?>
+
+<style>
+   #students-per-major {
+      margin-top: 100px;
+      margin-bottom: 100px;
+   }
+
+</style>
+
+<h2 id='page-title'> Student Demographic Report </h2>
+<h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
+
+<div id="report-container">
+
+   <div id="students-per-major">
+   </div>
+
+   <div id="students-per-class">
+   </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+   options = jqPlotDefaultOptions();
+   options['series'] = [{label: 'Number of Students'}]
+
+
+   studentsPerMajor = <?php echo json_encode($studentsPerMajor); ?>;
+   options['title'] = "Number of Students per Major"
+   genDemographicGraph(studentsPerMajor, 'major', 'students-per-major', options)
+
+
+   studentsPerClass = <?php echo json_encode($studentsPerClass); ?>;
+   options['title'] = "Number of Students per Class"
+   genDemographicGraph(studentsPerClass, 'class', 'students-per-class', options)
+
+});
+
+
+
+function genDemographicGraph(reportData, group, div, opts) 
+{
+   var s1 = []
+   var ticks = []
+
+   maxCount = 0
+   $.each(reportData, function(key, val) {
+      count = parseInt(val['count'])
+      if (count > maxCount) {
+         maxCount = count
+      }
+      s1.push(val['count'])
+      ticks.push(val[group])
+   })
+
+   opts['axes']['xaxis']['ticks'] = ticks
+   opts['axes']['yaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
+
+   plot = $.jqplot(div, [s1], opts) 
+
+}
+</script>

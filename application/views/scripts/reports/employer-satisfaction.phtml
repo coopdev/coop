@@ -3,6 +3,7 @@
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); ?>
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); ?> 
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); ?>
+   <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/reports/main.css') ?>
 </head>
 <?php
    $results = $this->results;
@@ -12,29 +13,17 @@
    $currentRecord = array('username' => "", 'class_id' => '', 'semesters_id' => '');
 ?>
 <style>
-   #emp-satisfaction-report-container {
-      margin-left: 20px;
-      margin-right: 20px;
-      /*
-      width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-      */
-   }
    #emp-satisfaction-report th,td {
       text-align: center;
       border: 1px solid;
       padding: 10px 3px 10px 3px;
-   }
-   #page-title, #report-period {
-      text-align: center;
    }
 </style>
 
 <h2 id='page-title'> Employer Satisfaction Report </h2>
 <h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
 
-<div id="emp-satisfaction-report-container">
+<div id="report-container">
    <table id="emp-satisfaction-report">
       <tr>
          <th> Last </th>

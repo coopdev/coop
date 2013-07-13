@@ -3,6 +3,7 @@
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/ie.css', 'screen, projection', 'IE'); ?>
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/print.css', 'print'); ?> 
    <?php echo $this->headLink()->prependStylesheet($coopSess->baseUrl.'/css/screen.css', 'screen, projection'); ?>
+   <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/reports/main.css') ?>
 </head>
 <?php
 
@@ -16,22 +17,10 @@
 ?>
 
 <style>
-   #assign-report-container {
-      margin-left: 20px;
-      margin-right: 20px;
-      /*
-      width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-      */
-   }
    #assign-report th,td {
       text-align: center;
       border: 1px solid;
       padding: 10px 3px 10px 3px;
-   }
-   #page-title, #report-period {
-      text-align: center;
    }
 </style>
 
@@ -39,7 +28,7 @@
 
 <h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
 
-<div id="assign-report-container">
+<div id="report-container">
 <table id="assign-report">
    <tr>
       <th>Last</th>

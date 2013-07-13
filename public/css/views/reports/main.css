@@ -1,0 +1,14 @@
+#report-container {
+   margin-left: 30px;
+   margin-right: 30px;
+}
+
+#page-title, #report-period {
+   text-align: center;
+}
+
+/* For Graphs */
+div#legend {
+   margin-bottom: 50px;
+}
+
