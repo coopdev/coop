@@ -54,6 +54,8 @@ class My_Acl_Coop extends Zend_Acl
       $this->add(new Zend_Acl_Resource('user_edit-student'), 'user');
       $this->add(new Zend_Acl_Resource('user_list-studentaids'), 'user');
 
+      /* Incompletes Controller */
+      $this->add(new Zend_Acl_Resource('incompletes'));
 
 
       /* Class Controller */
@@ -205,6 +207,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('coordinator', 'help-page');
       $this->allow('coordinator', 'comments');
       $this->allow('coordinator', 'reports');
+      $this->allow('coordinator', 'incompletes');
       
       $this->deny('studentAid', 'syllabus');
       $this->deny('studentAid', 'user');

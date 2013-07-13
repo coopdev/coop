@@ -2,6 +2,7 @@
 $newCommentUrl     = $this->url( array('controller' => 'comments', 'action' => 'new') );
 $extendDuedatesUrl = $this->url( array('controller' => 'assignment', 'action' => 'extend-duedate') );
 $studentLoginsUrl  = $this->url( array('controller' => 'user', 'action' => 'view-logins') );
+$incompletesUrl    = $this->url( array('controller' => 'incompletes', 'action' => 'index') );
 ?>
 
 <a class="regText" href="<?php echo $newCommentUrl ?>"> Create comment </a> <br /> <br />
@@ -9,3 +10,5 @@ $studentLoginsUrl  = $this->url( array('controller' => 'user', 'action' => 'view
 <a class="regText" href="<?php echo $extendDuedatesUrl ?>"> Extend due date for student </a> <br /> <br />
 
 <a class="regText" href="<?php echo $studentLoginsUrl ?>"> View student logins </a> <br /> <br />
+
+<a class="regText" href="<?php echo $incompletesUrl ?>"> View incomplete students </a> <br /> <br />
