@@ -5,9 +5,9 @@
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.barRenderer.min.js') ?>
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js') ?>
    <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/jqplot/plugins/jqplot.pointLabels.min.js') ?>
-   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/reports/main.js') ?>
    <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/js/jqplot/jquery.jqplot.css') ?>
    <?php echo $this->headLink()->appendStylesheet($coopSess->baseUrl.'/css/views/reports/main.css') ?>
+   <?php echo $this->headScript()->appendFile($coopSess->baseUrl.'/js/views/reports/main.js') ?>
 </head>
 
 <?php
@@ -35,6 +35,8 @@
 <h3 id="report-period"> <?php echo $reportPeriod ?> </h3>
 
 <div id="report-container">
+   <div id="test-plot">
+   </div>
 
    <div id="students-per-major">
    </div>
@@ -47,8 +49,8 @@
 $(document).ready(function() {
 
    options = jqPlotDefaultOptions();
-   options['series'] = [{label: 'Number of Students'}]
 
+   options['series'] = [{label: 'Number of Students'}]
 
    studentsPerMajor = <?php echo json_encode($studentsPerMajor); ?>;
    options['title'] = "Number of Students per Major"
@@ -59,29 +61,52 @@ $(document).ready(function() {
    options['title'] = "Number of Students per Class"
    genDemographicGraph(studentsPerClass, 'class', 'students-per-class', options)
 
+
 });
 
+function jqPlotDefaultOptions() {
+   options = 
+   {
+      //title: 'a',
+      seriesDefaults:{
+          renderer:$.jqplot.BarRenderer,
+          pointLabels: { show: true, location: 'e', edgeTolerance: -25 },
+          shadowAngle: 135,
+          rendererOptions: {
+             barDirection: 'horizontal'
+          }
+      },
+      axes: {
+          // Use a category axis on the x axis and use our custom ticks.
+          xaxis: {
+             min: 0,
+             tickOptions: { formatString: '%d' }
+          },
+          yaxis: {
+             renderer: $.jqplot.CategoryAxisRenderer
+          }
+      }
+   }
+   return options
+}
 
 
 function genDemographicGraph(reportData, group, div, opts) 
 {
    var s1 = []
-   var ticks = []
 
    maxCount = 0
-   $.each(reportData, function(key, val) {
+   $.each(reportData.reverse(), function(key, val) {
       count = parseInt(val['count'])
       if (count > maxCount) {
          maxCount = count
       }
-      s1.push(val['count'])
-      ticks.push(val[group])
+      s1.push([val['count'], val[group]])
    })
 
-   opts['axes']['xaxis']['ticks'] = ticks
-   opts['axes']['yaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
+   opts['axes']['xaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
 
-   plot = $.jqplot(div, [s1], opts) 
+   $.jqplot(div, [s1], opts) 
 
 }
 </script>

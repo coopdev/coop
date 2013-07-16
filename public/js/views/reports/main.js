@@ -1,22 +1,22 @@
 function jqPlotDefaultOptions() {
    options = 
    {
-      title: 'a',
+      //title: 'a',
       seriesDefaults:{
           renderer:$.jqplot.BarRenderer,
-          rendererOptions: {fillToZero: true},
-          pointLabels: { show: true, location: 'n', edgeTolerance: -25 }
+          pointLabels: { show: true, location: 'e', edgeTolerance: -25 },
+          shadowAngle: 135,
+          rendererOptions: {
+             barDirection: 'horizontal'
+          }
       },
-      series:[
-          //{label:'Number of Students'},
-      ],
       axes: {
           // Use a category axis on the x axis and use our custom ticks.
-          xaxis: {
-             renderer: $.jqplot.CategoryAxisRenderer
-          },
+          //xaxis: {
+          //   //min: 0 
+          //},
           yaxis: {
-             min: 0 
+             renderer: $.jqplot.CategoryAxisRenderer
           }
       }
    }

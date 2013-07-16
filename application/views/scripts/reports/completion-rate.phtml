@@ -34,12 +34,12 @@
    <div id="legend">
       <table>
          <tr>
-            <td> <div style="border: 7px solid rgb(75, 178, 197);"> </div> </td>
-            <td> Total Students </td>
-         </tr>
-         <tr>
             <td> <div style="border: 7px solid rgb(234, 162, 40);"> </div> </td>
             <td> Completed Students </td>
+         </tr>
+         <tr>
+            <td> <div style="border: 7px solid rgb(75, 178, 197);"> </div> </td>
+            <td> Total Students </td>
          </tr>
       </table>
    </div>
@@ -58,25 +58,26 @@
          forAllMajors = {}
          forAllMajors = <?php echo json_encode($forAllMajors); ?>;
 
-         var s1 = [forAllMajors.totalCount];
-         var s2 = [forAllMajors.completionCount];
+         //var s1 = [forAllMajors.totalCount];
+         //var s2 = [forAllMajors.completionCount];
 
-         var ticks = ["All Majors"];
+         var s1 = [[forAllMajors.totalCount, 'All Majors']];
+         var s2 = [[forAllMajors.completionCount, 'All Majors']];
+
+         //var ticks = ["All Majors"];
 
          options = jqPlotDefaultOptions();
          options['title'] = 'For all Majors'
-         options['series'] = [{label:'Total Students'}, {label: 'Completed Students'}]
+         //options['series'] = [{label:'Total Students'}, {label: 'Completed Students'}]
 
          plotForAll = $.jqplot('for-all-majors', [s1, s2], options) 
 
 
          // By Major.
-         byMajor = {}
          byMajor = <?php echo json_encode($byMajor); ?>;
 
          var s1 = []
          var s2 = []
-         var ticks = []
 
          maxCount = 0
          $.each(byMajor.totalCount, function(key, val) {
@@ -84,19 +85,43 @@
             if (count > maxCount) {
                maxCount = count
             }
-            s1.push(val['count'])
-            ticks.push(val['major'])
+            s1.push([val['count'], val['major']])
          })
 
          $.each(byMajor.completionCount, function(key, val) {
-            s2.push(val['count'])
+            s2.push([val['count'], val['major']])
          })
 
          options['title'] = "By Major"
-         options['axes']['xaxis']['ticks'] = ticks
-         options['axes']['yaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
+         options['axes']['xaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
 
          plotByMajor = $.jqplot('by-major', [s1, s2], options) 
 
    })
+
+function jqPlotDefaultOptions() {
+   options = 
+   {
+      //title: 'a',
+      seriesDefaults:{
+          renderer:$.jqplot.BarRenderer,
+          pointLabels: { show: true, location: 'e', edgeTolerance: -25 },
+          shadowAngle: 135,
+          rendererOptions: {
+             barDirection: 'horizontal'
+          }
+      },
+      axes: {
+          // Use a category axis on the x axis and use our custom ticks.
+          xaxis: {
+             min: 0,
+             tickOptions: { formatString: '%d' }
+          },
+          yaxis: {
+             renderer: $.jqplot.CategoryAxisRenderer
+          }
+      }
+   }
+   return options
+}
 </script>
