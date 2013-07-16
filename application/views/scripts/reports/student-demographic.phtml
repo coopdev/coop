@@ -17,13 +17,6 @@
 ?>
 
 <style>
-   /*
-   #report-container {
-      margin-left: 20px;
-      margin-right: 100px;
-   }
-   */
-
    #students-per-major {
       margin-top: 100px;
       margin-bottom: 100px;
@@ -32,9 +25,12 @@
    #students-per-class {
    }
 
-   #test-plot {
-      /* height: 750; */
+   /* for some reason, putting this in an external css file doesn't work */
+   .jqplot-yaxis-tick {
+      width: 110px;
+      text-align: right;
    }
+
 </style>
 
 <h2 id='page-title'> Student Demographic Report </h2>
@@ -56,6 +52,7 @@ $(document).ready(function() {
 
    options = jqPlotDefaultOptions();
 
+/*
    // Testing
    s1 = []
    for (i = 0; i < 17; i++) {
@@ -78,6 +75,7 @@ $(document).ready(function() {
    //testPlot = $.jqplot('test-plot', [s1], options) 
 
    // End Testing
+   */
 
 
 

@@ -1,3 +1,4 @@
+/*
 function jqPlotDefaultOptions() {
    options = 
    {
@@ -21,3 +22,4 @@ function jqPlotDefaultOptions() {
    }
    return options
 }
+*/
