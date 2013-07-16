@@ -19,7 +19,6 @@
 
 <style>
    #for-all-majors {
-      width: 25%;
       margin-bottom: 100px;
    }
 
@@ -92,6 +91,11 @@
             s2.push([val['count'], val['major']])
          })
 
+         amountAboveThreshold = s1.length - 6
+         amountAboveThreshold = (amountAboveThreshold < 0) ? 0 : amountAboveThreshold
+
+         $('#by-major').height(300 + (amountAboveThreshold * 50))
+
          options['title'] = "By Major"
          options['axes']['xaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
 
@@ -106,7 +110,6 @@ function jqPlotDefaultOptions() {
       seriesDefaults:{
           renderer:$.jqplot.BarRenderer,
           pointLabels: { show: true, location: 'e', edgeTolerance: -25 },
-          shadowAngle: 135,
           rendererOptions: {
              barDirection: 'horizontal'
           }

@@ -29,6 +29,12 @@
       margin-bottom: 100px;
    }
 
+   #students-per-class {
+   }
+
+   #test-plot {
+      /* height: 750; */
+   }
 </style>
 
 <h2 id='page-title'> Student Demographic Report </h2>
@@ -50,6 +56,31 @@ $(document).ready(function() {
 
    options = jqPlotDefaultOptions();
 
+   // Testing
+   s1 = []
+   for (i = 0; i < 17; i++) {
+      s1.push([5, i+1])
+   }
+
+   foo = s1.length - 6
+   foo = (foo < 0) ? 0 : foo
+
+   $('#test-plot').height(300 + (foo * 50))
+
+
+   //s1 = [[5,1], [5,2], [5,3], [5,4], [5,5], [5,6]]
+   testPlot = $.jqplot('test-plot', [s1], options) 
+
+
+   //$('#test-plot').replaceWith("<div id='test-plot'> </div")
+   //$('#test-plot').height($('#test-plot .jqplot-yaxis').height() + 550)
+   ////testPlot.replot()
+   //testPlot = $.jqplot('test-plot', [s1], options) 
+
+   // End Testing
+
+
+
    options['series'] = [{label: 'Number of Students'}]
 
    studentsPerMajor = <?php echo json_encode($studentsPerMajor); ?>;
@@ -61,6 +92,8 @@ $(document).ready(function() {
    options['title'] = "Number of Students per Class"
    genDemographicGraph(studentsPerClass, 'class', 'students-per-class', options)
 
+   //$('#students-per-class').height($('#students-per-class .jqplot-yaxis').height() + 450)
+   //$('#students-per-class').data("jqplot").replot
 
 });
 
@@ -82,7 +115,8 @@ function jqPlotDefaultOptions() {
              tickOptions: { formatString: '%d' }
           },
           yaxis: {
-             renderer: $.jqplot.CategoryAxisRenderer
+             renderer: $.jqplot.CategoryAxisRenderer,
+             tickOptions: { }
           }
       }
    }
@@ -105,9 +139,16 @@ function genDemographicGraph(reportData, group, div, opts)
 
    opts['axes']['xaxis']['max'] = Math.round((maxCount + 10) / 10) * 10
 
-   $.jqplot(div, [s1], opts) 
+   amountAboveThreshold = s1.length - 6
+   amountAboveThreshold = (amountAboveThreshold < 0) ? 0 : amountAboveThreshold
 
-   $("#students-per-class").height($("#report-container").height())
+   $('#'+div).height(300 + (amountAboveThreshold * 50))
+
+   plot = $.jqplot(div, [s1], opts) 
+
+   //$('#'+div).height($('#'+div+" .jqplot-yaxis").height() + 450)
+   //plot.replot()
+
 
 }
 </script>
