@@ -15,12 +15,12 @@ class IncompletesController extends Zend_Controller_Action
        $this->view->result = $Inc->fetchAll();
 
        if ($this->getRequest()->isPost()) {
-          $incompletes = $_POST['students'];
-
-          if (empty($incompletes)) {
+          if (!isset($_POST['students']) || empty($_POST['students'])) {
              $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
              return;
           }
+
+          $incompletes = $_POST['students'];
 
           $Inc = new My_Model_Incompletes();
           $Inc->setMultipleIncompleteSatuses($incompletes, false);
@@ -48,12 +48,12 @@ class IncompletesController extends Zend_Controller_Action
              $this->view->searchClassId = $data['classes_id'];
              $this->view->searchSemId = $data['semesters_id'];
           } elseif ($data['submittedForm'] === 'manageIncompletes') {
-             $students = $data['students'];
-
-             if (empty($students)) {
+             if (!isset($_POST['students']) || empty($_POST['students'])) {
                 $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
                 return;
              }
+
+             $students = $data['students'];
 
              $Inc = new My_Model_Incompletes();
              $Inc->setMultipleIncompleteSatuses($students);
