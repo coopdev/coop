@@ -50,10 +50,6 @@ class IncompletesController extends Zend_Controller_Action
              if ($this->studentsNotSelected()) {
                 return;
              }
-             //if (!isset($_POST['students']) || empty($_POST['students'])) {
-             //   $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
-             //   return;
-             //}
 
              $students = $data['students'];
 
@@ -71,9 +67,6 @@ class IncompletesController extends Zend_Controller_Action
     }
 
 
-    public function destroyMultipleAction()
-    {
-    }
 
 
     private function studentsNotSelected()

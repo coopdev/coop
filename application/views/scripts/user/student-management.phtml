@@ -3,12 +3,28 @@ $newCommentUrl     = $this->url( array('controller' => 'comments', 'action' => '
 $extendDuedatesUrl = $this->url( array('controller' => 'assignment', 'action' => 'extend-duedate') );
 $studentLoginsUrl  = $this->url( array('controller' => 'user', 'action' => 'view-logins') );
 $incompletesUrl    = $this->url( array('controller' => 'incompletes', 'action' => 'index') );
+$incompletesCreateUrl    = $this->url( array('controller' => 'incompletes', 'action' => 'create-multiple') );
 ?>
 
-<a class="regText" href="<?php echo $newCommentUrl ?>"> Create comment </a> <br /> <br />
+<style>
+   #page-title {
+      text-align: center;
+   }
+</style>
 
-<a class="regText" href="<?php echo $extendDuedatesUrl ?>"> Extend due date for student </a> <br /> <br />
+<h2 id="page-title"> Manage Students </h2>
 
-<a class="regText" href="<?php echo $studentLoginsUrl ?>"> View student logins </a> <br /> <br />
+<div class="link-group">
+   <a class="regText" href="<?php echo $newCommentUrl ?>"> Create comment </a> <br /> <br />
+   <a class="regText" href="<?php echo $extendDuedatesUrl ?>"> Extend due date for student </a> <br /> <br />
+   <a class="regText" href="<?php echo $studentLoginsUrl ?>"> View student logins </a> <br /> <br /> <br />
+</div>
 
-<a class="regText" href="<?php echo $incompletesUrl ?>"> View incomplete students </a> <br /> <br />
+
+<div id="incomplete-links">
+   <hr>
+   <h3> Manage Incompletes </h3>
+   <a class="regText" href="<?php echo $incompletesUrl ?>"> View Incomplete students / Remove Incomplete status </a> <br /> <br />
+
+   <a class="regText" href="<?php echo $incompletesCreateUrl ?>"> Mark students as Incomplete </a> <br /> <br />
+</div>

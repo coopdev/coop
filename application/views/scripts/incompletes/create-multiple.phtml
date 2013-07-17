@@ -1,6 +1,8 @@
 <?php
    $search =  $this->searchForm;
    $students = $this->students;
+
+   $incompletesUrl  = $this->url( array('controller' => 'incompletes', 'action' => 'index') );
 ?>
 
 <h3> Search </h3>
@@ -13,6 +15,8 @@
 
 
 <?php if (isset($students)) { ?>
+
+   <a class="regText" href="<?php echo $incompletesUrl ?>"> View incomplete students </a> <br /> <br />
 
    <h2> Students With NO Incomplete Status </h2>
    <h4> Select students, then click submit button below to mark them as 'Incomplete' </h4>
