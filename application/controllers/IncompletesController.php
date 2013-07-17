@@ -24,7 +24,7 @@ class IncompletesController extends Zend_Controller_Action
 
           $Inc = new My_Model_Incompletes();
           $Inc->setMultipleIncompleteSatuses($incompletes, false);
-          $this->view->resultMessage = "<p class='success'> Incomplete status removed on selected students. </p>";
+          $this->view->resultMessage = "<p class='success'> Incomplete status removed from selected students. </p>";
 
           $this->view->result = $Inc->fetchAll();
        }
@@ -49,12 +49,20 @@ class IncompletesController extends Zend_Controller_Action
              $this->view->searchSemId = $data['semesters_id'];
           } elseif ($data['submittedForm'] === 'manageIncompletes') {
              $students = $data['students'];
+
+             if (empty($students)) {
+                $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
+                return;
+             }
+
              $Inc = new My_Model_Incompletes();
              $Inc->setMultipleIncompleteSatuses($students);
 
              $this->view->students = $Inc->searchCompletes(
                      array('classes_id' => $data['searchClassId'], 
                            'semesters_id' => $data['searchSemId']));
+
+             $this->view->resultMessage = "<p class='success'> Selected students have been marked as Incomplete. </p>";
           }
 
        }

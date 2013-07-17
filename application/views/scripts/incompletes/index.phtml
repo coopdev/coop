@@ -3,6 +3,7 @@
 ?>
 
 <h2> Incomplete Students </h2>
+<h4> Select students, then click submit button below to remove 'Incomplete' status </h4>
 
 <?php echo $this->partial('incompletes/_students_table.phtml', 
         array('students' => $result, 'submitLabel' => "Remove Incomplete Status")) ?>

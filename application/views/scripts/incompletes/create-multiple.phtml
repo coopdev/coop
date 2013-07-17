@@ -15,6 +15,7 @@
 <?php if (isset($students)) { ?>
 
    <h2> Students With NO Incomplete Status </h2>
+   <h4> Select students, then click submit button below to mark them as 'Incomplete' </h4>
 
    <?php echo $this->partial('incompletes/_students_table.phtml', 
                  array('students'      => $students, 
