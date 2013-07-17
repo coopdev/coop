@@ -15,8 +15,7 @@ class IncompletesController extends Zend_Controller_Action
        $this->view->result = $Inc->fetchAll();
 
        if ($this->getRequest()->isPost()) {
-          if (!isset($_POST['students']) || empty($_POST['students'])) {
-             $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
+          if ($this->studentsNotSelected()) {
              return;
           }
 
@@ -48,10 +47,13 @@ class IncompletesController extends Zend_Controller_Action
              $this->view->searchClassId = $data['classes_id'];
              $this->view->searchSemId = $data['semesters_id'];
           } elseif ($data['submittedForm'] === 'manageIncompletes') {
-             if (!isset($_POST['students']) || empty($_POST['students'])) {
-                $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
+             if ($this->studentsNotSelected()) {
                 return;
              }
+             //if (!isset($_POST['students']) || empty($_POST['students'])) {
+             //   $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
+             //   return;
+             //}
 
              $students = $data['students'];
 
@@ -73,6 +75,16 @@ class IncompletesController extends Zend_Controller_Action
     {
     }
 
+
+    private function studentsNotSelected()
+    {
+       if (!isset($_POST['students']) || empty($_POST['students'])) {
+          $this->view->resultMessage = "<p class='error'> No students were selected. </p>";
+          return true;
+       } else {
+          return false;
+       }
+    }
 
 }
 
