@@ -1,0 +1,25 @@
+<?php
+   $search =  $this->searchForm;
+   $students = $this->students;
+?>
+
+<h3> Search </h3>
+<form method="POST">
+   <input type="hidden" name="submittedForm" value="searchForm" />
+   <?php echo $search->classes_id ?>
+   <?php echo $search->semesters_id ?>
+   <input type="submit" value="Search" />
+</form> <br /><br />
+
+
+<?php if (isset($students)) { ?>
+
+   <h2> Students With NO Incomplete Status </h2>
+
+   <?php echo $this->partial('incompletes/_students_table.phtml', 
+                 array('students'      => $students, 
+                       'submitLabel'   => "Mark as incomplete", 
+                       'searchClassId' => $this->searchClassId, 
+                       'searchSemId'   => $this->searchSemId)) ?>
+
+<?php } ?>

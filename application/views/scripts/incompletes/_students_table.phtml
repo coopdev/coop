@@ -1,0 +1,51 @@
+<style>
+   table#students th,td {
+      text-align: center;
+      border: 1px solid;
+      padding: 10px 3px 10px 3px;
+   }
+</style>
+
+
+<form method="POST">
+   <input type="hidden" name="submittedForm" value="manageIncompletes" />
+   <input type="hidden" name="searchClassId" value="<?php echo $this->searchClassId; ?>" />
+   <input type="hidden" name="searchSemId" value="<?php echo $this->searchSemId; ?>" />
+   <table id="students">
+      <tr>
+         <th> <input id="check-all" type="checkbox" /> </th>
+         <th> Name </th>
+         <th> Class </th>
+         <th> Semester </th>
+      </tr>
+
+      <?php foreach ($this->students as $std) { ?>
+      <tr>
+         <td> <input type="checkbox" class="student-check-box" name="students[]" value="<?php echo $std['users_sem_id'] ?>" /> </td>
+         <td> <?php echo $std['lname'] . ", " . $std['fname'] . " (" . $std['username'] . ")" ?> </td>
+         <td> <?php echo $std['class'] ?> </td>
+         <td> <?php echo $std['semester'] ?> </td>
+      </tr>
+
+      <?php } ?>
+
+   </table>
+
+   <input type="submit" value="<?php echo $this->submitLabel ?>" />
+</form>
+
+
+
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#students").on('click', '#check-all', function() {
+         if( $(this).is(':checked') ) {
+            $(".student-check-box").prop('checked', true)
+         } else {
+            $(".student-check-box").prop('checked', false)
+         }
+      })
+   })
+
+</script>
