@@ -52,6 +52,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       //$View = new Zend_View();
       //$View->setHelperPath("My/View/Helper", "My_View_Helper");
    }
+
+
+   protected function _initForceSSL() {
+      if($_SERVER['SERVER_PORT'] != '443') {
+         header('Location: https://' . $_SERVER['HTTP_HOST'] . 
+                $_SERVER['REQUEST_URI']);
+         exit();
+      }
+   } 
       
    protected function _initRoutes()
    {
