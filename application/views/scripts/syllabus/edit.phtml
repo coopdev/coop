@@ -54,7 +54,10 @@
 
         theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,fontselect,fontsizeselect",
         theme_advanced_buttons2 : "pastetext,pasteword,|,bullist,numlist,|,outdent,indent,undo,redo,forecolor,backcolor,spellchecker,tablecontrols",
-        theme_advanced_resizing : true
+        theme_advanced_resizing : true,
+        init_instance_callback : function() {
+           tinymce.execCommand('mceSpellCheck', true);
+        }
    });
 
 </script>
