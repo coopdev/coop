@@ -465,6 +465,8 @@ class AssignmentController extends Zend_Controller_Action
              $this->view->resultMessage = "<p class=error> Errors on Form </p>";
           }
 
+          $form->populate($data);
+
        }
     }
 
