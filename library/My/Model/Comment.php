@@ -5,6 +5,7 @@ class My_Model_Comment extends Zend_Db_Table_Abstract
 
    public function create($data)
    {
+      date_default_timezone_set('US/Hawaii');
       $comment = $this->fetchNew();
       $comment->setFromArray($data);
       $comment->date = date('Y-m-d h:i:s');
@@ -19,6 +20,7 @@ class My_Model_Comment extends Zend_Db_Table_Abstract
 
    public function fetch($where)
    {
+      date_default_timezone_set('US/Hawaii');
       $db = new My_Db();
 
       $select = $this->select();
