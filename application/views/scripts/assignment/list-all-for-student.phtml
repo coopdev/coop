@@ -88,8 +88,10 @@
       //} 
     ?>
 
-   <li><a onclick="<?php echo $onclick ?>" class="regText <?php echo $isDisabled?>" href='<?php echo $this->url(array('controller'=>'pdf',
-                         'action'=>'generate-pdf', 'assignment' => 'coop-agreement'), null, true) ?>'> Cooperative Education Agreement </a> | due: <?php echo $due ?> </li><br />
+    <li><a onclick="<?php echo $onclick ?>" 
+       class="regText <?php echo $isDisabled?>" 
+       href='<?php echo $this->url(array('controller'=>'pdf', 'action'=>'generate-pdf', 'assignment' => 'coop-agreement'), null, true) ?>'> 
+         Cooperative Education Agreement </a> | due: <?php echo $due ?> </li><br />
 
    <?php 
       $onclick = "return true";
