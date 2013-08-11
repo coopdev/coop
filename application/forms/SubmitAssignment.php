@@ -26,7 +26,8 @@ class Application_Form_SubmitAssignment extends Zend_Form
              ->setRequired($req);
 
        $as = new My_Model_Assignment();
-       $rows = $as->getOffLine();
+       $rows = $as->getAll();
+       //$rows = $as->getOffLine();
        //die(var_dump($rows));
 
        foreach ($rows as $row) {

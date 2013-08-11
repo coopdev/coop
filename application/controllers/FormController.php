@@ -10,18 +10,30 @@ class FormController extends Zend_Controller_Action
 
     public function studentInfoShowAction()
     {
-       $session = new Zend_Session_Namespace('coop');
+       $coopSess = new Zend_Session_Namespace('coop');
        $as = new My_Model_Assignment();
 
-       $assignId = $as->getStuInfoId();
-       if ($as->isDue($assignId)) {
-          $this->view->isDue = true;
-          return;
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getStuInfoId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+          $subForStudentData = $coopSess->submitForStudentData;
+          $classId = $subForStudentData['classes_id'];
+          $username = $subForStudentData['username'];
+          $semId = $subForStudentData['semesters_id'];
        }
 
-       $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
-           'semId' => $session->currentSemId,
-           'username' => $session->username));
+
+       $form = new Application_Form_StudentInfo( array('classId' => $classId,
+           'semId' => $semId,
+           'username' => $username));
 
        $this->view->form = $form;
 
@@ -47,18 +59,29 @@ class FormController extends Zend_Controller_Action
 
     public function studentInfoEditAction()
     {
-       $session = new Zend_Session_Namespace('coop');
-
+       $coopSess = new Zend_Session_Namespace('coop');
        $as = new My_Model_Assignment();
-       $assignId = $as->getStuInfoId();
-       if ($as->isDue($assignId)) {
-          $this->view->isDue = true;
-          return;
+
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getStuInfoId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+          $subForStudentData = $coopSess->submitForStudentData;
+          $classId = $subForStudentData['classes_id'];
+          $username = $subForStudentData['username'];
+          $semId = $subForStudentData['semesters_id'];
        }
 
-       $form = new Application_Form_StudentInfo( array('classId' => $session->currentClassId,
-           'semId' => $session->currentSemId,
-           'username' => $session->username));
+       $form = new Application_Form_StudentInfo( array('classId' => $classId,
+           'semId' => $semId,
+           'username' => $username));
 
        $form->setSubmissions();
 

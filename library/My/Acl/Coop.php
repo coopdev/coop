@@ -195,12 +195,7 @@ class My_Acl_Coop extends Zend_Acl
       $this->deny('coordinator', 'class', 'class_change');
       $this->allow('coordinator', 'async');
       $this->allow('coordinator', 'assignment');
-      $this->deny('coordinator', 'assignment', 'assignment_midterm-report');
-      $this->deny('coordinator', 'assignment', 'assignment_list-submitted');
-      $this->deny('coordinator', 'assignment', 'assignment_list-all-for-student');
-      $this->deny('coordinator', 'form');
-      $this->allow('coordinator', 'form', 'form_coop-agreement');
-      $this->allow('coordinator', 'form', 'form_edit-disclaimer');
+      $this->allow('coordinator', 'form');
       $this->allow('coordinator', 'backup');
       $this->allow('coordinator', 'semester');
       $this->allow('coordinator', 'pdf');

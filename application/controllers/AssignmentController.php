@@ -30,16 +30,31 @@ class AssignmentController extends Zend_Controller_Action
 
     public function midtermReportAction()
     {
-
        $assignment = new My_Model_Assignment();
-       $assignId = $assignment->getMidtermId();
+       $coopSess = new Zend_Session_Namespace('coop');
 
-       if ($assignment->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
+       if ($coopSess->role === 'user') {
+          $assignId = $assignment->getMidtermId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+          $subForStudentData = $coopSess->submitForStudentData;
+          $classId = $subForStudentData['classes_id'];
+          $username = $subForStudentData['username'];
+          $semId = $subForStudentData['semesters_id'];
        }
+       
 
-       $form = new Application_Form_MidtermReport();
+       $form = new Application_Form_MidtermReport(array('username' => $username, 
+                                                 'classId' => $classId,
+                                                 'semId' => $semId));
+
        $form->checkSubmittedAnswers();
 
        $this->view->form = $form;
@@ -53,7 +68,7 @@ class AssignmentController extends Zend_Controller_Action
           if ($form->isValid($data)) {
 
              $as = new My_Model_Assignment();
-             $res = $as->submitMidtermReport($data);
+             $res = $as->submitMidtermReport($form);
 
              if ($res === "submitted") {
                 $this->view->message = "<p class=error> Assignment has already been submitted </p>";
@@ -76,22 +91,30 @@ class AssignmentController extends Zend_Controller_Action
 
     public function studentEvalAction()
     {
+       $coopSess = new Zend_Session_Namespace('coop');
        $assignment = new My_Model_Assignment();
-       $assignId = $assignment->getStudentEvalId();
 
-       if ($assignment->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
+       if ($coopSess->role === 'user') {
+           $assignId = $assignment->getStudentEvalId();
+           if ($assignment->isDue($assignId)) {
+              $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+              return;
+           }
+           
+           $classId = $coopSess->currentClassId;
+           $username = $coopSess->username;
+           $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
        }
 
-       $coopSess = new Zend_Session_Namespace('coop');
-       $classId = $coopSess->currentClassId;
-       $semId = $coopSess->currentSemId;
-       $username = $coopSess->username;
-
-       $form = new Application_Form_StudentEval(array('classId' => $classId, 
-                                                      'semId' => $semId,
-                                                      'username' => $username));
+                                                      
+       $form = new Application_Form_StudentEval(array('username' => $username, 
+                                                         'classId' => $classId,
+                                                         'semId' => $semId));
 
        $this->view->form = $form;
 
@@ -238,17 +261,29 @@ class AssignmentController extends Zend_Controller_Action
     public function resumeAction()
     {
        $as = new My_Model_Assignment();
-       $session = new Zend_Session_Namespace('coop');
-       
-       $assignId = $as->getResumeId();
-       if ($as->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
-       }
+       $coopSess = new Zend_Session_Namespace('coop');
 
-       $form = new Application_Form_Resume(array('username' => $session->username, 
-                                                 'classId' => $session->currentClassId,
-                                                 'semId' => $session->currentSemId));
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getResumeId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
+       
+
+       $form = new Application_Form_Resume(array('username' => $username, 
+                                                 'classId' => $classId,
+                                                 'semId' => $semId));
 
        $this->view->form = $form;
 
@@ -280,17 +315,30 @@ class AssignmentController extends Zend_Controller_Action
     public function coverLetterAction()
     {
        $as = new My_Model_Assignment();
-       $session = new Zend_Session_Namespace('coop');
+       $coopSess = new Zend_Session_Namespace('coop');
        
-       $assignId = $as->getCoverLetterId();
-       if ($as->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getCoverLetterId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
        }
+       
 
-       $form = new Application_Form_CoverLetter(array('username' => $session->username, 
-                                                 'classId' => $session->currentClassId,
-                                                 'semId' => $session->currentSemId));
+       $form = new Application_Form_CoverLetter(array('username' => $username, 
+                                                 'classId' => $classId,
+                                                 'semId' => $semId));
+
        //echo $form->static_tasks->coverLetter;
        $form->static_tasks->coverLetter->setValue($form->static_tasks->coverLetter->getValue());
 
@@ -382,20 +430,31 @@ class AssignmentController extends Zend_Controller_Action
     public function learningOutcomeInstructionsAction()
     {
        $Class = new My_Model_Class();
+       $Assignment = new My_Model_Assignment();
        $coopSess = new Zend_Session_Namespace('coop');
 
-       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
+       if ($coopSess->role === 'user') {
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
+
+       if (!$Class->is100AndAbove($classId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }
 
-       $Assignment = new My_Model_Assignment();
        $agreementId = $Assignment->getCoopAgreementId();
        
        $answers = $Assignment->fetchAnswersForLastSubmitted(
-                       array('username'       => $coopSess->username,
-                             'classes_id'     => $coopSess->currentClassId,
-                             'semesters_id'   => $coopSess->currentSemId,
+                       array('username'       => $username,
+                             'classes_id'     => $classId,
+                             'semesters_id'   => $semId,
                              'assignments_id' => $agreementId));
 
        $learningObjectives = array();
@@ -405,33 +464,45 @@ class AssignmentController extends Zend_Controller_Action
           }
        }
        $this->view->learningObjectives = $learningObjectives;
-       $this->view->class = $coopSess->currentClassName;
+       
+       $this->view->class = $Class->fetchRow("id = '$classId'")->name;
     }
 
     public function learningOutcomeAction()
     {
-       $Class = new My_Model_Class();
        $coopSess = new Zend_Session_Namespace('coop');
+       $Class = new My_Model_Class();
+       $as = new My_Model_Assignment();
        
-       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
+
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getLearningOutcomeId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
+
+       if (!$Class->is100AndAbove($classId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }
        
        $form = new Application_Form_LearningOutcomeReport();
-       $form->setUsername($coopSess->username);
-       $form->setClassId($coopSess->currentClassId);
-       $form->setSemId($coopSess->currentSemId);
+       $form->setUsername($username);
+       $form->setClassId($classId);
+       $form->setSemId($semId);
 
-       $as = new My_Model_Assignment();
        
-       // Check if due.
-       $assignId = $as->getLearningOutcomeId();
-       if ($as->isDue($assignId)) {
-          $this->view->message = "<p class=error> This assignment is past it's due date </p>";
-          return;
-       }
-
        //$form = $as->populateLearningOutcome($form, array('classes_id' => $coopSess->currentClassId,
        //                         'semesters_id' => $coopSess->currentSemId,
        //                         'username' => $coopSess->username));
@@ -453,7 +524,7 @@ class AssignmentController extends Zend_Controller_Action
              //$res = $as->submitLearningOutcome($data);
 
              if ($res === 'tooManySubmits') {
-                $message = "<p class=error> Maximum amount has been submitted </p>";
+                $message = "<p class=error> Maximum amount has been submitted or saved </p>";
              } else if ($res === false) {
                 $message = "<p class=error> Error occured </p>";
              } else {
@@ -474,16 +545,35 @@ class AssignmentController extends Zend_Controller_Action
     {
        $coopSess = new Zend_Session_Namespace('coop');
        $Class = new My_Model_Class();
-       
-       if (!$Class->is100AndAbove($coopSess->currentClassId)) {
+       $as = new My_Model_Assignment();
+
+       if ($coopSess->role === 'user') {
+          $assignId = $as->getLearningOutcomeId();
+          if ($as->isDue($assignId)) {
+             $this->view->message = "<p class=error> This assignment is past it's due date </p>";
+             return;
+          }
+          
+          $classId = $coopSess->currentClassId;
+          $username = $coopSess->username;
+          $semId = $coopSess->currentSemId;
+       } else {
+           $subForStudentData = $coopSess->submitForStudentData;
+           $classId = $subForStudentData['classes_id'];
+           $username = $subForStudentData['username'];
+           $semId = $subForStudentData['semesters_id'];
+       }
+
+       if (!$Class->is100AndAbove($classId)) {
           $this->_helper->viewRenderer->setNoRender();
           return;
        }
        
+       
        $form = new Application_Form_LearningOutcomeReport();
-       $form->setUsername($coopSess->username);
-       $form->setClassId($coopSess->currentClassId);
-       $form->setSemId($coopSess->currentSemId);
+       $form->setUsername($username);
+       $form->setClassId($classId);
+       $form->setSemId($semId);
 
        $form->setSubmittedReports(0);
 
@@ -552,12 +642,24 @@ class AssignmentController extends Zend_Controller_Action
              $assignNum = $assignRow['assignment_num'];
              
              // Redirect to appropriate controller depending on assignment chosen.
-             if ($assignNum === '3') {
+             if ($assignNum === '1') {
+                $this->_helper->redirector('student-info-show', 'form');
+             } else if ($assignNum === '2') {
+                $this->_helper->redirector('midterm-report', 'assignment');
+             } else if ($assignNum === '3') {
                 $this->_helper->redirector('coop-agreement', 'form');
+             } else if ($assignNum === '4') {
+                $this->_helper->redirector('learning-outcome', 'assignment');
+             } else if ($assignNum === '5') {
+                $this->_helper->redirector('student-eval', 'assignment');
              } else if ($assignNum === '6') {
                 $this->_helper->redirector('supervisor-eval', 'assignment');
              } else if ($assignNum === '7') {
                 $this->_helper->redirector('timesheet', 'assignment');
+             } else if ($assignNum === '8') {
+                $this->_helper->redirector('resume', 'assignment');
+             } else if ($assignNum === '9') {
+                $this->_helper->redirector('cover-letter', 'assignment');
              }
              //die(var_dump($assignNum));
 

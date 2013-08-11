@@ -116,6 +116,10 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $email = $elems->getCommonTbox('email', 'Email:');
 
        $persInfoSubform->addElements( array($fname, $lname, $uuid, $phone, $mobile, $email) );
+       foreach ($persInfoSubform->getElements() as $e) {
+          $e->setRequired(false);
+       }
+       //die(var_dump($persInfoSubform->getElements()));
        $persInfoSubform->populate($userRow);
 
        $this->addSubForm($persInfoSubform, 'personalInfo');
@@ -154,6 +158,10 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
 
        $eduInfoSubform->addElements( array($major, $semInMajor, $gradDate, $class, $coopCreds, 
            $totalCreds, $coopSemYr, $otherCourses) );
+       foreach ($eduInfoSubform->getElements() as $e) {
+          $e->setRequired(false);
+       }
+
        $eduInfoSubform->populate($stuInfoRow->toArray());
 
        $this->addSubForm($eduInfoSubform, 'eduInfo');
@@ -189,6 +197,10 @@ class Application_Form_StudentInfo extends Application_Form_CommonForm
        $empInfoSubform->addElements( array($empInfoId, $jobTitle, $coopJobTitle, $startDate, $endDate,
            $rateOfPay, $employer, $department, $streetAddress, $cityStateZip, $supervName,
            $supervTitle, $supervPhone, $supervEmail, $fax) );
+
+       foreach ($empInfoSubform->getElements() as $e) {
+          $e->setRequired(false);
+       }
 
        $this->addSubForm($empInfoSubform, 'empInfo');
     }
