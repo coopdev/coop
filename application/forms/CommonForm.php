@@ -144,7 +144,6 @@ class Application_Form_CommonForm extends Zend_Form
 
     public function checkSubmittedAnswers()
     {
-       $coopSess = new Zend_Session_Namespace('coop');
        
        $where['username'] = $this->username;
        $where['classes_id'] = $this->classId;

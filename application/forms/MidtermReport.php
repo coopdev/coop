@@ -5,14 +5,15 @@ class Application_Form_MidtermReport extends Application_Form_CommonForm
     protected $classId;
     protected $semId;
     protected $username;
+    protected $assignId;
 
     public function init()
     {
 
        $as = new My_Model_Assignment();
-       $id = $as->getMidtermId(); // Midterm Report's id.
+       $this->assignId = $as->getMidtermId(); // Midterm Report's id.
 
-       $questions = $as->getQuestions($id);
+       $questions = $as->getQuestions($this->assignId);
 
        // TEMPLATE
        $this->setDecorators( array( 
@@ -71,15 +72,9 @@ class Application_Form_MidtermReport extends Application_Form_CommonForm
        $coopSess = new Zend_Session_Namespace('coop');
        $assign = new My_Model_Assignment();
 
-       if ($coopSess->role === 'user') {
-          $where['username'] = $coopSess->username;
-          $where['classes_id'] = $coopSess->currentClassId;
-          $where['semesters_id'] = $coopSess->currentSemId;
-       } else if ($coopSess->role === 'coordinator') {
-          $where['username'] = $this->username;
-          $where['classes_id'] = $this->classId;
-          $where['semesters_id'] = $this->semId;
-       }
+       $where['username'] = $this->username;
+       $where['classes_id'] = $this->classId;
+       $where['semesters_id'] = $this->semId;
        $where['assignments_id'] = $assign->getMidtermId();
 
 
@@ -90,7 +85,6 @@ class Application_Form_MidtermReport extends Application_Form_CommonForm
 
     public function setClassId($classId)
     {
-       //die($classId);
        $this->classId = $classId;
     }
 

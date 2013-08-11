@@ -138,33 +138,23 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
     * @return string|boolean The string 'submitted' if the assignment has already been submitted,
     *                        True on success, False on failure.
     */
-   public function submitMidtermReport($answers, $opts=array())
+   public function submitMidtermReport($form, $opts=array())
    {
-      $coopSess = new Zend_Session_Namespace('coop');
       $sa = new My_Model_SubmittedAssignment();
       $db = new My_Db();
+      $answers = $form->getValues();
 
-      // userData represents the students semesters_id, classes_id, username, etc.
-      if (isset($opts['userData'])) {
-         $submitVals = $opts['userData'];
-
-      // If $opts['userData'] isn't set, default to the currently logged in user data.
-      } else {
-         $submitVals['username'] = $coopSess->username;
-         $submitVals['classes_id'] = $coopSess->currentClassId;
-         $submitVals['semesters_id'] = $coopSess->currentSemId;
-      }
+      $submitVals['username'] = $form->getUsername();
+      $submitVals['classes_id'] = $form->getClassId();
+      $submitVals['semesters_id'] = $form->getSemId();
       $submitVals['assignments_id'] = $this->getMidtermId();
 
 
 
-      // Check what type of submit it is; save only or final.
-      if (array_key_exists('saveOnly', $answers)) {
+      if ($form->saveOnly->isChecked()) {
          $submitType = 'saveOnly';
-         unset($answers['saveOnly']);
-      } else if (array_key_exists('finalSubmit', $answers)) {
+      } else if ($form->finalSubmit->isChecked()) {
          $submitType = 'finalSubmit';
-         unset($answers['finalSubmit']);
       }
 
 
@@ -633,11 +623,10 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
             $where[] = "assignmentquestions_id = '$key'";
          }
 
-         $row = $aa->fetchRow($where);
-
-         // for testing only
-         //var_dump($row->toArray());
-         //var_dump($val);
+         if (!($row = $aa->fetchRow($where))) {
+            array_pop($where);
+            continue;
+         }
 
          // After using $where, get rid of the question id so a new one can be added on 
          // the next loop.
@@ -646,8 +635,6 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
          $row->answer_text = $val;
          try {
             $res = $row->save();
-            // testing
-            //var_dump($res);
          } catch(Exception $e) {
             //die(var_dump($where));
             return 'exception';
@@ -1740,9 +1727,9 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
 
        $persInfo = $form->personalInfo->getValues();
        $persInfo = $persInfo['personalInfo'];
-       $uuid = $session->uhinfo['uhuuid'];
+       //$uuid = $session->uhinfo['uhuuid'];
        //$persInfo['uuid'] = new Zend_Db_Expr("AES_ENCRYPT('$uuid', 'alqpwoifjch')");
-       $persInfo['uuid'] = $uuid;
+       //$persInfo['uuid'] = $uuid;
        
        $eduInfo = $form->eduInfo->getValues();
        $eduInfo = $eduInfo['eduInfo'];
