@@ -216,6 +216,12 @@ class My_Acl_Coop extends Zend_Acl
       $this->allow('studentAid', 'assignment', 'assignment_submit');
       $this->allow('studentAid', 'assignment', 'assignment_supervisor-eval');
       $this->allow('studentAid', 'assignment', 'assignment_timesheet');
+      $this->allow('studentAid', 'assignment', 'assignment_midterm-report');
+      $this->allow('studentAid', 'assignment', 'assignment_resume');
+      $this->allow('studentAid', 'assignment', 'assignment_cover-letter');
+      $this->allow('studentAid', 'assignment', 'assignment_learning-outcome');
+      $this->allow('studentAid', 'assignment', 'assignment_learning-outcome-instructions');
+      $this->allow('studentAid', 'assignment', 'assignment_student-eval');
       $this->allow('studentAid', 'assignment', 'assignment_list-status-by-class');
       $this->deny('studentAid', 'semester');
       $this->allow('studentAid', 'semester', 'semester_change-current');
