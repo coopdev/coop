@@ -35,7 +35,7 @@ class AssignmentController extends Zend_Controller_Action
 
        if ($coopSess->role === 'user') {
           $assignId = $assignment->getMidtermId();
-          if ($as->isDue($assignId)) {
+          if ($assignment->isDue($assignId)) {
              $this->view->message = "<p class=error> This assignment is past it's due date </p>";
              return;
           }

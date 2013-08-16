@@ -15,10 +15,12 @@ class PagesController extends Zend_Controller_Action
 
     public function loginAction()
     {
-       $form = new Application_Form_Login();
+       //$form = new Application_Form_Login();
 
-       $this->view->form = $form;
+       //$this->view->form = $form;
 
+
+       /*  LOGIN
        if ($this->_request->isPost()) {
           $data = $_POST;
 
@@ -64,6 +66,8 @@ class PagesController extends Zend_Controller_Action
           }
        
        }
+        * 
+        */
     }
 
     public function homeAction()
