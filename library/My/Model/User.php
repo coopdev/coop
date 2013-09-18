@@ -116,7 +116,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
        $Role = new My_Model_Role();
        $rolesId = $Role->getStudentId();
        
-       $insertUsersString = "insert into coop_users (fname, lname, username) values ";
+       $insertUsersString = "insert into coop_users (fname, lname, username, roles_id) values ";
        $insertUsersSemString = "insert into coop_users_semesters (student, semesters_id, classes_id) values ";
 
        //$updateUsersString = "update coop_users set ";
