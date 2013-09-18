@@ -1762,10 +1762,15 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
        $User->update($persInfo, "username = '" . $form->getUsername() . "'");
 
        $Student = new My_Model_Student();
-       $Student->update($eduInfo, 
-                        array("username = '" . $form->getUsername() . "'", 
-                              "semesters_id = " . $form->getSemId() 
-                        )) ;
+       $row = $Student->fetchRow("username = '" . $form->getUsername() . "' AND semesters_id = " . $form->getSemId());
+       if (count($row) > 0) {
+          $Student->update($eduInfo, 
+                           array("username = '" . $form->getUsername() . "'", 
+                                 "semesters_id = " . $form->getSemId() 
+                           )) ;
+       } else {
+          $Student->insert($eduInfo);
+       }
 
        $EmpInfo = new My_Model_EmpInfo();
        if ($form->submissionType === 'new') {
