@@ -1769,6 +1769,8 @@ class My_Model_Assignment extends Zend_Db_Table_Abstract
                                  "semesters_id = " . $form->getSemId() 
                            )) ;
        } else {
+          $eduInfo['username'] = $form->getUsername();
+          $eduInfo['semesters_id'] = $form->getSemId();
           $Student->insert($eduInfo);
        }
 
