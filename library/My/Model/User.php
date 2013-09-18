@@ -112,6 +112,9 @@ class My_Model_User extends Zend_Db_Table_Abstract
        if (!in_array($usernameHeader, $headers)) {
            return "noUsername";
        }
+
+       $Role = new My_Model_Role();
+       $rolesId = $Role->getStudentId();
        
        $insertUsersString = "insert into coop_users (fname, lname, username) values ";
        $insertUsersSemString = "insert into coop_users_semesters (student, semesters_id, classes_id) values ";
@@ -138,7 +141,7 @@ class My_Model_User extends Zend_Db_Table_Abstract
                $user->lname = $lname;
                $user->save();
            } else {
-               $insertUsersString .= "('$fname', '$lname', '$username'),";
+               $insertUsersString .= "('$fname', '$lname', '$username', $rolesId ),";
                $haveUsersToInsert = true;
            }
            
