@@ -17,8 +17,8 @@
 
 <script type="text/javascript">
    $("document").ready(function() {
-      $("#semesters_id-label").hide();
-      $("#semesters_id").hide();
+      //$("#semesters_id-label").hide();
+      //$("#semesters_id").hide();
 
 
       selectCurrentSemester();
@@ -33,30 +33,39 @@
          }
       });
 
+      $("[name=semesters_id]").change(function() {
+         if ( $('#showIncompletes').is(":checked") ) {
+            populateIncompletes();
+         } else {
+            fillStudents();
+         }
+      });
+
       $("#showIncompletes").live('click', function() {
          $this = $(this);
 
          if ($this.is(':checked')) {
-            $("#semesters_id-label").show();
-            $("#semesters_id").show();
+            //$("#semesters_id-label").show();
+            //$("#semesters_id").show();
             populateIncompletes();
             //alert('checked');
          } else {
-            $("#semesters_id-label").hide();
-            $("#semesters_id").hide();
-            $("#semesters_id").val("");
+            //$("#semesters_id-label").hide();
+            //$("#semesters_id").hide();
+            //$("#semesters_id").val("");
             fillStudents();
          }
-         selectCurrentSemester();
+         //selectCurrentSemester();
 
       });
 
 
       function fillStudents() 
       {
-         val = $("[name=classes_id]").val();
+         classes_id = $("[name=classes_id]").val();
+         semesters_id = $("[name=semesters_id]").val();
 
-         $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
+         $.post(base + '/async/class-roll-json', {'classes_id' : classes_id, 'semesters_id' : semesters_id}, function(resp) {
 
             // 
             opts = resp;

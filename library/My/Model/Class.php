@@ -197,13 +197,14 @@ class My_Model_Class extends Zend_Db_Table_Abstract
     * @param int|string $id  The class id
     * @param Optional ORDER clause
     */
-   public function getRollForCurrentSem($id)
+   public function getRollForCurrentSem($classes_id, $semesters_id)
    {
       $sel = $this->select()->setIntegrityCheck(false);
 
       $res = $sel->from('coop_users_semesters_view')
-          ->where("classes_id = $id")
-          ->where("current = 1");
+          ->where("classes_id = $classes_id")
+          //->where("current = 1");
+          ->where("semesters_id = $semesters_id");
 
       // if optional ORDER clause was passed
       $args = func_get_args();

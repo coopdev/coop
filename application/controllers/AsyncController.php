@@ -148,11 +148,12 @@ class AsyncController extends Zend_Controller_Action
     {
        if ($this->getRequest()->isPost()) {
 
-          $id = $_POST['id'];
+          $classes_id = $_POST['classes_id'];
+          $semesters_id = $_POST['semesters_id'];
 
           $class = new My_Model_Class();
 
-          $rows = $class->getRollForCurrentSem($id);
+          $rows = $class->getRollForCurrentSem($classes_id, $semesters_id);
 
           if (!is_array($rows)) {
              $rows = array();
