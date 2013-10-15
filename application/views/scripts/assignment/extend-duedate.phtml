@@ -28,7 +28,7 @@
       function fillStudents(defaultValue) {
          val = $("[name=classes_id]").val();
 
-         $.post(base + '/async/class-roll-json', {'id' : val}, function(resp) {
+         $.post(base + '/async/class-roll-json', {'classes_id' : val}, function(resp) {
 
             opts = resp;
 

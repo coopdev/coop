@@ -149,7 +149,12 @@ class AsyncController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
 
           $classes_id = $_POST['classes_id'];
-          $semesters_id = $_POST['semesters_id'];
+          if (!is_null($_POST['semesters_id'])) {
+             $semesters_id = $_POST['semesters_id'];
+          } else {
+             $coopSess = new Zend_Session_Namespace('coop');
+             $semesters_id = $coopSess->currentSemId;
+          }
 
           $class = new My_Model_Class();
 
@@ -163,7 +168,6 @@ class AsyncController extends Zend_Controller_Action
 
           $json = Zend_Json_Encoder::encode($rows);
           //$json = json_encode($rows);
-
           echo $json;
 
        } 
