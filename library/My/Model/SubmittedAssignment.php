@@ -75,7 +75,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       $curSemId = $sem->getCurrentSemId();
 
       $class = new My_Model_Class();
-      $students = $class->getRollForCurrentSem($classId);
+      $students = $class->getRollForCurrentSem($classId, $curSemId);
       if(empty($students)) {
          return "emptyClass";
       }
