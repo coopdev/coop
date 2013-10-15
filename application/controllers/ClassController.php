@@ -174,7 +174,8 @@ class ClassController extends Zend_Controller_Action
           $class = new My_Model_Class();
 
           $className = $class->getName($classId);
-          $roll = $class->getRollForCurrentSem($classId, 'lname');
+          $coopSess = new Zend_Session_Namespace('coop');
+          $roll = $class->getRollForCurrentSem($classId, $coopSess->currentSemId, 'lname');
 
           $this->view->message = $message;
           $this->view->roll = $roll;

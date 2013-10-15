@@ -208,8 +208,8 @@ class My_Model_Class extends Zend_Db_Table_Abstract
 
       // if optional ORDER clause was passed
       $args = func_get_args();
-      if (count($args) > 1) {
-         $order = $args[1];
+      if (count($args) > 2) {
+         $order = $args[2];
          $res = $res->order($order);
       }
 
