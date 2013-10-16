@@ -606,10 +606,11 @@ class AsyncController extends Zend_Controller_Action
        if ($this->getRequest()->isPost()) {
           //die(var_dump($_POST));
           $classId = $_POST['classId'];
+          $semId = $_POST['semId'];
           //die($classId);
           $sa = new My_Model_SubmittedAssignment();
 
-          $recs = $sa->getAssignmentStatusByClass($classId);
+          $recs = $sa->getAssignmentStatusByClass($classId, $semId);
           if($recs === "emptyClass") {
              $this->view->error = "<p class=error> Class is empty </p>";
              return;

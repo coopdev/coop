@@ -356,6 +356,20 @@ class My_FormElement
       return $elem;
 
    }
+
+   public function getCurrentToPastSemestersDropdown($name, $label) {
+      $sem = new My_Model_Semester();
+      $sems = $sem->getUpToCurrent(10);
+      $semesters = new Zend_Form_Element_Select($name);
+      $semesters->setLabel($label);
+
+      foreach ($sems as $s) {
+         $semesters->addMultiOptions(array($s['id'] => $s['semester']));
+      }
+
+      return $semesters;
+      
+   }
       
    
    /**

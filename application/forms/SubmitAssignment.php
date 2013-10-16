@@ -44,17 +44,8 @@ class Application_Form_SubmitAssignment extends Zend_Form
 
 
        // Semester dropdown if needed.
-       //$elems = new My_FormElement();
-       //$semesters = $elems->getSemesterDropdown();
-
-       $sem = new My_Model_Semester();
-       $sems = $sem->getUpToCurrent(10);
-       $semesters = new Zend_Form_Element_Select('semesters_id');
-       $semesters->setLabel("Select semester");
-
-       foreach ($sems as $s) {
-          $semesters->addMultiOptions(array($s['id'] => $s['semester']));
-       }
+       $elems = new My_FormElement();
+       $semesters = $elems->getCurrentToPastSemestersDropdown('semesters_id', 'Select semester');
 
 
        $submit = new Zend_Form_Element_Submit('submit');

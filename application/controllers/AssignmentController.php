@@ -17,11 +17,12 @@ class AssignmentController extends Zend_Controller_Action
        $elems = new My_FormElement();
        $classDropdown = $elems->getClassChoiceSelect();
        $classDropdown->setLabel('Select class');
+       $semDropdown = $elems->getCurrentToPastSemestersDropdown('semesters_id', 'Select semester');
        //die(var_dump($classDropdown));
        $submit = new Zend_Form_Element_Button('Submit');
        //die(var_dump($submit));
 
-       $form->addElements(array($classDropdown, $submit));
+       $form->addElements(array($classDropdown, $semDropdown, $submit));
 
        $this->view->form = $form;
     }

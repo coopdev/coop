@@ -1,5 +1,6 @@
 <h2> Student Assignment Status </h2>
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
    $form = $this->form;
    echo $form;
 ?>
@@ -11,17 +12,28 @@
 
 <script>
    $('document').ready(function() {
+
+      selectCurrentSemester();
+
       $('#Submit').live('click', function() {
          classId = $('#classes_id').val();
+         semId = $('#semesters_id').val();
          //alert(classId);
 
-         $.post(base + "/async/assignment-status-by-class", {'classId' : classId}, function(resp) {
+         $.post(base + "/async/assignment-status-by-class", {'classId' : classId, 'semId' : semId}, function(resp) {
             //alert('hi');
             $(".asyncContainer").empty();
             $(".asyncContainer").append(resp);
 
          });
       });
+
+      function selectCurrentSemester() 
+      {
+         current_sem = '<?php echo $coopSess->currentSemId ?>'
+         $("#semesters_id option[value='" + current_sem + "']").attr('selected', true)
+      }
    });
+
 
 </script>

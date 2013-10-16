@@ -69,13 +69,12 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
     * @param int|string $classId
     * @return string  
     */
-   public function getAssignmentStatusByClass($classId)
+   public function getAssignmentStatusByClass($classId, $semId)
    {
       $sem = new My_Model_Semester();
-      $curSemId = $sem->getCurrentSemId();
 
       $class = new My_Model_Class();
-      $students = $class->getRollForCurrentSem($classId, $curSemId);
+      $students = $class->getRollForCurrentSem($classId, $semId);
       if(empty($students)) {
          return "emptyClass";
       }
@@ -86,7 +85,7 @@ class My_Model_SubmittedAssignment extends Zend_Db_Table_Abstract
       $userTablename = $user->info('name');
       $sel = $sel->from(array('u' => $userTablename))
                  ->joinLeft(array('sa' => $this->_name), 
-                      "u.username = sa.username AND sa.semesters_id = $curSemId AND sa.classes_id = $classId AND sa.is_final = 1",
+                      "u.username = sa.username AND sa.semesters_id = $semId AND sa.classes_id = $classId AND sa.is_final = 1",
                       array('assignments_id', 'is_final'));
 
       foreach($students as $s) {
