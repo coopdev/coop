@@ -406,6 +406,19 @@ class My_Model_User extends Zend_Db_Table_Abstract
    }
 
 
+   public function isIncomplete($username, $semesterId, $classId)
+   {
+      $UserSem = new My_Model_UsersSemester();
+
+      $row = $UserSem->fetchRow("student = '$username' AND semesters_id = $semesterId AND classes_id = $classId");
+
+      if (trim($row->status) === 'Incomplete') {
+         return true;
+      }
+      return false;
+   }
+
+
 
    /**
     * Deletes one coordinator.
