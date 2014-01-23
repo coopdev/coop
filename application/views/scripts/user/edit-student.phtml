@@ -1,3 +1,12 @@
+<?php 
+   $coopSess = new Zend_Session_Namespace('coop');
+   $demoPromoUrl = $this->url(array('controller' => 'user', 'action' => 'demote-promote')); 
+?>
+
+<?php if ($coopSess->role === 'coordinator') { ?>
+   <a class="editLink" href='<?php echo "$demoPromoUrl?role=student-aid&username=".$this->username ?>'> MAKE STUDENT-AID </a> <br /><br />
+<?php } ?>
+
 <?php
    $form = $this->form;
 

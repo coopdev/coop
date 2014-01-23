@@ -361,6 +361,28 @@ class UserController extends Zend_Controller_Action
        $this->view->form = $form;
     }
 
+    public function demotePromoteAction()
+    {
+       $coopSess = new Zend_Session_Namespace('coop');
+       //die(var_dump($coopSess->prevAction));
+       if ($coopSess->role === 'coordinator') {
+          $data = $_GET;
+          $User = new My_Model_User();
+          if ($data['role'] === 'student') {
+             $User->update(array('roles_id' => 4), "username = '" . $data['username'] . "'");
+             $this->_helper->redirector($coopSess->prevAction, $coopSess->prevController);
+          } elseif ($data['role'] === 'student-aid') { 
+             $UsersSem = new My_Model_UsersSemester();
+
+             $UsersSem->delete("student = '". $data['username']."' AND semesters_id = '".$coopSess->currentSemId."'");
+             $User->update(array('roles_id' => 2), "username = '" . $data['username'] . "'");
+             $this->view->resultMessage = "<p class='success'> Student has been promoted to Student Aid </p>";
+          }
+       }
+
+
+    }
+
     public function viewLoginsAction()
     {
        $form = new Application_Form_ViewLogins();
@@ -429,6 +451,7 @@ class UserController extends Zend_Controller_Action
     public function editStudentAction()
     {
        $username = $this->getRequest()->getParam('username');
+       $this->view->username = $username;
        $form = new Application_Form_EditStudent( array('username' => $username) );
        $this->view->form = $form;
 

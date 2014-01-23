@@ -142,6 +142,7 @@
         <formFile formName="LearningOutcomeInstructions"/>
         <formFile formName="EditStudent"/>
         <formFile formName="Report"/>
+        <formFile formName="DemotePromote"/>
       </formsDirectory>
       <layoutsDirectory enabled="false">
         <layoutScriptsDirectory>

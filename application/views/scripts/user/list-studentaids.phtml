@@ -1,9 +1,11 @@
 <?php
+   $coopSess = new Zend_Session_Namespace('coop');
    $stuAids = $this->stuAids;
    //die(var_dump($stuAids));
    $editUrl = $this->url(array('controller' => 'user', 'action' => 'edit-student-aid'));
    $addUrl = $this->url(array('controller' => 'user', 'action' => 'add-student-aid'));
    $delUrl = $this->url(array('controller' => 'user', 'action' => 'delete-student-aid'));
+   $demoPromoUrl = $this->url(array('controller' => 'user', 'action' => 'demote-promote'));
 ?>
 
 <h2> Manage student helpers </h2>
@@ -36,7 +38,10 @@
          </td>
 
          <td>
-            <a class="editLink" href='<?php echo "$editUrl?username=".$s['username'] ?>'> EDIT </a>
+            <a class="editLink" href='<?php echo "$editUrl?username=".$s['username'] ?>'> EDIT </a> |
+            <?php if ($coopSess->role === 'coordinator') { ?>
+               <a class="editLink" href='<?php echo "$demoPromoUrl?role=student&username=".$s['username'] ?>'> MAKE STUDENT </a>
+            <?php } ?>
          </td>
       </tr>
 
