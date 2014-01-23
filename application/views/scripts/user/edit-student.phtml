@@ -4,7 +4,7 @@
 ?>
 
 <?php if ($coopSess->role === 'coordinator') { ?>
-   <a class="editLink" href='<?php echo "$demoPromoUrl?role=student-aid&username=".$this->username ?>'> MAKE STUDENT-AID </a> <br /><br />
+   <a id="promote" class="editLink" href='<?php echo "$demoPromoUrl?role=student-aid&username=".$this->username ?>'> MAKE STUDENT-AID </a> <br /><br />
 <?php } ?>
 
 <?php
@@ -12,3 +12,11 @@
 
    echo $form;
 ?>
+
+<script type="text/javascript">
+   $("#promote").live('click', function() {
+      if (!confirm("Really make a student helper? Student will be dropped from all classes for the current semester.")) {
+         return false;
+      }
+   });
+</script>
